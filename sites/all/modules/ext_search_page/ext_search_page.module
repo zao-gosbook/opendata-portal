@@ -1,0 +1,958 @@
+<?php
+
+/**
+ * @file
+ * Extended search page module.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function ext_search_page_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'search_api_page_admin_edit':
+      module_load_include('inc', 'ext_search_page', 'ext_search_page.admin');
+      ext_search_page_admin_edit_alter_form($form, $form_state, $form_id);
+      break;
+  }
+}
+
+
+/**
+ * Implements hook_menu_alter().
+ */
+function ext_search_page_menu_alter(&$items) {
+  // During uninstallation, this would lead to a fatal error otherwise.
+  if (module_exists('ext_search_page')) {
+    foreach (ext_search_page_load_pages(array('extended' => TRUE)) as $page) {
+      $items[$page->path]['page callback'] = 'ext_search_page_view';
+      $items[$page->path]['access arguments'] = array('access ext_search_page');
+      $items[$page->path]['file'] = 'ext_search_page.pages.inc';
+      $items[$page->path]['file path'] = drupal_get_path('module', 'ext_search_page');
+    }
+  }
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function ext_search_page_block_info() {
+  $blocks=array();
+  foreach (ext_search_page_load_pages(array('block' => TRUE)) as $page) {
+    $blocks[$page->id] = array(
+      'info' => t('Search @page', array('@page' => $page->name)), 
+      'cache' => DRUPAL_CACHE_GLOBAL,
+    );
+  }
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function ext_search_page_block_view($delta = '') {
+  $page=ext_search_page_load_pages($delta);
+  if (!$page) return FALSE;
+  
+  module_load_include('inc', 'ext_search_page', 'ext_search_page.pages');
+  $content=drupal_get_form('ext_search_page_search_form', $page, '', array(), 'block');
+  return array(
+    'subject' => t('Search @page', array('@page' => $page->name)),
+    'content' => $content);
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function ext_search_page_theme() {
+  $themes['ext_search_page_filters_table'] = array(
+    'render element' => 'form',
+    'file' => 'ext_search_page.admin.inc',
+    'status' => 0,
+    'region' => -1,
+  );
+  $themes['ext_search_default_page_results'] = array(
+    'variables' => array(
+      'page' => NULL,
+      'results' => array('result count' => 0),
+      'entities' => array(),
+      'keys' => '',
+    ),
+    'file' => 'ext_search_page.admin.inc',
+  );
+  return $themes;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function ext_search_page_permission() {
+  return array(
+    'access ext_search_page' => array(
+      'title' => t('Access extended search pages'),
+      'description' => t('Execute searches using the Extended search pages module.'),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter()
+ */
+function ext_search_page_entity_property_info_alter(&$info) {
+ $info['search_api_page']['properties']['ext_search_options']=array(
+      'label' => t('Extended search options'),
+      'type' => 'struct',
+      'description' => t('Options for extended search.'),
+  );
+}
+
+
+/**
+ * Filter weight comp callback.
+ * 
+ * @param array $a
+ * @param array $b
+ * 
+ * @return number
+ */
+function ext_search_page_cmp_filter($a, $b) {
+  if ($a['weight'] == $b['weight']) {
+    return 0;
+  }
+  return ($a['weight'] < $b['weight']) ? -1 : 1;
+}
+
+
+/**
+ * Get the fields from index which are usable as filter.
+ * Fulltext fields are not eligible.
+ * 
+ * @param $page
+ */
+function ext_search_page_get_available_filters($page) {
+  $filters_registry = &drupal_static(__FUNCTION__);
+
+  if (!isset($filters_registry[$page->index_id])) {
+    $index=search_api_index_load($page->index_id);
+
+    $filters_registry[$page->index_id]=array();
+    
+    if (method_exists($index, 'getFields')) {
+      // TODO use only new method getFields()
+      $fields = $index->getFields();
+    }
+    else {
+      $fields = $index->options['fields'];
+    }
+    
+    foreach ($fields as $field => $field_info) {
+      // filter only if non fulltext index
+      if ((!search_api_is_text_type($field_info['type'])) &&
+        // ugly test because indexed disapeard in last search api version
+        ((isset($field_info['indexed'])&&$field_info['indexed'])||!isset($field_info['indexed']))) {
+        // do not allow system language filter if no content translation module ?
+        if ($field=='search_api_language'&&!module_exists('translation')) continue;
+        
+        $filters_registry[$page->index_id][$field]=$field_info;
+        $filters_registry[$page->index_id][$field]['default_name']=isset($filters_registry[$page->index_id][$field]['name'])?$filters_registry[$page->index_id][$field]['name']:$field;
+        
+        foreach (array('weight', 'default', 'wid', 'display', 'block', 'display_name') as $param) {
+          $filters_registry[$page->index_id][$field][$param]=
+            isset($page->ext_search_options['filters'][$field][$param])?$page->ext_search_options['filters'][$field][$param]:null;
+        }
+        
+        if (!$filters_registry[$page->index_id][$field]['display_name']) $filters_registry[$page->index_id][$field]['display_name']='<default>';
+        
+        switch ($filters_registry[$page->index_id][$field]['display_name']) {
+          case '<none>':
+            $filters_registry[$page->index_id][$field]['name'] = NULL;
+            break;
+          case '<default>':
+            $filters_registry[$page->index_id][$field]['name'] =  $filters_registry[$page->index_id][$field]['default_name'];
+            break;
+          default:
+            $filters_registry[$page->index_id][$field]['name'] =  $filters_registry[$page->index_id][$field]['display_name'];
+        }
+      }
+    }
+    
+    uasort($filters_registry[$page->index_id], 'ext_search_page_cmp_filter');
+  }
+  return $filters_registry[$page->index_id];
+}
+
+
+/**
+ * Build and return the widget registry.
+ * Allow other module to alter the registry with hook_ext_search_page_widgets_registry_alter().
+ * 
+ * @param $page
+ * @param string $field
+ *   Field id, optional, returns only the widgets for this field
+ * @return array
+ *   The widgets registry for the page or for the field
+ */
+function ext_search_page_get_widgets_registry($page, $field=NULL) {
+  $registry  = &drupal_static(__FUNCTION__);
+
+  if (!isset($registry[$page->index_id])) {
+    $index=search_api_index_load($page->index_id);
+    $top_wrapper = $index->entityWrapper();
+    
+    foreach (ext_search_page_get_available_filters($page) as $field_id => $field_info) {
+      $registry[$page->index_id][$field_id]=$field_info;
+      
+      // special fields
+      switch ($field_id) {
+        case 'search_api_language':
+          if ($languages = module_invoke('locale', 'language_list')) {
+            $languages = array(LANGUAGE_NONE => t('Language neutral')) + $languages;
+            $registry[$page->index_id][$field_id]['widgets']['search_api_language']=array(
+              'name' => t('Language selector'),
+              'wid' => 'search_api_language',
+              'type' => 'select',
+              'title' => $field_info['name']?t($field_info['name']):null,
+              'options' => array(
+                '*' => t('All'),
+              ) + $languages,
+              'default_value' => '*',
+              'operator' => '=',
+              'add_form' => 'ext_search_page_add_filter_widget_form',
+              'get_values' => 'ext_search_page_get_filter_widget_values',
+              'add_condition' => 'ext_search_page_add_filter_widget_condition',
+            );
+          }
+          break;
+        case 'type':
+          if ($top_wrapper->type()=='node') {
+            $registry[$page->index_id][$field_id]['widgets']['type']=array(
+              'name' => t('Content type selector'),
+              'wid' => 'type',
+              'type' => 'select',
+              'title' => $field_info['name']?t($field_info['name']):null,
+              'options' => array(
+                '*' => t('All'),
+              ) + node_type_get_names(),
+              'default_value' => '*',
+              'operator' => '=',
+              'add_form' => 'ext_search_page_add_filter_widget_form',
+              'get_values' => 'ext_search_page_get_filter_widget_values',
+              'add_condition' => 'ext_search_page_add_filter_widget_condition',
+            );
+          }
+          break;
+      }
+
+      // more complex cases use entity wrapper
+      $wrapper=$top_wrapper;
+      
+      $parent_wrapper=NULL;
+      foreach (explode(':', $field_id) as $element) {
+        if (!isset($wrapper->$element)) {
+          break;
+        }
+        $parent_wrapper=$wrapper;
+        $wrapper = $wrapper->$element;
+      }
+      
+      $taxonomy=FALSE;
+      $list=FALSE;
+      if ($wrapper) {
+        $wrapper_info = $wrapper->info();
+        if ($parent_wrapper) {
+          $parent_wrapper_info = $parent_wrapper->info();
+        }
+        else {
+          $parent_wrapper_info=array('type' => NULL);
+        }
+        // taxonomy terms ?
+        if ($wrapper_info['type']=='list<taxonomy_term>') {
+          // bundle seams to be the vocabulary
+          $taxonomy=$wrapper_info['bundle'];
+          $multiple = TRUE;
+        }
+        else if ($wrapper_info['type']=='taxonomy_term') {
+          // bundle seams to be the vocabulary
+          $taxonomy=$wrapper_info['bundle'];
+        }
+        elseif ($parent_wrapper_info['type']=='taxonomy_term'&&$wrapper_info['type']=='integer') {
+          // parent bundle seams to be the vocabulary and maybe this is a tid
+          $taxonomy=$parent_wrapper_info['bundle'];
+        }
+      
+      }
+      if ($taxonomy) {
+        if ($vocabulary=taxonomy_vocabulary_machine_name_load($taxonomy)) {
+          // taxo select
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy']=array(
+              'name' => t('Taxonomy @vocabulary selector', array('@vocabulary' => $vocabulary->name)),
+              'wid' => 'taxonomy',
+              'type' => 'select',
+              'title' => $field_info['name']?t($field_info['name']):null,
+              'vid' => $vocabulary->vid,
+              'operator' => '=',
+              'add_form' => 'ext_search_page_add_filter_widget_form',
+              'get_values' => 'ext_search_page_get_filter_widget_values',
+              'add_condition' => 'ext_search_page_add_filter_widget_condition',
+          );
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_multiple']=$registry[$page->index_id][$field_id]['widgets']['taxonomy'];
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_multiple']['operator'] = 'IN';
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_multiple']['name'] = t('Taxonomy @vocabulary multiple selector', array('@vocabulary' => $vocabulary->name));
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_multiple']['wid'] = 'taxonomy_multiple';
+      
+          // taxo autocomplete
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_autocomplete']=array(
+              'name' => t('Taxonomy @vocabulary autocomplete', array('@vocabulary' => $vocabulary->name)),
+              'wid' => 'taxonomy_autocomplete',
+              'type' => 'autocomplete',
+              'title' => $field_info['name']?t($field_info['name']):null,
+              'vocabulary' => $taxonomy,
+              'operator' => '=',
+              'add_form' => 'ext_search_page_add_filter_widget_form',
+              'get_values' => 'ext_search_page_get_filter_widget_values',
+              'add_condition' => 'ext_search_page_add_filter_widget_condition',
+          );
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_autocomplete_multiple']=$registry[$page->index_id][$field_id]['widgets']['taxonomy_autocomplete'];
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_autocomplete_multiple']['operator'] = 'IN';
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_autocomplete_multiple']['name'] = t('Taxonomy @vocabulary multiple autocomplete', array('@vocabulary' => $vocabulary->name));
+          $registry[$page->index_id][$field_id]['widgets']['taxonomy_autocomplete_multiple']['wid'] = 'taxonomy_autocomplete_multiple';
+        }
+      }
+      else {
+      
+        switch ($field_info['type']) {
+          case 'boolean':
+            $registry[$page->index_id][$field_id]['widgets']['boolean']=array(
+              'name' => t('Boolean'),
+              'wid' => 'boolean',
+              'type' => 'select',
+              'title' => $field_info['name']?t($field_info['name']):null,
+              'options' => array(
+                '*' => t('All'),
+                'yes' => t('Yes'),
+                'no' => t('No'),
+              ),
+              'default_value' => '*',
+              'operator' => 'boolean',
+              'add_form' => 'ext_search_page_add_filter_widget_form',
+              'get_values' => 'ext_search_page_get_filter_widget_values',
+              'add_condition' => 'ext_search_page_add_filter_widget_condition',
+            );
+            break;
+          case 'integer': case 'number':
+            $registry[$page->index_id][$field_id]['widgets']['number_input']=array(
+              'name' => t('Number input'),
+              'wid' => 'number_input',
+              'type' => 'textfield',
+              'title' => $field_info['name']?t($field_info['name']):null,
+              'default_value' => '*',
+              'operator' => '=',
+              'add_form' => 'ext_search_page_add_filter_widget_form',
+              'get_values' => 'ext_search_page_get_filter_widget_values',
+              'add_condition' => 'ext_search_page_add_filter_widget_condition', 
+            );
+            break;
+          case 'date':
+            $registry[$page->index_id][$field_id]['widgets']['date_range']=array(
+                'name' => t('Date range'),
+                'wid' => 'date_range',
+                'title' => $field_info['name']?t($field_info['name']):null,
+                'operator' => 'range',
+                'add_form' => 'ext_search_page_add_filter_widget_form',
+                'get_values' => 'ext_search_page_get_filter_widget_values',
+                'add_condition' => 'ext_search_page_add_filter_widget_condition',
+            );
+            break;
+          default:
+          // nothing
+        }
+      }
+    }
+    // invoke other module hook_ext_search_page_widgets_registry_alter()
+    drupal_alter('ext_search_page_widgets_registry', $registry[$page->index_id], $page);
+  }
+  if ($field) return $registry[$page->index_id][$field];
+  return $registry[$page->index_id];
+}
+
+/**
+ * Return the chosen widgets for current page.
+ * 
+ * @param $page
+ *   The search page object
+ * 
+ * @return array
+ *   An array of widgets for the given page.
+ */
+function ext_search_page_get_filter_widgets($page) {
+  $widgets = &drupal_static(__FUNCTION__);
+
+  if (!isset($widgets[$page->id])) {
+    $widgets[$page->id]=array();
+    foreach (ext_search_page_get_widgets_registry($page) as $field => $field_infos) {
+      // paranoid : be sure it is a full coded widget...
+      if (isset($field_infos['widgets'][$field_infos['wid']]['wid'])) {
+        $widgets[$page->id][$field]=$field_infos['widgets'][$field_infos['wid']];
+        foreach (array('display', 'block', 'default') as $param) {
+          $widgets[$page->id][$field][$param]=$field_infos[$param];
+        }
+      }
+    }
+  }
+  return $widgets[$page->id];
+}
+
+
+/**
+ * Default get values callback. Get the value of widget from form.
+ * Returns an array because some widget may need complex value.
+ * 
+ * @param string $field
+ *   Field id
+ * @param array $widget
+ *   Widget definition
+ * @param array $form_values
+ *   Form state format values
+ * @return array
+ *   The values
+ */
+function ext_search_page_get_filter_widget_values($field, array $widget, array &$form_values) {
+  if (!isset($form_values[$field])) return NULL;
+  $values=NULL;
+  
+  switch ($widget['wid']) {
+    //dumb implementation to show how to manage different cases.
+    case 'search_api_language':
+      if (isset($form_values[$field])) {
+        $values=array($form_values[$field]);
+      }
+      break;
+    case 'date_range':
+      if ($form_values[$field]['drb']&&$form_values[$field]['isdrb']) {
+        $values[0]=mktime(0, 0, 0,
+          $form_values[$field]['drb']['month'],
+          $form_values[$field]['drb']['day'],
+          $form_values[$field]['drb']['year']
+          );
+        $values[1]='';
+      }
+      if ($form_values[$field]['dre']&&$form_values[$field]['isdre']) {
+        if (!isset($values[0])) $values[0]='';
+        $values[1]=mktime(0, 0, 0,
+          $form_values[$field]['dre']['month'],
+          $form_values[$field]['dre']['day'],
+          $form_values[$field]['dre']['year']
+        );
+      }
+      break;
+    case 'taxonomy_multiple': case 'taxonomy_autocomplete_multiple':
+      if (isset($form_values[$field])&&$form_values[$field]) {
+        $values=$form_values[$field];
+        if (isset($values['*'])) $values = array('*');
+      }
+      break;
+    default:
+      switch ($widget['type']) {
+        case 'autocomplete' :
+          if (isset($form_values[$field])&&$form_values[$field]) {  
+            $values=array($form_values[$field]);
+          }
+          break;
+        default:
+          if (isset($form_values[$field])) {  
+            $values=array($form_values[$field]);
+          }
+      }
+  }
+  
+  if (isset($widget['default'])&&$values==$widget['default']) return NULL;
+  return $values;
+}
+
+
+/**
+ * Default add form calback. Modify the form to add the corresponding filter widget.
+ * 
+ * @param array $form 
+ *   The form element to be modified
+ * @param string $field
+ *   Field id
+ * @param string $widget
+ *   Widget definition
+ * @param array|null $values
+ *   Values for the widget
+ * @param boolean $mode
+ *   Render mode
+ */
+function ext_search_page_add_filter_widget_form(array &$form, $field, array $widget, $values, $mode='default') {
+  switch ($widget['wid']) {
+    case 'date_range':
+      if ($mode=='default') {
+        if (isset($values[0])&&$values[0]!='*') {
+          // display filter status
+          if ($widget['title']) {
+            $form['current'][] = array(
+              '#markup' => t('%property from %from to %to', array(
+                  '%property' => $widget['title'], 
+                  '%from' => $values[0]?format_date($values[0], 'short'):t('*ever*'),
+                  '%to' => $values[1]?format_date($values[1], 'short'):t('*ever*'),
+                 )));
+          }
+        }
+      }
+      
+      // display a widget
+      $drb=NULL;
+      if (isset($values[0])&&$values[0]) {
+        $drb=array(
+          'year' => (int)strftime('%Y', $values[0]), // (int) cast seams important
+          'month' => (int)strftime('%m', $values[0]),
+          'day' => (int)strftime('%d', $values[0]),
+        );
+      }
+      $dre=NULL;
+      if (isset($values[1])&&$values[1]) {
+        $dre=array(
+          'year' => (int)strftime('%Y', $values[1]),
+          'month' => (int)strftime('%m', $values[1]),
+          'day' => (int)strftime('%d', $values[1]),
+        );
+      }
+      
+      $form[$field]=array(
+        '#prefix' => '<div class="date-range">',
+        '#suffix' => '</div>',
+      );
+        
+      if ($mode!='admin'&&$widget['title']) {
+        $form[$field]['title']=array(
+          '#markup' => '<label>' . t("Date range for %field", array('%field' => $widget['title'])) . '</label>',
+        );
+      }
+
+      $form[$field]['isdrb'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Begin'),
+        '#default_value' => $drb!=NULL,
+      );      
+      $form[$field]['drb'] = array(
+        '#type' => 'date',
+        '#default_value' => $drb,
+      );
+      
+      $form[$field]['isdre'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('End'),
+        '#default_value' => $dre!=NULL,
+      );
+      $form[$field]['dre'] = array(
+        '#type' => 'date',
+        '#default_value' => $dre,
+      );
+      
+      return TRUE;
+
+    case 'taxonomy':  case 'taxonomy_multiple':
+      $filter='';
+      if ($widget['wid']=='taxonomy_multiple') {
+        $tags = array();
+        if (isset($values)&&is_array($values)&&(!isset($values['*']))) {
+          foreach ($values as $tid) {
+            $term = taxonomy_term_load($tid);
+            if ($term) $tags[$tid] = $term;
+          }
+          $filter = taxonomy_implode_tags($tags);
+        }
+      }
+      else {
+        if (isset($values[0])&&$values[0]!='*') {
+          $term = taxonomy_term_load($values[0]);
+          if ($term) $filter = $term->name;
+        }
+      }
+      
+      if ($mode=='default') {
+        if (isset($values[0])&&$values[0]!='*') {
+          // display filter status
+          $form['current'][] = array(
+            '#markup' => t('%property !op %value', array(
+                '%property' => $widget['title'], 
+                '%value' => $filter,
+                '!op' => $widget['wid']=='taxonomy_multiple' ? 'in' : 'is')));
+        }
+      }
+      // put this at last moment because taxonomy_get_tree() can explode memory on large vocabulary
+      // so using autocomplete will not make ext_search explode !
+      $options=array('*' => t('All'));
+      if ($terms = taxonomy_get_tree($widget['vid'])) {
+        foreach ($terms as $term) {
+          $options[$term->tid] = str_repeat('-', $term->depth) . $term->name;
+        }
+      }
+      // display a widget
+      $form[$field] = array(
+        '#type' => 'select',
+        '#options' => $options,
+        '#size' => $widget['wid']=='taxonomy_multiple' ? min(12, count($options)) : 0,
+        '#multiple' => $widget['wid']=='taxonomy_multiple',
+        '#default_value' => $widget['wid']=='taxonomy_multiple' ? 
+          ( isset($values)&&is_array($values) ? array_values($values) : array('*') ) :
+          ( isset($values[0]) ? $values[0] : '*'),
+      );
+      if ($mode!='admin') $form[$field]['#title']=$widget['title'];
+   
+      return TRUE;
+      
+    case 'taxonomy_autocomplete': case 'taxonomy_autocomplete_multiple':
+      $filter='';
+      if ($widget['wid']=='taxonomy_autocomplete_multiple') {
+        $tags = array();
+        if (isset($values)&&is_array($values)&&(!isset($values['*']))) {
+          foreach ($values as $tid) {
+            $term = taxonomy_term_load($tid);
+            if ($term) $tags[$tid] = $term;
+          }
+          $filter = taxonomy_implode_tags($tags);
+        }
+      }
+      else {
+        if (isset($values[0])&&$values[0]!='*') {
+          $term = taxonomy_term_load($values[0]);
+          if ($term) $filter = $term->name;
+        }
+      }
+      
+      if ($mode=='default') {
+        if (isset($values[0])&&$values[0]!='*') {
+          // display filter status
+          $form['current'][] = array(
+            '#markup' => t('%property !op %value', array(
+                '%property' => $widget['title'], 
+                '%value' => $filter,
+                '!op' => $widget['wid']=='taxonomy_autocomplete_multiple' ? 'in' : 'is')));
+        }
+      }
+            
+      // display a widget
+      $form[$field] = array(
+        '#type' => 'textfield',
+        '#autocomplete_path' => 'ext_search_page/taxonomy_autocomplete/' . $widget['vocabulary'],
+        '#vocabulary' => $widget['vocabulary'],
+        '#maxlength' => 1024,
+        '#size' => $widget['wid']=='taxonomy_autocomplete_multiple' ? 64 : 16,
+        '#default_value' => $filter,
+        '#multiple' => $widget['wid']=='taxonomy_autocomplete_multiple',
+        '#element_validate' => array('ext_search_page_taxonomy_autocomplete_validate'),
+      );
+      if ($mode!='admin') $form[$field]['#title']=$widget['title'];
+   
+      return TRUE;        
+  }
+  switch ($widget['type']) {
+    case 'select':
+      if ($mode=='default') {
+        if (isset($values[0])&&$values[0]!='*') {
+          // display filter status
+          $form['current'][] = array(
+            '#markup' => t('%property is %value', array(
+                '%property' => $widget['title'], 
+                '%value' => $widget['options'][$values[0]])));
+        }
+      }
+      // display a widget
+      $form[$field] = array(
+        '#type' => 'select',
+        '#options' => $widget['options'],
+        '#default_value' => isset($values[0])?$values[0]:'*',
+      );
+      if ($mode!='admin') $form[$field]['#title']=$widget['title'];
+   
+      return TRUE;
+    case 'textfield':
+      if ($mode=='default') {
+        if (isset($values[0])&&$values[0]!='*') {
+          // display filter status
+          $form['current'][] = array(
+            '#markup' => t('%property is %value', array(
+               '%property' => $widget['title'], 
+               '%value' => isset($values[0])?$values[0]:'*')));
+        }
+      }
+      // display a widget
+      $form[$field] = array(
+        '#type' => 'textfield',
+        '#size' => isset($widget['size']) ? $widget['size'] : NULL,
+        '#default_value' => isset($values[0])?$values[0]=='*'?'':$values[0]:'',
+      );
+      if ($mode!='admin') $form[$field]['#title']=$widget['title'];
+   
+      return TRUE;
+  }
+  return FALSE;
+}
+
+
+/**
+ * Form element validate handler for taxonomy term autocomplete element.
+ */
+function ext_search_page_taxonomy_autocomplete_validate($element, &$form_state) {
+  // Autocomplete widgets do not send their tids in the form, so we must detect
+  // them here and process them independently.
+  $value = array();
+  if ($tags = $element['#value']) {
+    $vocabulary = taxonomy_vocabulary_machine_name_load($element['#vocabulary']);
+
+    // Translate term names into actual terms.
+    $typed_terms = drupal_explode_tags($tags);
+    foreach ($typed_terms as $typed_term) {
+      // See if the term exists in the chosen vocabulary and return the tid;
+      if ($possibilities = taxonomy_term_load_multiple(array(), array('name' => trim($typed_term), 'vid' => $vocabulary->vid))) {
+        $term = array_pop($possibilities);
+        $value[$term->tid] = $term->tid;
+        if (!$element['#multiple']) break;
+      }
+    }
+  }
+
+  if (empty($value)) $value = array('*');
+  
+  if (!$element['#multiple']) $value = reset($value);
+  
+  form_set_value($element, $value, $form_state);
+}
+
+/**
+ * Default add condition callback. Add a condition to the search api query reflecting the widget state.
+ * 
+ * @param SearchApiQueryInterface $query
+ *   The search api quey
+ * @param string $field
+ *   Field id
+ * @param array $widget
+ *   Widget definition
+ * @param array|null $values
+ *   
+ */
+function ext_search_page_add_filter_widget_condition(SearchApiQueryInterface $query, $field, array $widget, $values) {
+      if ($values===NULL) return;
+      if (count($values)==1&&$values[0]=='*') return;
+      switch ($widget['wid']) {
+        case 'date_range':
+          if ($values[0]) {
+            $query->condition($field, $values[0], '>=');
+          }
+          if ($values[1]) {
+            $query->condition($field, $values[1]+3600*24, '<');
+          }
+          break;
+        default:
+          switch ($widget['operator']) {
+            case 'boolean':
+              $query->condition($field, $values[0]=='yes');
+              break;
+            case 'IN':
+              $filter = new SearchApiQueryFilter('OR');
+              foreach ($values as $value) {
+                $filter->condition($field, $value);
+              }
+              $query->filter($filter);
+              break;
+            default:
+              $query->condition($field, $values[0], $widget['operator']);
+          }
+      }
+}
+
+
+/**
+ * Executes a search.
+ *
+ * @param $page
+ *   The page for which a search should be executed.
+ * @param $keys
+ *   The keywords to search for.
+ * @param $values
+ *   Filters values
+ * @param $sort
+ *   Field or array or field to sort with.
+ * @param $offset
+ * @param $limit
+ *
+ * @return array
+ *   The search results as returned by SearchApiQueryInterface::execute().
+ */
+function ext_search_page_search_execute($page, $keys, $values, $sort=FALSE, $limit=50, $offset=0) {
+  return ext_search_page_search_query($page, $keys, $values, $sort, $limit, $offset)->execute();
+}
+
+/**
+ * Create the search page query.
+ * 
+ * @param $page
+ *   The page for which a search should be executed.
+ * @param $keys
+ *   The keywords to search for.
+ * @param $values
+ *   Filters values.
+ * @param $sort
+ *   Field or array or field to sort with.
+ * @param $offset
+ * @param $limit
+ * @param $search_id Seach API ID (cache ?)
+ * @return SearchApiQueryInterface
+ *   An object for searching on the page.
+ */
+function ext_search_page_search_query($page, $keys, $values, $sort=FALSE, $limit=50, $offset=0, $search_id=NULL) {
+  if (!$search_id) $search_id='ext_search_page:' . $page->path . ':' . md5(serialize($values));
+    // @todo search id could be better...
+  $query=search_api_query($page->index_id, array('search id' => $search_id));
+  if ($keys) {
+    $query->keys($keys);
+  }
+  if (isset($page->options['fields'])&&is_array($page->options['fields'])&&count($page->options['fields'])) {
+    $query->fields($page->options['fields']);
+  }
+  if (count($values)) {
+    // we call add condition callback (even for hidden widgets)
+    foreach (ext_search_page_get_filter_widgets($page) as $field => $widget) {
+      // call add condition callback.
+      $f=$widget['add_condition'];
+      $f($query, $field, $widget, isset($values[$field])?$values[$field]:null);
+    }
+  }
+  if ($sort) {
+    if (!is_array($sort)) {
+      $sort = array( $sort );
+    }
+    foreach ($sort as $field => $order) {
+      if (!is_string($field)) {
+        $field = $order;
+        $order = 'ASC';
+      }
+      $query->sort($field, $order);
+    }
+  }
+  $query->range($offset, $limit);
+  
+  return $query;
+}
+
+
+/**
+ * Get filters values from $_GET and from default.
+ * 
+ * @param $page
+ * @param boolean &$non_default
+ *   Tells if we got non default values.
+ * @param string $mode
+ *   Render mode
+ */
+function ext_search_page_get_filter_values($page, &$non_default = NULL, $mode = 'default') {
+  $non_default=FALSE;
+  $filter_values=array();
+  foreach (ext_search_page_get_widgets_registry($page) as $field => $field_info) {
+    
+    if (isset($field_info['default'])&&$field_info['default']) {
+      $filter_values[$field]=$field_info['default'];
+    }
+    // we do not care about get for admin and block
+    if ($mode=='default'&&isset($field_info['display'])&&$field_info['display']) {
+      // the widget is enabled we can retrieve values from user...
+      if (isset($_GET[$field])&&$_GET[$field])  {
+        $filter_values[$field]=explode('|', $_GET[$field]);
+        if ($filter_values[$field]!=$field_info['default']) {
+          //just to know if we have to unfolde the advanced fieldset
+          $non_default=TRUE;
+        }
+      }
+    }
+  }
+  
+  return $filter_values;
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function ext_search_page_menu() {
+  $items['ext_search_page/taxonomy_autocomplete'] = array(
+    'title' => 'Autocomplete taxonomy',
+    'page callback' => 'ext_search_page_taxonomy_autocomplete',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'ext_search_page.pages.inc',
+  );
+
+  return $items;
+}
+
+
+/**
+ * Pages loader. 
+ * @param int|array $options
+ *   A page Id or an array of options :
+ *     - type : main entity type
+ *     - extended : extended pages only
+ */
+function ext_search_page_load_pages($options=array()) {
+  $pages = &drupal_static(__FUNCTION__, NULL);
+  $pages_by_type = &drupal_static(__FUNCTION__ . '_by_type', array());
+  
+  $id=NULL;
+  $retid=FALSE;
+  if (!is_array($options)) {
+    $id=$options;
+    $retid=TRUE;
+    $options=array();
+  }
+  if (!$pages) {
+    $pages=array();
+    foreach (entity_load('search_api_page', FALSE, array('enabled' => 1), TRUE) as $page) {
+      if (is_string($page->options)) {
+        $page->options = unserialize($page->options);
+      }
+      if (is_string($page->ext_search_options)) {
+        $page->ext_search_options=(array)unserialize($page->ext_search_options);
+      }
+      $index = search_api_index_load($page->index_id);
+      $pages[$page->id]=$page;
+      // UGLY PATCH
+      if (empty($index->item_type)) $index->item_type = $index->entity_type;
+      $pages_by_type[$index->item_type][$page->id]=$page;
+    }
+  }
+  if ($retid) {
+    if (isset($pages[$id])) return $pages[$id];
+    return NULL;
+  }
+  if (isset($options['type'])) {
+    if (isset($pages_by_type[$options['type']])) $res=$pages_by_type[$options['type']];
+    else $res=array();
+  }
+  else {
+    $res=$pages;
+  }
+  if (isset($options['extended'])||isset($options['block'])) {
+    foreach (array_keys($res) as $id) {
+      
+      if (isset($options['extended'])) {
+        if (!isset($res[$id]->ext_search_options['enabled'])) $res[$id]->ext_search_options['enabled']=FALSE;
+        if ($res[$id]->ext_search_options['enabled']!=$options['extended']) unset($res[$id]);
+        continue;
+      }
+      
+      if (isset($options['block'])) {
+        if (!isset($res[$id]->ext_search_options['block'])) $res[$id]->ext_search_options['block']=FALSE;
+        if ($res[$id]->ext_search_options['block']!=$options['block']) unset($res[$id]);
+        continue;
+      }
+    }
+  }
+  return $res;
+}

@@ -1,0 +1,6 @@
+name = Custom Vote Up/Down widget
+package = Custom
+core = 7.x
+version = 7.x-dev
+dependencies[] = vud
+plugins[vud][widgets] = widgets

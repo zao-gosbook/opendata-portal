@@ -1,0 +1,156 @@
+<?php
+
+/**
+ * @file
+ * Extended search admin module.
+ */
+
+/**
+ * Implements hook_menu_alter().
+ */
+function ext_search_admin_menu_alter(&$items) {
+  // During uninstallation, this would lead to a fatal error otherwise.
+  if (module_exists('ext_search_admin')&&($id=variable_get('ext_search_admin_page', NULL))) {
+    $page=ext_search_page_load_pages($id);
+    if ($page) {
+      $items['admin/content']['page callback'] = 'ext_search_admin_admin_content';
+      $items['admin/content']['page arguments'] = array($page);
+      $items['admin/content']['file'] = 'ext_search_admin.admin.inc';
+      $items['admin/content']['file path'] = drupal_get_path('module', 'ext_search_admin');
+    }
+  }
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function ext_search_admin_menu() {
+  $pre='admin/config/search/search_api/admin_content';
+  $items[$pre] = array(
+    'title' => 'Admin content',
+    'description' => 'Settings for extended search admin.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ext_search_admin_settings'),
+    'access arguments' => array('administer ext_search_admin'),
+    'file' => 'ext_search_admin.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 99,
+  );
+  
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ext_search_admin_theme() {
+  $themes['ext_search_admin_headers_table'] = array(
+    'render element' => 'form',
+    'file' => 'ext_search_admin.admin.inc',
+  );
+  return $themes;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function ext_search_admin_permission() {
+  return array(
+    'administer ext_search_admin' => array(
+      'title' => t('Administer extended search admin'),
+      'description' => t('Administer extended search admin content settings.'),
+    ),
+  );
+}
+
+/**
+ * EHelper function to build the table headers.
+ * @param boolean $multilanguage
+ * @return array $headers
+ *   array(
+ *     'header1' => array(
+ *     		'data' => 'label',
+ *        'field' => 'field_to_sort_on',
+ *        'sort' => 'asc_or_desc',
+ *        'sortable' => 'checked_in_ui',
+ *        'indexed' => TRUE|FALSE,
+ *     ),
+ *     ...
+ *   );
+ */
+function ext_search_admin_content_node_headers($page, $multilanguage = FALSE)
+{
+  $index = search_api_index_load($page->index_id);
+  
+  $data = variable_get('ext_search_admin_page_headers', array());
+  
+  // Build the sortable table header.
+  // Add common headers
+  $headers = array(
+    'score' => array('data' => t('Score'), 'field' => 'search_api_relevance', 'sort' => 'desc', 'sortable' => TRUE, 'default_sort' => TRUE),
+    'title' => array('data' => t('Title'), 'field' => 'title', 'sortable' => FALSE), // seams tokenized fields are not sortable
+    'type' => array('data' => t('Type'), 'field' => 'type', 'sortable' => TRUE),
+    'author' => t('Author'),
+    'status' => array('data' => t('Status'), 'field' => 'status', 'sortable' => TRUE),
+    'changed' => array('data' => t('Updated'), 'field' => 'changed', 'sort' => 'desc', 'sortable' => TRUE, 'default_sort' => TRUE)
+  );
+  
+  if ($multilanguage) {
+    $headers['language'] = array('data' => t('Language'), 'field' => 'language');
+  }
+
+  $fields = array();
+  foreach ($headers as $hid => &$header) {
+    if (!is_array($header)) {
+      $header = array('data' => $header);
+    }
+    if (isset($header['field'])) $fields[$header['field']] = $header['field'];
+    $header['available'] = TRUE;
+  }  
+  
+  // add other indexed fields
+  foreach ($index->options['fields'] as $field => $info) {
+    if (isset($fields[$field])) continue;
+    if (!isset($info['indexed']) || $info['indexed']) $headers[$field] = array('data' => isset($info['name']) ? $info['name'] : $field, 'field' => $field); 
+  }
+  
+  $headers['operations'] = array('data' => t('Operations'));  
+  
+  // allow other modules to alter headers
+  drupal_alter('ext_search_admin_headers', $headers, $page);
+  
+  $i=0;
+  foreach ($headers as $hid => &$header) {
+    if (!is_array($header)) {
+      $header = array('data' => $header);
+    }
+    if (!isset($data[$hid]['weight'])) $data[$hid]['weight']=$i++;
+    $header['weight'] = $data[$hid]['weight'];
+    $i=$data[$hid]['weight']+1;
+    if (!isset($header['available'])) $header['available'] = FALSE;
+    if (isset($data[$hid]['available'])) $header['available'] = $data[$hid]['available'];
+    if (!isset($header['sortable'])) $header['sortable'] = FALSE;
+    if (!isset($header['default_sort'])) $header['default_sort'] = FALSE;
+    $header['indexed'] = FALSE;
+    if (isset($header['field'])&&$header['field']) {
+      if (!(isset($header['sort']) && $header['sort'])) $header['sort']= 'ASC';
+      if (isset($data[$hid]['sortable'])) $header['sortable'] = $data[$hid]['sortable'];
+      
+      if ((isset($index->options['fields'][$header['field']])
+        &&(!isset($index->options['fields'][$header['field']]['indexed']) || $index->options['fields'][$header['field']]['indexed']))||$header['field']=='search_api_relevance') $header['indexed'] = TRUE;
+    }
+    if (!$header['indexed']) $header['sortable'] = FALSE;
+  }
+
+  uasort($headers , '_ext_search_admin_cmp_header');
+  
+  return $headers;
+}
+
+function _ext_search_admin_cmp_header($a, $b) {
+    if ($a['weight'] == $b['weight']) {
+        return 0;
+    }
+    return ($a['weight'] < $b['weight']) ? -1 : 1;
+}

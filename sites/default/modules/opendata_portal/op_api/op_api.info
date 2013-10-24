@@ -1,0 +1,13 @@
+name = Opendata portal api module
+description = "Provides opendata portal api functionality."
+package = Opendata portal
+core = 7.x
+
+files[] = api/od_api.inc
+files[] = api/od_api_object.inc
+files[] = api/objects/od_api_list.inc
+files[] = api/objects/od_api_meta.inc
+files[] = api/objects/od_api_publisher.inc
+files[] = api/objects/od_api_source.inc
+files[] = api/objects/od_api_data.inc
+files[] = api/objects/od_api_structure.inc

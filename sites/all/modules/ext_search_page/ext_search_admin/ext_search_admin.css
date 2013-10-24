@@ -1,0 +1,18 @@
+
+#ext-search-admin-search-form #edit-fulltext {
+    padding: 0;
+}
+
+#ext-search-admin-search-form #edit-filters-actions {
+    margin-top: 5px;
+}
+
+#ext-search-admin-search-form .exposed-filters .form-select {
+    width: auto;
+}
+
+#ext-search-admin-search-form .exposed-filters label {
+    width: auto;
+    margin-right: 10px;
+    margin-left: 10px;
+}

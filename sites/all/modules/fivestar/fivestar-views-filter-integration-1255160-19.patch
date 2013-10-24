@@ -1,0 +1,88 @@
+diff --git a/fivestar.info b/fivestar.info
+index f4d802c..705e932 100644
+--- a/fivestar.info
++++ b/fivestar.info
+@@ -6,3 +6,4 @@ dependencies[] = votingapi
+ configure = admin/config/content/fivestar
+ files[] = test/fivestar.base.test
+ files[] = test/fivestar.field.test
++files[] = includes/fivestar_views_handler_filter_in_operator.inc
+diff --git a/fivestar.module b/fivestar.module
+index 1b9db2c..c40e010 100644
+--- a/fivestar.module
++++ b/fivestar.module
+@@ -140,6 +140,16 @@ function fivestar_theme() {
+   );
+ }
+ 
++/**
++ * Implements hook_views_api().
++ */
++function fivestar_views_api() {
++  return array(
++    'api' => 3,
++    'path' => drupal_get_path('module', 'fivestar') . '/includes',
++  );
++}
++
+ function _fivestar_variables() {
+   return array('fivestar', 'fivestar_unvote', 'fivestar_style', 'fivestar_stars', 'fivestar_comment', 'fivestar_position', 'fivestar_position_teaser', 'fivestar_labels_enable', 'fivestar_labels', 'fivestar_text', 'fivestar_title', 'fivestar_feedback');
+ }
+diff --git a/includes/fivestar.field.inc b/includes/fivestar.field.inc
+index 53cda56..4361856 100644
+--- a/includes/fivestar.field.inc
++++ b/includes/fivestar.field.inc
+@@ -110,6 +110,22 @@ function fivestar_field_delete($entity_type, $entity, $field, $instance, $langco
+   _fivestar_field_helper($entity_type, $entity, $field, $instance, $langcode, $items, 'delete');
+ }
+ 
++/**
++ * Implements hook_field_views_data().
++ */
++function fivestar_field_views_data($field) {
++  $field_name = $field['field_name'];
++  $data = field_views_field_default_views_data($field);
++  foreach ($data as $table_name => $table_data) {
++    foreach ($table_data as $field => $field_data) {
++      if (isset($field_data['title']) && strpos($field_data['title'],           $field_name . ':rating')) {
++        $data[$table_name][$field]['filter']['handler'] =                       'fivestar_views_handler_filter_in_operator';
++      }
++    }
++  }
++  return $data;
++}
++
+ function _fivestar_field_helper($entity_type, $entity, $field, $instance, $langcode, &$items, $op = '') {
+   foreach ($items as $delta => $item) {
+     if ((isset($entity->status) && !$entity->status) || $op == 'delete') {
+diff --git a/includes/fivestar_views_handler_filter_in_operator.inc b/includes/fivestar_views_handler_filter_in_operator.inc
+new file mode 100644
+index 0000000..50c0794
+--- /dev/null
++++ b/includes/fivestar_views_handler_filter_in_operator.inc
+@@ -0,0 +1,25 @@
++<?php
++
++class fivestar_views_handler_filter_in_operator extends views_handler_filter_in_operator {
++  // Get the possible options (the number of stars)
++  function get_value_options() {
++    if (isset($this->value_options)) {
++      return;
++    }
++    // Get field info
++    $field_name = $this->definition['field_name'];
++    $field_info = field_info_field($field_name);
++    $bundles = reset($field_info['bundles']);
++    $entity_type = key($field_info['bundles']);
++    $bundle_name = $bundles[0];
++    $field_instance = field_info_instance($entity_type, $field_name, $bundle_name);
++    // Create options list.
++    $max_stars = !empty($field_instance['settings']['stars']) ? $field_instance['settings']['stars'] : 5;
++    $options = array(0 => t('No stars'));
++    for($i = 1; $i <= $max_stars; $i++) {
++      $percentage = ceil($i * 100 / $max_stars);
++      $options[$percentage] = format_plural($i, '1 star', '@count stars');
++    }
++    $this->value_options = $options;
++  }
++}

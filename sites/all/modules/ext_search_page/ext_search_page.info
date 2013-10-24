@@ -1,0 +1,22 @@
+
+name = "Extended search pages"
+description = "Extended search pages using Search API."
+dependencies[] = search_api_page
+core = 7.x
+package = Search
+
+files[] = ext_search_page.admin.inc
+files[] = ext_search_page.install
+files[] = ext_search_page.module
+files[] = ext_search_page.pages.inc
+files[] = ext_search_page.css
+
+configure = admin/config/search/search_api/page
+
+
+; Information added by drupal.org packaging script on 2012-07-10
+version = "7.x-1.0-beta3"
+core = "7.x"
+project = "ext_search_page"
+datestamp = "1341907616"
+

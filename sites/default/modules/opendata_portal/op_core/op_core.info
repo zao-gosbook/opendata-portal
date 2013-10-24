@@ -1,0 +1,6 @@
+name = Opendata portal core module
+description = "Provides core functionality for Opendata portal modules."
+package = Opendata portal
+core = 7.x
+
+dependencies[] = opendata

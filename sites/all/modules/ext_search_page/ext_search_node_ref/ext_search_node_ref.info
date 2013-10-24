@@ -1,0 +1,17 @@
+
+name = "Extended search node reference"
+description = "Add a new widget for node_reference fields that links with a search page (Search API)."
+dependencies[] = node_reference
+dependencies[] = ext_search_page
+dependencies[] = node
+core = 7.x
+package = Search
+
+files[] = ext_search_node_ref.module
+
+; Information added by drupal.org packaging script on 2012-07-10
+version = "7.x-1.0-beta3"
+core = "7.x"
+project = "ext_search_page"
+datestamp = "1341907616"
+

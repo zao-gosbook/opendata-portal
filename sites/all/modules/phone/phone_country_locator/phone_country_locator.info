@@ -1,0 +1,14 @@
+name = Phone Country Locator
+description = Sets the Phone Number country code based on user IP address
+core = 7.x
+package = Fields
+dependencies[] = phone
+dependencies[] = ip2country
+
+
+; Information added by drupal.org packaging script on 2013-05-25
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "phone"
+datestamp = "1369449998"
+

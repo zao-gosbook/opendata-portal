@@ -1,0 +1,4 @@
+name = Embedded Google Docs Viewer - customized
+description = An embedded Document field using Google Docs
+dependencies[] = link
+core = 7.x

@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Contains update functions for Field placeholder.
+ */
+
+/**
+ * Update placement of placeholder value in $instance array for i18n_field integration
+ */
+function field_placeholder_update_7101() {
+  $all_instances = field_info_instances();
+  foreach($all_instances as $entity_type => $bundle) {
+    foreach ($bundle as $name => $instances) {
+      foreach ($instances as $instance) {
+        if (isset($instance['settings']['placeholder'])) {
+          $instance['placeholder'] = $instance['settings']['placeholder'];
+          unset($instance['settings']['placeholder']);
+          field_update_instance($instance);
+        }
+      }
+    }
+  }
+
+  return t('Field placeholder maintenance tasks finished');
+}
+

@@ -1,0 +1,26 @@
+
+.ext-search-page-search-form .date-range div.form-item {
+	display: inline-block;
+}
+
+.ext-search-page-search-form .edit-fulltext div.form-item,
+.ext-search-page-search-form .edit-fulltext input.form-submit,
+#ext-search-page-search-form .edit-fulltext div.form-item,
+#ext-search-page-search-form .edit-fulltext input.form-submit {
+	display: inline-block;
+}
+
+.ext-search-page-search-form .edit-fulltext .fieldset-wrapper {
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+/* admin form */
+#ext-search-filters-table .date-range div.form-item {
+	display: inline-block;
+}
+
+/* little bug in admin */
+.ext-search-page-search-form #edit-filters {
+	position: static;
+}

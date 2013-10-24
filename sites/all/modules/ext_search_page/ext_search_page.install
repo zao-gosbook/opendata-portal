@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Extended search page module.
+ */
+
+
+/**
+ * Implements hook_schema_alter().
+ */
+function ext_search_page_schema_alter(&$schema) {
+  // Add field to existing schema.
+  $schema['search_api_page']['fields']['ext_search_options'] = array(
+        'description' => 'The options used to configure the extended search page.',
+        'type' => 'text',
+        'serialize' => TRUE,
+        'not null' => FALSE,
+      );
+      
+}
+
+
+/**
+ * Implements hook_install().
+ */
+function ext_search_page_install() {
+  $ret = array();
+  $new_schema = array();
+  ext_search_page_schema_alter($new_schema);
+  foreach ($new_schema as $table => $info) {
+    foreach ($info['fields'] as $field => $spec) {
+      db_add_field($table, $field, $spec);
+    }
+  }
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function ext_search_page_uninstall() {
+  $ret = array();
+  $new_schema = array();
+  ext_search_page_schema_alter($new_schema);
+  foreach ($new_schema as $table => $info) {
+    foreach ($info['fields'] as $field => $spec) {
+      db_drop_field($table, $field);
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<?php 
+/**
+ * Implementation of hook_ctools_plugin_dierctory() to let the system
+ * know we implement widget plugins.
+ */
+function custom_vud_widget_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'vud') {
+    return $plugin;
+  }
+}
+
+

@@ -1,0 +1,10 @@
+name = Opendata
+description = "Provides Opendata on site."
+package = Opendata
+core = 7.x
+
+dependencies[] = field_group
+dependencies[] = views
+
+files[] = includes/views/opendata.views.inc
+files[] = includes/views/plugins/opendata_views_plugin_style_opendata_table.inc

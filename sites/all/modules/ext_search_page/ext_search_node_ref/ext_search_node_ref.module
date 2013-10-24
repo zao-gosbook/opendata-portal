@@ -1,0 +1,296 @@
+<?php
+
+/**
+ * @file
+ * Extended search node reference.
+ */
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function ext_search_node_ref_field_widget_info() {
+  return array(
+    'ext_node_ref_autocomplete' => array(
+      'label'       => t('Extended search autocomplete'),
+      'description' => t('Display the list of referenceable nodes as a textfield with autocomplete behaviour.'),
+      'field types' => array('node_reference'),
+      'settings'    => array(
+        'size' => 60,
+        'autocomplete_path' => 'ext_search_node_ref/autocomplete',
+      ),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_field_widget_settings_form().
+ */
+function ext_search_node_ref_field_widget_settings_form($field, $instance) {
+  $widget   = $instance['widget'];
+  $defaults = field_info_widget_settings($widget['type']);
+  $settings = array_merge($defaults, $widget['settings']);
+
+  $options = array();
+  foreach (ext_search_page_load_pages(array('type' => 'node')) as $page) {
+     $options[$page->id]=$page->name;
+  }
+  
+  $form = array();
+  $form['search_page'] = array(
+      '#type'             => 'select',
+      '#title'            => t('Search API page'),
+      '#default_value'    => isset($settings['search_page']) ? $settings['search_page'] : NULL,
+      '#options'          => $options,
+      '#description'      => t('Select the Search Api page to base the autocomplete.'),
+      '#required'         => TRUE,
+    );
+  
+  if ($widget['type'] == 'ext_node_ref_autocomplete') {
+    $form['use_node_type_index'] = array(
+      '#type'             => 'checkbox',
+      '#title'            => t('Use indexed node type'),
+      '#default_value'    => isset($settings['use_node_type_index']) ? $settings['use_node_type_index'] : FALSE,
+      '#description'      => t('Use the field type of the search page index. Be aware that extended search page can have filters on field type as well.'),
+    );
+    $form['size'] = array(
+      '#type'             => 'textfield',
+      '#title'            => t('Size of textfield'),
+      '#default_value'    => $settings['size'],
+      '#element_validate' => array('_element_validate_integer_positive'),
+      '#required'         => TRUE,
+    );
+  }
+  return $form;
+}
+
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function ext_search_node_ref_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  switch ($instance['widget']['type']) {
+    case 'node_reference_ext_search':
+      //print_r($items);
+      $element += array(
+        '#type' => 'textfield',
+        '#size' => 8,
+        '#default_value' => isset($items[$delta]['nid']) ? $items[$delta]['nid'] : NULL,
+      );
+      
+      $element['#element_validate'][] = 'ext_search_node_ref_node_reference_validate';
+      break;
+    case 'ext_node_ref_autocomplete':
+      $element += array(
+        '#type' => 'textfield',
+        '#default_value' => isset($items[$delta]['nid']) ? $items[$delta]['nid'] : NULL,
+        '#autocomplete_path' => $instance['widget']['settings']['autocomplete_path'] . '/' . $instance['bundle'] . '/' . $field['field_name'],
+        '#size' => $instance['widget']['settings']['size'],
+        '#element_validate' => array('ext_search_node_ref_autocomplete_field_validate'),
+        '#value_callback' => 'ext_search_node_ref_autocomplete_value',
+      );
+      break;
+  }
+  return array('nid' => $element);
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function ext_search_node_ref_menu() {
+  $items = array();
+  $items['ext_search_node_ref/autocomplete/%/%'] = array(
+    'title' => 'ext_search_node_ref autocomplete',
+    'page callback' => 'ext_search_node_ref_autocomplete',
+    'page arguments' => array(2, 3),
+    'access callback' => 'ext_search_node_ref_autocomplete_access',
+    'access arguments' => array(2, 3),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+
+/**
+ * Menu callback for the autocomplete results.
+ */
+function ext_search_node_ref_autocomplete($bundle, $field_name, $string = '') {
+  $instance = field_info_instance('node', $field_name, $bundle);
+  $page=ext_search_page_load_pages($instance['widget']['settings']['search_page']);
+  $matches = array();
+  if ($string&&$page) {  
+    $references = ext_search_node_ref_potential_references($page, $instance, $string, 10);
+    foreach ($references as $id => $row) {
+      // Add a class wrapper for a few required CSS overrides.
+      $matches[$row['title'] . " [nid:$id]"] = '<div class="reference-autocomplete">' . $row['rendered'] . '</div>';
+    }
+  }
+  drupal_json_output($matches);
+}
+
+
+/**
+ * Menu access callback for the autocomplete path.
+ *
+ * Check for both 'edit' and 'view' access in the unlikely event
+ * a user has edit but not view access.
+ */
+function ext_search_node_ref_autocomplete_access($entity_type, $field_name) {
+  return user_access('access content') && ($field = field_info_field($field_name)) && field_access('view', $field, $entity_type) && field_access('edit', $field, $entity_type);
+}
+
+
+/**
+ * Validation callback for a node_reference autocomplete element.
+ */
+function ext_search_node_ref_autocomplete_field_validate($element, &$form_state, $form) {
+  $field = $form_state['field'][$element['#field_name']][$element['#language']]['field'];
+  $instance = $form_state['field'][$element['#field_name']][$element['#language']]['instance'];
+
+  $value = $element['#value'];
+  $nid = NULL;
+
+  if (!empty($value)) {
+    // Check whether we have an explicit "[nid:n]" input.
+    preg_match('/^(?:\s*|(.*) )?\[\s*nid\s*:\s*(\d+)\s*\]$/', $value, $matches);
+    if (!empty($matches)) {
+      list(, $title, $nid) = $matches;
+    }
+  }
+
+  // Set the element's value as the node id that was extracted from the entered
+  // input.
+  form_set_value($element, $nid, $form_state);
+}
+
+
+/**
+ * Value callback for a node_reference autocomplete element.
+ *
+ * Replace the node nid with a node title.
+ */
+function ext_search_node_ref_autocomplete_value($element, $input = FALSE, $form_state) {
+  if ($input === FALSE) {
+    // We're building the displayed 'default value': expand the raw nid into
+    // "node title [nid:n]".
+    $nid = $element['#default_value'];
+    if (!empty($nid)) {
+      $q = db_select('node', 'n');
+      $node_title_alias = $q->addField('n', 'title');
+      $q->addTag('node_access')
+        ->condition('n.nid', $nid)
+        ->range(0, 1);
+      $result = $q->execute();
+      // @todo If no result (node doesn't exist or no access).
+      $value = $result->fetchField();
+      $value .= ' [nid:' . $nid . ']';
+      return $value;
+    }
+  }
+}
+
+
+/**
+ * Fetch an array of all candidate referenced nodes.
+ *
+ * @param $page
+ *   The page object.
+ * @param $instance
+ *   The field instance.
+ * @param $string
+ *   Optional string to filter titles on (used by autocomplete).
+ * @param $limit
+ *   If non-zero, limit the size of the result set.
+ *
+ * @return
+ *   An array of valid nodes in the form:
+ *   array(
+ *     nid => array(
+ *       'title' => The node title,
+ *       'rendered' => The text to display in widgets (can be HTML)
+ *     ),
+ *     ...
+ *   )
+ *  @todo Check whether we still need the 'rendered' value (hook_options_list()
+ *  does not need it anymore). Should probably be clearer after the 'Views'
+ *  mode is ported.
+ */
+function ext_search_node_ref_potential_references($page, $instance, $keys = '', $limit = 50) {
+  $results = &drupal_static(__FUNCTION__, array());
+  $field=field_info_field($instance['field_name']);
+
+  $bundles=array();
+  foreach ($field['settings']['referenceable_types'] as $bundle => $bundle_ok) {
+    if ($bundle_ok) $bundles[]=$bundle;
+  }
+  
+  // Create unique id for static cache.
+  $cid = $instance['field_name'] . ':' . ($keys !== '' ? $keys . ':' : '') . ($limit ? ':' . $limit : '');
+  
+  if (!isset($results[$cid])) {
+    $references = array();
+    if (count($bundles)) {
+      
+      // executing search with default filters values
+      foreach (ext_search_page_get_filter_widgets($page) as $field => $widget) {
+        if (isset($widget['default'])) $values[$field]=$widget['default'];
+      }      
+      $query=ext_search_page_search_query($page, $keys, $values, FALSE, $limit*3, 0, 'ext_search_node_ref:' . $cid);
+      // use indexed type field
+      if ($instance['widget']['settings']['use_node_type_index']) {
+        $filter=$query->createFilter('OR');
+        foreach ($bundles as $bundle) $filter->condition('type', $bundle);
+        $query->filter($filter);
+      }
+      $results=$query->execute();
+  
+      if (isset($results['results'])) {
+        $i=0;
+        foreach ($results['results'] as $result) {
+          $node=entity_load('node', array($result['id']));
+          if ((!$node)||(!count($node))) continue;
+          $node=reset($node);
+          if (!in_array($node->type, $bundles)) continue;
+          if (!node_access('view', $node)) continue;
+          
+          $references[$node->nid] = array(
+            'title'    => $node->title,
+            'rendered' => check_plain($node->title),
+          );
+          $i++;
+          if ($i==$limit) break;
+        }
+      }    
+    }
+    
+    // Store the results.
+    $results[$cid] = !empty($references) ? $references : array();
+  }
+
+  return $results[$cid];
+}
+
+
+/**
+ * Validate handler for node_reference_ext_search.
+ * @see ext_search_node_ref_field_widget_form()
+ */
+function ext_search_node_ref_node_reference_validate($element, &$form_state, $form) {
+  $field = $form_state['field'][$element['#field_name']][$element['#language']]['field'];
+  $instance = $form_state['field'][$element['#field_name']][$element['#language']]['instance'];
+  
+  form_set_value($element, $element['#value'], $form_state);
+}
+
+
+/**
+ * Implements hook_field_widget_error().
+ */
+function ext_search_node_ref_field_widget_error($element, $error, $form, &$form_state) {
+  switch ($error['error']) {
+    /*case 'field_example_invalid':
+      form_error($element, $error['message']);
+      break;*/
+  }
+}

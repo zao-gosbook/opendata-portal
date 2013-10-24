@@ -1,0 +1,3 @@
+name = ARC2
+description = Include ARC2 library.
+core = 7.x

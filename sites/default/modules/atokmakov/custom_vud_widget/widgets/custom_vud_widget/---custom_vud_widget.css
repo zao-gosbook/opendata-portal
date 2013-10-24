@@ -1,0 +1,26 @@
+.vud-widget-custom a,
+.vud-widget-custom .up-score,
+.vud-widget-custom .down-score {
+  border-bottom: 1px dotted;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.vud-widget-custom .up-score,
+.vud-widget-custom .up-score a {
+  color: green;
+}
+
+.vud-widget-custom .down-score,
+.vud-widget-custom .down-score a {
+  color: red;
+}
+
+.vud-widget-custom .down-score-0 a {
+  color: gray;
+}
+
+.view-node-comments .views-row span div {
+  display:inline;
+}
+

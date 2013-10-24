@@ -1,0 +1,216 @@
+<?php
+
+/**
+ * Include API files.
+ */
+require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'opendata') . '/' . 'includes/controller.inc';
+
+/**
+ * Define opendata meta node type.
+ */
+define('OPENDATA_META_NODE_TYPE', 'opendata_meta');
+
+/**
+ * Define opendata field group.
+ */
+define('OPENDATA_FIELD_GROUP', 'group_opendata_meta');
+
+/**
+ * Define opendata id field name.
+ */
+define('OPENDATA_ID_FIELD_NAME', 'field_opendata_id');
+
+/**
+ * Define opendata empty field value.
+ */
+define('OPENDATA_EMPTY_FIELD_VALUE', 'нет');
+
+/**
+ * Define opendata url prefix.
+ */
+define('OPENDATA_URL_PREFIX', 'opendata');
+
+/**
+ * Implements hook_field_group_formatter_info().
+ */
+function opendata_field_group_formatter_info() {
+  // Init return.
+  $items = array(
+    'display' => array(),
+    'form' => array(),
+  );
+
+  // Add "Opendata table" field group type.
+  $items['display']['opendata_table'] = array(
+    'label' => t('Opendata table'),
+    'description' => t('Special opendata markup.'),
+    'instance_settings' => array(),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function opendata_theme() {
+  // Init return.
+  $items = array();
+
+  $items['opendata_opendata_list'] = array(
+    'variables' => array('opendata_list' => NULL),
+  );
+  $items['opendata_opendata_meta'] = array(
+    'variables' => array('opendata_meta' => NULL),
+  );
+
+  $items['opendata_views_plugin_style_opendata_table'] = array(
+    'variables' => array(),
+  );
+  $items['opendata_meta_collection'] = array(
+    'variables' => array('opendata_meta' => NULL, 'field_name' => NULL),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_field_group_pre_render().
+ */
+function opendata_field_group_pre_render(&$fields_views, $group, &$content) {
+  switch ($group->format_type) {
+    case 'opendata_table':
+      // Allocate current node.
+      $node = $content['#node'];
+
+      // Remove default fields views.
+      foreach ($fields_views as $field_view) {
+        unset($fields_views[$field_view['#field_name']]);
+      }
+
+      // Load opendata object.
+      $opendata = new Opendata($node);
+
+      // Add opendata meta element to field group.
+      $fields_views['field_opendata_meta'] = array(
+        '#markup' => $opendata->render(),
+      );
+      $fields_views['#weight'] = $group->weight;
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function opendata_views_api() {
+  // Init output variable.
+  $views_api = array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'opendata') . '/includes/views',
+  );
+
+  return $views_api;
+}
+
+/**
+ * Get opendata field value.
+ *
+ * @param $field_type
+ *   Field type.
+ * @param $item
+ *   Field item.
+ *
+ * @return array|bool
+ *   Array of field item value properties.
+ *   FALSE if field type did not find.
+ */
+function opendata_field_item_value($field_type, $item) {
+  // Init return.
+  $field_item_value = FALSE;
+
+  switch ($field_type) {
+    // Text field.
+    case 'text':
+      $field_item_value = array(
+        'value' => $item['value'],
+        'content' => $item['value'],
+      );
+      break;
+    // List text field.
+    case 'list_text':
+      $field_item_value = array(
+        'value' => $item['value'],
+        'content' => $item['value'],
+      );
+      break;
+    // Link field.
+    case 'link_field':
+      $field_item_value = array(
+        'value' => $item['url'],
+        'content' => !empty($item['url']) ? l($item['title'], $item['url']) : $item['title'],
+      );
+      break;
+    // Phone.
+    case 'phone':
+      $field_item_value = array(
+        'value' => $item['number'],
+        'content' => $item['number'],
+      );
+      break;
+    // Email.
+    case 'email':
+      $field_item_value = array(
+        'value' => $item['email'],
+        'content' => $item['email'],
+      );
+      break;
+  }
+
+  return $field_item_value;
+}
+
+/**
+ * Provide opendata empty field value if values don't exist.
+ *
+ * @param $field_type
+ *   Field type.
+ *
+ * @return array|bool
+ *   Array of field item value properties.
+ *   FALSE if field type did not find.
+ */
+function opendata_empty_field_item_value($field_type) {
+  // Init output variable.
+  $empty_field_item_value = FALSE;
+
+  switch ($field_type) {
+    // Text field.
+    case 'text':
+      $empty_field_item_value = array(
+        'value' => OPENDATA_EMPTY_FIELD_VALUE,
+        'format' => NULL,
+        'safe_value' => OPENDATA_EMPTY_FIELD_VALUE,
+      );
+      break;
+    // List text field.
+    case 'list_text':
+      $empty_field_item_value = array(
+        'value' => OPENDATA_EMPTY_FIELD_VALUE,
+      );
+      break;
+    // Link field.
+    case 'link_field':
+      $empty_field_item_value = array(
+        'url' => '',
+        'title' => OPENDATA_EMPTY_FIELD_VALUE,
+        'attributes' => array(),
+        'display_url' => '',
+        'html' => FALSE,
+      );
+      break;
+  }
+
+  return $empty_field_item_value;
+}

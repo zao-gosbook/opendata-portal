@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+
+function ddf_text_ctools_plugin_directory($module, $plugin) {
+  //dsm($module);
+  //dsm($plugin); 
+/*  if ($module == 'text') {
+    return 'plugins/' . $plugin;
+  } */
+}
+
+/**
+ * Implements hook_ddf_update_widget().
+ */
+function ddf_text_ddf_update_widget($dependent_field, $parameters, $selector, $entity, $settings, $controlling_field_name, $entity_type, $bundle) {
+  if ($dependent_field['type'] != 'textfield') {
+    return;
+  }
+  //EntityReference_SelectionHandler_DDF::storeControllingFieldValues($parameters);
+  $instance = field_info_instance($entity_type, $dependent_field['field_name'], $bundle);
+  if ($instance['widget']['type'] != 'options_select') {
+    return;
+  }
+  $form = array();
+  $form_state = array();
+  $element = array('#entity_type' => $entity_type, '#entity' => $entity, '#required' => $instance['required']);
+  $element = options_field_widget_form($form, $form_state, $dependent_field, $instance, LANGUAGE_NONE, array(), 0, $element);
+  $result = '';
+  if (isset($element['#options'])) {
+    foreach ($element['#options'] as $id => $option) {
+      $result .= '<option value="' . htmlspecialchars($id) . '">' . htmlspecialchars($option) . '</option>';
+    }
+  }
+  $command = ajax_command_html($selector, $result);
+  $command['command'] = 'insertnowrap';
+  // If chosen is applied, it can't be updated by attachBehavior().
+  $chosen_update = ajax_command_invoke($selector, 'trigger', array('liszt:updated'));
+  return array($command, $chosen_update);
+}
+
+/**
+ * Implements hook_field_update_field().
+ */
+function ddf_text_field_update_field($field, $prior_field, $has_data) {
+  if ($field['type'] != 'textfield') {
+    return;
+  }
+  // Remove old dependencies.
+  foreach ($field['bundles'] as $entity_type => $bundles) {
+    foreach ($bundles as $bundle) {
+      ddf_remove_dependency($field['field_name'], $entity_type, $bundle);
+    }
+  }
+  // Add new dependencies.
+  if (isset($field['settings']['handler_settings']['view']['args'])) {
+    foreach ($field['settings']['handler_settings']['view']['args'] as $arg) {
+      $matches = array();
+      if (preg_match('/^\{([^{}]+)\}$/', $arg, $matches)) {
+        $field_name = $matches[1];
+        foreach ($field['bundles'] as $entity_type => $bundles) {
+          foreach ($bundles as $bundle) {
+            if (field_info_instance($entity_type, $field_name, $bundle)) {
+              ddf_add_dependency($field_name, $field['field_name'], $entity_type, $bundle);
+            }
+          }
+        }
+      }
+    }
+  }
+}

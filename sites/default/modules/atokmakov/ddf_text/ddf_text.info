@@ -1,0 +1,10 @@
+name = DDF Text
+description = Supports dynamic dependency for text fields.
+core = 7.x
+package = Fields
+dependencies[] = ddf
+dependencies[] = text
+dependencies[] = views
+;files[] = plugins/selection/ddf.inc
+
+

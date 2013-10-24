@@ -1,0 +1,14 @@
+name = Color Field
+description = Color Field using a hexadecimal notation (HEX)
+package = Fields
+core = 7.x
+files[] = color_field.test
+
+dependencies[] = libraries
+
+; Information added by drupal.org packaging script on 2013-06-04
+version = "7.x-1.6+3-dev"
+core = "7.x"
+project = "color_field"
+datestamp = "1370307019"
+

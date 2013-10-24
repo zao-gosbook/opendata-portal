@@ -1,0 +1,21 @@
+
+name = "Extended search admin"
+description = "Replace default content admin overview by an extended search page."
+dependencies[] = ext_search_page
+dependencies[] = node
+core = 7.x
+package = Search
+
+files[] = ext_search_admin.admin.inc
+files[] = ext_search_admin.module
+files[] = ext_search_admin.css
+
+configure = admin/config/search/search_api/admin_content
+
+
+; Information added by drupal.org packaging script on 2012-07-10
+version = "7.x-1.0-beta3"
+core = "7.x"
+project = "ext_search_page"
+datestamp = "1341907616"
+

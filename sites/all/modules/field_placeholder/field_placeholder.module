@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Field placeholder module hooks and main functionality.
+ *
+ * This module gives support to add HTML5 placeholder
+ * attribute to field widget forms.
+ */
+
+/**
+ * Implements hook_field_form_field_ui_field_edit_form_alter().
+ */
+function field_placeholder_form_field_ui_field_edit_form_alter(&$form, &$form_state) {
+  if (in_array($form['#instance']['widget']['type'], field_placeholder_get_widget_types())) {
+    $form['instance']['placeholder'] = array(
+     '#type' => 'textfield',
+     '#title' => t('Placeholder'),
+     '#description' => t('Placeholder value for this field instance'),
+     '#weight' => -4,
+     '#default_value' => isset($form['#instance']['placeholder']) ? $form['#instance']['placeholder'] : '',
+    );
+  }
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function field_placeholder_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (in_array($context['instance']['widget']['type'], field_placeholder_get_widget_types()) &&
+      isset($context['instance']['placeholder'])) {
+    $placeholder = field_placeholder_get_widgets($context['instance']['widget']['type']);
+    $instance = module_exists('i18n_field_placeholder') ? i18n_string_object_translate('field_instance', $context['instance']) : $context['instance'];
+    $element[$placeholder]['#attributes']['placeholder'] = check_plain($instance['placeholder']);
+  }
+}
+
+/**
+ * Returns information about field widgets from hook_field_placeholder_info().
+ *
+ * @param $widget_type
+ *   (optional) A widget type name. If omitted, all widget types will be
+ *   returned.
+ */
+function field_placeholder_get_widgets($widget_type = NULL) {
+  static $widgets = array();
+
+  if (empty($widgets)) {
+    $widgets = module_invoke_all('field_placeholder_info');
+  }
+
+  if (isset($widget_type)) {
+    return isset($widgets[$widget_type]) ? $widgets[$widget_type] : FALSE;
+  }
+
+  return $widgets;
+}
+
+/**
+ * Returns an array containing the names of all the
+ * placeholder available widgets.
+ */
+function field_placeholder_get_widget_types() {
+  $widgets = field_placeholder_get_widgets();
+  return array_keys($widgets);
+}
+
+/**
+ * Implements hook_field_placeholder_info().
+ */
+function field_placeholder_field_placeholder_info() {
+  return array(
+    'text_textfield' => 'value',
+    'text_textarea' => 'value',
+    'text_textarea_with_summary' => 'summary',
+    'number' => 'value',
+    'email_textfield' => 'email',
+  );
+}
+
