@@ -1,5 +1,0 @@
-name = Opendata file preprocess
-description = Preprocess file, uploaded by opendata wizard
-core = 7.x
-dependencies[] = entityform
-dependencies[] = phpexcel

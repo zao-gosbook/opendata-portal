@@ -1,5 +1,0 @@
-name = Custom field validation plugin(s)
-description = Custom validators for Field validation 7.x-2.x.
-package = Fields
-core = 7.x
-dependencies[] = field_validation

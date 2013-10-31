@@ -1,4 +1,0 @@
-name = Opendata review
-description = Module for reviewing opendata on the sites.
-core = 7.x
-dependencies[] = arc2
