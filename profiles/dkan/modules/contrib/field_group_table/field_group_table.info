@@ -1,0 +1,11 @@
+name = Fieldgroup Table
+description = Render fields in a 2-column table
+package = Fields
+dependencies[] = field_group
+core = 7.x
+
+; Information added by drush on 2013-10-31
+version = "unknown"
+project = "field_group_table"
+datestamp = "1383210298"
+
