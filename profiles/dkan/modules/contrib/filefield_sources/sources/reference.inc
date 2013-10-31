@@ -140,12 +140,16 @@ function filefield_source_reference_value($element, &$item) {
       $fid = $matches[1];
       if ($file = file_load($fid)) {
 
-        // Run all the normal validations, minus file size restrictions.
+        // Remove file size restrictions, since the file already exists on disk.
         if (isset($element['#upload_validators']['file_validate_size'])) {
           unset($element['#upload_validators']['file_validate_size']);
         }
 
-        if (filefield_sources_element_validate($element, (object) $file)) {
+        // Check that the user has access to this file through hook_download().
+        if (!filefield_sources_file_access($file->uri)) {
+          form_error($element, t('You do not have permission to use the selected file.'));
+        }
+        elseif (filefield_sources_element_validate($element, (object) $file)) {
           $item = array_merge($item, (array) $file);
         }
       }
@@ -242,6 +246,7 @@ function filefield_source_reference_get_files($filename, $instance = NULL) {
     $query->orderBy('f.timestamp', 'DESC');
     $query->groupBy('f.fid');
     $query->range(0, 30);
+    $query->addTag('filefield_source_reference_list');
     $result = $query->execute();
 
     foreach ($result as $file) {
