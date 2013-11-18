@@ -1,0 +1,47 @@
+diff --git a/profiles/dkan/dkan.info b/profiles/dkan/dkan.info
+index 97d5734..eb77250 100644
+--- a/profiles/dkan/dkan.info
++++ b/profiles/dkan/dkan.info
+@@ -52,10 +52,10 @@ dependencies[] = job_scheduler
+ dependencies[] = markdowneditor
+ dependencies[] = markdown
+ dependencies[] = multistep
+-dependencies[] = og
+-dependencies[] = og_access
+-dependencies[] = og_extras
+-dependencies[] = og_ui
++; dependencies[] = og
++; dependencies[] = og_access
++; dependencies[] = og_extras
++; dependencies[] = og_ui
+ dependencies[] = pathauto
+ dependencies[] = rules
+ dependencies[] = rules_admin
+diff --git a/profiles/dkan/modules/dkan/dkan_dataset/dkan_dataset.info b/profiles/dkan/modules/dkan/dkan_dataset/dkan_dataset.info
+index 4044cf0..920caed 100644
+--- a/profiles/dkan/modules/dkan/dkan_dataset/dkan_dataset.info
++++ b/profiles/dkan/modules/dkan/dkan_dataset/dkan_dataset.info
+@@ -24,8 +24,8 @@ dependencies[] = libraries
+ dependencies[] = link
+ dependencies[] = link_iframe_formatter
+ dependencies[] = multistep
+-dependencies[] = og
+-dependencies[] = og_extras
++; dependencies[] = og
++; dependencies[] = og_extras
+ dependencies[] = rdfx
+ dependencies[] = ref_field_sync
+ dependencies[] = remote_file_source
+diff --git a/profiles/dkan/modules/dkan/dkan_dataset/modules/dkan_dataset_content_types/dkan_dataset_content_types.info b/profiles/dkan/modules/dkan/dkan_dataset/modules/dkan_dataset_content_types/dkan_dataset_content_types.info
+index ae1515d..18541af 100644
+--- a/profiles/dkan/modules/dkan/dkan_dataset/modules/dkan_dataset_content_types/dkan_dataset_content_types.info
++++ b/profiles/dkan/modules/dkan/dkan_dataset/modules/dkan_dataset_content_types/dkan_dataset_content_types.info
+@@ -19,7 +19,7 @@ dependencies[] = link
+ dependencies[] = link_iframe_formatter
+ dependencies[] = list
+ dependencies[] = node
+-dependencies[] = og
++; dependencies[] = og
+ dependencies[] = options
+ dependencies[] = recline
+ dependencies[] = select_or_other
