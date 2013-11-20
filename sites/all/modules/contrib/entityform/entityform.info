@@ -7,7 +7,6 @@ configure = admin/structure/entityform_types
 
 dependencies[] = entity
 dependencies[] = views
-dependencies[] = rules
 dependencies[] = field_ui
 
 files[] = entityform.admin.inc
@@ -23,9 +22,9 @@ files[] = views/entityform.views_default.inc
 files[] = views/entityform_type_handler_submit_link_field.inc
 files[] = entityform.test
 
-; Information added by drupal.org packaging script on 2013-10-17
-version = "7.x-1.2"
+; Information added by  packaging script on 2013-11-20
+version = "7.x-2.0-beta1+2-dev"
 core = "7.x"
 project = "entityform"
-datestamp = "1382015990"
+datestamp = "1384954414"
 

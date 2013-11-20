@@ -28,3 +28,16 @@ function entityform_notifications_update_7001(&$sandbox = NULL) {
     drupal_set_message(t('Replace references to old entityform tokens in variables.'));
   }
 }
+
+/**
+ * Implements hook_enable().
+ *
+ * Make sure Entityform is enabled from for entity_rules
+ */
+function entityform_notifications_enable() {
+  $entity_rules_defaults = variable_get('entity_rules_settings', _entity_rules_get_default_settings());
+  if (!in_array('entityform', $entity_rules_defaults['entity_types'], TRUE)) {
+    $entity_rules_defaults['entity_types'][] = 'entityform';
+    variable_set('entity_rules_settings', $entity_rules_defaults);
+  }
+}

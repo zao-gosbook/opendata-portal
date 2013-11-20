@@ -3,7 +3,7 @@
  * @file
  * SimpleTest classes for Entityforms
  */
-define('ENTITYFORM_TEST_SUBMIT_TEXT', 'Submit Form');
+define('ENTITYFORM_TEST_SUBMIT_TEXT', 'Submit');
 define('ENTITYFORM_TEST_SUBMISSION_TITLE', 'Thank You');
 class EntityformTestCase extends DrupalWebTestCase {
   // User who can administer entityform types
@@ -234,53 +234,5 @@ class EntityformCRUDTestCase extends EntityformTestCase {
     $this->assertText(t('Access denied'), 'Access has been denied for others to edit submission page.');
     $this->drupalGet('entityform/' . $entityform_id . '/delete');
     $this->assertText(t('Access denied'), 'Access has been denied for others to submission delete page.');
-  }
-}
-class EntityformRulesTestCase extends EntityformTestCase {
-  function setUp() {
-    parent::setUp(array('entityform', 'features', 'entityform_test',  'locale'));
-  }
-  public static function getInfo() {
-    return array(
-        'name' => 'Entityform RulesTest',
-        'description' => 'Tests invoking Rules with Entityform Types and Entityforms submissions.',
-        'group' => 'Entityform',
-    );
-  }
-  /**
-   * Tests Entityforms Invoking of Rules
-   *
-   * 1. Test Submission Rule
-   * 2. Test Access Rule
-   * 3. Test Validation Rule
-   */
-  function testSubmitWithRules() {
-    // Test Submission Rule
-    $this->entityformSubmit('simpletest_entityform', $this->user_view, 'showmessage');
-    $this->assertText('Text=showmessage');
-    $user_noaccess = $this->drupalCreateUser(array('view own entityform'));
-    // This user should be block via a Rule
-    user_save($user_noaccess, array('name' => 'noaccess_user'));
-    $this->drupalLogin($user_noaccess);
-    $form_url = 'eform/submit/' . str_replace('_', '-', 'simpletest_entityform');
-    $this->drupalGet($form_url);
-    $this->assertText(t('Test Instructions'), 'User is can see form instructions - Test Form.');
-    $this->assertNoText(t('Test Field'), 'User is blocked via Rule to Test Form - field');
-    $this->assertText(t('Form Access Denied'), 'User is shown form access denied message.');
-    $this->drupalLogin($this->user_view);
-    $this->drupalGet($form_url);
-    // Test Validation Rule
-    // Post Test Form
-    $edit = array();
-    // This text value will cause Rule to fail
-    $edit['field_text[und][0][value]'] = 'testfail';
-    $this->drupalPost($form_url, $edit, t(ENTITYFORM_TEST_SUBMIT_TEXT));
-    if ($this->assertText('Test Failed', 'Showing validation message')) {
-      $this->entityform_submission_count++;
-      // Should be shown form again
-      $this->assertText(t('Test Instructions'), 'User is can see form instructions - Test Form.');
-      $this->assertText(t('Test Field'), 'User can see form again');
-
-    }
   }
 }

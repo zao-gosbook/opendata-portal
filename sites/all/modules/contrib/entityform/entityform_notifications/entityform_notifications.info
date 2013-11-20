@@ -5,12 +5,13 @@ package = Entityforms
 
 
 dependencies[] = entityform
+dependencies[] = entity_rules
+dependencies[] = entity2text
 dependencies[] = rules
-dependencies[] = variable_email
 
-; Information added by drupal.org packaging script on 2013-10-17
-version = "7.x-1.2"
+; Information added by  packaging script on 2013-11-20
+version = "7.x-2.0-beta1+2-dev"
 core = "7.x"
 project = "entityform"
-datestamp = "1382015990"
+datestamp = "1384954414"
 
