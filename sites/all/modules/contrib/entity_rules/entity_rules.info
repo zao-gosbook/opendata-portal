@@ -1,0 +1,12 @@
+name = Entity Rules
+description = Provides UI for select Rules to execute during Entity Events
+core = 7.x
+dependencies[] = entity
+dependencies[] = rules
+
+; Information added by  packaging script on 2013-11-19
+version = "7.x-1.0-alpha3+2-dev"
+core = "7.x"
+project = "entity_rules"
+datestamp = "1384869520"
+
