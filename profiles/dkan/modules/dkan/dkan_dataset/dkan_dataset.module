@@ -57,7 +57,7 @@ function dkan_dataset_node_view($node, $view_mode, $langcode) {
       '#view_mode' => $view_mode,
     );
     $node->content['resources']['#attached']['css'][] = drupal_get_path('module', 'dkan_dataset') . '/dkan_dataset.css';
-    $node->content['release_date'] = array(
+    /*$node->content['release_date'] = array(
       '#theme' => 'dkan_dataset_release_date_view',
       '#node' => $node,
       '#enabled' => TRUE,
@@ -80,7 +80,7 @@ function dkan_dataset_node_view($node, $view_mode, $langcode) {
       '#field_type' => '',
       '#bundle' => $node->type,
       '#view_mode' => $view_mode,
-    );
+    );*/
     $node->content['identifier'] = array(
       '#theme' => 'dkan_dataset_identifier_view',
       '#node' => $node,
@@ -124,7 +124,7 @@ function dkan_dataset_field_extra_fields() {
         'description' => t('Shows book children of dataset'),
         'weight' => 0,
       ),
-      'release_date' => array(
+      /*'release_date' => array(
         'label' => t('Release Date'),
         'description' => t('Node published date available as a field'),
         'weight' => 0,
@@ -133,7 +133,7 @@ function dkan_dataset_field_extra_fields() {
         'label' => t('Modified Date'),
         'description' => t('Node changed date available as a field'),
         'weight' => 0,
-      ),
+      ),*/
       'identifier' => array(
         'label' => t('Identifier'),
         'description' => t('Unique identifier for dataset'),
@@ -146,7 +146,7 @@ function dkan_dataset_field_extra_fields() {
         'description' => t('Shows book children of dataset'),
         'weight' => 0,
       ),
-      'release_date' => array(
+      /*'release_date' => array(
         'label' => t('Release Date'),
         'description' => t('Node published date available as a field'),
         'weight' => 0,
@@ -155,7 +155,7 @@ function dkan_dataset_field_extra_fields() {
         'label' => t('Modified Date'),
         'description' => t('Node changed date available as a field'),
         'weight' => 0,
-      ),
+      ),*/
       'identifier' => array(
         'label' => t('Identifier'),
         'description' => t('Unique identifier for dataset'),
