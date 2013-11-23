@@ -77,6 +77,18 @@ function gb_extra_fields_theme($existing, $type, $theme, $path) {
       'variables' => array('node' => NULL),
       'file' => 'gb_extra_fields.theme.inc',
     ),
+    'gb_extra_fields_dataset_resource_data_url' => array(
+      'variables' => array('node' => NULL),
+      'file' => 'gb_extra_fields.theme.inc',
+    ),
+    'gb_extra_fields_dataset_resource_data_format' => array(
+      'variables' => array('node' => NULL),
+      'file' => 'gb_extra_fields.theme.inc',
+    ),
+    'gb_extra_fields_dataset_resource_structure_url' => array(
+      'variables' => array('node' => NULL),
+      'file' => 'gb_extra_fields.theme.inc',
+    ),
   );
 
   return $theme;

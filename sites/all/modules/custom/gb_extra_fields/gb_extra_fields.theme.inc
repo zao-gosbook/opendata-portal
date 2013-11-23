@@ -19,3 +19,16 @@ function theme_gb_extra_fields_dataset_resource_data_format($vars) {
 function theme_gb_extra_fields_dataset_resource_structure_url($vars) {
   return $vars['node']->title;
 }
+
+function gb_extra_fields_preprocess_gb_extra_fields_dataset_resource_data_url($vars) {
+  if ($vars) {
+
+  }
+  $wrapper = entity_metadata_wrapper('node', $vars['node']);
+  try {
+    $resource = current($wrapper->field_resources);
+  }
+  catch (EntityMetadataWrapperException $e) {
+    $vars['dataset_resource_data_url'] = '';
+  }
+}
