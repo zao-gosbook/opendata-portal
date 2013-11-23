@@ -1,0 +1,4 @@
+name = GB Extra Fields
+description = Extra fields for the Passport display.
+package = DKAN
+core = 7.x
