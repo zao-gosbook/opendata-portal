@@ -430,7 +430,7 @@ function realname_form_user_admin_settings_alter(&$form, &$form_state, $form_id)
 function realname_username_raw_token_validate(&$element, &$form_state) {
   $value = isset($element['#value']) ? $element['#value'] : $element['#default_value'];
 
-  if (!strpos($value, '[user:name-raw]')) {
+  if (strpos($value, '[user:name-raw]') === FALSE) {
     form_error($element, t('The %element-title does not contain <code>[user:name-raw]</code> token.', array('%element-title' => $element['#title'])));
   }
 
