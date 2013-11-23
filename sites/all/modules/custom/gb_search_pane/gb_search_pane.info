@@ -1,0 +1,5 @@
+name = GB Custom search pane
+description = Implements CTools plugin - configurable search pane form
+package = DKAN
+core = 7.x
+dependencies[] = ctools
