@@ -14,7 +14,6 @@ include_once 'dkan_dataset.forms.inc';
  * Implements hook_menu().
  */
 function dkan_dataset_menu() {
-  $path = drupal_get_path('module', 'dkan_datset');
   $items['node/%node/resource'] = array(
     'title' => 'Add Resource',
     'page callback' => 'dkan_dataset_add_resource',
@@ -23,7 +22,6 @@ function dkan_dataset_menu() {
     'access arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
     'file' => 'dkan_dataset.pages.inc',
-    'file path' => $path,
   );
   $items['node/%node/dataset'] = array(
     'title' => 'Back to dataset',
@@ -33,7 +31,6 @@ function dkan_dataset_menu() {
     'access arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
     'file' => 'dkan_dataset.pages.inc',
-    'file path' => $path,
   );
 
   return $items;
