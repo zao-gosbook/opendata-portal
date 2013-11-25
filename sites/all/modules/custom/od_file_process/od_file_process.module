@@ -1,0 +1,146 @@
+<?php
+
+/**
+ * defined in od_file_preprocess module:
+ *   CSV_ENCLOSURE
+ *   CSV_DELIMETER
+ *   CRLF
+ *   od_file_preprocess_structure_headers()
+ */
+
+
+/**
+ * Implements hook_rules_action_info().
+ */
+function od_file_process_rules_action_info() {
+  return array(
+    'od_file_process_rule_callback' => array(
+      'label' => t('Process opendata file'),
+      'group' => t('Opendata process'),
+      'arguments' => array(
+        'file_2process' => array(
+          'type' => 'unknown',
+          'label' => t('File to process'),
+        ),
+      ),
+      'provides' => array(
+        'data_file' => array(
+          'type' => 'file',
+          'label' => t('Data file'),
+        ),
+        'structure_file' => array(
+          'type' => 'file',
+          'label' => t('Structure file'),
+        ),
+      ),
+    ),
+  );
+}
+
+
+/**
+ * Rule action
+ */
+function od_file_process_rule_callback($file_2process) {
+
+  $file = file_load($file_2process['fid']);
+
+  $file_info = pathinfo($file->uri);
+  if (mb_substr($file_info['dirname'], -1) == ':') {
+    $file_info['dirname'] .= '/';
+  }
+
+  $processed = od_file_process_2csv($file, $file_2process['file_data']);
+
+  // save structure file
+  $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '-structure.csv';
+  $file_structure = file_save_data($processed['structure'], $filename);
+
+  // save data file
+  $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '.csv';
+  $file_data = file_save_data($processed['data'], $filename);
+
+  return array(
+    'structure_file' => $file_structure,
+    'data_file' => $file_data,
+  );
+}
+
+/**
+ * Process data to csv files
+ */ 
+function od_file_process_2csv($file, $structure) {
+  //processor table2data
+  $valid_mimetypes = array(
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.oasis.opendocument.spreadsheet',
+    'text/csv',
+  );
+
+  $path = drupal_realpath($file->uri);
+  
+  if (!in_array($file->filemime, $valid_mimetypes)) {
+    //drupal_set_message(t('invalid file type'), 'error');
+    return;
+  }
+  
+  module_load_include('inc', 'phpexcel');
+  $data = phpexcel_import($path, FALSE);
+  
+  if (empty($data)) {
+    //drupal_set_message(t('can not read file'), 'error');
+    return;
+  }
+  
+  $data = $data[0];     // first worksheet
+  array_shift($data);   // skip headers row
+  
+  if (!isset($structure['process_2nd_row']) || !$structure['process_2nd_row']) {
+    array_shift($data); // skip second row if it contains columns descriptions
+  }
+
+  //processor data2csv
+  $new_file_data = '';
+  $new_file_structure = CSV_ENCLOSURE . implode(CSV_ENCLOSURE . CSV_DELIMETER . CSV_ENCLOSURE, od_file_preprocess_structure_headers()) . CSV_ENCLOSURE . CRLF;
+  $col_count = count($structure['col_data']);
+
+  for ($col = 0; $col < $col_count; $col++) {
+    $new_file_data .= CSV_ENCLOSURE . $structure['col_data'][$col]['col_name']['value'] . CSV_ENCLOSURE;
+
+    $new_file_structure .= $col + 1 . CSV_DELIMETER;
+    $new_file_structure .= CSV_ENCLOSURE . $structure['col_data'][$col]['col_name']['value'] . CSV_ENCLOSURE . CSV_DELIMETER;
+    $new_file_structure .= ($structure['col_data'][$col]['col_desc']) ? CSV_ENCLOSURE . $structure['col_data'][$col]['col_desc'] . CSV_ENCLOSURE . CSV_DELIMETER : CSV_DELIMETER;
+    $new_file_structure .= CSV_ENCLOSURE . DT_VOCAB . ':' . $structure['col_data'][$col]['datatype'] . CSV_ENCLOSURE;
+
+    if ($col != $col_count - 1) {
+      $new_file_data .= CSV_DELIMETER;
+      $new_file_structure .= CRLF;
+    }
+  }
+
+  $new_file_data .= CRLF;
+  $row_count = count($data);
+
+  for ($row = 0; $row < $row_count; $row++) {
+    for ($col = 0; $col < $col_count; $col++) {
+      $datatype = $structure['col_data'][$col]['datatype'];
+      if ($datatype == 'dateTime') {
+        $val = (array) PHPExcel_Shared_Date::ExcelToPHPObject($data[$row][$col]);
+        $val = str_replace(' 00:00:00', '', $val['date']);
+      }
+      else {
+        $val = $data[$row][$col];
+      }
+      if ($datatype == 'string' && $val) $val = CSV_ENCLOSURE . $val . CSV_ENCLOSURE;
+      $new_file_data .= $val;
+      if ($col != $col_count - 1) $new_file_data .= CSV_DELIMETER;
+    }
+    if ($row != $row_count - 1) $new_file_data .= CRLF;
+  }
+
+  return array(
+    'structure' => $new_file_structure,
+    'data' => $new_file_data,
+  );  
+}
