@@ -83,7 +83,7 @@ function gb_search_pane_content_type_form($form, $form_state, $conf) {
 function gb_search_pane_content_type_form_submit($form, $form_state) {
   $conf = $form_state['conf'];
   $options = array('query' => array($conf['query_field_name'] => $form_state['values']['field']));
-  drupal_goto($conf['action_url'], $options);
+  drupal_goto($conf['redirect_url'], $options);
 }
 
 /**

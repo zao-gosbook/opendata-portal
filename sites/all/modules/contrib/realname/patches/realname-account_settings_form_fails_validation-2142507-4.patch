@@ -1,0 +1,44 @@
+diff --git a/realname.install b/realname.install
+index 926f0f0..99dbed2 100644
+--- a/realname.install
++++ b/realname.install
+@@ -51,7 +51,7 @@ function realname_requirements($phase) {
+   $requirements = array();
+ 
+   if ($phase == 'runtime') {
+-    if (!strpos(variable_get('user_mail_register_admin_created_body', FALSE), '[user:name-raw]')) {
++    if (strpos(variable_get('user_mail_register_admin_created_body', FALSE), '[user:name-raw]') === FALSE) {
+       $requirements['user_mail_register_admin_created_body'] = array(
+         'title' => t('E-mail: "Welcome (new user created by administrator)" template'),
+         'value' => t('Not configured'),
+@@ -59,7 +59,7 @@ function realname_requirements($phase) {
+         'description' => t('Replace the token <code>[user:name]</code> with <code>[user:name-raw]</code> in <a href="@people">e-mail</a> template.', array('@people' => url('admin/config/people/accounts', array('fragment' => 'edit-email-admin-created')))),
+       );
+     }
+-    if (!strpos(variable_get('user_mail_register_no_approval_required_body', FALSE), '[user:name-raw]')) {
++    if (strpos(variable_get('user_mail_register_no_approval_required_body', FALSE), '[user:name-raw]') === FALSE) {
+       $requirements['user_mail_register_no_approval_required_body'] = array(
+         'title' => t('E-mail: "Welcome (no approval required)" template'),
+         'value' => t('Not configured'),
+@@ -67,7 +67,7 @@ function realname_requirements($phase) {
+         'description' => t('Replace the token <code>[user:name]</code> with <code>[user:name-raw]</code> in <a href="@people">e-mail</a> template.', array('@people' => url('admin/config/people/accounts', array('fragment' => 'edit-email-no-approval-required')))),
+       );
+     }
+-    if (!strpos(variable_get('user_mail_status_activated_body', FALSE), '[user:name-raw]')) {
++    if (strpos(variable_get('user_mail_status_activated_body', FALSE), '[user:name-raw]') === FALSE) {
+       $requirements['user_mail_status_activated_body'] = array(
+         'title' => t('E-mail: "Account activation" template'),
+         'value' => t('Not configured'),
+diff --git a/realname.module b/realname.module
+index e21a1cd..384408e 100644
+--- a/realname.module
++++ b/realname.module
+@@ -430,7 +430,7 @@ function realname_form_user_admin_settings_alter(&$form, &$form_state, $form_id)
+ function realname_username_raw_token_validate(&$element, &$form_state) {
+   $value = isset($element['#value']) ? $element['#value'] : $element['#default_value'];
+ 
+-  if (!strpos($value, '[user:name-raw]')) {
++  if (strpos($value, '[user:name-raw]') === FALSE) {
+     form_error($element, t('The %element-title does not contain <code>[user:name-raw]</code> token.', array('%element-title' => $element['#title'])));
+   }
+ 
