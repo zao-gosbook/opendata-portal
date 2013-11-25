@@ -49,26 +49,12 @@ function od_file_preprocess_form_alter(&$form, &$form_state, $form_id) {
 
   // add preprocess checkbox into file field settings form
   if ($form_id == 'field_ui_field_edit_form' && in_array($form['#field']['type'], od_file_preprocess_supporting_fieldtypes())) {
-    $file_extensions = explode(' ', $form_state['build_info']['args'][0]['settings']['file_extensions']);
-    $valid_extensions = od_file_peprocess_valid_extensions();
-    $diff = array_diff($file_extensions, $valid_extensions);
-    if (!$diff) {
-      $form['instance']['settings']['od_file_preprocess'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Preprocess file with the open data'),
-        '#default_value' => (isset($form['#field']['settings']['od_file_preprocess'])) ? $form['#field']['settings']['od_file_preprocess'] : FALSE,
-        '#weight' => 20,
-      );
-    }
-    else { // unsupported file extensions
-      $form['instance']['settings']['od_file_preprocess'] = array(
-        '#type' => 'markup',
-        '#markup' => t('Opendata preprocessor support the following file formats: %formats.<br>
-                        Change and save field settings for activate preprocessor',
-                        array('%formats' => implode(' ', $valid_extensions))),
-        '#weight' => 20,
-      );
-    }
+    $form['instance']['settings']['od_file_preprocess'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Preprocess file with the open data'),
+      '#default_value' => (isset($form['#instance']['settings']['od_file_preprocess'])) ? $form['#instance']['settings']['od_file_preprocess'] : FALSE,
+      '#weight' => 20,
+    );
   }
 }
 
@@ -82,14 +68,7 @@ function od_file_preprocess_field_widget_form_alter(&$element, &$form_state, $co
   if (in_array($context['field']['type'], od_file_preprocess_supporting_fieldtypes()) && 
       isset($context['instance']['settings']['od_file_preprocess']) &&
       ($context['instance']['settings']['od_file_preprocess'])) {
-    
-    $file_extensions = explode(' ', $context['instance']['settings']['file_extensions']);
-    $valid_extensions = od_file_peprocess_valid_extensions();
-    $diff = array_diff($file_extensions, $valid_extensions);
-    if ($diff) {
-      return;
-    } // skip field with unsupported file extensions
-    
+
     $js = drupal_get_path('module', 'od_file_preprocess') . '/' . 'od_file_preprocess.js';
 
     foreach ($element as &$el) {
@@ -120,8 +99,7 @@ function od_file_preprocess_field_widget_form_alter(&$element, &$form_state, $co
  * Process form file element
  */
 function od_file_preprocess_widget_process($element, &$form_state, $form) {
-  //dsm($form_state, 'form_state');
-  //dsm($element, 'element');
+
   if ((!isset($form_state['input']['op']) || 
        $form_state['input']['op'] != 'Submit Form') && 
       !$form_state['submitted']) {
@@ -132,33 +110,36 @@ function od_file_preprocess_widget_process($element, &$form_state, $form) {
   $field_name = $element['#field_name'];
   $lang = $element['#language'];
   $delta = $element['#delta'];
- 
+
   $file_loaded = (isset($form_state['values'][$field_name][$lang][$delta]['fid']) &&
                   ($form_state['values'][$field_name][$lang][$delta]['fid']));
 
   if (isset($form_state['triggering_element'])) {
 
-    switch ($form_state['triggering_element']['#name']) {
+    switch ($form_state['triggering_element']['#name']) {    
       case $field_name . '_' . $lang . '_' . $delta  . '_upload_button':
-      
+          watchdog('info', '$file_loaded =' . $file_loaded);
           if ($file_loaded) {
             $file = $element['#file'];
+/*
             $process_2nd_row = (isset($form_state['values'][$field_name][$lang][$delta]['file_data']['process_2nd_row']) && 
                                 $form_state['values'][$field_name][$lang][$delta]['file_data']['process_2nd_row']);
 
             $structure = od_file_preprocess_get_structure($file, $process_2nd_row);
+ */
+            $structure = od_file_preprocess_get_structure($file, TRUE);
             if (is_array($structure)) {
               $element['file_data']['#parents'] = array(
-                $field_name, 
-                $lang, 
-                $delta, 
+                $field_name,
+                $lang,
+                $delta,
                 'file_data',
               );
               form_set_value($element['file_data'], $structure, $form_state);
             }
           }
         break;
-        
+
       case $field_name . '_' . $lang . '_' . $delta  . '_remove_button':
           unset($element['file_data']);
           unset($form_state['values'][$field_name][$lang][$delta]['file_data']);
@@ -169,7 +150,7 @@ function od_file_preprocess_widget_process($element, &$form_state, $form) {
   if (isset($form_state['values'][$field_name][$lang][$delta]['file_data'])) {
     $wrapper = 'edit-' . str_replace('_', '-', $field_name);
     $element['file_data'] = od_file_preprocess_set_element($form_state['values'][$field_name][$lang][$delta]['file_data'], $wrapper);
-  }
+  } /*
   elseif ($file_loaded) {
     $element['file_data'] = array(
       '#type' => 'markup',
@@ -177,7 +158,7 @@ function od_file_preprocess_widget_process($element, &$form_state, $form) {
       '#prefix' => '<div class="messages error">',
       '#suffix' => '</div>',
     );
-  }
+  } */
   return $element;
 }
 
@@ -238,7 +219,6 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
 
   if (!is_object($file)) return NULL;
   $path = drupal_realpath($file->uri);
-  //dsm($file->filemime);
   
   switch ($file->filemime) {
     case 'application/vnd.ms-excel':                                          // .xls
@@ -305,7 +285,7 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
 function od_file_preprocess_set_element($values = array(), $wrapper = '') {
 
   if (!count($values)) return FALSE;
-
+/*
   $element['process_2nd_row'] = array(
     '#type' => 'checkbox',
     '#default_value' => (isset($values['process_2nd_row']) && $values['process_2nd_row']),
@@ -317,7 +297,7 @@ function od_file_preprocess_set_element($values = array(), $wrapper = '') {
       'effect' => 'fade',
     ),
   );
-
+*/
   $element['col_data'] = array(
     '#type' => 'table',
     '#header' => od_file_preprocess_structure_headers(),
@@ -378,10 +358,12 @@ function od_file_preprocess_set_element($values = array(), $wrapper = '') {
 /**
  *  ajax callback for 'parse_2nd_row' form element 
  */
+/*
 function od_file_preprocess_ajax_callback($form, $form_state) {
+  watchdog('info','od_file_preprocess_ajax_callback');
   return $form[$form_state['triggering_element']['#parents'][0]];
 }
-
+*/
 
 /**
  * trying to guess data type
