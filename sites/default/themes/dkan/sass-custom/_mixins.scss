@@ -1,0 +1,71 @@
+// Text styles
+
+@mixin huge-text-dark {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+}
+
+@mixin large-text-dark {
+  font-size: 18px;
+  font-weight: bold;
+  color: #353c40;
+}
+
+@mixin large-text-blue {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3777a8;
+}
+
+@mixin middle-text-grey {
+  font-size: 14px;
+  color: #696e74;
+}
+
+@mixin middle-more-dark {
+  font-size: 16px;
+  color: #353c40;
+}
+
+@mixin small-text-dark {
+  font-size: 12px;
+  color: #3a4352;
+}
+
+@mixin small-more-dark {
+  font-size: 12px;
+  color: #353c40;
+}
+
+@mixin small-text-black-blue {
+  font-size: 12px;
+  color: #3a4352;
+}
+
+@mixin small-text-blue {
+  font-size: 12px;
+  color: #3777a8;
+}
+
+@mixin small-text-grey {
+  font-size: 12px;
+  color: #696e74;
+}
+
+@mixin smaller-text-grey {
+  font-size: 10px;
+  color: #717679;
+}
+
+@mixin small-text-grey-italic {
+  font-size: 12px;
+  font-style: italic;
+  color: #87919b;
+}
+
+@mixin avatar-40x40 {
+  background-color: #FFFFFF;
+  border: 2px solid #D4D4D4;
+  @include border-radius(5px);  
+}
