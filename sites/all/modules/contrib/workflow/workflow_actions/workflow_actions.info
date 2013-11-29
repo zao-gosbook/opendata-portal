@@ -1,0 +1,13 @@
+name = Workflow actions and triggers
+description = Provides actions and triggers for workflows.
+dependencies[] = workflow
+dependencies[] = trigger
+package = Workflow
+core = 7.x
+
+; Information added by  packaging script on 2013-11-26
+version = "7.x-2.0-beta1+12-dev"
+core = "7.x"
+project = "workflow"
+datestamp = "1385502218"
+

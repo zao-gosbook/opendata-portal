@@ -1,0 +1,12 @@
+name = Workflow access
+description = Content access control based on workflows and roles.
+dependencies[] = workflow
+package = Workflow
+core = 7.x
+
+; Information added by  packaging script on 2013-11-26
+version = "7.x-2.0-beta1+12-dev"
+core = "7.x"
+project = "workflow"
+datestamp = "1385502218"
+

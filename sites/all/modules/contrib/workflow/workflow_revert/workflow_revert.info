@@ -1,0 +1,12 @@
+name = Workflow Revert
+description = "Adds a 'Revert' link to the first workflow history row."
+dependencies[] = workflow
+core = 7.x
+package = Workflow
+
+; Information added by  packaging script on 2013-11-26
+version = "7.x-2.0-beta1+12-dev"
+core = "7.x"
+project = "workflow"
+datestamp = "1385502218"
+

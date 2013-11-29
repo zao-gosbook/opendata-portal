@@ -1,0 +1,14 @@
+name = Workflow UI
+description = "Provides administrative UI for workflow."
+package = Workflow
+dependencies[] = workflow
+core = 7.x
+configure = admin/config/workflow/workflow
+stylesheets[all][] = workflow_admin_ui.css
+
+; Information added by  packaging script on 2013-11-26
+version = "7.x-2.0-beta1+12-dev"
+core = "7.x"
+project = "workflow"
+datestamp = "1385502218"
+
