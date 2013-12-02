@@ -1,13 +1,16 @@
+diff --git a/sites/all/modules/contrib/search_api_sorts/patches/object_to_array.patch b/sites/all/modules/contrib/search_api_sorts/patches/object_to_array.patch
+new file mode 100644
+index 0000000..e69de29
 diff --git a/sites/all/modules/contrib/search_api_sorts/search_api_sorts.module b/sites/all/modules/contrib/search_api_sorts/search_api_sorts.module
-index 28b46a0..6337948 100644
+index 28b46a0..359cc5d 100644
 --- a/sites/all/modules/contrib/search_api_sorts/search_api_sorts.module
 +++ b/sites/all/modules/contrib/search_api_sorts/search_api_sorts.module
-@@ -146,7 +146,7 @@ function search_api_sorts_search_sorts($index_id, $enabled = 1, $reset = FALSE)
- 
-     $data = array();
+@@ -148,7 +148,7 @@ function search_api_sorts_search_sorts($index_id, $enabled = 1, $reset = FALSE)
      $index = search_api_index_load($index_id);
--    while ($row = $query->fetch()) {
-+    while ($row = (array) $query->fetch()) {
+     while ($row = $query->fetch()) {
        // Check that this field exists in index.
-       if (!empty($index->options['fields'][$row['field']])) {
+-      if (!empty($index->options['fields'][$row['field']])) {
++      if (!empty($index->options['fields'][$row->field])) {
          $data[] = $row;
+       }
+     }
