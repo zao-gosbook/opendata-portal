@@ -146,7 +146,7 @@ function search_api_sorts_search_sorts($index_id, $enabled = 1, $reset = FALSE) 
 
     $data = array();
     $index = search_api_index_load($index_id);
-    while ($row = $query->fetch()) {
+    while ($row = (array) $query->fetch()) {
       // Check that this field exists in index.
       if (!empty($index->options['fields'][$row['field']])) {
         $data[] = $row;
