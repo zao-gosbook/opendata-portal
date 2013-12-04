@@ -18,16 +18,18 @@ function od_file_preprocess_structure_headers() {
   );
 }
 
-
-/**
- *  Define valid file extensions
- */
-function od_file_peprocess_valid_extensions() {
+function od_file_preprocess_table_mimes() {
   return array(
-    'xls',
-    'xlsx',
-    'ods',
-    'csv',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.oasis.opendocument.spreadsheet',
+    'text/csv',
+  );
+}
+
+function od_file_preprocess_graph_mimes() {
+  return array(
+    'application/xml',
   );
 }
 
@@ -41,6 +43,7 @@ function od_file_preprocess_supporting_fieldtypes() {
     'recline_field',
   );
 }
+
 
 /**
  * Implements hook_form_alter()
@@ -118,7 +121,6 @@ function od_file_preprocess_widget_process($element, &$form_state, $form) {
 
     switch ($form_state['triggering_element']['#name']) {    
       case $field_name . '_' . $lang . '_' . $delta  . '_upload_button':
-          watchdog('info', '$file_loaded =' . $file_loaded);
           if ($file_loaded) {
             $file = $element['#file'];
 /*
@@ -176,7 +178,7 @@ function od_file_preprocess_widget_validate($element, &$form_state, $form) {
   $field_name = $element['#field_name'];
   $lang = $element['#language'];
   $delta = $element['#delta'];
-  
+
   $file_loaded = (isset($form_state['values'][$field_name][$lang][$delta]['fid']) &&
                   ($form_state['values'][$field_name][$lang][$delta]['fid']));
                   
@@ -219,7 +221,7 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
 
   if (!is_object($file)) return NULL;
   $path = drupal_realpath($file->uri);
-  
+
   switch ($file->filemime) {
     case 'application/vnd.ms-excel':                                          // .xls
     case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': // .xlsx
@@ -237,7 +239,7 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
         $col_types = array_fill(0, count($headers), 'undefined');
         
         $structure = array(
-          'process_2nd_row' => $process_2nd_row,
+          //'process_2nd_row' => $process_2nd_row,
         );
         
         $col_desc = ($process_2nd_row) ? NULL : array_shift($data);
@@ -272,6 +274,8 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
           
           $col++;
         }
+
+        $structure['is_table_data'] = TRUE;
         return $structure;
       break;
 
@@ -298,6 +302,18 @@ function od_file_preprocess_set_element($values = array(), $wrapper = '') {
     ),
   );
 */
+  if (!empty($values['is_table_data'])) {
+    $element['convert_to'] = array(
+      '#type' => 'select',
+      '#title' => t('Save file as'),
+      '#options' => array(
+        'xml' => 'xml',
+        'csv' => 'csv',
+      ),
+      '#default_value' => empty($values['convert_to']) ? 'xml': $values['convert_to'],
+    );
+  }
+  
   $element['col_data'] = array(
     '#type' => 'table',
     '#header' => od_file_preprocess_structure_headers(),
@@ -360,7 +376,6 @@ function od_file_preprocess_set_element($values = array(), $wrapper = '') {
  */
 /*
 function od_file_preprocess_ajax_callback($form, $form_state) {
-  watchdog('info','od_file_preprocess_ajax_callback');
   return $form[$form_state['triggering_element']['#parents'][0]];
 }
 */

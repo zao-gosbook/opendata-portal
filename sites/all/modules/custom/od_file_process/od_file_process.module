@@ -1,11 +1,12 @@
 <?php
 
 /**
- * defined in od_file_preprocess module:
+ * defined into od_file_preprocess module:
  *   CSV_ENCLOSURE
  *   CSV_DELIMETER
  *   CRLF
  *   od_file_preprocess_structure_headers()
+ *   od_file_preprocess_table_mimes()
  */
 
 
@@ -13,7 +14,7 @@
  * Implements hook_rules_action_info().
  */
 function od_file_process_rules_action_info() {
-  return array(
+  $action = array(
     'od_file_process_rule_callback' => array(
       'label' => t('Process opendata file'),
       'group' => t('Opendata process'),
@@ -22,83 +23,127 @@ function od_file_process_rules_action_info() {
           'type' => 'unknown',
           'label' => t('File to process'),
         ),
+        'node_2attach' => array(
+          'type' => 'node',
+          'label' => t('Node to process'),
+        ),
+        'field_2attach_data' => array(
+          'type' => 'text',
+          'label' => t('Field to save data'),
+        ),
+        'field_2attach_structure' => array(
+          'type' => 'text',
+          'label' => t('Field to save data structure'),
+        ),
       ),
       'provides' => array(
-        'data_file' => array(
-          'type' => 'file',
-          'label' => t('Data file'),
-        ),
-        'structure_file' => array(
-          'type' => 'file',
-          'label' => t('Structure file'),
+        'saved_node' => array(
+          'type' => 'node',
+          'label' => t('Saved node'),
         ),
       ),
     ),
   );
+  if (module_exists('recline')) {
+    $action['od_file_process_rule_callback']['arguments']['recline_additional_info'] = array(
+      'type' => 'unknown',
+      'label' => t('Recline additional info'),
+    );
+  }
+  return $action;
 }
 
 
 /**
  * Rule action
  */
-function od_file_process_rule_callback($file_2process) {
+function od_file_process_rule_callback($file_2process, $node_2attach, $field_2attach_data, $field_2attach_structure, $recline_additional_info = array()) {
 
   $file = file_load($file_2process['fid']);
 
+  if (in_array($file->filemime, od_file_preprocess_table_mimes()) && !empty($file_2process['file_data'])) {
+    if (isset($file_2process['file_data']['convert_to'])) {
+
+      $path = drupal_realpath($file->uri);
+
+      module_load_include('inc', 'phpexcel');
+      $data = phpexcel_import($path, FALSE);
+
+      if (empty($data)) {
+        //drupal_set_message(t('can not read file'), 'error');
+        return $node_2attach;
+      }
+
+      $data = $data[0];     // first worksheet
+      array_shift($data);   // skip headers row
+
+      if (!isset($structure['process_2nd_row']) || !$structure['process_2nd_row']) {
+        array_shift($data); // skip second row if it contains columns descriptions
+      }
+      
+      switch ($file_2process['file_data']['convert_to']) {
+        case 'csv':
+            $ext_data = 'csv';
+            $ext_struct = 'csv';
+            $processed = od_file_process_2csv($data, $file_2process['file_data']);
+          break;
+        case 'xml':
+            $ext_data = 'xml';
+            $ext_struct = 'xsd';
+            $processed = od_file_process_2xml($data, $file_2process['file_data']);
+          break;
+        default:
+            return $node_2attach;
+          break;
+      }
+    }
+  }
+  else {
+    return $node_2attach;
+  }
+  
+  if (empty($processed['structure']) || empty($processed['data'])) {
+    return $node_2attach;
+  }
+  
+  // save files and attach it to node fields
   $file_info = pathinfo($file->uri);
   if (mb_substr($file_info['dirname'], -1) == ':') {
     $file_info['dirname'] .= '/';
   }
-
-  $processed = od_file_process_2csv($file, $file_2process['file_data']);
-
+  
   // save structure file
-  $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '-structure.csv';
+  $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '-structure.' . $ext_struct;
   $file_structure = file_save_data($processed['structure'], $filename);
+  if (module_exists('filefield_sources')) {
+    $file_structure->display = 1; 
+    // display property not availible
+  }
+  $field_lang = field_language('node', $node_2attach, $field_2attach_structure);
+  $node_2attach->{$field_2attach_structure}[$field_lang][0] = (array) $file_structure;
 
   // save data file
-  $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '.csv';
+  $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '.' . $ext_data;
   $file_data = file_save_data($processed['data'], $filename);
+  if (module_exists('recline')) {
+    foreach ($recline_additional_info as $recline_info) {
+      $file_data->view[$recline_info] = '1';
+    }
+  }
+  $field_lang = field_language('node', $node_2attach, $field_2attach_data);
+  $node_2attach->{$field_2attach_data}[$field_lang][0] = (array) $file_data;
+
+  node_save($node_2attach);
 
   return array(
-    'structure_file' => $file_structure,
-    'data_file' => $file_data,
+    'saved_node' => $node_2attach,
   );
 }
 
 /**
  * Process data to csv files
  */ 
-function od_file_process_2csv($file, $structure) {
-  //processor table2data
-  $valid_mimetypes = array(
-    'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.oasis.opendocument.spreadsheet',
-    'text/csv',
-  );
-
-  $path = drupal_realpath($file->uri);
-  
-  if (!in_array($file->filemime, $valid_mimetypes)) {
-    //drupal_set_message(t('invalid file type'), 'error');
-    return;
-  }
-  
-  module_load_include('inc', 'phpexcel');
-  $data = phpexcel_import($path, FALSE);
-  
-  if (empty($data)) {
-    //drupal_set_message(t('can not read file'), 'error');
-    return;
-  }
-  
-  $data = $data[0];     // first worksheet
-  array_shift($data);   // skip headers row
-  
-  if (!isset($structure['process_2nd_row']) || !$structure['process_2nd_row']) {
-    array_shift($data); // skip second row if it contains columns descriptions
-  }
+function od_file_process_2csv($data, $structure) {
 
   //processor data2csv
   $new_file_data = '';
@@ -143,4 +188,118 @@ function od_file_process_2csv($file, $structure) {
     'structure' => $new_file_structure,
     'data' => $new_file_data,
   );  
+}
+
+
+function od_file_process_2xml($data, $structure) {
+
+  $xml = new XmlWriter();
+  $xml->openMemory();
+  $xml->startDocument('1.0', 'utf-8');
+  $xml->startElement('dataset');
+  write_xml($xml, $data, 0);
+  $xml->endElement();
+
+  $data_xml = $xml->outputMemory(TRUE);
+
+  $xml = new XmlWriter();
+  $xml->openMemory();
+  $xml->startDocument('1.0', 'utf-8');
+  $xml->startElement('xs:schema');
+  $xml->startAttribute('xmlns:xs');
+  $xml->text('http://www.w3.org/2001/XMLSchema');
+  $xml->endAttribute();
+  $xml->startElement('xs:annotation');
+  $xml->startElement('xs:documentation');
+  $xml->startAttribute('xml:lang');
+  $xml->text('ru');
+  $xml->endAttribute();
+  $xml->text($odmeta_description);
+  $xml->endElement(); //documentation
+  $xml->endElement(); //annotation
+
+  $xml->startElement('xs:element');
+  $xml->writeAttribute('name','dataset');
+  $xml->writeAttribute('type','customDataSet');
+  $xml->endElement(); //element
+  $xml->startElement('xs:complexType');
+  $xml->startAttribute('name');
+  $xml->text('customDataSet');
+  $xml->endAttribute();
+  $xml->startElement('xs:annotation');
+  $xml->startElement('xs:documentation');
+  $xml->startAttribute('xml:lang');
+  $xml->text('ru');
+  $xml->endAttribute();
+  $xml->text($odmeta_name);
+  $xml->endElement(); //documentation
+  $xml->endElement(); //annotation
+  $xml->startElement('xs:sequence');
+  $xml->startElement('xs:element');
+  $xml->writeAttribute('name','data');
+  $xml->writeAttribute('type','customData');
+  $xml->writeAttribute('minOccurs', '0');
+  $xml->writeAttribute('maxOccurs', 'unbounded');
+  $xml->endElement(); //element
+  $xml->endElement(); //sequence
+  $xml->endElement(); //complexType
+  
+  $xml->startElement('xs:complexType');
+  $xml->startAttribute('name');
+  $xml->text('customData');
+  $xml->endAttribute();
+  $xml->startElement('xs:annotation');
+  $xml->startElement('xs:documentation');
+  $xml->startAttribute('xml:lang');
+  $xml->text('ru');
+  $xml->endAttribute();
+  $xml->text('Описание структуры полей'); // <------- !!!
+  $xml->endElement(); //documentation
+  $xml->endElement(); //annotation
+  
+  $xml->startElement('xs:sequence');
+  foreach ($structure['col_data'] as $key => $col_data) {
+    $xml->startElement('xs:element');
+    $xml->startAttribute('name');
+    $xml->text('value-' . $key);
+    $xml->endAttribute(); //name
+    $xml->startAttribute('type');
+    $xml->text('xs:' . $col_data['datatype']);
+    $xml->endAttribute(); //type
+    $xml->startElement('xs:annotation');
+    $xml->startElement('xs:documentation');
+    $xml->startAttribute('xml:lang');
+    $xml->text('ru');
+    $xml->endAttribute();
+    $xml->text($col_data['col_name']['value']);
+    $xml->endElement(); //documentation
+    $xml->endElement(); //annotation
+    $xml->endElement(); //element
+  }
+
+  $xml->endElement(); //sequence
+  $xml->endElement(); //complexType
+  $xml->endElement(); //schema
+  $structure_xml = $xml->outputMemory(TRUE);
+  
+  return array(
+    'structure' => $structure_xml,
+    'data' => $data_xml,
+  );
+}
+
+
+function write_xml(XMLWriter $xml, $data, $level) {
+  foreach($data as $key => $value) {
+    //dsm($key);
+    //dsm($value);
+    $key_r = $level ? 'value-' . $key : 'data';
+    if (is_array($value)) {
+      $xml->startElement($key_r);
+      write_xml($xml, $value, $level+1);
+      $xml->endElement();
+      continue;
+    }
+    $xml->writeElement($key_r, $value);
+  }
 }
