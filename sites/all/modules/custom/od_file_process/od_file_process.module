@@ -71,7 +71,9 @@ function od_file_process_rule_callback($file_2process, $node_2attach, $field_2at
 
       if (empty($data)) {
         //drupal_set_message(t('can not read file'), 'error');
-        return $node_2attach;
+        return array(
+          'saved_node' => $node_2attach,
+        );
       }
 
       $data = $data[0];     // first worksheet
@@ -93,17 +95,35 @@ function od_file_process_rule_callback($file_2process, $node_2attach, $field_2at
             $processed = od_file_process_2xml($data, $file_2process['file_data']);
           break;
         default:
-            return $node_2attach;
+            return array(
+              'saved_node' => $node_2attach,
+            );
           break;
       }
     }
+  } elseif (in_array($file->filemime, od_file_preprocess_graph_mimes())) {
+    if (module_exists('recline')) {
+      foreach ($recline_additional_info as $recline_info) {
+        $file->view[$recline_info] = '1';
+      }
+    }
+    $field_lang = field_language('node', $node_2attach, $field_2attach_data);
+    $node_2attach->{$field_2attach_data}[$field_lang][0] = (array) $file;
+    node_save($node_2attach);
+    return array(
+      'saved_node' => $node_2attach,
+    );
   }
   else {
-    return $node_2attach;
+    return array(
+      'saved_node' => $node_2attach,
+    );
   }
   
   if (empty($processed['structure']) || empty($processed['data'])) {
-    return $node_2attach;
+    return array(
+      'saved_node' => $node_2attach,
+    );
   }
   
   // save files and attach it to node fields
