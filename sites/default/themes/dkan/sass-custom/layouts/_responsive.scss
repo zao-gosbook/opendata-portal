@@ -77,7 +77,7 @@ $zen-auto-include-item-base: false;
 /**
  * Use 3 grid columns for smaller screens.
  */
-@media all and (min-width: 480px) and (max-width: 959px) {
+@media all and (max-width: 800px) and (min-width: 100px)  {
 
   $zen-column-count: 3;
 
@@ -150,12 +150,143 @@ $zen-auto-include-item-base: false;
       }
     }
   }
+  
+  /* mobile screen */
+  .region-header {
+    #name-and-slogan a {
+      font-size: 20px;
+    }    
+    .pane-system-main-menu {
+      clear: left;
+      padding-left: 15px;
+      padding-top: 5px;
+    }
+    .pane-system-user-menu {
+      position: absolute;
+      top: 47px;
+      right: 10px;
+      
+      > ul li a[href$="/user/login"] {
+        text-indent: -10000px;
+        overflow: hidden;
+        padding-left: 34px;
+      }
+    } 
+    
+    .region-header .pane-locale-language {
+      position: absolute;
+      right: auto;
+      top: 2px;
+      
+      ul li a {
+        font-size: 11px;
+      }
+    }
+    .pane-system-main-menu ul li a,
+    .pane-system-user-menu > ul li a  {
+      font-size: .8em;
+    }  
+    .pane-system-main-menu ul li {
+      width: auto;
+    }
+  }
+  .region-orange .pane-dataset-datasets-total-count {
+    h2 {
+      font-size: 17px;
+      padding: 1.2% 10px 3px 10px;
+      text-align: center;
+      float: none;
+    }  
+    .view {
+      font-size: 13px;
+      padding: 1.1% 10px 0.8% 10px;    
+      text-align: center;
+      float: none;      
+      
+      &:after {
+          background: url("../images/arr-orange-left.png") no-repeat scroll 0 0 transparent;
+          content: "";
+          height: 22px;
+          left: -50%;
+          margin-top: 0;
+          margin-left: -8px;
+          position: absolute;
+          top: -16px;
+          width: 16px;
+          @include transform(rotate(90deg));
+      }      
+      
+      span {
+        font-size: 20px;
+      }
+    }
+  }
+  .panels-flexible-region-4-region_main_content {
+    width: 100%;
+  }
+  .not-front .region-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .pane-gb-search-pane {
+    margin-left: 10px;
+    margin-right: 10px;
+    
+    .form-text {
+      font-size: 18px;
+      line-height: 18px;
+    }
+    .form-submit {
+      background-size: cover;
+      height: 50px;
+      top: -8px;
+      width: 48px;
+    }    
+  }
+  .pane-rubrics-rubrics-front  {
+    margin-left: 10px;
+    margin-right: 10px;
+    
+    .title {
+      font-size: 18px;
+      line-height: 23px;
+      padding: 0 0;
+    } 
+    .views-row {
+      width: 50%;
+      
+    &:nth-child(3n+1) {
+      clear: none;
+    }
+    &:nth-child(2n+1) {
+      clear: both;
+    }
+      
+      .taxonomy-term {
+      
+        .content img {
+          margin-bottom: 0;
+        }      
+        h2 {
+          font-size: 13px;
+          line-height: 26px;
+          
+          a {
+            padding-top: 52%;
+          }
+        }
+      }      
+    }
+  }    
 }
 
 /**
  * Use 5 grid columns for larger screens.
  */
-@media all and (min-width: 960px) {
+/**
+ * iPad (maxWidth 768px)
+ */
+@media all and (max-width: 1025px) and (min-width: 801px) {
 
   $zen-column-count: 5;
 
@@ -206,6 +337,84 @@ $zen-auto-include-item-base: false;
     /* Span 1 column, starting in 5th column from left. */
     .region-sidebar-second {
       @include zen-grid-item(1, 5);
+    }
+  }
+  
+  /* IPad screen */
+  .region-header {
+    #name-and-slogan a {
+      font-size: 23px;
+    }    
+    .pane-system-main-menu {
+      clear: left;
+      padding-left: 79px;
+      padding-top: 5px;
+    }
+    .pane-system-user-menu {
+      padding-top: 5px;
+    }  
+    .pane-system-main-menu ul li a,
+    .pane-system-user-menu > ul li a  {
+      font-size: .9em;
+    }    
+  }
+  .region-orange .pane-dataset-datasets-total-count {
+    h2 {
+      font-size: 17px;
+      padding: 1.1% 15px 1% 21px;
+    }  
+    .view {
+      font-size: 17px;
+      padding: 1.1% 21px 0.8% 28px;     
+      
+      span {
+        font-size: 30px;
+      }
+    }
+  }
+  .panels-flexible-region-4-region_main_content {
+    width: 100%;
+  }
+  .not-front .region-content {
+    padding-left: 21px;
+    padding-right: 21px;
+  }
+  .pane-gb-search-pane {
+    margin-left: 21px;
+    margin-right: 21px;
+    
+    .form-text {
+      font-size: 18px;
+      line-height: 18px;
+    }
+    .form-submit {
+      background-size: cover;
+      height: 70px;
+      top: -8px;
+      width: 67px;
+    }    
+  }
+  .pane-rubrics-rubrics-front  {
+    margin-left: 21px;
+    margin-right: 21px;
+    
+    .title {
+      font-size: 18px;
+      line-height: 23px;
+      padding: 0 0;
+    } 
+    .views-row .taxonomy-term {
+      .content img {
+        margin-bottom: 0;
+      }      
+      h2 {
+        font-size: 21px;
+        line-height: 26px;
+        
+        a {
+          padding-top: 52%;
+        }
+      }
     }
   }
 }

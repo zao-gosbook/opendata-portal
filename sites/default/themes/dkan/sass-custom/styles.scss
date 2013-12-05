@@ -11,10 +11,9 @@
 @import "mixins";
 
 /* HTML element (SMACSS base) rules */
-@import "../sass/normalize";
+@import "normalize";
 
-/* Layout rules */
-@import "layouts/responsive";
+
 
 /* Component (SMACSS module) rules */
 @import "../sass/components/misc";
@@ -26,3 +25,6 @@
 /* @import "theme-B"; */
 
 @import "dkan";
+
+/* Layout rules */
+@import "layouts/responsive";

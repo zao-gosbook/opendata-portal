@@ -8,19 +8,30 @@
 
 // JavaScript should be made compatible with libraries other than jQuery by
 // wrapping it with an "anonymous closure". See:
-// - https://drupal.org/node/1446420
+// - http://drupal.org/node/1446420
 // - http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth
 (function ($, Drupal, window, document, undefined) {
 
+  Drupal.behaviors.HintFormElemements = {
+    attach: function (context) {      
+      $('.pane-gb-search-pane .form-text', context).once(function(){        
+        $('.pane-gb-search-pane .form-text', context).attr("placeholder", "Поиск по данным"); 
 
-// To understand behaviors, see https://drupal.org/node/756722#behaviors
-Drupal.behaviors.my_custom_behavior = {
-  attach: function(context, settings) {
-
-    // Place your code here.
-
-  }
-};
-
-
+        $('input[placeholder], textarea[placeholder]').inputHints();
+      });    
+    }
+  } 
+  
+  Drupal.behaviors.TaxonomyColumns = {
+    attach: function (context) {      
+      var container = document.querySelector('.view-rubric-nodes .view-content');
+      var msnry = new Masonry( container, {
+        // options
+        //columnWidth: 200,
+        itemSelector: '.views-row',
+        gutter: '.view-rubric-nodes .view-header'
+      });  
+    }
+  }   
+  
 })(jQuery, Drupal, this, this.document);
