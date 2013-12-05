@@ -1,0 +1,518 @@
+<?php
+
+/**
+*  update storage for fields with node_display_fields type + remove 2 tables per each tables
+*/
+function node_display_fields_update_7001() {  
+  // enable field_none_storage module
+  if (!module_exists('field_none_storage')) {
+    $modules = array('field_none_storage');
+    $enable_dependencies = TRUE; 
+    module_enable($modules, $enable_dependencies);  
+    drupal_set_message(t('The "Field none storage" module has been installed'));
+  }
+  // get all node_display_field type fields, change storage to field_none_storage and remove 
+  // field_sql_storage tables {field_data_[field_name]} and {field_revision_[field_name]}
+  $field_type              = 'node_display_fields';
+  $module                  = 'node_display_fields';
+  $default_storage_type    = 'field_sql_storage';
+  $default_storage_module  = 'field_sql_storage';
+  $new_storage_type        = 'field_none_storage';
+  $new_storage_module      = 'field_none_storage';
+  $result = db_query('SELECT fc.field_name FROM {field_config} fc WHERE fc.type = :type AND fc.module = :module AND fc.storage_type = :storage_type AND fc.storage_module = :storage_module AND fc.deleted = 0',
+            array(':type' => $field_type, ':module' => $module, ':storage_type' => $default_storage_type, ':storage_module' => $default_storage_module))->fetchAllAssoc('field_name');          
+  foreach ($result as $field_name => $obj) {
+    // update storage for fields with node_display_fields type
+    db_update('field_config')
+    ->fields(array('storage_type' => $new_storage_type, 'storage_module' => $new_storage_module))
+    ->condition('type', $field_type)
+    ->condition('module', $module)
+    ->condition('storage_type', $default_storage_type)
+    ->condition('storage_module', $default_storage_module)
+    ->execute();
+    drupal_set_message(t('The storage has been updated for %field_name field', array('%field_name' => $field_name)));
+    // create an array to pass as parameter to remove 2 tables
+    $field['field_name'] = $field_name;
+    $field['deleted'] = FALSE;
+    $table_name = _field_sql_storage_tablename($field);
+    $revision_name = _field_sql_storage_revision_tablename($field);
+    db_drop_table($table_name);
+    db_drop_table($revision_name);
+    drupal_set_message(t('The sql storage tables have been removed (%table_name & %revision_name', array('%table_name' => $table_name, '%revision_name' => $revision_name)));
+  }   
+}
+
+/**
+* Implements hook_field_create_field().
+*/
+function node_display_fields_field_create_field($field) {
+  // for 'node_display_fields' fields change 'field_sql_storage' storage to 'field_none_storage' and remove 2 tables (field_data_[field_name], field_revision_data_[field_name])
+  if ($field['type'] == 'node_display_fields') {
+    // remove 2 tables which were created by field_sql_storage
+    $table_name = _field_sql_storage_tablename($field);
+    $revision_name = _field_sql_storage_revision_tablename($field);
+    db_drop_table($table_name);
+    db_drop_table($revision_name);
+    // setup new storage
+    $field['storage'] = array(
+      'type' => 'field_none_storage',
+      'settings' => array(),
+      'module' => 'field_none_storage',
+      'active' => 1,
+    );
+    // Build record to update.
+    $record = array(
+      'id' => $field['id'],
+      'storage_type' => $field['storage']['type'],
+      'storage_module' => $field['storage']['module'],
+      'storage_active' => $field['storage']['active'],
+    );
+    // Update the field storage.
+    $primary_key = array('id');
+    drupal_write_record('field_config', $record, $primary_key);
+  }
+}
+
+/**
+* Implements hook_field_update_field().
+*/
+function node_display_fields_field_update_field($field) {
+  node_display_fields_field_create_field($field);
+}
+
+/**
+ * Implements hook_field_info().  
+ */
+function node_display_fields_field_info() {
+  return array(
+    // We name our field as the associative name of the array.
+    'node_display_fields' => array(
+      'label' => t('Node Display Field'),
+      'description' => t('Overrides the display of view modes containing this field.'),
+      'default_widget' => 'node_display_fields_comments_count',
+      'default_formatter' => 'node_display_fields_formatter',
+      'settings' => array('bind_slider_to' => ''),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function node_display_fields_field_widget_info() {
+  return array(
+    'node_display_fields_comments_count' => array(
+      'label' => t('Comment count'),
+      'field types' => array('node_display_fields'),
+    ),
+    'node_display_fields_created_date' => array(
+      'label' => t('Created date'),
+      'field types' => array('node_display_fields'),
+    ),
+    'node_display_fields_updated_date' => array(
+      'label' => t('Updated date'),
+      'field types' => array('node_display_fields'),
+    ),
+    'node_display_fields_author' => array(
+      'label' => t('Author'),
+      'field types' => array('node_display_fields'),
+    ),
+    'node_display_fields_submitted_by' => array(
+      'label' => t('Submitted by'),
+      'field types' => array('node_display_fields'),
+    ),
+    'node_display_fields_text_slider' => array(
+      'label' => t('Text slider'),
+      'field types' => array('node_display_fields'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function node_display_fields_field_formatter_info() {
+  return array(
+    'node_display_fields_formatter' => array(
+      'label' => t('Default'),
+      'field types' => array('node_display_fields'),
+      'settings' => array(
+        'comments_format' => 'Comments (%comment_count)', 
+        'comments_link_to' => 'comments',
+        'author_format' => 'Submitted by !author',
+        'author_link_to' => 'profile',
+        'text_slider_pager_type' => 'mini',
+        'created_date_format' => '',
+        'updated_date_format' => '',
+      )
+    ),    
+  );
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function node_display_fields_field_is_empty($item, $field) {
+  return empty($item['test_field']);
+}
+
+/**
+ * Implements hook_field_widget_error().
+ */
+function node_display_fields_field_widget_error($element, $error, $form, &$form_state) {
+  form_error($element, $error['message']);    
+}
+
+/**
+ * Implements hook_field_widget_settings_form().
+ */
+function node_display_fields_field_widget_settings_form($field, $instance) {
+  //dsm($field);
+  //dsm($instance);
+  $widget = $instance['widget'];
+  $settings = $widget['settings'];
+  $form = array();
+  switch ($field['type']) {
+    case 'node_display_fields':      
+      if ($instance['widget']['type'] == 'node_display_fields_text_slider') {
+        $options = array();
+        $options[''] = t('- None -');
+        // get all text field instances of current content type
+        $result = db_query('SELECT fci.field_name FROM {field_config_instance} fci 
+          INNER JOIN {field_config} fc ON fci.field_id = fc.id 
+          WHERE fci.bundle = :bundle AND fc.module = :module', array(':bundle' => $instance['bundle'], ':module' => 'text'))->fetchAllAssoc('field_name');        
+        $all_text_fields = array();
+        foreach ($result as $field_name => $obj) {
+          $all_text_fields[$field_name] = $field_name;
+        }        
+        // text fields which must be excluded out of all_text_fields array because of binding with another Text slider fields
+        $excluded_fields = array();
+        // get all field instance of the current content type
+        $instances = field_info_instances('node', $instance['bundle']);           
+        foreach ($instances as $field_name => $field_data) {
+          // field has 'text_slider' widget ?
+          if (isset($field_data['widget']) && $field_data['widget']['type'] == 'node_display_fields_text_slider') {
+            // pull instance details to take widget settings info
+            $text_slider_instance = field_info_instance('node', $field_name, $instance['bundle']);            
+            // take info about what text field the text slider was binded to...
+            $excluded_fields[$text_slider_instance['field_name']] = isset($text_slider_instance['widget']['settings']['bind_slider_to']) ? $text_slider_instance['widget']['settings']['bind_slider_to'] : '';
+          }
+        }            
+        // remove current field out of excluded list - user can pick it up because he can update it        
+        unset($excluded_fields[$field['field_name']]);        
+        // disable used text fields which are used in another text slider fields of same content type
+        foreach ($all_text_fields as $text_field) {
+          if (in_array($text_field, $excluded_fields)) {
+            // find the key by value
+            $key = array_search($text_field, $excluded_fields);
+            $options[$instances[$text_field]['label'] . ' (locked by \'' . $instances[$key]['label'] . '\' slider)'] = array();
+          } else {
+            $options[$text_field] = $instances[$text_field]['label'];
+          }          
+        }
+                        
+        $form['bind_slider_to'] = array(
+          '#type' => 'select',
+          '#title' => t('Text field to attach to the Slider'),
+          '#options' => $options,
+          '#default_value' => isset($settings['bind_slider_to']) ? $settings['bind_slider_to'] : '',          
+          '#description' => t('textfield/textarea the slider should be attached to (if you see <strong>Bold option</strong> it means that field has been locked by another Slider'),          
+        );     
+      }
+      break;
+  }
+  
+  return $form;
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function node_display_fields_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $element = array();
+  if ($display['type'] == 'node_display_fields_formatter') {    
+    if ($instance['widget']['type'] == 'node_display_fields_comments_count') {
+      $element['comments_format'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Comments format'),
+        '#description' => t('%comment_count to get number of comments per node'),
+        '#default_value' => $settings['comments_format'],      
+      );
+      $element['comments_link_to'] = array(
+        '#type' => 'select',
+        '#title' => t('Link to'),        
+        '#default_value' => $settings['comments_link_to'],      
+        '#options' => array(
+          'none' => t('Nothing'),
+          'comments' => t('Comments (First comment)'),
+          'comments_last' => t('Comments (Last comment)'),
+          'content' => t('Content'),
+        ),
+      );                  
+    } elseif ($instance['widget']['type'] == 'node_display_fields_created_date') {
+      $element['created_date_format'] = array(
+        '#type' => 'select',
+        '#title' => t('Date format'),
+        '#description' => t(''),
+        '#default_value' => $settings['created_date_format'],      
+        '#options' => node_display_fields_get_formats(),
+      );
+    } elseif ($instance['widget']['type'] == 'node_display_fields_updated_date') {
+      $element['updated_date_format'] = array(
+        '#type' => 'select',
+        '#title' => t('Date format'),
+        '#description' => t(''),
+        '#default_value' => $settings['updated_date_format'],      
+        '#options' => node_display_fields_get_formats(),
+      );      
+    } elseif ($instance['widget']['type'] == 'node_display_fields_author') {
+      $element['author_format'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Format'),
+        '#description' => t('!author to get author name as the link or plain text depending on "Link to" option.'),
+        '#default_value' => $settings['author_format'],      
+      );      
+      
+      $element['author_link_to'] = array(
+        '#type' => 'select',
+        '#title' => t('Link to'),        
+        '#default_value' => $settings['author_link_to'],      
+        '#options' => array(
+          'none' => t('Nothing'),
+          'profile' => t('Profile'),                    
+        ),
+      );
+    } elseif ($instance['widget']['type'] == 'node_display_fields_submitted_by') {
+      
+      
+    } elseif ($instance['widget']['type'] == 'node_display_fields_text_slider') {
+      $element['text_slider_pager_type'] = array(
+        '#type' => 'select',
+        '#title' => t('Pager type'),        
+        '#default_value' => $settings['text_slider_pager_type'],      
+        '#options' => array(
+          'mini' => t('Mini'),
+          'normal' => t('Normal (with Prev-Next arrows)'),          
+        ),
+      );
+    }
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function node_display_fields_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  if ($display['type'] == 'node_display_fields_formatter') {    
+    //if (!empty($fields[$settings['title_field']])) {
+    return t('&nbsp;');
+    //}
+  } else {
+    return t('No title');
+  }
+  
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function node_display_fields_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, &$items, $display) {
+  $element = array();  
+  //dsm($instance['widget']['type']);
+  switch ($display['type']) {    
+    // This formatter simply outputs the net_field/period wrapped in a div.
+    case 'node_display_fields_formatter':          
+      $debug_mode = variable_get('node_display_fields_debug_mode', FALSE);
+      if ($instance['widget']['type'] == 'node_display_fields_comments_count') {           
+        $comments_format = !empty($display['settings']['comments_format']) ? $display['settings']['comments_format'] : 'Comments (%comment_count)(d)';        
+        $comments_link_to = !empty($display['settings']['comments_link_to']) ? $display['settings']['comments_link_to'] : 'comments';                
+        $output = t($comments_format, array('%comment_count' => $entity->comment_count));
+        if ($comments_link_to == 'comments') {
+          $output = l($output, 'node/'.$entity->nid, array('fragment' => 'comments', 'html' => TRUE));
+        } elseif ($comments_link_to == 'comments_last') {
+          $output = l($output, 'node/'.$entity->nid, array('fragment' => 'comments-last', 'html' => TRUE));
+        } elseif ($comments_link_to == 'content') {
+          $output = l($output, 'node/'.$entity->nid, array('html' => TRUE));
+        } 
+        $element[] = array('#markup' => $output);        
+      } elseif ($instance['widget']['type'] == 'node_display_fields_created_date') {
+        $created_date_format = !empty($display['settings']['created_date_format']) ? $display['settings']['created_date_format'] : 'd/m/Y - H:i';                
+        $output = date($created_date_format, $entity->created);
+        $element[] = array('#markup' => $output);
+      } elseif ($instance['widget']['type'] == 'node_display_fields_updated_date') {
+        $updated_date_format = !empty($display['settings']['updated_date_format']) ? $display['settings']['updated_date_format'] : 'd/m/Y - H:i';
+        $output = date($updated_date_format, $entity->changed);
+        $element[] = array('#markup' => $output);
+      } elseif ($instance['widget']['type'] == 'node_display_fields_author') {              
+        $format = !empty($display['settings']['author_format']) ? $display['settings']['author_format'] : 'Submitted by !author';        
+        $link_to = !empty($display['settings']['author_link_to']) ? $display['settings']['author_link_to'] : 'user/'.$entity->uid;                        
+        if ($entity->uid) {
+          if ($link_to == 'none') {
+            $output = $entity->name;
+          } elseif ($link_to == 'profile') {
+            $output = l($entity->name, 'user/'.$entity->uid);
+          }
+        } else {
+          $output = 'anonymous';
+        }
+        $output = t($format, array('!author' => $output));
+        $element[] = array('#markup' => $output);        
+      } elseif ($instance['widget']['type'] == 'node_display_fields_submitted_by') {
+      
+      } elseif ($instance['widget']['type'] == 'node_display_fields_text_slider') {    
+        //dsm($field);
+        //dsm($instance);
+        $pager_type = !empty($display['settings']['text_slider_pager_type']) ? $display['settings']['text_slider_pager_type'] : 'mini';        
+        $field_bind_slider_to = $instance['widget']['settings']['bind_slider_to'];
+        if (empty($field_bind_slider_to)) {
+          if ($debug_mode) {
+            watchdog('node_display_fields', $field['field_name']. ' slider has no any text fields attached - so the slider is not shown');
+          }
+          break;
+        }
+        $field_css_format = str_replace('_', '-', $field_bind_slider_to);        
+        // show Text slider only if text field consists of 2+ items ("Add new item" button on "Node Add/Edit Form")
+        if (isset($entity->{$field_bind_slider_to}[$entity->language]) && sizeof($entity->{$field_bind_slider_to}[$entity->language]) > 1) {                              
+          drupal_add_js(array('textSlider' => array('node-' . $entity->nid  => array('field_name' => $field_css_format, 'pager_type' => $pager_type))), array('type' => 'setting'));                    
+          drupal_add_js(drupal_get_path('module', 'node_display_fields') . '/widgets/text_slider/text_slider.js');                    
+          drupal_add_css(drupal_get_path('module', 'node_display_fields') . '/widgets/text_slider/text_slider.css');
+          $current_index = 0;          
+          $pager_links = array();          
+          // get current state of query string
+          $query = drupal_get_query_parameters($_GET, array('q', 'ts_page'));
+          for ($i=0; $i < sizeof($entity->{$field_bind_slider_to}[$entity->language]); $i++) {                              
+            $attributes = array();
+            // first page doesn't have parameter in query string
+            if ($i) {            
+              $query['ts_page'] = $i;                          
+            } else {
+              $attributes['class'][] = 'pager-current';
+            }            
+            // l() cannot be used here, since it adds an 'active' class based on the
+            // path only (which is always the current path for pager links).
+            $attributes['href'] = url($_GET['q'], array('query' => $query));
+            $attributes['class'][] = 'pager-item';
+            $attributes['rel'] = $i;
+            $link = '<a' . drupal_attributes($attributes) . '>' . check_plain($i+1) . '</a>';
+            $pager_links[] = $link;            
+          }                    
+          if ($pager_type == 'normal') {
+            $pager_links[] = l('»', '', array('fragment' => 'next','attributes' => array('class' => array('pager-item', 'pager-next'))));
+            array_unshift($pager_links, l('«', '', array('fragment' => 'prev','attributes' => array('class' => array('pager-item', 'pager-prev', 'inactive')))));
+          }
+          $output = theme('item_list', array('items' => $pager_links, 'attributes' => array('class' => array('pager', $field_css_format))));        
+          $element[] = array('#markup' => $output);        
+        } else {          
+          if ($debug_mode) {
+            watchdog('node_display_fields', $entity->nid. ' node has no 2+ items - so text slider is not shown');
+          }
+          break;
+        }
+      }
+    break;
+  }
+  // make a fake item because Drupal core doesn't show field without any value (no data related with 
+  // this node in field_data_[...] and field_revision_[...] tables)
+  if (!sizeof($items)) {
+    $items[0] = array('value' => 'fake');
+  }
+  
+  return $element;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function node_display_fields_form_alter(&$form, &$form_state, $form_id) {
+  //dsm($form_id);
+  if ($form_id == 'field_ui_field_edit_form' && $form['#field']['type'] == 'node_display_fields') {    
+    drupal_add_js('(function($){$("div.form-item-instance-required").css("display", "none");})(jQuery);', array('type' => 'inline', 'scope' => 'footer'));
+    drupal_add_js('(function($){$("div.form-item-instance-description").css("display", "none");})(jQuery);', array('type' => 'inline', 'scope' => 'footer'));
+    drupal_add_js('(function($){$("div.form-item-field-cardinality").css("display", "none");})(jQuery);', array('type' => 'inline', 'scope' => 'footer'));
+    drupal_add_js('(function($){$("#edit-").css("display", "none");})(jQuery);', array('type' => 'inline', 'scope' => 'footer'));
+    // for Text slider widgets only
+    if ($form['#instance']['widget']['type'] == 'node_display_fields_text_slider') {
+      // Change cardinality of attached Text field to Unlimited if it has 1 value
+      $form['#submit'][] = 'node_display_fields_unlimit_submit';
+    }
+  } else if ($form_id == 'field_ui_field_edit_form' && $form['#field']['module'] == 'text') {        
+    $instance = &$form['#instance'];
+    // get all field instance of the current content type
+    $instances = field_info_instances('node', $instance['bundle']);           
+    foreach ($instances as $field_name => $field_data) {
+      // field has 'text_slider' widget ?
+      if (isset($field_data['widget']) && $field_data['widget']['type'] == 'node_display_fields_text_slider') {
+        // pull field details to take settings info
+        $text_slider_instance = field_info_instance('node', $field_name, $instance['bundle']);
+        //dsm($text_slider_field);
+        // check if current Text field instance has been attached to Slider field
+        if ($text_slider_instance['widget']['settings']['bind_slider_to'] == $instance['field_name']) {       
+          // lock Cardinality field and add instructions what to do to unlock in description
+          $form['field']['cardinality']['#disabled'] = TRUE;
+          $link = 'admin/structure/types/manage/' . $instance['bundle'] . '/fields/' . $text_slider_instance['field_name'];
+          $form['field']['cardinality']['#description'] .= '<br/> <strong>Node Display Fields</strong>: To unlock this field go to ' . l(t('Slider settings form'), $link, array('attributes' => array('target' => '_blank'))) .' and select <strong>None</strong> option or another availble Text field';
+        } 
+      }
+    }
+  } 
+}
+
+/*
+ * Change cardinality of attached Text field to Unlimited if it has 1 value
+ */
+function node_display_fields_unlimit_submit($form, &$form_state) {  
+  //dsm($form_state['values']);
+  $bind_slider_to  = $form_state['values']['instance']['widget']['settings']['bind_slider_to'];
+  $entity_type     = $form_state['values']['instance']['entity_type'];
+  $bundle_name     = $form_state['values']['instance']['bundle'];
+  if (empty($bind_slider_to)) {
+    drupal_set_message(t('Text slider hasn\'t been attached to any Text field'));
+  } else {    
+    $text_field = field_info_field($bind_slider_to); //field_info_instance($entity_type, $bind_slider_to, $bundle_name);    
+    if ($text_field['cardinality'] == 1) {
+      // Unlimited is -1
+      $text_field['cardinality'] = -1;
+      field_update_field($text_field);              
+      drupal_set_message(t('Candinality has been changed to Unlimited for \'' . $text_field['field_name'] . '\' field'));
+    }        
+  }
+}
+
+function node_display_fields_get_formats() {
+  // Get list of all available date formats.
+  $formats = array();
+  drupal_static_reset('system_get_date_formats');
+  $date_formats = system_get_date_formats(); // Call this to rebuild the list, and to have default list.
+  foreach ($date_formats as $type => $format_info) {
+    $formats = array_merge($formats, $format_info);
+  }
+  $custom_formats = system_get_date_formats('custom');
+  if (!empty($custom_formats)) {
+    $formats = array_merge($formats, $custom_formats);
+  }
+  $choices = array();
+  foreach ($formats as $f => $format) {
+    $choices[$f] = format_date(REQUEST_TIME, 'custom', $f);
+  }
+  
+  return $choices;
+}
+
+/*
+ * Indicate first item to hide else through css (because through js sometimes shows all items while the page is loading)
+ * @see template_process_field()
+ * @see field.tpl.php
+ */
+function node_display_fields_process_field(&$variables) {  
+  // modules/field/field.module
+  // Strings: 1172-1173
+  // 1172: $classes = 'field-item ' . ($delta % 2 ? 'odd' : 'even');
+  // 1173: $output .= '<div class="' . $classes . '"' . $variables['item_attributes'][$delta] . '>' . drupal_render($item) . '</div>';
+  // It's impposible to add additional class to field item because class= attribute has been hardcoded.. so use id= attribute to setup first item
+  $variables['item_attributes'][0] = 'id="first"';
+}
