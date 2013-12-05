@@ -1,0 +1,10 @@
+
+/* Field display */
+.field-items .field-item {
+  display:none;  
+}
+/* Show only first field item else items is shown by javascript (text_slider widget) */
+.field-type-node-display-fields .field-items .field-item, .field-items #first {
+  display:block;  
+}
+

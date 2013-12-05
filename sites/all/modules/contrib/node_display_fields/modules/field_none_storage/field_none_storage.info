@@ -1,0 +1,13 @@
+name = Field none storage
+description = Allow to create fields which only shows data - not store
+package = Node Display Fields
+core = 7.x
+dependencies[] = field
+
+
+; Information added by drupal.org packaging script on 2013-10-05
+version = "7.x-1.4"
+core = "7.x"
+project = "node_display_fields"
+datestamp = "1380967722"
+
