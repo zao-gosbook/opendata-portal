@@ -1,0 +1,366 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function node_form_mutator_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'page_manager' && $plugin_type == 'task_handlers') {
+    return 'plugins/' . $plugin_type;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function node_form_mutator_theme() {
+  return array(
+    'node_form_mutator_field_form_table' => array(
+      'render element' => 'form',
+    ),
+  );
+}
+
+/**
+ * Theme function which ouputs node field settings as a table.
+ */
+function theme_node_form_mutator_field_form_table($variables) {
+  $form = $variables['form'];
+
+  $output = '';
+  if (isset($form['field_table'])) {
+    $rows = array();
+    foreach (element_children($form['field_table']) as $value) {
+      $row = array();
+      $input = $form['field_table'][$value];
+
+      $row[] = array('data' => $input['title']);
+      $row[] = array('data' => $input['field_name']);
+      $row[] = array('data' => $input['override']);
+      $row[] = array('data' => $input['label']);
+      $row[] = array('data' => $input['hidden_field']);
+
+      $rows[] = array(
+        'data' => $row,
+      );
+    }
+    $headers = array(t('Title'), t('Field name'), t('Override defaults'), t('Label'), t('Show'));
+    $output = theme('table', array(
+      'header' => $headers,
+      'rows' => $rows,
+      'attributes' => array(
+        'id' => 'field_table',
+      ),
+    ));
+    unset($form['field_table']);
+  }
+  return $output . drupal_render_children($form);
+}
+
+/**
+ * Implements hook_field_access().
+ */
+function node_form_mutator_field_access($op, $field, $entity_type, $entity, $account) {
+  if ($op !== 'edit') {
+    return TRUE;
+  }
+  if ($entity_type !== 'node') {
+    return TRUE;
+  }
+  if (is_null($entity)) {
+    return TRUE;
+  }
+
+  $field_conf = _node_form_mutator_form_conf($entity, $field['field_name']);
+
+  if ((count($field_conf) == 0) || (!$field_conf['override']) || (intval($field_conf['hidden_field']) != 1)) {
+    return TRUE;
+  }
+
+  // Hide the field widget completely.
+  return FALSE;
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function node_form_mutator_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (isset($element['#entity_type'])) {
+    _node_form_mutator_field_widget_form_alter_process_element($element, $form_state, $context);
+    return;
+  }
+  if (!is_array($element)) {
+    return;
+  }
+  foreach ($element as &$element_part) {
+    _node_form_mutator_field_widget_form_alter_process_element($element_part, $form_state, $context);
+  }
+}
+
+function _node_form_mutator_field_widget_form_alter_process_element(&$element, &$form_state, $context) {
+  if ((!isset($element['#entity_type'])) || ($element['#entity_type'] !== 'node') || (!isset($element['#entity']))) {
+    return;
+  }
+  $entity = $element['#entity'];
+  if (is_null($entity)) {
+    return;
+  }
+  $field_conf = _node_form_mutator_form_conf($entity, $context['field']['field_name']);
+  if ((count($field_conf) > 0) && ($field_conf['override'])) {
+    if (strlen($element['#title']) > 0) {
+      // Modify widget label for single value fields.
+      $element['#title'] = $field_conf['label'];
+    }
+    if ($field_conf['hidden_field'] == 2) {
+      $element['#disabled'] = TRUE;
+    }
+    if ($field_conf['hidden_field'] == 3) {
+      $markup = drupal_render(field_view_field($element['#entity_type'], $element['#entity'], $context['field']['field_name'], 'default'));
+      $children = array_keys($element);
+      foreach ($children as $child) {
+        if ($child != '#language') {
+          unset($element[$child]);
+        }
+      }
+      $element['#type'] = 'markup';
+      $element['#markup'] = $markup;
+    }
+  }
+}
+
+/**
+ * Implements hook_field_attach_form().
+ */
+function node_form_mutator_field_attach_form($entity_type, $entity, &$form, &$form_state, $langcode) {
+  if ($entity_type !== 'node') {
+    return;
+  }
+  if (is_null($entity)) {
+    return;
+  }
+  $conf = _node_form_mutator_form_conf($entity);
+  if (!isset($conf['modification'])) {
+    return;
+  }
+
+  foreach ($conf['modification'] as $field_name => $field_conf) {
+    if (!$field_conf['override']) {
+      continue;
+    }
+    if (!isset($form[$field_name])) {
+      continue;
+    }
+
+    // Multiple value fields processing.
+    if (!isset($form[$field_name]['#language'])) {
+      continue;
+    }
+    $lang = $form[$field_name]['#language'];
+    if (!isset($form[$field_name][$lang]['#cardinality'])) {
+      continue;
+    }
+
+    if (($field_conf['hidden_field'] == 2) && ($form[$field_name][$lang]['#cardinality'] != 1)) {
+      $form[$field_name][$lang]['#type'] = 'item';
+      $form[$field_name][$lang]['#disabled'] = TRUE;
+      unset($form[$field_name][$lang]['#theme']);
+      unset($form[$field_name][$lang]['#prefix']);
+      unset($form[$field_name][$lang]['#suffix']);
+      foreach (array_keys($form[$field_name][$lang]) as $key) {
+        if (is_array($form[$field_name][$lang][$key])) {
+          unset($form[$field_name][$lang][$key]['_weight']);
+        }
+      }
+    }
+
+    if (($field_conf['hidden_field'] == 3) && ($form[$field_name][$lang]['#cardinality'] != 1)) {
+      $markup = drupal_render(field_view_field($entity_type, $entity, $field_name, 'default'));
+      $children = array_keys($form[$field_name]);
+      foreach ($children as $child) {
+        if ($child != '#language') {
+          unset($form[$field_name][$child]);
+        }
+      }
+      $form[$field_name]['#type'] = 'markup';
+      $form[$field_name]['#markup'] = $markup;
+    }
+
+    if (!isset($form[$field_name][$lang]['#title'])) {
+      continue;
+    }
+    if (strlen($form[$field_name][$lang]['#title']) > 0) {
+      // Modify widget label for multiple value fields.
+      $form[$field_name][$lang]['#title'] = $field_conf['label'];
+    }
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function node_form_mutator_form_node_form_alter(&$form, $form_state) {
+  if (!isset($form['#node'])) {
+    return;
+  }
+  $conf = _node_form_mutator_form_conf($form['#node']);
+  if (!isset($conf['modification'])) {
+    return;
+  }
+
+  // These are not Drupal fields, so the processing on the form level is required.
+  foreach ($conf['modification'] as $field_name => $field_conf) {
+    if (!$field_conf['override']) {
+      continue;
+    }
+    // Special fields processing.
+    if (substr($field_name, 0, 1) !== ':') {
+      continue;
+    }
+    $field_name = substr($field_name, 1);
+
+    // Modification of buttons is slightly different.
+    if (substr($field_name, 0, 8) === 'actions:') {
+      _node_form_mutator_modify_button($form, $form_state, substr($field_name, 8), $field_conf);
+      continue;
+    }
+
+    if (!isset($form[$field_name])) {
+      continue;
+    }
+    // Hide the field widget completely.
+    if (intval($field_conf['hidden_field']) == 1) {
+      $form[$field_name]['#access'] = FALSE;
+      continue;
+    }
+    if (intval($field_conf['hidden_field']) == 2) {
+      $form[$field_name]['#disabled'] = TRUE;
+    }
+    if (intval($field_conf['hidden_field']) == 3) {
+      unset($form[$field_name]['#description']);
+      $form[$field_name]['#type'] = 'markup';
+      $value = '';
+      if (isset($form['#entity']->{$field_name})) {
+        $value = '<div class="nfm-' . $field_name . '">'  . check_plain($form['#entity']->{$field_name}) . '</div>';
+      }
+      $form[$field_name]['#markup'] = $value;
+    }
+    // Modify widget label for special fields.
+    $label = $field_conf['label'];
+    if ((isset($form[$field_name]['#title'])) && (strlen($form[$field_name]['#title'])) > 0) {
+      $form[$field_name]['#title'] = $label;
+    }
+  }
+}
+
+function _node_form_mutator_modify_button(&$form, $form_state, $button_name, $field_conf) {
+  if (!isset($form['actions'][$button_name])) {
+    return;
+  }
+  if (intval($field_conf['hidden_field']) == 2) {
+      $form['actions'][$button_name]['#disabled'] = TRUE;
+  }
+  // Hide the button completely.
+  if (intval($field_conf['hidden_field']) == 1) {
+    $form['actions'][$button_name]['#access'] = FALSE;
+    return;
+  }
+  $form['actions'][$button_name]['#value'] = $field_conf['label'];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function node_form_mutator_module_implements_alter(&$implementations, $hook) {
+  if ($hook !== 'form_alter') {
+    return;
+  }
+  if (!isset($implementations['node_form_mutator'])) {
+    return;
+  }
+  $implementation = $implementations['node_form_mutator'];
+  unset($implementations['node_form_mutator']);
+  $implementations['node_form_mutator'] = $implementation;
+}
+
+/**
+ * Returns configuration of node form modification by using node as the context.
+ */
+function _node_form_mutator_form_conf($node, $field_name = NULL) {
+  if (is_null($node)) {
+    return array();
+  }
+  $form_conf = &drupal_static(__FUNCTION__, array());
+  $nid = isset($node->nid) ? $node->nid : 0;
+
+  if (isset($form_conf[$node->type][$nid])) {
+    $conf = $form_conf[$node->type][$nid];
+    if (!is_null($field_name)) {
+      return (isset($conf['modification'][$field_name])) ?  $conf['modification'][$field_name] : array();
+    }
+    return $conf;
+  }
+
+  $conf = array();
+
+  // Load my task plugin
+  $task = page_manager_get_task('node_edit');
+
+  // Load the node into a context.
+  ctools_include('context');
+  ctools_include('context-task-handler');
+  // Get all contexts without creation of extra forms.
+  $contexts = _node_form_mutator_ctools_context_handler_get_task_contexts($task, '', array($node));
+  foreach (array_keys($contexts) as $context_id) {
+    if (($contexts[$context_id]->plugin === 'node_edit_form') && (!isset($contexts[$context_id]->data))) {
+      $contexts[$context_id]->data = $node;
+    }
+  }
+
+  $handlers = page_manager_load_sorted_handlers($task, '', TRUE);
+  $args = array(isset($node->nid) ? $node->nid : $node->type);
+  foreach ($handlers as $id => $handler) {
+    if ($handler->handler !== 'form_mutator') {
+      continue;
+    }
+    if (!ctools_context_handler_default_test($handler, $contexts, $args)) {
+      continue;
+    }
+    $conf = $handlers[$id]->conf;
+    $form_conf[$node->type][$nid] = $conf;
+    break;
+  }
+
+  if (!is_null($field_name)) {
+    return (isset($conf['modification'][$field_name])) ?  $conf['modification'][$field_name] : array();
+  }
+  return $conf;
+}
+
+/**
+ * The replacement for ctools_context_handler_get_task_contexts() which doesn't create extra forms
+ * (this eliminates the problem of calling drupal_build_form() from drupal_build_form() itself).
+ */
+function _node_form_mutator_ctools_context_handler_get_task_contexts($task, $subtask, $args) {
+  $contexts = ctools_context_handler_get_base_contexts($task, $subtask);
+  $arguments = ctools_context_handler_get_task_arguments($task, $subtask);
+  foreach ($arguments as $argument) {
+    if ($argument['name'] == 'node_edit') {
+      $id = ctools_context_id($argument, 'argument');
+      if (empty($contexts[$id])) {
+        $context = new ctools_context(array('form', 'node_edit', 'node_form',  'node_edit_form', 'node', 'entity:node'));
+        $context->plugin = 'node_edit_form';
+        $contexts[$id] = $context;
+      }
+    }
+    if ($argument['name'] == 'node_add') {
+      $id = ctools_context_id($argument, 'argument');
+      if (empty($contexts[$id])) {
+        $context = new ctools_context(array('form', 'node_add', 'node_form', 'node', 'entity:node'));
+        $context->plugin = 'node_add_form';
+        $contexts[$id] = $context;
+      }
+    }
+  }
+  ctools_context_get_context_from_arguments($arguments, $contexts, $args);
+
+  return $contexts;
+}

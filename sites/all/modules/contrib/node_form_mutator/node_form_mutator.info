@@ -1,0 +1,12 @@
+name = Node form mutator
+description = Modify node form according to conditions configured by Page manager.
+core = 7.x
+package = Chaos tool suite
+dependencies[] = page_manager
+
+; Information added by  packaging script on 2013-11-15
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "node_form_mutator"
+datestamp = "1384513105"
+
