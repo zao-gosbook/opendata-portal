@@ -24,8 +24,10 @@
   
   Drupal.behaviors.TaxonomyColumns = {
     attach: function (context) {      
-      var container = document.querySelector('.view-rubric-nodes .view-content');
-      var msnry = new Masonry( container, {
+      // var container = document.querySelector('.view-rubric-nodes .view-content');
+      var container = jQuery('.view-rubric-nodes .view-content');
+      container.masonry({
+      //var msnry = new Masonry( container, {
         // options
         //columnWidth: 200,
         itemSelector: '.views-row',
