@@ -1,0 +1,4 @@
+name = ARC2
+description = Provides ARC2 library and its basic functionality.
+dependencies[] = libraries (2.x)
+core = 7.x
