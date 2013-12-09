@@ -9,6 +9,7 @@ define('OD_IMPORT_VOCABULARY_SUBJECTS_ID', 2);
 // Meta fields.
 define('OD_IMPORT_FIELD_META_IDENTIFIER', 'field_dataset_id');
 define('OD_IMPORT_FIELD_META_DESCRIPTION', 'body');
+define('OD_IMPORT_FIELD_META_OWNER', 'field_organization');
 define('OD_IMPORT_FIELD_META_CREATED', 'field_date_first_time_publ');
 define('OD_IMPORT_FIELD_META_SUBJECT', 'field_tags');
 
@@ -21,37 +22,64 @@ define('OD_IMPORT_FIELD_FORMAT', 'field_format');
 define('OD_IMPORT_FIELD_DATA', 'field_link_remote_file');
 define('OD_IMPORT_FIELD_STRUCTURE', 'field_link_structure_file');
 
-function od_import_init() {
-  return;
-  if (!drupal_is_front_page()) {
-    return;
+function od_import_parse_organization($org) {
+  // Get organization url.
+  if (empty($org->field_site_url[LANGUAGE_NONE][0])) {
+    return FALSE;
   }
 
-  $site = 'http://www.mkrf.ru/';
+  $url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
+
+
   $vars = array(
     'encoding' => 'Windows-1251',
   );
 
   $od_library = libraries_load('od_api');
   if (!$od_library['loaded']) {
-    return;
+    watchdog('od_import', 'Opendata API library not detected.');
+    return FALSE;
   }
 
   $od = new OdApi();
-  $data = $od->getOpendata($site, $vars);
+  $data = $od->getOpendata($url, $vars);
 
   $errors = $od->getErrors();
 
+  $error = (string) reset($errors);
+
   if (!is_array($data) || $errors) {
-    return;
+    watchdog('od_import', 'Parsing of %url failed: %error', array('%url' => $url, '%error' => $error));
+    return FALSE;
   }
 
   foreach ($data as $meta) {
-    od_import_create_dataset($meta);
+    od_import_create_dataset($meta, $org->nid);
   }
+
+  watchdog('od_import', 'Parsing of %url successfully finished.', array('%url' => $url));
+  return TRUE;
 }
 
-function od_import_create_dataset($meta) {
+/**
+ * Implements hook_menu().
+ */
+function od_import_menu() {
+  // Init output variable.
+  $items = array();
+/*
+  $items['opendata-import-old'] = array(
+    'title' => 'Opendata import demo page',
+    'page callback' => 'od_import_opendata_import',
+    'access callback' => TRUE,
+    'type' => MENU_SUGGESTED_ITEM,
+    'file' => 'includes/pages/opendata_import.inc',
+  );
+*/
+  return $items;
+}
+
+function od_import_create_dataset($meta, $org_id) {
   $dataset_node = new stdClass();
 
   $dataset_node->title = $meta['title'];
@@ -80,16 +108,10 @@ function od_import_create_dataset($meta) {
   );
 
   // Meta owner.
-  /*
   // @todo Solve problem with owner.
-  $node->body[LANGUAGE_NONE][0] = array(
-    'value' => $meta['description'],
-    'summary' => '',
-    'format' => 'full_html',
-    'save_value' => $meta['description'],
-    'safe_summary' => '',
+  $dataset_node->{OD_IMPORT_FIELD_META_OWNER}[LANGUAGE_NONE][0] = array(
+    'target_id' => $org_id,
   );
-  */
 
   // Meta created.
   $created_date = new DateTime($meta['created']);
@@ -308,4 +330,29 @@ function od_import_load_or_create_file_by_uri($uri) {
   }
 
   return $file;
+}
+
+/**
+ * Implements hook_action_info().
+ */
+function od_import_action_info() {
+  // Init output variable.
+  $items = array();
+
+  $items['od_import_organizations'] = array(
+    'type' => 'node',
+    'label' => t('Import from organizations'),
+    'configurable' => FALSE,
+    'aggregate' => TRUE,
+    'triggers' => array('any'),
+  );
+
+  return $items;
+}
+
+function od_import_organizations($entities, $context) {
+  // @todo Output result by context.
+  foreach ($entities as $entity) {
+    od_import_parse_organization($entity);
+  }
 }
