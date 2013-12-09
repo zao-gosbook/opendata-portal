@@ -1,0 +1,21 @@
+<?php
+
+function views_filters_args_views_query_alter(&$view, &$query) {
+  foreach ($query->where as &$where) {
+    foreach ($where['conditions'] as &$condition) {
+      if (!empty($condition['value'])) {
+        $value = $condition['value'];
+        $arg_key = drupal_substr($value,1);
+        if (drupal_substr($value, 0,1) == '!' && is_numeric($arg_key)) {
+          if (!empty($view->args[$arg_key-1])) {
+            $condition['value'] = $view->args[$arg_key-1];
+          }
+          else {
+            $condition['operator'] = 'IS NULL';
+            unset($condition['value']);
+          }
+        }
+      }
+    }
+  }
+}
