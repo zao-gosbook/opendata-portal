@@ -1,0 +1,358 @@
+<?php
+
+define('OD_IMPORT_USER_ID', 107);
+define('OD_IMPORT_VOCABULARY_FORMATS', 'format');
+define('OD_IMPORT_VOCABULARY_FORMATS_ID', 1);
+define('OD_IMPORT_VOCABULARY_SUBJECTS', 'tags');
+define('OD_IMPORT_VOCABULARY_SUBJECTS_ID', 2);
+
+// Meta fields.
+define('OD_IMPORT_FIELD_META_IDENTIFIER', 'field_dataset_id');
+define('OD_IMPORT_FIELD_META_DESCRIPTION', 'body');
+define('OD_IMPORT_FIELD_META_OWNER', 'field_organization');
+define('OD_IMPORT_FIELD_META_CREATED', 'field_date_first_time_publ');
+define('OD_IMPORT_FIELD_META_SUBJECT', 'field_tags');
+
+// Publisher fields.
+define('OD_IMPORT_FIELD_PUBLISHER_NAME', 'field_contact_name');
+define('OD_IMPORT_FIELD_PUBLISHER_PHONE', 'field_contact_phone');
+define('OD_IMPORT_FIELD_PUBLISHER_EMAIL', 'field_email_responsible');
+define('OD_IMPORT_FIELD_RESOURCES', 'field_resources');
+define('OD_IMPORT_FIELD_FORMAT', 'field_format');
+define('OD_IMPORT_FIELD_DATA', 'field_link_remote_file');
+define('OD_IMPORT_FIELD_STRUCTURE', 'field_link_structure_file');
+
+function od_import_parse_organization($org) {
+  // Get organization url.
+  if (empty($org->field_site_url[LANGUAGE_NONE][0])) {
+    return FALSE;
+  }
+
+  $url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
+
+
+  $vars = array(
+    'encoding' => 'Windows-1251',
+  );
+
+  $od_library = libraries_load('od_api');
+  if (!$od_library['loaded']) {
+    watchdog('od_import', 'Opendata API library not detected.');
+    return FALSE;
+  }
+
+  $od = new OdApi();
+  $data = $od->getOpendata($url, $vars);
+
+  $errors = $od->getErrors();
+
+  $error = (string) reset($errors);
+
+  if (!is_array($data) || $errors) {
+    watchdog('od_import', 'Parsing of %url failed: %error', array('%url' => $url, '%error' => $error));
+    return FALSE;
+  }
+
+  foreach ($data as $meta) {
+    od_import_create_dataset($meta, $org->nid);
+  }
+
+  watchdog('od_import', 'Parsing of %url successfully finished.', array('%url' => $url));
+  return TRUE;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function od_import_menu() {
+  // Init output variable.
+  $items = array();
+/*
+  $items['opendata-import-old'] = array(
+    'title' => 'Opendata import demo page',
+    'page callback' => 'od_import_opendata_import',
+    'access callback' => TRUE,
+    'type' => MENU_SUGGESTED_ITEM,
+    'file' => 'includes/pages/opendata_import.inc',
+  );
+*/
+  return $items;
+}
+
+function od_import_create_dataset($meta, $org_id) {
+  $dataset_node = new stdClass();
+
+  $dataset_node->title = $meta['title'];
+  $dataset_node->type = 'dataset';
+  node_object_prepare($dataset_node);
+  $dataset_node->language = LANGUAGE_NONE;
+  $dataset_node->uid = OD_IMPORT_USER_ID;
+  $dataset_node->status = NODE_NOT_PUBLISHED;
+  $dataset_node->promote = NODE_NOT_PROMOTED;
+  $dataset_node->comment = COMMENT_NODE_OPEN;
+
+  // Meta identifier.
+  $dataset_node->{OD_IMPORT_FIELD_META_IDENTIFIER}[LANGUAGE_NONE][0] = array(
+    'value' => $meta['identifier'],
+    'format' => NULL,
+    'save_value' => $meta['identifier'],
+  );
+
+  // Meta description.
+  $dataset_node->{OD_IMPORT_FIELD_META_DESCRIPTION}[LANGUAGE_NONE][0] = array(
+    'value' => $meta['description'],
+    'summary' => '',
+    'format' => 'full_html',
+    'save_value' => $meta['description'],
+    'safe_summary' => '',
+  );
+
+  // Meta owner.
+  // @todo Solve problem with owner.
+  $dataset_node->{OD_IMPORT_FIELD_META_OWNER}[LANGUAGE_NONE][0] = array(
+    'target_id' => $org_id,
+  );
+
+  // Meta created.
+  $created_date = new DateTime($meta['created']);
+  $dataset_node->{OD_IMPORT_FIELD_META_CREATED}[LANGUAGE_NONE][0] = array(
+    'value' => $created_date->getTimestamp(),
+    'timezone' => 'Europe/Moscow',
+    'timezone_db' => 'Europe/Moscow',
+    'date_type' => 'datestamp',
+  );
+
+/*
+  // Valid.
+  // @todo Solve problem with valid.
+  $field = field_info_field('field_frequency');
+  $allowed_values = list_allowed_values($field);
+  $node->field_frequency[LANGUAGE_NONE][0] = array(
+    'value' => $meta['description'],
+  );
+  // value (String, 1 characters ) 0
+  */
+
+  // Publisher subject.
+  $subjects = explode(',', $meta['subject']);
+  $dataset_node->{OD_IMPORT_FIELD_META_SUBJECT}[LANGUAGE_NONE] = array();
+  foreach ($subjects as $subject) {
+    $subject = od_import_load_or_create_subject_by_name(trim($subject));
+    $dataset_node->{OD_IMPORT_FIELD_META_SUBJECT}[LANGUAGE_NONE][] = array(
+      'tid' => $subject->tid,
+    );
+  }
+
+  // Publisher name.
+  $dataset_node->{OD_IMPORT_FIELD_PUBLISHER_NAME}[LANGUAGE_NONE][0] = array(
+    'value' => $meta['publisher']['name'],
+    'format' => NULL,
+    'save_value' => $meta['publisher']['name'],
+  );
+
+  // Publisher phone.
+  $dataset_node->{OD_IMPORT_FIELD_PUBLISHER_PHONE}[LANGUAGE_NONE][0] = array(
+    'value' => $meta['publisher']['phone'],
+    'format' => NULL,
+    'save_value' => $meta['publisher']['phone'],
+  );
+
+  // Publisher email.
+  $dataset_node->{OD_IMPORT_FIELD_PUBLISHER_EMAIL}[LANGUAGE_NONE][0] = array(
+    'email' => $meta['publisher']['mbox'],
+  );
+
+  // Save new dataset.
+  node_save($dataset_node);
+
+  // Add resource to dataset. It requires existing dataset node with node ID.
+  od_import_source_set_resource($dataset_node, $meta);
+
+  // Update dataset.
+  node_save($dataset_node);
+}
+
+/**
+ * Add resource to dataset. It requires existing dataset node with node ID.
+ */
+function od_import_source_set_resource(&$meta_node, $meta) {
+  $resource = od_import_create_resource($meta_node, $meta);
+
+  $meta_node->{OD_IMPORT_FIELD_RESOURCES} = array();
+  if ($resource) {
+    $meta_node->{OD_IMPORT_FIELD_RESOURCES}[LANGUAGE_NONE][0] = array(
+      'target_id' => $resource->nid,
+    );
+  }
+}
+
+function od_import_create_resource($meta_node, $meta) {
+  // Init output variable.
+  $resource_node = FALSE;
+
+  // Return if data does not exist.
+  if (empty($meta['data'])) {
+    return $resource_node;
+  }
+
+  // Return if meta node is new.
+  if (empty($meta_node->nid)) {
+    return $resource_node;
+  }
+
+  foreach ($meta['data'] as $data) {
+    // Data.
+    if (empty($resource_node)) {
+      $resource_node = new stdClass();
+
+      $resource_node->title = $meta['title'];
+      $resource_node->type = 'resource';
+      node_object_prepare($resource_node);
+      $resource_node->language = LANGUAGE_NONE;
+      $resource_node->uid = OD_IMPORT_USER_ID;
+      $resource_node->status = NODE_PUBLISHED;
+      $resource_node->promote = NODE_NOT_PROMOTED;
+      $resource_node->comment = COMMENT_NODE_OPEN;
+
+      $resource_node->field_dataset_ref[LANGUAGE_NONE][0] = array(
+        'target_id' => $meta_node->nid,
+      );
+    }
+    else {
+      $resource_node->revision = TRUE;
+    }
+
+    // Set format field.
+    od_import_source_set_format($resource_node, $data);
+    // Set data file field.
+    od_import_source_set_data($resource_node, $data);
+    // Set structure field.
+    od_import_source_set_structure($resource_node, $data);
+
+    node_save($resource_node);
+  }
+
+  return $resource_node;
+}
+
+function od_import_source_set_format(&$source_node, $data) {
+  // Get opendata format.
+  $format = od_import_get_format_id($data['format']);
+
+  // Set opendata format to source node.
+  $source_node->{OD_IMPORT_FIELD_FORMAT} = array();
+  if ($format) {
+    $source_node->{OD_IMPORT_FIELD_FORMAT}[LANGUAGE_NONE][0] = array(
+      'tid' => $format,
+    );
+  }
+}
+
+function od_import_source_set_data(&$source_node, $data) {
+  // Get opendata data file.
+  $data_file = od_import_load_or_create_file_by_uri($data['source']);
+
+  // Set opendata data file to source node.
+  $source_node->{OD_IMPORT_FIELD_DATA} = array();
+  if ($data_file) {
+    $data_file->display = 1; // @todo Check this.
+    $source_node->{OD_IMPORT_FIELD_DATA}[LANGUAGE_NONE][0] = (array) $data_file;
+  }
+}
+
+function od_import_source_set_structure(&$source_node, $data) {
+  // Get opendata structure file.
+  $structure_file = od_import_load_or_create_file_by_uri($data['structure']['source']);
+
+  // Set opendata structure file to source node.
+  $source_node->{OD_IMPORT_FIELD_STRUCTURE} = array();
+  if ($structure_file) {
+    $structure_file->display = 1; // @todo Check this.
+    $source_node->{OD_IMPORT_FIELD_STRUCTURE}[LANGUAGE_NONE][0] = (array) $structure_file;
+  }
+}
+
+function od_import_get_subject_id($subject) {
+  return od_import_get_term_id_by_name(strtolower($subject), OD_IMPORT_VOCABULARY_SUBJECTS);
+}
+
+function od_import_get_format_id($format) {
+  return od_import_get_term_id_by_name(strtolower($format), OD_IMPORT_VOCABULARY_FORMATS);
+}
+
+function od_import_get_term_id_by_name($name, $vocabulary) {
+  // Get terms by name.
+  $terms = taxonomy_get_term_by_name($name, $vocabulary);
+
+  return !empty($terms) ? reset($terms)->tid : FALSE;
+}
+
+function od_import_get_file_by_uri($uri) {
+  $conditions = array('uri' => trim($uri));
+
+  return file_load_multiple(array(), $conditions);
+}
+
+function od_import_load_or_create_subject_by_name($name) {
+  $subject_id = od_import_get_subject_id($name);
+
+  if ($subject_id) {
+    $subject = taxonomy_term_load($subject_id);
+  }
+
+  if (empty($subject)) {
+    $subject = new stdClass();
+    $subject->name = $name;
+    $subject->vid = OD_IMPORT_VOCABULARY_SUBJECTS_ID;
+    taxonomy_term_save($subject);
+  }
+
+  return $subject;
+}
+
+function od_import_load_or_create_file_by_uri($uri) {
+  if (!file_valid_uri($uri)) {
+    return FALSE;
+  }
+
+  // Get file by url.
+  $files = od_import_get_file_by_uri($uri);
+  $file = !empty($files) ? reset($files) : FALSE;
+
+  if (empty($file)) {
+    $file = new stdClass();
+    $file->uri = $uri;
+    $file->filename = basename($uri);
+    $file->filemime = file_get_mimetype($uri);
+    $file->uid = OD_IMPORT_USER_ID;
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+  }
+
+  return $file;
+}
+
+/**
+ * Implements hook_action_info().
+ */
+function od_import_action_info() {
+  // Init output variable.
+  $items = array();
+
+  $items['od_import_organizations'] = array(
+    'type' => 'node',
+    'label' => t('Import from organizations'),
+    'configurable' => FALSE,
+    'aggregate' => TRUE,
+    'triggers' => array('any'),
+  );
+
+  return $items;
+}
+
+function od_import_organizations($entities, $context) {
+  // @todo Output result by context.
+  foreach ($entities as $entity) {
+    od_import_parse_organization($entity);
+  }
+}

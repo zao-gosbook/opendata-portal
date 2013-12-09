@@ -1,0 +1,5 @@
+name = Opendata import
+description = Opendata import
+core = 7.x
+
+dependencies[] = od_api

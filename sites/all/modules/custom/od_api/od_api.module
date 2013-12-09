@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * Implements hook_libraries_info().
+ */
+function od_api_libraries_info() {
+  // Init output variable.
+  $items = array();
+
+  $items['od_api'] = array(
+    'name' => 'Opendata API',
+    'dependencies' => array('arc'),
+    'version' => '1.0',
+    'files' => array(
+      'php' => array(
+        'od_api.php',
+      ),
+    ),
+  );
+
+  return $items;
+}

@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * Implements hook_libraries_info().
+ */
+function arc2_libraries_info() {
+  // Init output variable.
+  $items = array();
+
+  $items['arc'] = array(
+    'name' => 'ARC2',
+    'vendor url' => 'https://github.com/semsol/arc2',
+    'download url' => 'https://github.com/semsol/arc2/archive/master.zip',
+    'version' => '2011-12-01',
+    'files' => array(
+      'php' => array(
+        'ARC2.php',
+      ),
+    ),
+  );
+
+  return $items;
+}
