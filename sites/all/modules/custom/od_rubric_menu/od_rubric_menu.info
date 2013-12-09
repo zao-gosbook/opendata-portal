@@ -1,0 +1,4 @@
+name = od_rubric_menu
+core = 7.x
+dependencies[] = i18n
+dependencies[] = image
