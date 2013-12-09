@@ -1,0 +1,6 @@
+name = File rules
+description = Provides rules actions for file fields.
+core = 7.x
+package = Rules
+dependencies[] = file
+dependencies[] = rules
