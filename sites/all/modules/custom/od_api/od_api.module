@@ -9,7 +9,7 @@ function od_api_libraries_info() {
 
   $items['od_api'] = array(
     'name' => 'Opendata API',
-    'dependencies' => array('ARC2'),
+    'dependencies' => array('arc'),
     'version' => '1.0',
     'files' => array(
       'php' => array(
