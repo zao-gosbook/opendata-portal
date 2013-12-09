@@ -1,0 +1,53 @@
+<?php
+function od_rubric_menu_block_info() {
+  return array(
+    'block_rubric_menu' => array(
+      'info' => t('Rubric menu'),
+      'cache' => DRUPAL_NO_CACHE,
+    ),
+  );
+}
+
+function od_rubric_menu_block_view($delta = '') {
+  $block = array();
+  if ($delta == 'block_rubric_menu' && arg(0) == 'taxonomy' && arg(1) == 'term' && is_numeric(arg(2)) && $term = taxonomy_term_load(arg(2))) {
+    $output = '';
+    $img = empty($term->field_rubric_image['und'][0]['uri']) ? '' : image_style_url('thumbnail', file_uri_target($term->field_rubric_image['und'][0]['uri']));
+    if ($img) {
+      $output .= ' <div class="menu-icon"><img src="' . $img . '</div>';
+    }
+    $output .= '<div class="menu-caption">';
+    $output .= i18n_taxonomy_term_name($term, $language->language);
+    $output .= '</div>';
+    $output .= '<ul class="category-menu">';
+    $output .= '<li class="menu-item">' . l(t('News'), 'news') . '</li>';
+    $output .= '<li class="menu-item">';
+    $output .= '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . arg(2);
+    $output .= '" rel="nofollow">' . t('Data') . '</a>' . '</li>';
+    $output .= '<li class="menu-item">' . l(t('Contests'), 'wtf-is-contests') . '</li>';
+    // menu link "application"
+    $query = new EntityFieldQuery;
+    $result = $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'app')
+      ->propertyCondition('status', 1)
+      ->fieldCondition('field_rubric', 'tid', arg(2), '=')
+      ->execute();
+    if (count($result)) {
+      $output .= '<li class="menu-item">' . l(t('Application'), '/apps') . '</li>';
+    }
+    // menu link "blogs"
+    $query = new EntityFieldQuery;
+    $result = $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'blog')
+      ->propertyCondition('status', 1)
+      ->fieldCondition('field_rubric', 'tid', arg(2), '=')
+      ->execute();
+    if (count($result)) {
+      $output .= '<li class="menu-item">' . l(t('Blogs'), '/blogs') . '</li>';
+    }
+
+    $output .= '</ul>';
+    $block['content'] = $output;
+  }
+  return $block;
+}
