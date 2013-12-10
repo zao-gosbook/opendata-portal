@@ -17,9 +17,9 @@ function od_rubric_menu_block_view($delta = '') {
     if ($img) {
       $output .= ' <div class="menu-icon"><img src="' . $img . '</div>';
     }
-    $output .= '<div class="menu-caption">';
+    $output .= '<div class="menu-caption"><span>';
     $output .= i18n_taxonomy_term_name($term, $language->language);
-    $output .= '</div>';
+    $output .= '</span></div>';
     $output .= '<ul class="category-menu">';
     $output .= '<li class="menu-item">' . l(t('News'), 'news') . '</li>';
     $output .= '<li class="menu-item">';
