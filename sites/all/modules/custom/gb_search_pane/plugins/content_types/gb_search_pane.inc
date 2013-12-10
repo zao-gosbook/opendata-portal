@@ -150,5 +150,4 @@ function gb_search_pane_content_type_edit_form_submit($form, &$form_state) {
       $form_state['conf'][$key] = $form_state['values'][$key];
     }
   }
-  dpm($form_state['conf']);
 }
