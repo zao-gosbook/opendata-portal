@@ -23,13 +23,15 @@ define('OD_IMPORT_FIELD_DATA', 'field_link_remote_file');
 define('OD_IMPORT_FIELD_STRUCTURE', 'field_link_structure_file');
 
 function od_import_parse_organization($org) {
-  $format = 'Y-m-d H:i:s';
+  // Get organization title.
+  $org_name = $org->title;
+
   $od_library = libraries_load('od_api');
   if (!$od_library['loaded']) {
     $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
 
     $error = 'Внутренняя ошибка - библиотека "Opendata API" не установлена.';
-    $message = format_string($message, array('%error' => $error));
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
 
     drupal_set_message($message, 'warning');
     watchdog('od_import', $message, array(), WATCHDOG_WARNING);
@@ -41,15 +43,16 @@ function od_import_parse_organization($org) {
     $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
 
     $error = 'Ошибка организации - у организации отсутствует ссылка на сайт.';
-    $message = format_string($message, array('%error' => $error));
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
 
     drupal_set_message($message, 'warning');
     watchdog('od_import', $message, array(), WATCHDOG_WARNING);
     return FALSE;
   }
 
-  // Get organization title.
-  $org_name = $org->title;
+  // Set date format.
+  $format = 'Y-m-d H:i:s';
+
   // Get organization url.
   $org_url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
 
@@ -66,7 +69,7 @@ function od_import_parse_organization($org) {
 
   if (!empty($error) && !is_array($data)) {
     $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
-    $message = format_string($message, array('%error' => $error));
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
 
     drupal_set_message($message, 'warning');
     watchdog('od_import', $message, array(), WATCHDOG_WARNING);
@@ -91,7 +94,7 @@ function od_import_parse_organization($org) {
 Время начало обработки: %time_start. Время завершения обработки: %time_finish.<br />
 Количество удачно загруженных наборов: %meta_succeeded_count.<br />
 Количество незагруженных наборов: %meta_failed_count.<br />
-Наборы:<br />
+Список загруженных наборов:<br />
 !dataset_list.
 MESSAGE;
 
