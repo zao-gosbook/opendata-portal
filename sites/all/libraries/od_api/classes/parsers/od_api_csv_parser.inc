@@ -13,7 +13,7 @@ class OdApiCSVParser extends OdApiParser {
     return $this;
   }
 
-  public function parse($url, $encoding = NULL) {
+  public function parse($url, $encoding = 'Windows-1251') {
     $this->url = $url;
 
     $content = $this->parseUrl($url, $encoding);
