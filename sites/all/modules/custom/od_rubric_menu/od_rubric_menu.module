@@ -36,6 +36,7 @@ function od_rubric_menu_block_view($delta = '') {
     if (count($result)) {
       $output .= '<li class="menu-item">' . l(t('Application'), '/apps') . '</li>';
     }
+
     // menu link "blogs"
     $query = new EntityFieldQuery;
     $result = $query->entityCondition('entity_type', 'node')
@@ -45,6 +46,17 @@ function od_rubric_menu_block_view($delta = '') {
       ->execute();
     if (count($result)) {
       $output .= '<li class="menu-item">' . l(t('Blogs'), '/blogs') . '</li>';
+    }
+
+    //menu link "map"
+    $query = new EntityFieldQuery;
+    $result = $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'dataset')
+      ->propertyCondition('status', 1)
+      ->fieldCondition('field_rubric', 'tid', arg(2), '=')
+      ->execute();
+    if (count($result)) {
+      $output .= '<li class="menu-item">' . l(t('Map'), 'datasets-map/' . arg(2)) . '</li>';
     }
 
     $output .= '</ul>';
