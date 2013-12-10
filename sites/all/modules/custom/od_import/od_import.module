@@ -28,55 +28,58 @@ function od_import_parse_organization($org) {
     return FALSE;
   }
 
+  $name = $org->title;
   $url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
-
-
-  $vars = array(
-    'encoding' => 'Windows-1251',
-  );
 
   $od_library = libraries_load('od_api');
   if (!$od_library['loaded']) {
-    watchdog('od_import', 'Opendata API library not detected.');
+    $message = 'Opendata API library not detected.';
+
+    drupal_set_message($message, 'warning');
+    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
     return FALSE;
   }
 
+  $message = format_string('Parsing of "%name"(%url) started in %time.', array('%name' => $name, '%url' => $url, '%time' => date('Y-m-d H:i:s')));
+
+  drupal_set_message($message);
+  watchdog('od_import', $message, array(), WATCHDOG_INFO);
+
   $od = new OdApi();
-  $data = $od->getOpendata($url, $vars);
+  $data = $od->getOpendata($url);
 
   $errors = $od->getErrors();
 
-  $error = (string) reset($errors);
+  if (!empty($errors)) {
+    $error = reset($errors);
+    $error = $error['description'];
+  }
 
-  if (!is_array($data) || $errors) {
-    watchdog('od_import', 'Parsing of %url failed: %error', array('%url' => $url, '%error' => $error));
+  if (!empty($error) && !is_array($data)) {
+    $message = format_string('Parsing of "%name"(%url) failed %time: %error.', array('%name' => $name, '%url' => $url, '%error' => $error, '%time' => date('Y-m-d H:i:s')));
+
+    drupal_set_message($message, 'warning');
+    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
     return FALSE;
   }
 
   foreach ($data as $meta) {
     od_import_create_dataset($meta, $org->nid);
+
+    $meta_name = $meta['title'];
+    $meta_url = $od->opendata_page_url . '/' . $meta['identifier'];
+    $message = format_string('Parsing of dataset "%dataset_name"(%dataset_url) at "%name"(%url) successfully finished in %time.', array('%dataset_name' => $meta_name, '%dataset_url' => $meta_url, '%name' => $name, '%url' => $url, '%time' => date('Y-m-d H:i:s')));
+
+    drupal_set_message($message);
+    watchdog('od_import', $message, array(), WATCHDOG_INFO);
   }
 
-  watchdog('od_import', 'Parsing of %url successfully finished.', array('%url' => $url));
-  return TRUE;
-}
+  $message = format_string('Parsing of "%name"(%url) successfully finished in %time.', array('%name' => $name, '%url' => $url, '%time' => date('Y-m-d H:i:s')));
 
-/**
- * Implements hook_menu().
- */
-function od_import_menu() {
-  // Init output variable.
-  $items = array();
-/*
-  $items['opendata-import-old'] = array(
-    'title' => 'Opendata import demo page',
-    'page callback' => 'od_import_opendata_import',
-    'access callback' => TRUE,
-    'type' => MENU_SUGGESTED_ITEM,
-    'file' => 'includes/pages/opendata_import.inc',
-  );
-*/
-  return $items;
+  drupal_set_message($message);
+  watchdog('od_import', $message, array(), WATCHDOG_INFO);
+
+  return TRUE;
 }
 
 function od_import_create_dataset($meta, $org_id) {
