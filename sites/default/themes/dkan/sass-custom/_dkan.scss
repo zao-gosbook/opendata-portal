@@ -341,6 +341,36 @@ div.horizontal-tabs .form-text {
       display: none;
     }
   }
+  .views-row {
+    @include opacity(0);
+    position: relative;/**/
+    @include transition(all 0.3s ease-in-out);
+    
+    &.next {
+      opacity: 1;
+    }
+    /* Every other three fast facts, starting from the first */
+    &:nth-child(3n+1) {
+      @include transform(translate(10%,30%));
+    }
+    &.next:nth-child(3n+1) {
+      @include transform(translate(12%,30%));
+    }  
+    /* Every other three fast facts, starting from the second */
+    &:nth-child(3n+2) {
+      @include transform(translate(50%,20%));
+    }
+    &.next:nth-child(3n+2) {
+      @include transform(translate(52%,20%));
+    }
+    /* Every other three fast facts, starting from the first */
+    &:nth-child(3n+3) {
+      @include transform(translate(32%,10%));
+    }
+    &.next:nth-child(3n+3) {
+      @include transform(translate(30%,10%));
+    }    
+  }
 }
 .region-header-facts {
   position: relative;
@@ -568,6 +598,37 @@ div.horizontal-tabs .form-text {
     overflow: hidden;
     background: url("../images/ico-search-big.png") no-repeat;
     background-size: cover;
+  }
+  .form-item-field-select {
+    overflow: hidden;
+    
+    .form-type-radio {
+      float: left;
+      margin-right: 20px; 
+      position: relative;
+      overflow: hidden;
+      margin-top: 2px;
+      
+      input {
+        position: absolute;
+        left: -100px;
+      }
+      label {
+        padding: 0 20px;
+        color: #666;
+        height: 29px;
+        line-height: 29px;
+        background: #fff;
+        font-size: 18px;
+        display: block;
+        cursor: pointer;
+      }
+      &.active-element label {
+        background: #0c87e8;
+        color: #fff;
+        @include box-shadow(0 1px 2px rgba(0,0,0, .25) inset);
+      }
+    }
   }
 }
 .not-front .pane-gb-search-pane {
@@ -804,6 +865,8 @@ div.horizontal-tabs .form-text {
 /**
  * dataset
  */
+.page-search, 
+.section-library, 
 .page-dataset {
   background: #fff;
   
@@ -1021,7 +1084,7 @@ div.horizontal-tabs .form-text {
     padding-left: 1%;
   }
   
-  .node-dataset {
+  .node {
     
     &.node-teaser {
       border-right: 5px solid #bfbfbf;
@@ -1082,7 +1145,50 @@ div.horizontal-tabs .form-text {
         display: none;
       }
     }
-  }  
+  }
+  .views-row {
+    border-right: 5px solid #bfbfbf;
+    padding-right: 4%;
+    margin-bottom: 4.5em;
+    
+    .views-field-title .field-content {
+      font-size: 2em;
+      line-height: 1.1em;
+      margin: 0 0 .15em;
+      
+      a {
+        color: #3d9fed;
+        text-decoration: none;
+      }    
+    }
+    h2 {
+      font-size: 2em;
+      line-height: 1.1em;
+      margin: 0 0 .15em;
+      
+      a {
+        color: #3d9fed;
+        text-decoration: none;
+      }
+    }
+    .field-name-body,
+    .views-field-body    {
+      font-size: 1.3em;
+      line-height: 1.55em;
+      padding-bottom: 0.2em;
+      color: #666;
+      
+      p {
+        margin: 0;
+      }
+    }
+    .field-name-post-date,
+    .views-field-changed,
+    .views-field-created    {
+      font-size: 1.3em;
+      line-height: 1.55em;      
+    }
+  }
 }
 
 
@@ -1154,8 +1260,11 @@ div.horizontal-tabs .form-text {
     }
   }
 } 
-.page-taxonomy-term {
-  
+.page-taxonomy-term {   
+  .region-header {
+    border-bottom: 0;
+  }  
+
   &.page-taxonomy-term-8 {
     
     .region-header {
@@ -1167,7 +1276,7 @@ div.horizontal-tabs .form-text {
   &.page-taxonomy-term-72 {
     
     .region-header {
-      background: url("../images/bg-geography.png") no-repeat 50% 0;
+      background: url("../images/bg-geography.jpg") no-repeat 50% 0;
       @include background-size(100% auto);
       border-bottom: 0;
     }
@@ -1183,7 +1292,7 @@ div.horizontal-tabs .form-text {
   &.page-taxonomy-term-12 {
     
     .region-header {
-      background: url("../images/bg-transport.png") no-repeat 50% 0;
+      background: url("../images/bg-transport.jpg") no-repeat 50% 0;
       @include background-size(100% auto);
       border-bottom: 0;
     }
@@ -1191,7 +1300,31 @@ div.horizontal-tabs .form-text {
   &.page-taxonomy-term-10 {
     
     .region-header {
-      background: url("../images/bg-security.png") no-repeat 50% 0;
+      background: url("../images/bg-security.jpg") no-repeat 50% 0;
+      @include background-size(100% auto);
+      border-bottom: 0;
+    }
+  }
+  &.page-taxonomy-term-15 {
+    
+    .region-header {
+      background: url("../images/bg-health.jpg") no-repeat 50% 0;
+      @include background-size(100% auto);
+      border-bottom: 0;
+    }
+  }
+  &.page-taxonomy-term-9 {
+    
+    .region-header {
+      background: url("../images/bg-economy.jpg") no-repeat 50% 0;
+      @include background-size(100% auto);
+      border-bottom: 0;
+    }
+  }
+  &.page-taxonomy-term-73 {
+    
+    .region-header {
+      background: url("../images/bg-construction.jpg") no-repeat 50% 0;
       @include background-size(100% auto);
       border-bottom: 0;
     }
@@ -1935,6 +2068,7 @@ a.btn {
       color: #777;
       line-height: 65px;
       text-transform: uppercase;
+      font-size: 18px;
     }
   }
   .views-field-title {
