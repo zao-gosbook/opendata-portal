@@ -1869,8 +1869,8 @@ div.horizontal-tabs .form-text {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\00003306}}
 .view-quick-facts {
-  padding-top: 100px;
-  padding-bottom: 15%;
+  padding-top: 115px;
+  padding-bottom: 24%;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\00003310}}
 .view-quick-facts .view-content > div {
@@ -1916,7 +1916,7 @@ div.horizontal-tabs .form-text {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\00003344}}
 .view-quick-facts .views-row {
   opacity: 0;
-  position: relative;
+  position: absolute;
   /**/
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
