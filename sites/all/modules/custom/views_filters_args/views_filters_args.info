@@ -1,0 +1,4 @@
+name = Views Filters args
+description = Provide views contextual filters values in filter criteria
+core = 7.x
+dependencies[] = views

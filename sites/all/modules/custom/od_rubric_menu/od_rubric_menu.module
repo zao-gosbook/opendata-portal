@@ -11,14 +11,15 @@ function od_rubric_menu_block_info() {
 function od_rubric_menu_block_view($delta = '') {
   $block = array();
   if ($delta == 'block_rubric_menu' && arg(0) == 'taxonomy' && arg(1) == 'term' && is_numeric(arg(2)) && $term = taxonomy_term_load(arg(2))) {
+    global $language;
     $output = '';
     $img = empty($term->field_rubric_image['und'][0]['uri']) ? '' : image_style_url('thumbnail', file_uri_target($term->field_rubric_image['und'][0]['uri']));
     if ($img) {
       $output .= ' <div class="menu-icon"><img src="' . $img . '</div>';
     }
-    $output .= '<div class="menu-caption">';
+    $output .= '<div class="menu-caption"><span>';
     $output .= i18n_taxonomy_term_name($term, $language->language);
-    $output .= '</div>';
+    $output .= '</span></div>';
     $output .= '<ul class="category-menu">';
     $output .= '<li class="menu-item">' . l(t('News'), 'news') . '</li>';
     $output .= '<li class="menu-item">';
