@@ -1,0 +1,7 @@
+<?php
+
+function od_facets_translate_facet_items_alter(&$build, &$settings) {
+  foreach ($build as &$bld) {
+    $bld['#markup'] = t($bld['#markup']);
+  }
+}

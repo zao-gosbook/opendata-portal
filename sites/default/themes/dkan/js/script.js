@@ -36,4 +36,49 @@
     }
   }   
   
+  Drupal.behaviors.ActiveElement = {
+    attach: function (context, settings) {
+
+      // Add class for active elements.
+      $('input[type="radio"][checked]', context)
+        .parent().addClass('active-element');
+        
+      // Add event for detect active elements.
+      $('input[type="radio"]', context).once().change(function() {
+        // Find form element for context.
+        var $this = $(this),
+            $form = $this.parents('form');
+
+        // Remove class from over elements with same name.
+        $form.find('input[type="radio"][name="' + $this.attr('name') + '"]')
+          .parent().removeClass('active-element');
+
+        // Add class for active element.
+        $this.parent().addClass('active-element');
+      });         
+    }
+  }  
+  
+  Drupal.behaviors.QuickFacts = {
+    attach: function (context, settings) {  
+      if('.view-quick-facts .view-content') {
+        var n = 0;
+        var $fact = $('.view-quick-facts .view-content .views-row');
+        $($fact[n]).addClass('next');
+
+         setInterval(function(){
+          $($fact[n]).removeClass('next');
+          if(n+1 == $fact.length) {
+            n = 0;
+          } else {
+            n++;
+          }
+          setTimeout(function(){
+            $($fact[n]).addClass('next');
+          }, 500)
+        }, 6000);
+      }     
+    }
+  }
+  
 })(jQuery, Drupal, this, this.document);

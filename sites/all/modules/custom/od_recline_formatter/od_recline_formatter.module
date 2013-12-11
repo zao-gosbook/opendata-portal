@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function od_recline_formatter_field_formatter_info() {
+  $formatters = array(
+    'recline_link_formatter' => array(
+      'label' => t('Recline link'),
+      'field types' => array('recline_field', 'file'),
+      'description' => t('Displays file as a link.'),
+    ),
+  );
+  return $formatters;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function od_recline_formatter_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  switch ($display['type']) {
+    case 'recline_link_formatter':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+          '#theme' => 'recline_link_formatter',
+          '#item' => $item,
+        );
+      }
+      break;
+   }
+  return $element;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function od_recline_formatter_theme() {
+  return array(
+    'recline_link_formatter' => array(
+      'variables' => array('item' => NULL),
+    ),
+  );
+}
+
+/**
+ * Returns HTML for an recline field formatter.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - item: Associative array of recline field
+ *
+ * @ingroup themeable
+ */
+function theme_recline_link_formatter($variables) {
+  $file = $variables['item'];
+
+  $url = file_create_url($file['uri']);
+
+  $icon = '';
+
+  // Set options as per anchor format described at
+  // http://microformats.org/wiki/file-format-examples
+  $options = array(
+    'attributes' => array(
+      'type' => $file['filemime'] . '; length=' . $file['filesize'],
+    ),
+  );
+
+  // Use the description as the link text if available.
+  if (empty($file['description'])) {
+    $link_text = $file['filename'];
+  }
+  else {
+    $link_text = $file->description;
+    $options['attributes']['title'] = check_plain($file['filename']);
+  }
+  $file = l(t('Download'), $url, $options);
+  return '<div class="download">' . $file . '</div><span class="data-explorer"></span>';
+}

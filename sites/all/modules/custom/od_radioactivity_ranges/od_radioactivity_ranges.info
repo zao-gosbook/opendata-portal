@@ -1,0 +1,7 @@
+name = Radioactivity ranges
+description = Add entity property ranged by radioactivity values
+core = 7.x
+dependencies[] = radioactivity
+dependencies[] = entity
+files[] = 
+configure = 

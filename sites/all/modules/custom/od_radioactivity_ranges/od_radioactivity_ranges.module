@@ -1,0 +1,86 @@
+<?php
+
+function od_radioactivity_ranges_default() {
+
+  $entities = array(
+    'node' => array(
+      'dataset' => array(
+        'field_popularity' => array(
+          0 => array(
+            'min' => 0,
+            'max' => 10,
+            'value' => 'potential demand',
+          ),
+          1 => array(
+            'min' => 11,
+            'max' => 49,
+            'value' => 'demand',
+          ),
+          2 => array(
+            'min' => 50,
+            'max' => 100,
+            'value' => 'critical demand',
+          ),
+        ),
+      ),
+    ),
+  );
+  return serialize($entities);
+}
+
+
+
+function od_radioactivity_ranges_entity_property_info_alter(&$info) {
+
+  $entities = unserialize(variable_get('od_radioactivity_ranges_entities', od_radioactivity_ranges_default()));
+
+  foreach ($entities as $entity => $bundles) {
+    if (array_key_exists($entity, $info)) {
+      foreach ($bundles as $bundle => $properties) {
+        if (array_key_exists($bundle, $info[$entity]['bundles'])) {
+          foreach($properties as $property => $settings) {
+            if (array_key_exists($property, $info[$entity]['bundles'][$bundle]['properties'])) {
+              //dsm($info);
+              $info[$entity]['bundles'][$bundle]['properties'][$property . '_range'] = array(
+                'label' => t('Radioactivity range'),
+                'type' => 'text',
+                'getter callback' => 'od_radioactivity_ranges_calc',
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+function od_radioactivity_ranges_calc($data, array $options, $name, $type, $info) {
+  
+  $settings = unserialize(variable_get('od_radioactivity_ranges_entities', od_radioactivity_ranges_default()));
+
+  if (!empty($settings[$type]) && !empty($settings[$type][$data->type])) {
+    foreach($settings[$type][$data->type] as $property => $ranges) {
+      if (isset($data->{$property})) {
+        $info = field_info_instance($type, $property, $data->type);
+        $lang = field_language($type, $data, $property);
+        $maximum = ceil(_radioactivity_get_field_maximum($info['field_id'], $type));
+        $maximum = $maximum == 0 ? 1 : $maximum;
+        if (!empty($data->{$property}[$lang][0]['radioactivity_energy'])) {
+          $energy = $data->{$property}[$lang][0]['radioactivity_energy'];
+        }
+        else {
+          $energy = 0;
+        }
+        $relative = round(($energy / $maximum) * 100);
+        foreach ($ranges as $range) {
+          if ($relative >= $range['min'] && $relative <= $range['max']) {
+            return $range['value'];
+          }
+        }
+        return 'undefined';
+      }
+    }
+  }
+}
