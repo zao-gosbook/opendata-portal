@@ -212,6 +212,8 @@ class OdApi {
   }
 
   public function getOpendata($site, $vars = array()) {
+    // Remove time limit execution script.
+    set_time_limit(0);
     // Save vars.
     if (!empty($vars)) {
       $this->vars = $vars;
@@ -269,6 +271,9 @@ class OdApi {
         unset($data['structure']['#version']);
       }
     }
+
+    // Restore default time limit execution script.
+    set_time_limit(ini_get('max_execution_time'));
 
     return $list_result;
   }
