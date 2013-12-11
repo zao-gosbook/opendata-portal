@@ -1,0 +1,6 @@
+name = od_facets_translate
+description = Translate facet values
+core = 7.x
+dependencies[] = facetapi_bonus
+files[] = 
+configure = 
