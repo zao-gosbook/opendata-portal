@@ -1,0 +1,6 @@
+name = Recline link formatter
+description = Provides link formatter for recline field.
+core = 7.x
+
+dependencies[] = file
+dependencies[] = field_ui
