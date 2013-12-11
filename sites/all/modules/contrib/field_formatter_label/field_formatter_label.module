@@ -1,0 +1,76 @@
+<?php
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function field_formatter_label_field_formatter_info_alter(&$info) {
+  foreach ($info as $k => $formatter) {
+    $info[$k]['settings']['field_formatter_label'] = '';
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ */
+function field_formatter_label_field_formatter_settings_summary_alter(&$summary, $context) {
+  $display = $context['instance']['display'][$context['view_mode']];
+  $settings = $display['settings'];
+
+  if (!empty($summary)) {
+    $summary .= '<br />';
+  }
+
+  if (!empty($settings['field_formatter_label'])) {
+    $summary .= t('Label: @field', array('@field' => filter_xss($settings['field_formatter_label'], array())));
+  }
+  else {
+    $summary .= t('Default label');
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_form_alter().
+ */
+function field_formatter_label_field_formatter_settings_form_alter(&$settings_form, $context) {
+  $display = $context['instance']['display'][$context['view_mode']];
+  $settings = $display['settings'];
+
+  $settings_form['field_formatter_label'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Override label'),
+    '#description' => t('Leave blank to use the default label.'),
+    '#default_value' => isset($settings['field_formatter_label']) ? $settings['field_formatter_label'] : '',
+  );
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function field_formatter_label_module_implements_alter(&$implementations, $hook) {
+  // Make sure our hook_theme_registry_alter runs after field_display_label's.
+  // This causes our preprocess_field hook to run after its one.
+  if ($hook == 'theme_registry_alter') {
+    $group = $implementations['field_formatter_label'];
+    unset($implementations['field_formatter_label']);
+    $implementations['field_formatter_label'] = $group;
+  }
+}
+
+/**
+*  Implementation of hook_theme_registry_alter
+*/
+function field_formatter_label_theme_registry_alter(&$theme_registry) {
+  // Move our hook_preprocess_field to the end of the array.
+  $theme_registry['field']['preprocess functions'] = array_diff($theme_registry['field']['preprocess functions'], array('field_display_label_preprocess_field'));
+  $theme_registry['field']['preprocess functions'][] = 'field_display_label_preprocess_field';
+}
+
+/**
+*  Preprocess function to replace the regular label with the display label
+*/
+function field_formatter_label_preprocess_field(&$variables) {
+  $field = field_info_instance($variables['element']['#entity_type'], $variables['element']['#field_name'], $variables['element']['#bundle']);
+  if (isset($field['display_label']) && strlen(trim($field['display_label'])) > 0) {
+    $variables['label'] = $field['display_label'];
+  }
+}
