@@ -307,7 +307,7 @@ abstract class OdApiObject {
   }
 
   public function parseCSV() {
-    $encoding = !empty($this->od_api->vars['encoding']) ? $this->od_api->vars['encoding'] : FALSE;
+    $encoding = !empty($this->od_api->vars['encoding']) ? $this->od_api->vars['encoding'] : NULL;
 
     $this->parserCSV = new OdApiCSVParser();
     $this->parserCSV->parse($this->urls['file_csv'], $encoding);

@@ -67,10 +67,16 @@ function gb_search_pane_content_type_form($form, $form_state, $conf) {
 
   $form['#action'] = url('');
 
-  $form['field'] = array(
+  $form['field_query'] = array(
     '#title' => t($conf['query_field_label']),
     '#type' => 'textfield',
     '#size' => $conf['query_field_size'],
+  );
+  $form['field_select'] = array(
+    '#title' => '',
+    '#type' => 'radios',
+    '#options' => array(0 => t('site'), 1 => t('datasets')),
+    '#default_value' => 1,
   );
   $form['submit'] = array(
     '#type' => 'submit',
@@ -82,8 +88,9 @@ function gb_search_pane_content_type_form($form, $form_state, $conf) {
 
 function gb_search_pane_content_type_form_submit($form, $form_state) {
   $conf = $form_state['conf'];
-  $options = array('query' => array($conf['query_field_name'] => $form_state['values']['field']));
-  drupal_goto($conf['redirect_url'], $options);
+  $options = array('query' => array($conf['query_field_name'] => $form_state['values']['field_query']));
+  if($form_state['values']['field_select'] == '0') drupal_goto($conf['redirect_url_site'], $options);
+  if($form_state['values']['field_select'] == '1') drupal_goto($conf['redirect_url_datasets'], $options);
 }
 
 /**
@@ -112,11 +119,18 @@ function gb_search_pane_content_type_edit_form($form, &$form_state) {
     '#size' => 50,
     '#default_value' => !empty($conf['query_field_size']) ? $conf['query_field_size'] : 20,
   );
-  $form['redirect_url'] = array(
+   $form['redirect_url_datasets'] = array(
     '#type' => 'textfield',
-    '#title' => t('Redirect url'),
+    '#title' => t('Redirect url for searching datasets'),
     '#size' => 128,
-    '#default_value' => !empty($conf['redirect_url']) ? $conf['redirect_url'] : 'search',
+    '#default_value' => !empty($conf['redirect_url_datasets']) ? $conf['redirect_url_datasets'] : 'datasets',
+    '#description' => t('Enter the url form should forward to'),
+  );
+  $form['redirect_url_site'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Redirect url for searching through site content'),
+    '#size' => 128,
+    '#default_value' => !empty($conf['redirect_url_site']) ? $conf['redirect_url_site'] : 'search',
     '#description' => t('Enter the url form should forward to'),
   );
   $form['submit_value'] = array(

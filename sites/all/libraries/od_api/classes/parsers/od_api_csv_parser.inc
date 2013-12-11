@@ -13,7 +13,12 @@ class OdApiCSVParser extends OdApiParser {
     return $this;
   }
 
-  public function parse($url, $encoding = 'Windows-1251') {
+  public function parse($url, $encoding = NULL) {
+    // Set default encoding from Windows-1251.
+    if (empty($encoding)) {
+      $encoding = 'Windows-1251';
+    }
+
     $this->url = $url;
 
     $content = $this->parseUrl($url, $encoding);
@@ -85,7 +90,7 @@ class OdApiCSVParser extends OdApiParser {
     return $this;
   }
 
-  public function parseUrl($url, $encoding = NULL) {
+  public function parseUrl($url) {
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

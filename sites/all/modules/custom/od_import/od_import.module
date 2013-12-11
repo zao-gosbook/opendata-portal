@@ -23,58 +23,90 @@ define('OD_IMPORT_FIELD_DATA', 'field_link_remote_file');
 define('OD_IMPORT_FIELD_STRUCTURE', 'field_link_structure_file');
 
 function od_import_parse_organization($org) {
-  // Get organization url.
-  if (empty($org->field_site_url[LANGUAGE_NONE][0])) {
-    return FALSE;
-  }
-
-  $name = $org->title;
-  $url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
+  // Get organization title.
+  $org_name = $org->title;
 
   $od_library = libraries_load('od_api');
   if (!$od_library['loaded']) {
-    $message = 'Opendata API library not detected.';
+    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
+
+    $error = 'Внутренняя ошибка - библиотека "Opendata API" не установлена.';
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
 
     drupal_set_message($message, 'warning');
     watchdog('od_import', $message, array(), WATCHDOG_WARNING);
     return FALSE;
   }
 
-  $message = format_string('Parsing of "%name"(%url) started in %time.', array('%name' => $name, '%url' => $url, '%time' => date('Y-m-d H:i:s')));
+  // Get organization url.
+  if (empty($org->field_site_url[LANGUAGE_NONE][0])) {
+    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
 
-  drupal_set_message($message);
-  watchdog('od_import', $message, array(), WATCHDOG_INFO);
+    $error = 'Ошибка организации - у организации отсутствует ссылка на сайт.';
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
 
+    drupal_set_message($message, 'warning');
+    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+    return FALSE;
+  }
+
+  // Set date format.
+  $format = 'Y-m-d H:i:s';
+
+  // Get organization url.
+  $org_url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
+
+  $time_start = date($format);
   $od = new OdApi();
-  $data = $od->getOpendata($url);
+  $data = $od->getOpendata($org_url);
 
   $errors = $od->getErrors();
 
   if (!empty($errors)) {
     $error = reset($errors);
-    $error = $error['description'];
+    $error = 'Ошибка открытых данных - ' . mb_strtolower($error['description']);
   }
 
   if (!empty($error) && !is_array($data)) {
-    $message = format_string('Parsing of "%name"(%url) failed %time: %error.', array('%name' => $name, '%url' => $url, '%error' => $error, '%time' => date('Y-m-d H:i:s')));
+    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
 
     drupal_set_message($message, 'warning');
     watchdog('od_import', $message, array(), WATCHDOG_WARNING);
     return FALSE;
   }
 
+  $meta_succeeded_count = 0;
+  $meta_failed_count = 0;
+  $dataset_list = array();
   foreach ($data as $meta) {
-    od_import_create_dataset($meta, $org->nid);
+    $meta_succeeded_count++;
+    $meta_node = od_import_create_dataset($meta, $org->nid);
 
-    $meta_name = $meta['title'];
-    $meta_url = $od->opendata_page_url . '/' . $meta['identifier'];
-    $message = format_string('Parsing of dataset "%dataset_name"(%dataset_url) at "%name"(%url) successfully finished in %time.', array('%dataset_name' => $meta_name, '%dataset_url' => $meta_url, '%name' => $name, '%url' => $url, '%time' => date('Y-m-d H:i:s')));
-
-    drupal_set_message($message);
-    watchdog('od_import', $message, array(), WATCHDOG_INFO);
+    $dataset_list[] = l($meta_node->title, 'node/' . $meta_node->nid);
   }
+  $dataset_list = implode('<br />', $dataset_list);
 
-  $message = format_string('Parsing of "%name"(%url) successfully finished in %time.', array('%name' => $name, '%url' => $url, '%time' => date('Y-m-d H:i:s')));
+  $time_finish = date($format);
+
+  $message = <<<'MESSAGE'
+Обработан реестр наборов открытых данных организации %org_name.<br />
+Время начало обработки: %time_start. Время завершения обработки: %time_finish.<br />
+Количество удачно загруженных наборов: %meta_succeeded_count.<br />
+Количество незагруженных наборов: %meta_failed_count.<br />
+Список загруженных наборов:<br />
+!dataset_list.
+MESSAGE;
+
+  $args = array(
+    '%org_name' => $org_name,
+    '%time_start' => $time_start,
+    '%time_finish' => $time_finish,
+    '%meta_succeeded_count' => $meta_succeeded_count,
+    '%meta_failed_count' => $meta_failed_count,
+    '!dataset_list' => $dataset_list,
+  );
+  $message = format_string($message, $args);
 
   drupal_set_message($message);
   watchdog('od_import', $message, array(), WATCHDOG_INFO);
@@ -111,7 +143,6 @@ function od_import_create_dataset($meta, $org_id) {
   );
 
   // Meta owner.
-  // @todo Solve problem with owner.
   $dataset_node->{OD_IMPORT_FIELD_META_OWNER}[LANGUAGE_NONE][0] = array(
     'target_id' => $org_id,
   );
@@ -173,6 +204,8 @@ function od_import_create_dataset($meta, $org_id) {
 
   // Update dataset.
   node_save($dataset_node);
+
+  return  $dataset_node;
 }
 
 /**
@@ -344,7 +377,7 @@ function od_import_action_info() {
 
   $items['od_import_organizations'] = array(
     'type' => 'node',
-    'label' => t('Import from organizations'),
+    'label' => 'Загрузить открытые данные с сайта организации',
     'configurable' => FALSE,
     'aggregate' => TRUE,
     'triggers' => array('any'),
