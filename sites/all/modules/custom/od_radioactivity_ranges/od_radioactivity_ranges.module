@@ -69,11 +69,14 @@ function od_radioactivity_ranges_calc($data, array $options, $name, $type, $info
         $maximum = $maximum == 0 ? 1 : $maximum;
         if (!empty($data->{$property}[$lang][0]['radioactivity_energy'])) {
           $energy = $data->{$property}[$lang][0]['radioactivity_energy'];
-          $relative = round(($energy / $maximum) * 100);
-          foreach ($ranges as $range) {
-            if ($relative >= $range['min'] && $relative <= $range['max']) {
-              return $range['value'];
-            }
+        }
+        else {
+          $energy = 0;
+        }
+        $relative = round(($energy / $maximum) * 100);
+        foreach ($ranges as $range) {
+          if ($relative >= $range['min'] && $relative <= $range['max']) {
+            return $range['value'];
           }
         }
         return 'undefined';
