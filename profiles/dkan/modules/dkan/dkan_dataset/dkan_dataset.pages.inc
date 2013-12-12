@@ -12,8 +12,8 @@ function dkan_dataset_back($node) {
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $ref = $node_wrapper->field_dataset_ref->value();
 
-  if (isset($ref[0])) {
-    drupal_goto('node/' . $ref[0]->nid);
+  if (isset($ref)) {
+    drupal_goto('node/' . $ref->nid);
   }
   else {
     drupal_set_message(t('There is no dataset associated with this resource.'));
