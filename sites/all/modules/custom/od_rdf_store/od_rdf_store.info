@@ -1,0 +1,4 @@
+name = Opendata portal RDF Store ingeration
+description = Updates RDF Store on resource updates.
+core = 7.x
+dependencies[] = sparql

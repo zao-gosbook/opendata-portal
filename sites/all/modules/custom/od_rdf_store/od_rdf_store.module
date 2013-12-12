@@ -1,0 +1,115 @@
+<?php
+
+function od_rdf_store_menu() {
+  // @todo use access RDF data permission instead of access content.
+  $items['sparql'] = array(
+    'title' => 'SPARQL endpoint',
+    'page callback' => 'od_rdf_store_sparql_endpoint',
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+function od_rdf_store_sparql_endpoint() {
+  // Instantiate the ARC2 SPARQL endpoint.
+  $ep = sparql_get_store('site_endpoint', SPARQL_ENDPOINT);
+  $ep->go();
+}
+
+
+/**
+ * Implements hook_node_insert().
+ */
+function od_rdf_store_node_insert($node) {
+  if ($node->type == 'resource') {
+    if (!empty($node->field_upload[LANGUAGE_NONE][0])) {
+      od_rdf_store_load_file_to_storage(file_load($node->field_upload[LANGUAGE_NONE][0]['fid']));
+    }
+    if (!empty($node->field_link_remote_file[LANGUAGE_NONE][0])) {
+      od_rdf_store_load_file_to_storage(file_load($node->field_link_remote_file[LANGUAGE_NONE][0]['fid']));
+    }
+  }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function od_rdf_store_node_update($node) {
+  if ($node->type == 'resource') {
+    $oldnode = node_load($node->nid);
+    if (_get_file_fid($node->field_upload) != _get_file_fid($oldnode->field_upload)) {
+      if ($oldfid = _get_file_fid($oldnode->field_upload)) {
+        od_rdf_store_remove_file_from_storage(file_load($oldfid));
+      }
+      if (!empty($node->field_upload[LANGUAGE_NONE][0])) {
+        od_rdf_store_load_file_to_storage(file_load($node->field_upload[LANGUAGE_NONE][0]['fid']));
+      }
+    }
+    if (_get_file_fid($node->field_link_remote_file) != _get_file_fid($oldnode->field_link_remote_file)) {
+      if ($oldfid = _get_file_fid($oldnode->field_link_remote_file)) {
+        od_rdf_store_remove_file_from_storage(file_load($oldfid));
+      }
+      if (!empty($node->field_link_remote_file[LANGUAGE_NONE][0])) {
+        od_rdf_store_load_file_to_storage(file_load($node->field_link_remote_file[LANGUAGE_NONE][0]['fid']));
+      }
+    }
+  }
+}
+
+function od_rdf_store_node_delete($node) {
+  if ($node->type == 'resource') {
+    if ($fid = _get_file_fid($node->field_upload)) {
+      od_rdf_store_remove_file_from_storage(file_load($fid));
+    }
+    if ($fid = _get_file_fid($node->field_link_remote_file)) {
+      od_rdf_store_remove_file_from_storage(file_load($fid));
+    }
+  }
+}
+
+function _get_file_fid($field) {
+  $fid = FALSE;
+  if (!empty($field[LANGUAGE_NONE][0]['fid'])) {
+    $fid = $field[LANGUAGE_NONE][0]['fid'];
+  }
+  return $fid;
+}
+
+function od_rdf_store_load_file_to_storage($file) {
+  if ($file->filemime == 'application/rdf+xml') {
+    $uri = FALSE;
+    if (file_uri_scheme($file->uri) == 'http') {
+      $uri = $file->uri;
+    }
+    elseif (file_uri_scheme($file->uri) == 'public') {
+      $uri = file_create_url($file->uri);
+    }
+
+    if ($uri) {
+      $ep = sparql_get_store('site_endpoint');
+      if ($result = $ep->query('load <' . $uri . '>')) {
+        watchdog('od_rdf_store', 'File %file loaded into RDF-storage. %triples triples added.', array('%file' => $uri, '%triples' => $result['result']['t_count']));
+        drupal_set_message(t('File %file loaded into RDF-storage. %triples triples added.', array('%file' => $uri, '%triples' => $result['result']['t_count'])));
+      }
+    }
+  }
+}
+
+function od_rdf_store_remove_file_from_storage($file) {
+  if ($file->filemime == 'application/rdf+xml') {
+    $uri = FALSE;
+    if (file_uri_scheme($file->uri) == 'http') {
+      $uri = $file->uri;
+    }
+    elseif (file_uri_scheme($file->uri) == 'public') {
+      $uri = file_create_url($file->uri);
+    }
+    if ($uri) {
+      $ep = sparql_get_store('site_endpoint');
+      if ($result = $ep->query('delete from <' . $uri . '>')) {
+        watchdog('od_rdf_store', 'File %file removed from RDF-storage. %triples triples removed.', array('%file' => $uri, '%triples' => $result['result']['t_count']));
+        drupal_set_message(t('File %file removed from RDF-storage. %triples triples removed.', array('%file' => $uri, '%triples' => $result['result']['t_count'])));
+      }
+    }
+  }
+}
