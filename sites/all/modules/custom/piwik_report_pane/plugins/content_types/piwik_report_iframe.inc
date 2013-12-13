@@ -75,19 +75,19 @@ function _piwik_report_pane_piwik_report_iframe_render($report) {
       $title[0] = t('Browser families');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getBrowserType';
-    case 'getConfiguration':
+    case 'getconfiguration':
       // Screen resolutions
       $data_params[0]['filter_limit'] = 6;
       $title[0] = t('Screen resolution');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getConfiguration';
-    case 'getOS':
+    case 'getos':
       // Operating systems
       $data_params[0]['filter_limit'] = 6;
       $title[0] = t('Operating system');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getOS';
-    case 'getResolution':
+    case 'getresolution':
       // Client configurations
       $data_params[0]['filter_limit'] = 6;
       $title[0] = t('Client configuration');
@@ -146,7 +146,7 @@ function _piwik_report_pane_piwik_report_iframe_render($report) {
       $title[0] = t('Search engines');
       $data_params[0]['moduleToWidgetize'] = 'Referers';
       $data_params[0]['actionToWidgetize'] = 'getSearchEngines';
-    case 'getKeywords':
+    case 'getkeywords':
       $title[0] = t('Keywords');
       $data_params[0]['moduleToWidgetize'] = 'Referers';
       $data_params[0]['actionToWidgetize'] = 'getKeywords';
@@ -209,9 +209,9 @@ function piwik_report_pane_piwik_report_iframe_content_type_edit_form($form, &$f
   $options = array('visitors_overview' => t('visitors overview'), 
                    'visitors_times' =>  t('visitors times'), 
                    'visitors_settings' => t('visitors settings'),
-                   'getConfiguration' => t('configuration'),
-                   'getOS' => t('OS'),
-                   'getResolution' => t('resolution'),
+                   'getconfiguration' => t('configuration'),
+                   'getos' => t('OS'),
+                   'getresolution' => t('resolution'),
                    'visitors_locations' => t('visitors locations'),
                    'custom_variables' => t('visitors variables'),
                    'actions_pageurls' => t('visitors pageurls'),
@@ -220,7 +220,7 @@ function piwik_report_pane_piwik_report_iframe_content_type_edit_form($form, &$f
                    'actions_downloads' => t('visitors downloads'),
                    'referers_evolution' => t('visitors evolution'),
                    'referers_search' => t('visitors search'),
-                   'getKeywords' => t('keywords'),
+                   'getkeywords' => t('keywords'),
                    'referers_websites' => t('referers website'),
   );
   $form['report'] = array('#type' => 'select',
