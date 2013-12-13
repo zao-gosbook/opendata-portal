@@ -225,7 +225,9 @@ function piwik_report_pane_piwik_report_iframe_content_type_edit_form($form, &$f
   );
   $form['report'] = array('#type' => 'select',
                           '#title' => t('Piwik Iframe'),
-                          '#options' => $options);
+                          '#options' => $options,
+                          '#default_value' => isset($conf['report']) ? $conf['report'] : '',
+                          );
   //$form['report'] = array(
     //'#type' => 'textfield',
     //'#title' => t('Iframe type'),
