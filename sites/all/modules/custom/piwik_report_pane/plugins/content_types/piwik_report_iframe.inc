@@ -75,18 +75,21 @@ function _piwik_report_pane_piwik_report_iframe_render($report) {
       $title[0] = t('Browser families');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getBrowserType';
+      break;
     case 'getConfiguration':
       // Screen resolutions
       $data_params[0]['filter_limit'] = 6;
       $title[0] = t('Screen resolution');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getConfiguration';
+      break;
     case 'getOS':
       // Operating systems
       $data_params[0]['filter_limit'] = 6;
       $title[0] = t('Operating system');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getOS';
+      break;
     case 'getResolution':
       // Client configurations
       $data_params[0]['filter_limit'] = 6;
@@ -146,6 +149,7 @@ function _piwik_report_pane_piwik_report_iframe_render($report) {
       $title[0] = t('Search engines');
       $data_params[0]['moduleToWidgetize'] = 'Referers';
       $data_params[0]['actionToWidgetize'] = 'getSearchEngines';
+      break;
     case 'getKeywords':
       $title[0] = t('Keywords');
       $data_params[0]['moduleToWidgetize'] = 'Referers';
@@ -193,7 +197,6 @@ function _piwik_report_pane_piwik_report_iframe_render($report) {
       $output[] = '<div class="piwik-empty-text">' . $data['empty_text'] . '</div>';
     }
     else {
-      $output[] = '<h2 class="piwik-header">' . check_plain($data['title']) . '</h2>';
       $output[] = '<div class="widgetIframe"><iframe width="100%" height="' . $data['iframe_height'] . '" src="' . $data['url'] . '" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe></div>';
     }
   }
