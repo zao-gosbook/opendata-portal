@@ -316,7 +316,8 @@ div.horizontal-tabs .form-text {
       vertical-align: middle;
       color: #fff;
       
-      &.views-field-field-fact-value .field-content {
+      &.views-field-field-fact-value .field-content,
+      &.views-field-field-fact-percentage .field-content {
         width: 180px;
         height: 180px;
         border: 12px solid #ffa200;
@@ -335,6 +336,15 @@ div.horizontal-tabs .form-text {
         p {
           margin: 0;
         }
+      }
+      &.views-field-field-fact-url a {
+        display: block;
+        width: 48px;
+        height: 48px;
+        text-indent: -10000px;
+        overflow: hidden;
+        margin-left: 20px;
+        background: url("../images/ico-search-small.png") no-repeat;
       }
     }
     .links {
@@ -577,12 +587,12 @@ div.horizontal-tabs .form-text {
     line-height: 24px;
     border: 0;
     background: #fff;
-    color: #000;
+    color: #ccc;
     text-transform: uppercase;
     margin: 0;
     float: none;
     
-    &.hint {
+    &:focus {
       color: #4d4d4d;
     }
   }
@@ -1284,7 +1294,7 @@ div.horizontal-tabs .form-text {
   &.page-taxonomy-term-71 {
     
     .region-header {
-      background: url("../images/bg-state.png") no-repeat 50% 0;
+      background: url("../images/bg-state.jpg") no-repeat 50% 0;
       @include background-size(100% auto);
       border-bottom: 0;
     }
@@ -1325,6 +1335,14 @@ div.horizontal-tabs .form-text {
     
     .region-header {
       background: url("../images/bg-construction.jpg") no-repeat 50% 0;
+      @include background-size(100% auto);
+      border-bottom: 0;
+    }
+  }
+  &.page-taxonomy-term-74 {
+    
+    .region-header {
+      background: url("../images/bg-trade.jpg") no-repeat 50% 0;
       @include background-size(100% auto);
       border-bottom: 0;
     }
@@ -1970,24 +1988,30 @@ a.btn {
 .node-type-dataset {
   background: #fff;
 }
-.addtoany_list.a2a_kit_size_32 a span {
-  @include border-radius(100%);
-  display: inline-block;
-  height: 49px;
-  line-height: 49px;
-  overflow: hidden;
-  width: 49px;
-  background-size: cover;
+.addtoany_list.a2a_kit_size_32 {
+  a {
+    span {
+      @include border-radius(100%);
+      display: inline-block;
+      height: 45px;
+      line-height: 45px;
+      overflow: hidden;
+      width: 45px;
+      background-size: cover;
+      
+      &.a2a_s_twitter {
+        background: url("../images/ico-social-twitter.png") no-repeat;
+      }
+      &.a2a_s_facebook {
+        background: url("../images/ico-social-facebook.png") no-repeat;
+      }
+      &.a2a_s_google_plus {
+        background: url("../images/ico-social-google.png") no-repeat;
+      }       
+    }  
+  } 
 }
-.a2a_s_twitter {
-  background: url("../images/ico-social-twitter.png") no-repeat;
-}
-.a2a_s_facebook {
-  background: url("../images/ico-social-facebook.png") no-repeat;
-}
-.a2a_s_google_plus {
-  background: url("../images/ico-social-google.png") no-repeat;
-}
+
 .dataset-left-col {
   width: 30%;
   
@@ -1997,6 +2021,17 @@ a.btn {
     line-height: 1.0em;
     margin: 0 0 .4em;
   }
+  .panel-pane {
+    margin-bottom: 40px;
+  }
+  .field-name-field-spatial {
+    border: 10px solid #e5e5e5;
+    
+    .geolocation-map {
+      width: 100% !important;
+      margin: 0;
+    }    
+  } 
 }
 .dataset-right-col {
   width: 65%;
@@ -2014,6 +2049,11 @@ a.btn {
     color: #b5b5b5;
     font-size: 16px;
     text-transform: uppercase;
+  }
+  .pane-node-field-rubric a {
+    text-decoration: none;
+    position: relative;
+    top: -30px;
   }
   
   .pane-node-body,
@@ -2035,6 +2075,26 @@ a.btn {
     color: #666;
   }
 }
+.pane-if-you-unlogged {
+  padding-top: 50px;
+  font-size: 18px;
+  color: #434343;
+  span {
+    
+  }
+  a {
+    display: inline-block;
+    padding: .75em 1.6em;
+    font-size: 18px;
+    line-height: 1em;
+    color: #fff;
+    margin-left: 10px;
+    text-transform: uppercase;
+    background: #0c87e8;
+    text-decoration: none;       
+  }
+}
+
 .data-row-links {
   padding-top: 25px;
   overflow: hidden;
@@ -2043,18 +2103,21 @@ a.btn {
   .views-field {
     float: left;
   }
-  .views-field-field-link-remote-file {
+  .download {
     margin-right: 20px;
     
-    .field-content {
+    a {
       display: inline-block;
-      padding: .8em 1.6em;
-      font-size: 14px;
+      padding: .75em 1.6em;
+      font-size: 18px;
       line-height: 1em;
       color: #fff;
+      text-decoration: none;
       text-transform: uppercase;
       background: #0c87e8;
-      text-decoration: none;      
+      text-decoration: none;   
+      position: relative;
+      top: 10px;
     }
   }
   .views-field-field-format {
@@ -2078,7 +2141,10 @@ a.btn {
       color: #777777;
       font-size: 18px;
       text-transform: uppercase;
+      text-decoration: none;
       display: block;
+      position: relative;
+      top: 2px;
       padding-right: 30px;
       height: 60px;
       line-height: 60px;
@@ -2179,6 +2245,18 @@ a.btn {
         background: url("../images/ico-filetype.png") no-repeat;        
       }
     }
+    .download a {
+      background: none repeat scroll 0 0 #0C87E8;
+      color: #FFFFFF;
+      display: block;
+      font-size: 18px;
+      line-height: 1em;
+      padding: 0.75em 1.6em;
+      position: relative;
+      text-decoration: none;
+      text-transform: uppercase;
+      margin-bottom: .75em;
+    }    
     .panel-col-last {
       width: auto;
       margin: 0 208px 0 78px;    
@@ -2208,7 +2286,7 @@ a.btn {
       font-size: 18px;
       color: #434343;
       border: 1px solid #fff;
-      padding: .45em .8em;
+      padding: .55em .8em;
       background: #d5d5d5;
       vertical-align: top;
     }
@@ -2216,6 +2294,13 @@ a.btn {
       th, td {
         background: #eee;
       }
+    }
+    thead {
+      th, td {
+        background: #112b4c;
+        color: #fff;
+        text-transform: uppercase;
+      }      
     }
   }
 }
@@ -2231,6 +2316,9 @@ a.btn {
 .data-row-comments {
   .form-submit {
     margin: 20px 20px 0 0;
+  }
+  h2 {
+    margin-bottom: 12px;
   }
 }
 .pane-node-comment-form {

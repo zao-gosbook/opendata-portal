@@ -1,0 +1,7 @@
+name = Piwik report pane
+description = Provides a panel pane that displays piwik report.
+core = 7.x
+package = Chaos tool suite
+dependencies[] = ctools
+dependencies[] = piwik_reports
+

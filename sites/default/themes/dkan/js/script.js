@@ -15,8 +15,8 @@
   Drupal.behaviors.HintFormElemements = {
     attach: function (context) {      
       $('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text', context).once(function(){        
-        $('.pane-gb-search-pane .form-text', context).attr("placeholder", "Поиск по данным"); 
-        $('.pane-datasets-search-dataset-search .view-filters .form-text', context).attr("placeholder", "Поиск по данным"); 
+        $('.pane-gb-search-pane .form-text', context).attr("placeholder", "Поиск информации"); 
+        $('.pane-datasets-search-dataset-search .view-filters .form-text', context).attr("placeholder", "Поиск информации"); 
 
         $('input[placeholder], textarea[placeholder]').inputHints();
       });    

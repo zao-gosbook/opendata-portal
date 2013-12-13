@@ -33,7 +33,29 @@ class OdApiRDFaParser extends OdApiParser {
     // Using "@" for ignoring ARC2 library errors.
     @$this->parser->parse($url);
 
-    $this->subjects = $this->parser->getSimpleIndex();
+    $subjects = $this->parser->getSimpleIndex();
+
+    if (is_array($subjects)) {
+      foreach ($subjects as $link => $subject) {
+        if (substr($link, -1) !== '/') {
+          continue;
+        }
+
+        $correct_link = substr($link, 0, -1);
+
+        if (isset($subjects[$correct_link])) {
+          $subjects[$correct_link] = array_merge($subjects[$correct_link], $subjects[$link]);
+        }
+        else {
+          $subjects[$correct_link] = $subjects[$link];
+        }
+
+        unset($subjects[$link]);
+      }
+    }
+
+    $this->subjects = $subjects;
+
     $this->result = isset($this->subjects[$this->url]) ? $this->subjects[$this->url] : array();
     return $this;
   }

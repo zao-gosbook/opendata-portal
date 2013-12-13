@@ -1,0 +1,63 @@
+<?php
+/**
+ * @file views_flipped_table.module
+ * Flipped table style plugin, flipping rows and columns.
+ */
+
+/**
+ * Implementation of hook_views_api().
+ */
+function views_flipped_table_views_api() {
+  return array(
+    'api' => 3.0,
+  );
+}
+
+/**
+ * Make sure the $header variable is passed to the theme file.
+ */
+function template_preprocess_views_flipped_table(&$vars) {
+  // Let the base table preprocessor act first.
+  template_preprocess_views_view_table($vars);
+
+  // Get wrapper fields for table rows (this is inconsistent with standard views
+  // table, which ignores the rows. See https://drupal.org/node/1122130
+  $view     = $vars['view'];
+  $fields   = &$view->field;
+  $view     = $vars['view'];
+  $handler  = $view->style_plugin;
+  $options  = $view->style_plugin->options;
+  $columns  = $handler->sanitize_columns($options['columns'], $fields);
+  foreach ($columns as $field => $column) {
+    $vars['wrapper_classes'][$field] = '';
+    // Set up the wrapper label class.
+    if ($fields[$field]->options['element_default_classes']) {
+      $vars['wrapper_classes'][$field] .= "views-field views-field-" . $vars['fields'][$field];
+    }
+    $class = $fields[$field]->element_wrapper_classes(0);
+    if ($class) {
+      if ($vars['wrapper_classes'][$field]) {
+        $vars['wrapper_classes'][$field] .= ' ';
+      }
+      $vars['wrapper_classes'][$field] .= $class;
+    }
+  }
+
+  // Flip the table.
+  $vars['rows_flipped'] = array();
+  foreach ($vars['rows'] as $col) {
+    foreach ($col as $ltr => $value) {
+      $vars['rows_flipped'][$ltr][] = $value;
+    }
+  }
+
+  // Determine if the first row is to be shown as a table header.
+  $vars['first_row_header'] = (boolean) $vars['view']->style_plugin->options['flipped_table_header_first_field'];
+
+  // Set up classes for odd and even rows.
+  $count = 0;
+  foreach ($vars['rows_flipped'] as $field_name => $row) {
+    $vars['wrapper_classes'][$field_name] .= ($count++ % 2 == 0) ? ' even' : ' odd';
+  }
+
+}
