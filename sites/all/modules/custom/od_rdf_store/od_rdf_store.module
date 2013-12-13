@@ -1,5 +1,12 @@
 <?php
 
+// Максимальный размер загружаемого в хранилище документа
+define('OD_RDF_MAX_ALLOWED_FILESIZE', 32 * 1024 * 1024);
+// Максимальный размер скачиваемого документа
+define('OD_RDF_MAX_ALLOWED_HTTP_FILESIZE', 4 * 1024 * 1024);
+
+define('OD_RDF_RDF_MIMETYPE', 'application/rdf+xml');
+
 function od_rdf_store_menu() {
   // @todo use access RDF data permission instead of access content.
   $items['sparql'] = array(
@@ -76,16 +83,27 @@ function _get_file_fid($field) {
 }
 
 function od_rdf_store_load_file_to_storage($file) {
-  if ($file->filemime == 'application/rdf+xml') {
+  if ($file->filemime == OD_RDF_RDF_MIMETYPE) {
     $uri = FALSE;
     if (file_uri_scheme($file->uri) == 'http') {
       $uri = $file->uri;
+      if (filesize($uri) > OD_RDF_MAX_ALLOWED_HTTP_FILESIZE) {
+        watchdog('od_rdf_store', 'File %filename could not be loaded into RDF-storage. Max allowed file size for remote files is %filesize.', array('%filename' => $uri, '%filesize' => format_size(OD_RDF_MAX_ALLOWED_HTTP_FILESIZE)));
+        drupal_set_message(t('File %filename could not be loaded into RDF-storage. Max allowed file size for remote files is %filesize.', array('%filename' => $uri, '%filesize' => format_size(OD_RDF_MAX_ALLOWED_HTTP_FILESIZE))));
+        return;
+      }
     }
     elseif (file_uri_scheme($file->uri) == 'public') {
       $uri = file_create_url($file->uri);
     }
 
     if ($uri) {
+      if (filesize($uri) > OD_RDF_MAX_ALLOWED_FILESIZE) {
+        watchdog('od_rdf_store', 'File %filename could not be loaded into RDF-storage. Max allowed file size is %filesize.', array('%filename' => $uri, '%filesize' => format_size(OD_RDF_MAX_ALLOWED_FILESIZE)));
+        drupal_set_message(t('File %filename could not be loaded into RDF-storage. Max allowed file size is %filesize.', array('%filename' => $uri, '%filesize' => format_size(OD_RDF_MAX_ALLOWED_FILESIZE))));
+        return;
+      }
+
       $ep = sparql_get_store('site_endpoint');
       if ($result = $ep->query('load <' . $uri . '>')) {
         watchdog('od_rdf_store', 'File %file loaded into RDF-storage. %triples triples added.', array('%file' => $uri, '%triples' => $result['result']['t_count']));
@@ -96,7 +114,7 @@ function od_rdf_store_load_file_to_storage($file) {
 }
 
 function od_rdf_store_remove_file_from_storage($file) {
-  if ($file->filemime == 'application/rdf+xml') {
+  if ($file->filemime == OD_RDF_RDF_MIMETYPE) {
     $uri = FALSE;
     if (file_uri_scheme($file->uri) == 'http') {
       $uri = $file->uri;
