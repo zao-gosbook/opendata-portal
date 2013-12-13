@@ -40,3 +40,9 @@ function piwik_report_pane_piwik_dateselect_form_content_type_edit_form_submit($
 function piwik_report_pane_piwik_dateselect_form_content_type_summary($conf, $context) {
   return 'Piwik date select form';
 }
+
+if (!function_exists('piwik_reports_dateselect_form_submit')) {
+  function piwik_reports_dateselect_form_submit($form, &$form_state) {
+    $_SESSION['piwik_reports_period'] = $form_state['values']['period'];
+  }
+}
