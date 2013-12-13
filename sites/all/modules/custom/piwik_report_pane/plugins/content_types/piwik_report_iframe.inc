@@ -75,19 +75,19 @@ function _piwik_report_pane_piwik_report_iframe_render($report) {
       $title[0] = t('Browser families');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getBrowserType';
-    case 'getconfiguration':
+    case 'getConfiguration':
       // Screen resolutions
       $data_params[0]['filter_limit'] = 6;
       $title[0] = t('Screen resolution');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getConfiguration';
-    case 'getos':
+    case 'getOS':
       // Operating systems
       $data_params[0]['filter_limit'] = 6;
       $title[0] = t('Operating system');
       $data_params[0]['moduleToWidgetize'] = 'UserSettings';
       $data_params[0]['actionToWidgetize'] = 'getOS';
-    case 'getresolution':
+    case 'getResolution':
       // Client configurations
       $data_params[0]['filter_limit'] = 6;
       $title[0] = t('Client configuration');
@@ -146,7 +146,7 @@ function _piwik_report_pane_piwik_report_iframe_render($report) {
       $title[0] = t('Search engines');
       $data_params[0]['moduleToWidgetize'] = 'Referers';
       $data_params[0]['actionToWidgetize'] = 'getSearchEngines';
-    case 'getkeywords':
+    case 'getKeywords':
       $title[0] = t('Keywords');
       $data_params[0]['moduleToWidgetize'] = 'Referers';
       $data_params[0]['actionToWidgetize'] = 'getKeywords';
@@ -209,9 +209,9 @@ function piwik_report_pane_piwik_report_iframe_content_type_edit_form($form, &$f
   $options = array('visitors_overview' => t('visitors overview'), 
                    'visitors_times' =>  t('visitors times'), 
                    'visitors_settings' => t('visitors settings'),
-                   'getconfiguration' => t('configuration'),
-                   'getos' => t('OS'),
-                   'getresolution' => t('resolution'),
+                   'getConfiguration' => t('configuration'),
+                   'getOS' => t('OS'),
+                   'getResolution' => t('resolution'),
                    'visitors_locations' => t('visitors locations'),
                    'custom_variables' => t('visitors variables'),
                    'actions_pageurls' => t('visitors pageurls'),
