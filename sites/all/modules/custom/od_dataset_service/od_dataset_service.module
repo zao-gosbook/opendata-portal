@@ -78,9 +78,9 @@ function od_dataset_service_services_resources() {
 function _od_dataset_service_retrieve($fn, $owner_name, $owner_id, $keyword, $offset, $limit) {
   
   // Check for mad values
-  $owner_name = rawurldecode($owner_name) ? rawurldecode($owner_name) : NULL;
-  $owner_id = rawurldecode($owner_id) ? rawurldecode($owner_id) : NULL;
-  $keyword = rawurldecode($keyword) ? rawurldecode($keyword) : NULL;
+  $owner_name = rawurldecode($owner_name) ? rawurldecode($owner_name) : 'all';
+  $owner_id = rawurldecode($owner_id) ? rawurldecode($owner_id) : 'all';
+  $keyword = rawurldecode($keyword) ? rawurldecode($keyword) : 'all';
   $offset = intval($offset) ? intval($offset) : 0;
   $limit = intval($limit) ? intval($limit) : 20;
 
@@ -93,6 +93,7 @@ function _od_dataset_service_retrieve($fn, $owner_name, $owner_id, $keyword, $of
 * Gets blog posts
 */
 function od_dataset_service_find_items($owner_name, $owner_id, $keyword, $offset, $limit) {
+  
   $args = array($owner_name, $owner_id, $keyword);
   
   $view = views_get_view('datasets_rest');
