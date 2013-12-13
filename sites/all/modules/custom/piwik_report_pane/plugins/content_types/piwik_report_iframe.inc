@@ -209,14 +209,35 @@ function _piwik_report_pane_piwik_report_iframe_render($report) {
  */
 function piwik_report_pane_piwik_report_iframe_content_type_edit_form($form, &$form_state) {
   $conf = $form_state['conf'];
-
-  $form['report'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Iframe type'),
-    '#required' => TRUE,
-    '#size' => 60,
-    '#default_value' => isset($conf['report']) ? $conf['report'] : '',
+  $options = array('visitors_overview' => t('visitors overview'), 
+                   'visitors_times' =>  t('visitors times'), 
+                   'visitors_settings' => t('visitors settings'),
+                   'getConfiguration' => t('configuration'),
+                   'getOS' => t('OS'),
+                   'getResolution' => t('resolution'),
+                   'visitors_locations' => t('visitors locations'),
+                   'custom_variables' => t('visitors variables'),
+                   'actions_pageurls' => t('visitors pageurls'),
+                   'actions_exiturls' => t('visitors exiturls'),
+                   'actions_outlinks' => t('visitors outlinks'),
+                   'actions_downloads' => t('visitors downloads'),
+                   'referers_evolution' => t('visitors evolution'),
+                   'referers_search' => t('visitors search'),
+                   'getKeywords' => t('keywords'),
+                   'referers_websites' => t('referers website'),
   );
+  $form['report'] = array('#type' => 'select',
+                          '#title' => t('Piwik Iframe'),
+                          '#options' => $options,
+                          '#default_value' => isset($conf['report']) ? $conf['report'] : '',
+                          );
+  //$form['report'] = array(
+    //'#type' => 'textfield',
+    //'#title' => t('Iframe type'),
+    //'#required' => TRUE,
+    //'#size' => 60,
+    //'#default_value' => isset($conf['report']) ? $conf['report'] : '',
+  //);
 
   return $form;
 }
