@@ -220,7 +220,7 @@ function piwik_report_pane_piwik_report_iframe_content_type_edit_form($form, &$f
                    'actions_downloads' => t('visitors downloads'),
                    'referers_evolution' => t('visitors evolution'),
                    'referers_search' => t('visitors search'),
-                   'getkeywords' => t('keywords'),
+                   'getKeywords' => t('keywords'),
                    'referers_websites' => t('referers website'),
   );
   $form['report'] = array('#type' => 'select',
