@@ -11,7 +11,6 @@ function piwik_report_pane_piwik_report_iframe_content_type_render($subtype, $co
   $block = new stdClass();
   $block->title = !empty($conf['override_title']) ? check_plain($conf['override_title_text']) : '';
   module_load_include('inc', 'piwik_reports', 'piwik_reports.pages');
-  // TODO
   $block->content = empty($conf['report']) ? 'Iframe is not selected' : _piwik_report_pane_piwik_report_iframe_render($conf['report']);
   return $block;
 }
