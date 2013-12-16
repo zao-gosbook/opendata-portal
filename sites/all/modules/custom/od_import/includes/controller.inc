@@ -66,23 +66,28 @@ function od_import_import_organization_opendata($org) {
     return FALSE;
   }
 
-  $meta_succeeded_count = 0;
+  $meta_added_count = 0;
+  $meta_updated_count = 0;
   $meta_existed_count = 0;
-  $meta_failed_count = 0;
   $dataset_list = array();
   foreach ($data as $meta) {
     $identifier = $meta['identifier'];
 
     $dataset_node = od_import_load_dataset($identifier);
 
-    $meta_node = od_import_load_or_create_dataset($identifier, $meta, $org->nid, $dataset_node);
+    $meta_node = od_import_load_or_create_dataset($identifier, $meta, $org->nid, $dataset_node, $updated);
 
     if (!$dataset_node) {
-      $meta_succeeded_count++;
+      $meta_added_count++;
       $dataset_list[] = l($meta_node->title, 'node/' . $meta_node->nid);
     }
     else {
-      $meta_existed_count++;
+      if ($updated) {
+        $meta_updated_count++;
+      }
+      else {
+        $meta_existed_count++;
+      }
     }
   }
   $dataset_list = implode('<br />', $dataset_list);
@@ -92,9 +97,9 @@ function od_import_import_organization_opendata($org) {
   $message = <<<'MESSAGE'
 Обработан реестр наборов открытых данных организации %org_name.<br />
 Время начало обработки: %time_start. Время завершения обработки: %time_finish.<br />
-Количество удачно загруженных наборов: %meta_succeeded_count.<br />
+Количество новых загруженных наборов: %meta_added_count.<br />
+Количество актуализированных наборов: %meta_updated_count.<br />
 Количество ранее загруженных наборов: %meta_existed_count.<br />
-Количество незагруженных наборов: %meta_failed_count.<br />
 Список загруженных наборов:<br />
 !dataset_list.
 MESSAGE;
@@ -103,9 +108,9 @@ MESSAGE;
     '%org_name' => $org_name,
     '%time_start' => $time_start,
     '%time_finish' => $time_finish,
-    '%meta_succeeded_count' => $meta_succeeded_count,
+    '%meta_added_count' => $meta_added_count,
+    '%meta_updated_count' => $meta_updated_count,
     '%meta_existed_count' => $meta_existed_count,
-    '%meta_failed_count' => $meta_failed_count,
     '!dataset_list' => $dataset_list,
   );
   $message = format_string($message, $args);
@@ -116,7 +121,7 @@ MESSAGE;
   return TRUE;
 }
 
-function od_import_load_or_create_dataset($identifier, $meta, $org_id, $dataset_node = FALSE) {
+function od_import_load_or_create_dataset($identifier, $meta, $org_id, $dataset_node = FALSE, &$updated = FALSE) {
   $is_new = !$dataset_node;
 
   if ($is_new) {
@@ -218,7 +223,7 @@ function od_import_load_or_create_dataset($identifier, $meta, $org_id, $dataset_
   }
 
   // Add resource to dataset. It requires existing dataset node with node ID.
-  od_import_source_set_resource($dataset_node, $meta, $is_new);
+  od_import_source_set_resource($dataset_node, $meta, $is_new, $updated);
 
   // Update dataset.
   node_save($dataset_node);
@@ -229,8 +234,8 @@ function od_import_load_or_create_dataset($identifier, $meta, $org_id, $dataset_
 /**
  * Add resource to dataset. It requires existing dataset node with node ID.
  */
-function od_import_source_set_resource(&$meta_node, $meta, $is_new) {
-  $resource = od_import_load_or_create_resource($meta_node, $meta, $is_new);
+function od_import_source_set_resource(&$meta_node, $meta, $is_new, &$updated = FALSE) {
+  $resource = od_import_load_or_create_resource($meta_node, $meta, $is_new, $updated);
 
   $meta_node->{OD_IMPORT_FIELD_META_RESOURCES} = array();
   if ($resource) {
@@ -240,7 +245,7 @@ function od_import_source_set_resource(&$meta_node, $meta, $is_new) {
   }
 }
 
-function od_import_load_or_create_resource($meta_node, $meta, $is_new) {
+function od_import_load_or_create_resource($meta_node, $meta, $is_new, &$updated = FALSE) {
   // Init output variable.
   $resource_node = FALSE;
 
@@ -284,7 +289,7 @@ function od_import_load_or_create_resource($meta_node, $meta, $is_new) {
     $revisions_created = array();
     foreach ($revisions as $revision) {
       $created = $revision->{OD_IMPORT_FIELD_RESOURCE_CREATED}['und'][0]['value'];
-      $revisions_created[$revision->vid] = $created;
+      $revisions_created[$created] = $revision->vid;
     }
   }
 
@@ -294,6 +299,8 @@ function od_import_load_or_create_resource($meta_node, $meta, $is_new) {
     if (isset($revisions_created[$created])) {
       continue;
     }
+
+    $updated = TRUE;
 
     if (!empty($revisions)) {
       $resource_node->revision = TRUE;
