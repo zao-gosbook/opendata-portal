@@ -79,12 +79,11 @@ class OdApi {
 
           $possible_object = new $class_name($this, $parent_object);
 
+          $this->validators = array_merge($this->validators, array_values($possible_object->getValidators()));
           if (!$possible_object->argIsValid || !$possible_object->versionIsValid) {
             continue;
           }
           $object = clone $possible_object;
-
-          $this->validators = array_merge($this->validators, array_values($object->getValidators()));
 
           $object_is_valid = $object->objectIsValid;
 

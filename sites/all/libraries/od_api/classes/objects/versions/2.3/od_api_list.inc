@@ -17,7 +17,7 @@ class OdApiList23 extends OdApiListDefault {
     // Fix args.
     $this->args[OdApiObject::OBJECT_TYPE_IS_LIST] = $list_arg;
 
-    $url_is_valid = (bool) preg_match('/^https?:\/\/[a-zа-я0-9\-]+(\.[a-zа-я0-9\-]+)*\.[a-z]{2,4}\/?$/', $list_arg);
+    $url_is_valid = (bool) preg_match('/^https?:\/\/[a-zа-я0-9\-]+(\.[a-zа-я0-9\-]+)*\.[a-z]{2,4}(\/[a-zа-я0-9\-]+)*\/$/', $list_arg);
 
     $this->setValidator($this::SITE_OPENDATA_ARG_IS_VALID, $url_is_valid);
   }
