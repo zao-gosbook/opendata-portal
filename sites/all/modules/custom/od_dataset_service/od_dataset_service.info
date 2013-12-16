@@ -1,0 +1,5 @@
+name = OpenData datasets backend
+description = Provide drupal service's module backend for datasets search
+core = 7.x
+dependencies[] = rest_server
+dependencies[] = services

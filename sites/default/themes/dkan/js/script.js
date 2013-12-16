@@ -61,7 +61,7 @@
   
   Drupal.behaviors.QuickFacts = {
     attach: function (context, settings) {  
-      if('.view-quick-facts .view-content') {
+      /**/  if('.view-quick-facts .view-content') {
         var n = 0;
         var $fact = $('.view-quick-facts .view-content .views-row');
         $($fact[n]).addClass('next');
@@ -77,7 +77,7 @@
             $($fact[n]).addClass('next');
           }, 500)
         }, 6000);
-      }     
+      }   
     }
   }
   

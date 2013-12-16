@@ -1,0 +1,107 @@
+<?php
+
+/**
+* Implements of hook_services_resources().
+*/
+function od_dataset_service_services_resources() {
+  $api = array(
+    'datasets' => array(
+      'operations' => array(
+        'retrieve' => array(
+          'help' => 'Retrieves datasets',
+          'callback' => '_od_dataset_service_retrieve',
+          'access callback' => 'user_access',
+          'access arguments' => array('access content'),
+          'access arguments append' => FALSE,
+          'args' => array(
+            array(
+              'name' => 'fn',
+              'type' => 'string',
+              'description' => 'Function to perform',
+              'source' => array('path' => '0'),
+              'optional' => TRUE,
+              'default' => '0',
+            ),
+            array(
+              'name' => 'owner_name',
+              'type' => 'string',
+              'description' => 'Name of dataset owner',
+              'source' => array('param' => 'owner_name'),
+              'optional' => TRUE,
+              'default' => '0',
+            ),
+            array(
+              'name' => 'owner_id',
+              'type' => 'string',
+              'description' => 'ID of dataset owner',
+              'source' => array('param' => 'owner_id'),
+              'optional' => TRUE,
+              'default' => '0',
+            ),
+            array (
+              'name' => 'keyword',
+              'type' => 'string',
+              'description' => 'array of dataset keywords',
+              'source' => array('param' => 'keyword'),
+              'optional' => TRUE,
+              'default' => '0',
+            ),
+            array(
+              'name' => 'offset',
+              'optional' => TRUE,
+              'type' => 'int',
+              'source' => array('param' => 'offset'),
+              'description' => 'offset this number of results',
+              'default' => 0,
+            ),
+            array(
+              'name' => 'limit',
+              'optional' => TRUE,
+              'type' => 'int',
+              'source' => array('param' => 'limit'),
+              'description' => 'maximum number of results to return (default: 20)',
+              'default' => 20,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  return $api;
+}
+
+
+/**
+* Callback function for datasets retrieve
+*/
+function _od_dataset_service_retrieve($fn, $owner_name, $owner_id, $keyword, $offset, $limit) {
+  
+  // Check for mad values
+  $owner_name = rawurldecode($owner_name) ? rawurldecode($owner_name) : 'all';
+  $owner_id = rawurldecode($owner_id) ? rawurldecode($owner_id) : 'all';
+  $keyword = rawurldecode($keyword) ? rawurldecode($keyword) : 'all';
+  $offset = intval($offset) ? intval($offset) : 0;
+  $limit = intval($limit) ? intval($limit) : 20;
+
+
+  return od_dataset_service_find_items($owner_name, $owner_id, $keyword, $offset, $limit);
+}
+
+
+/**
+* Gets blog posts
+*/
+function od_dataset_service_find_items($owner_name, $owner_id, $keyword, $offset, $limit) {
+  
+  $args = array($owner_name, $owner_id, $keyword);
+  
+  $view = views_get_view('datasets_rest');
+  $view->set_arguments($args);
+  $view->set_offset($offset);
+  $view->set_items_per_page($limit);
+  $view->execute();
+  $result = json_decode(filter_xss($view->render(), array()));
+  return $result->datasets;
+}
+

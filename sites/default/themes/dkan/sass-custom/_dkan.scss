@@ -88,6 +88,9 @@ div.horizontal-tabs .form-text {
 .page-user .entityform div.autocomplete-deluxe-multiple {
   border-color: #ccc;
 }
+.page-user .entityform div.horizontal-tabs .form-text {
+  width: 50%;
+}
 .form-textarea {
   width: 100%;
   margin: 0;
@@ -96,9 +99,54 @@ div.horizontal-tabs .form-text {
   padding-top: 0.85em;
   padding-bottom: 0.85em;
 }
-
 .form-required {
   color: #0c87e8;
+}
+.field-type-file {
+  table {
+    font-size: 13px;
+    line-height: 1.2;
+    margin-top: 20px;
+    
+    tbody tr:nth-child(odd) {
+      background-color: #e5e5e5;
+    }
+    td {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .messages {
+      margin: 0;
+    }
+    .form-select,
+    .form-textarea-wrapper,
+    .form-textarea    {
+      width: 100%;
+      margin: 0;
+      font-size: 13px;
+    }
+  }
+}
+.form-actions {
+  margin-top: 30px;
+  
+  .form-submit {
+    margin-right: 15px;
+  }
+}
+
+.page-node-add,
+.page-node-edit {
+  background: #fff;
+  
+  .description {
+    font-size: 14px;
+    color: #999;
+  }
+  .form-textarea-wrapper {
+    width: 60%;
+    margin-right: 0;
+  }
 }
 
 .front .region-header {
@@ -337,15 +385,27 @@ div.horizontal-tabs .form-text {
           margin: 0;
         }
       }
-      &.views-field-field-fact-url a {
-        display: block;
-        width: 48px;
-        height: 48px;
-        text-indent: -10000px;
-        overflow: hidden;
-        margin-left: 20px;
-        background: url("../images/ico-search-small.png") no-repeat;
-      }
+      &.views-field-field-fact-url {
+        .field-content {
+          width: 48px;
+          height: 48px;   
+          position:relative;  
+          
+          a {
+            display: block;
+            width: 48px;
+            height: 48px;
+            text-indent: -10000px;
+            overflow: hidden;
+            margin-left: 20px;
+            background: url("../images/ico-search-small-set.png") no-repeat;
+            
+            &:hover {
+              background-position: 0 -48px;
+            }
+          }          
+        }
+      } 
     }
     .links {
       display: none;
@@ -354,6 +414,7 @@ div.horizontal-tabs .form-text {
   .views-row {
     @include opacity(0);
     position: absolute;/**/
+    z-index: 100;
     @include transition(all 0.3s ease-in-out);
     
     &.next {
@@ -398,7 +459,8 @@ div.horizontal-tabs .form-text {
     cursor: pointer;
     margin-left: -25px;
     background: url("../images/ico-toggle-map.png") no-repeat 0 0;
-    
+    z-index: 1000;
+ 
     &.ctools-toggle-collapsed {
       background-position: 0 100%;
       margin-top: -20px;
@@ -1121,6 +1183,15 @@ div.horizontal-tabs .form-text {
           margin: 0;
         }
       }
+      .views-field-field-format {
+        display: inline-block;
+        padding: .4em .6em;
+        color: #fff;
+        background: #ffa200;
+        text-decoration: none;
+        font-size: 1.2em;
+        text-transform: uppercase;        
+      }
       .data-and-resources {
         .form-item {
           margin: 0;
@@ -1161,6 +1232,12 @@ div.horizontal-tabs .form-text {
     padding-right: 4%;
     margin-bottom: 4.5em;
     
+    .node {
+      border-right: 0;
+      padding-right: 0;
+      margin-bottom: 0;      
+    }
+    
     .views-field-title .field-content {
       font-size: 2em;
       line-height: 1.1em;
@@ -1199,9 +1276,271 @@ div.horizontal-tabs .form-text {
       line-height: 1.55em;      
     }
   }
+  .node-dataset { 
+    padding-left: 90px !important;
+    position: relative;
+    
+    .taxonomy-term:after {
+      clear: none;
+    }
+    .field-type-taxonomy-term-reference {
+      .field-type-image {
+        
+        img {
+          position: absolute;
+          top: -4px;
+          left: 0;
+        }
+      }
+      .field-name-title {
+        
+        h2 {
+          font-size: 16px;
+          color: #4c4c4c;
+          margin-bottom: 6px;
+          
+          a {
+            color: #4c4c4c;
+          }
+        }
+      } 
+    }
+    .field-name-field-contact-name,
+    .field-name-field-organization,
+    .field-name-field-owner {
+      font-size: 16px;
+      color: #b5b5b5;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
+  }
 }
 
+.node-type-blog,
+.node-type-idea,
+.node-type-news {
+  background: #fff; 
+}
+.node-idea.view-mode-full {
+  .field-name-field-rubric {
+    color: #4C4C4C;
+    font-size: 16px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    
+    a {
+      color: #4C4C4C;
+      text-decoration: none;
+    }
+  }
+  .field-name-field-idea-vote-up-down {
+    float: right;
+    margin: 0 0 15px 20px;
+  }
+  .field-name-body {
+    color: #666666;
+    font-size: 1.3em;
+    line-height: 1.55em;
+    padding-bottom: 20px;    
+    
+    p {
+      margin: 0 0 20px;
+    }
+  }
+  .flag-wrapper {
+    font-size: 16px;
+    text-transform: uppercase;
+    
+    a {
+      text-decoration: none;
+      display: inline-block;
+      padding: 10px 17px;
+      border: 1px solid transparent;
+      
+      &.unflag-action {
+        color: red;
+        border-color: red;
+      }
+      &.flag-action {
+        color: green;
+        border-color: green;
+      }
+    }
+  }
+  .links {
+    display: none;
+  }
+}
+.node-news.view-mode-full {
+  .field-name-post-date {
+    color: #ccc;
+    font-size: 1.3em;
+    line-height: 1.55em;
+    padding-bottom: 20px;      
+  }
+  .field-name-body {
+    color: #666666;
+    font-size: 1.3em;
+    line-height: 1.55em;
+    padding-bottom: 20px;    
+    
+    p {
+      margin: 0 0 20px;
+    }
+  }  
+}
+.node-blog.view-mode-full {
+  
+  .field-name-author {
+    display: inline-block;    
+    color: #ccc;
+    font-size: 1.3em;
+    line-height: 1.55em;
+    padding-bottom: 20px;    
+    padding-right: 10px;
+    
+    * {
+      display: inline-block;   
+    }
+  }
+  .field-name-post-date {
+    display: inline-block;    
+    color: #ccc;
+    font-size: 1.3em;
+    line-height: 1.55em;
+    padding-bottom: 20px;    
+    
+    * {
+      display: inline-block;   
+    }
+  }  
+  .field-name-body {
+    color: #666666;
+    font-size: 1.3em;
+    line-height: 1.55em;
+    padding-bottom: 20px;    
+    
+    p {
+      margin: 0 0 20px;
+    }
+  }
+  .field-name-field-rubric {
+    color: #4C4C4C;
+    font-size: 16px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    
+    a {
+      color: #4C4C4C;
+      text-decoration: none;
+    }
+  }
+  .links {
+    margin: 0;
+    padding-top: 10px;
+    clear: both;
+    overflow: hidden;
+    display: block;
+    
+    li {
+      
+    }
+    a {
+      display: inline-block;
+      font-size: 14px;
+    }
+    .blog_usernames_blog {
+      a {
+        background: none repeat scroll 0 0 #0C87E8;
+        color: #FFFFFF;
+        display: inline-block;
+        font-size: 18px;
+        line-height: 1em;
+        padding: 0.75em 1.6em;
+        position: relative;
+        text-decoration: none;
+        text-transform: uppercase;
+          
+      }
+    }
+  }  
+}
+.page-blog {
+  background: #fff;
 
+  .node-blog {
+    border-right: 5px solid #BFBFBF;
+    margin-bottom: 4.5em;
+    padding-right: 4%;
+    
+    h2 {
+      font-size: 2em;
+      line-height: 1.1em;
+      margin: 0 0 0.15em;      
+      
+      a {
+        color: #3D9FED;
+        text-decoration: none;
+      }
+    }
+    .field-name-body {
+      color: #666666;
+      font-size: 1.3em;
+      line-height: 1.55em;
+      padding-bottom: 20px;
+    }
+    .field-name-field-date-created{
+      color: #B5B5B5;
+      float: left;
+      font-size: 1.25em;
+      width: 50%;
+    }
+    .field-name-field-comments-count {
+      background: url("../images/ico-comments.png") no-repeat scroll 0 50% transparent;
+      color: #FF8A00;
+      float: right;
+      font-size: 1.25em;
+      padding-left: 25px;
+      
+      a {
+        color: #FF8A00;
+        text-decoration: none;
+      }
+      em {
+          font-style: normal;
+      }      
+    }
+    .links {
+      margin: 0;
+      padding-top: 10px;
+      clear: both;
+      overflow: hidden;
+      display: block;
+      
+      li {
+        
+      }
+      a {
+        display: inline-block;
+        font-size: 14px;
+      }
+    }
+    .node-readmore {
+      a {
+        background: none repeat scroll 0 0 #0C87E8;
+        color: #FFFFFF;
+        display: inline-block;
+        font-size: 18px;
+        line-height: 1em;
+        padding: 0.75em 1.6em;
+        position: relative;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
 
 /**
  * page rubric
@@ -2024,7 +2363,8 @@ a.btn {
   .panel-pane {
     margin-bottom: 40px;
   }
-  .field-name-field-spatial {
+  .field-name-field-spatial,
+  .field-name-field-geolocation {
     border: 10px solid #e5e5e5;
     
     .geolocation-map {
