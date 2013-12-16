@@ -45,15 +45,31 @@ function piwik_reports_dateselect_form() {
   $form['basic']['inline']['period'] = array(
     '#type' => 'select',
     '#title' => '',
-    '#default_value' => isset($_SESSION['piwik_reports_period']) ? $_SESSION['piwik_reports_period'] : 0,
+    '#default_value' => isset($_SESSION['
+    ']) ? $_SESSION['piwik_reports_period'] : 0,
     '#options' => $period,
   );
+
+  drupal_add_js( insert_javascript_str() , 'inline');
+
   $form['basic']['inline']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Filter'),
     '#weight' => 15,
+    '#attributes' => array(
+        'onclick' => 'this.form.action=this.form.action + tabPart()'
+    )
   );
+
   return $form;
+}
+
+function insert_javascript_str(){
+    return "function tabPart(){
+                elem = jQuery( \"li:first[class*='ui-tabs-selected ui-state-active']\" );
+                a_tag_href_value = elem[0].childNodes[0].attributes['href'].nodeValue;
+                return a_tag_href_value;
+            }";
 }
 
 /**
