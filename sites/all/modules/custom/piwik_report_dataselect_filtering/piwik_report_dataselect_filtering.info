@@ -1,0 +1,4 @@
+name = Piwik Report Dataselect Filtering
+description = It allows to save view of the selected tab from previous load (rather then reset always on first tab).
+core = 7.x
+dependencies[] = piwik_reports
