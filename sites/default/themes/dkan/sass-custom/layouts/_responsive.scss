@@ -153,9 +153,19 @@ $zen-auto-include-item-base: false;
   
   /* mobile screen */
   .region-header {
+    
+    #logo {
+      margin-top: -3px;
+      padding-right: 11px;
+      width: 51px;
+    }
     #name-and-slogan a {
       font-size: 20px;
-    }    
+    }  
+    #name-and-slogan {
+      margin-top: -4px;
+      padding-top: 7px;
+    }
     .pane-system-main-menu {
       clear: left;
       padding-left: 15px;
@@ -221,6 +231,94 @@ $zen-auto-include-item-base: false;
       }
     }
   }
+  .view-quick-facts {
+    padding-top: 115px;
+    padding-bottom: 24%;
+    
+    .view-content > div { 
+      
+      .views-field {
+        
+        &.views-field-field-fact-value .field-content,
+        &.views-field-field-fact-percentage .field-content {
+          width: 45px;
+          height: 45px;
+          border: 4px solid #ffa200;
+          line-height: 45px;
+          font-size: 19px;
+        }
+        &.views-field-body {
+          font-size: 13px;
+          line-height: 14px;
+          width: 130px;
+          text-transform: uppercase;
+          padding-left: 10px;
+          
+          p {
+            margin: 0;
+          }
+        }
+        &.views-field-field-fact-url {
+          .field-content {
+            width: 48px;
+            height: 48px;   
+            position:relative;  
+            
+            a {
+              display: block;
+              width: 48px;
+              height: 48px;
+              text-indent: -10000px;
+              overflow: hidden;
+              margin-left: 20px;
+              background: url("../images/ico-search-small-set.png") no-repeat;
+              
+              &:hover {
+                background-position: 0 -48px;
+              }
+            }          
+          }
+        } 
+      }
+    }
+    .views-row {
+      top: -20px;
+      
+      /* Every other three fast facts, starting from the first */
+      &:nth-child(3n+1) {
+        @include transform(translate(5%,10%));
+      }
+      &.next:nth-child(3n+1) {
+        @include transform(translate(7%,10%));
+      }  
+      /* Every other three fast facts, starting from the second */
+      &:nth-child(3n+2) {
+        @include transform(translate(7%,15%));
+      }
+      &.next:nth-child(3n+2) {
+        @include transform(translate(9%,15%));
+      }
+      /* Every other three fast facts, starting from the first */
+      &:nth-child(3n+3) {
+        @include transform(translate(10%,5%));
+      }
+      &.next:nth-child(3n+3) {
+        @include transform(translate(12%,5%));
+      }    
+    }    
+  }
+  .pane-gb-search-pane {
+    padding: 12px 0 20px;
+  }
+  .pane-gb-search-pane .form-item-field-select .form-type-radio label {
+    font-size: 12px;
+    height: 21px;
+    line-height: 20px;
+    padding: 0 12px;
+  }  
+  .pane-gb-search-pane .form-item-field-select .form-type-radio {
+    margin-right: 10px;
+  }  
   .panels-flexible-region-4-region_main_content {
     width: 100%;
   }

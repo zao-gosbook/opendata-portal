@@ -25,14 +25,17 @@
   
   Drupal.behaviors.TaxonomyColumns = {
     attach: function (context) {      
-      $('<div class="view-header"></div>').prependTo('.view-rubric-nodes .view-content');
-      var container = document.querySelector('.view-rubric-nodes .view-content');
-      var msnry = new Masonry( container, {
-        // options
-        //columnWidth: 200,
-        itemSelector: '.views-row'/**/,
-        gutter: '.view-rubric-nodes .view-content .view-header'
-      });  
+      $('.section-rubriki .view-rubric-nodes .view-content', context).once('massontry', function() {
+        var massontry = $(this);
+        $('<div class="view-header"></div>').prependTo(massontry);
+        var container = document.querySelector('.view-rubric-nodes .view-content');
+        var msnry = new Masonry( container, {
+          // options
+          //columnWidth: 200,
+          itemSelector: '.views-row'/**/,
+          gutter: '.view-rubric-nodes .view-content .view-header'
+        });         
+      });
     }
   }   
   
