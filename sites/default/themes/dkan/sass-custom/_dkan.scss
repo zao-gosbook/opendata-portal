@@ -98,6 +98,8 @@ div.horizontal-tabs .form-text {
 .form-select {
   padding-top: 0.85em;
   padding-bottom: 0.85em;
+  height: 48px;
+  line-height: 44px;
 }
 .form-required {
   color: #0c87e8;
@@ -147,6 +149,10 @@ div.horizontal-tabs .form-text {
     width: 60%;
     margin-right: 0;
   }
+}
+
+.node-unpublished {
+  background: transparent;
 }
 
 .front .region-header {
@@ -216,6 +222,7 @@ div.horizontal-tabs .form-text {
   .pane-system-main-menu {
     float: left;
     padding-bottom: 20px;
+    padding-top: 10px;
     
      > ul {
       margin: 0;
@@ -312,7 +319,7 @@ div.horizontal-tabs .form-text {
   }
   .pane-system-user-menu {
     float: right;
-    padding: 0 10px 20px 30px;
+    padding: 10px 10px 20px 30px;
     
     > ul {
       margin: 0;
@@ -377,7 +384,7 @@ div.horizontal-tabs .form-text {
       &.views-field-body {
         font-size: 35px;
         line-height: 34px;
-        width: 420px;
+        width: 485px;
         text-transform: uppercase;
         padding-left: 15px;
         
@@ -454,6 +461,7 @@ div.horizontal-tabs .form-text {
     display: block;
     width: 50px;
     position: absolute;
+    z-index: 1000;
     height: 25px;
     left: 50%;
     bottom: 0;
@@ -1541,6 +1549,27 @@ div.horizontal-tabs .form-text {
     }
   }
 }
+.page-blog .pane-pane-messages .action-links  {
+  margin: 0;
+  padding: 0 0 20px;
+  
+  li {
+    list-style: none;
+    margin: 0 10px 0 0;
+    
+    a {
+      background: none repeat scroll 0 0 #0C87E8;
+      color: #FFFFFF;
+      display: inline-block;
+      font-size: 14px;
+      line-height: 1em;
+      padding: 0.8em 1.6em;
+      text-decoration: none;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }    
+  }
+}
 
 /**
  * page rubric
@@ -1612,78 +1641,62 @@ div.horizontal-tabs .form-text {
 .page-taxonomy-term {   
   .region-header {
     border-bottom: 0;
+    @include background-size(100% auto);
+    border-bottom: 0;
   }  
 
   &.page-taxonomy-term-8 {
     
     .region-header {
       background: url("../images/header-taxonomy-education.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   &.page-taxonomy-term-72 {
     
     .region-header {
       background: url("../images/bg-geography.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   &.page-taxonomy-term-71 {
     
     .region-header {
       background: url("../images/bg-state.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   &.page-taxonomy-term-12 {
     
     .region-header {
       background: url("../images/bg-transport.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   &.page-taxonomy-term-10 {
     
     .region-header {
       background: url("../images/bg-security.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   &.page-taxonomy-term-15 {
     
     .region-header {
       background: url("../images/bg-health.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   &.page-taxonomy-term-9 {
     
     .region-header {
       background: url("../images/bg-economy.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   &.page-taxonomy-term-73 {
     
     .region-header {
       background: url("../images/bg-construction.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   &.page-taxonomy-term-74 {
     
     .region-header {
       background: url("../images/bg-trade.jpg") no-repeat 50% 0;
-      @include background-size(100% auto);
-      border-bottom: 0;
     }
   }
   
@@ -2044,6 +2057,9 @@ html.js input.form-autocomplete {
 /**
  * view-organizations
  */
+.page-organizations {
+  background: #fff;
+} 
 .view-organizations {
   .view-filters {
     
@@ -2051,7 +2067,8 @@ html.js input.form-autocomplete {
       float: left;
       padding: 8px 15px 0 0;    
     }
-    .form-select {
+    .form-select,
+    .form-text {
       width: 100%;
     }
     .views-widget {
@@ -2060,7 +2077,16 @@ html.js input.form-autocomplete {
     .views-exposed-form .views-exposed-widget .form-submit {
       margin-top: 0;
     }
+
   }
+  tr.odd {
+    background: #f4f4f4;
+  }  
+  td,
+  th {
+    padding: .8em;
+    text-align: left;
+  }  
 }
 table {
   width: 100%;
@@ -2104,9 +2130,22 @@ table {
  * ideas
  */
 .section-ideas .region-content {
-  padding-top: 90px;
+  padding-top: 30px;
 }
 .view-ideas {
+  .view-header {
+    a {
+      background: none repeat scroll 0 0 #0C87E8;
+      color: #FFFFFF;
+      display: inline-block;
+      font-size: 14px;
+      line-height: 1em;
+      padding: 0.8em 1.6em;
+      text-decoration: none;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }     
+  }
   .views-row {
     padding-bottom: 57px;
     overflow: hidden;
@@ -2708,3 +2747,43 @@ a.btn {
     }
   }
 }
+
+/**
+ * opendata-import
+ */
+.page-opendata-import {
+  background: #fff;
+} 
+
+.view-opendata-import {
+  font-size: 15px;
+  
+  .item-list {
+    margin: 20px 0;
+    
+    h3 {
+      margin: 0;
+    }
+    li {
+      padding: 3px 0;
+      text-transform: uppercase;
+    }
+  }
+  tr.odd {
+    background-color: #f4f4f4;
+  }
+  th {
+    padding: 10px 15px;
+    text-align: left;
+  }
+  td {
+    padding: 10px 15px;
+  }
+}
+
+/**
+ * messages
+ */
+.messages {
+  font-size: 16px;
+} 
