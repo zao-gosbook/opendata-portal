@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * Implements hook_search_api_ajax_settings().
+ */
+function gb_dkan_ajaxify_search_search_api_ajax_settings() {
+  $settings = array(
+    // required: CSS ID for the main content (search results html)
+    'content' => '.l-content',
+    // required: array of regions with search-related blocks => CSS ID's
+    'regions' => array(
+      'search_results' => '.pane-page-content',
+//      'search_results' => '.dataset-search-facets',
+//      'facets' => '.region-facet',
+    ),
+    // optional: if you want to show a spinner image on AJAX
+    'spinner' => drupal_get_path('module', 'search_api_ajax') .'/spinner.gif',
+    // optional: if you want to scroll-back-to-top on paging search results
+//    'scrolltarget' => '#main-content',
+//    'scrollspeed' => 1000,
+    // optional: fade main content on AJAX (fade=1 for true)
+    'fade' => 1,
+    'opacity' => 0.3,
+  );
+  return $settings;
+}
+
+
+function gb_dkan_ajaxify_search_page_build(&$vars) {
+  $facets_blocks_exists = FALSE;
+  foreach (search_api_current_search() as $key => $search) {
+    if (strpos($key, 'facets_block') !== FALSE) {
+      continue;
+    }
+    $facets_blocks_exists = TRUE;
+  }
+
+  dpm($facets_blocks_exists ? 'true' : 'false', '$return');
+
+  if (!$facets_blocks_exists) {
+    return;
+  }
+
+  // Configuration to enable/disable AJAX by path
+  $pages = variable_get('search_api_ajax_pages', '');
+  $visibility = variable_get('search_api_ajax_visibility', '');
+  if ($pages) {
+    // Convert path to lowercase. This allows comparison of the same path
+    // with different case. Ex: /Page, /page, /PAGE.
+    $pages = drupal_strtolower($pages);
+    // Convert the Drupal path to lowercase
+    $path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
+    // Compare the lowercase internal and lowercase path alias (if any).
+    $page_match = drupal_match_path($path, $pages);
+    if ($path != $_GET['q']) {
+      $page_match = $page_match || drupal_match_path($_GET['q'], $pages);
+    }
+    // When $pages has a value of 0 (VISIBILITY_NOTLISTED),
+    // the block is displayed on all pages except those listed in $pages.
+    // When set to 1 (VISIBILITY_LISTED), it is displayed only on those
+    // pages listed in $pages.
+    $page_match = !($visibility xor $page_match);
+  }
+  else {
+    $page_match = TRUE;
+  }
+
+  // No match
+  if (!$page_match) {
+    return;
+  }
+
+  // Loas CSS, JS and libraries
+  drupal_add_css(drupal_get_path('module', 'search_api_ajax') . '/search_api_ajax.css');
+  drupal_add_js(array('search_api_ajax' => module_invoke_all('search_api_ajax_settings')), 'setting');
+  drupal_add_library('system', 'jquery.bbq');
+  drupal_add_js(drupal_get_path('module', 'search_api_ajax') . '/search_api_ajax.js', array('scope' => 'footer'));
+}

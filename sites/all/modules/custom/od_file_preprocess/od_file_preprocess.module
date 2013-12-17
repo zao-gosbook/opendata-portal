@@ -102,14 +102,14 @@ function od_file_preprocess_field_widget_form_alter(&$element, &$form_state, $co
  * Process form file element
  */
 function od_file_preprocess_widget_process($element, &$form_state, $form) {
-
+ 
   if ((!isset($form_state['input']['op']) || 
        $form_state['input']['op'] != 'Submit Form') && 
       !$form_state['submitted']) {
-      
+    
     return $element;
   }
-  
+
   $field_name = $element['#field_name'];
   $lang = $element['#language'];
   $delta = $element['#delta'];
@@ -118,34 +118,32 @@ function od_file_preprocess_widget_process($element, &$form_state, $form) {
                   ($form_state['values'][$field_name][$lang][$delta]['fid']));
 
   if (isset($form_state['triggering_element'])) {
+    if ($form_state['triggering_element']['#name'] == $field_name . '_' . $lang . '_' . $delta  . '_upload_button') {
 
-    switch ($form_state['triggering_element']['#name']) {    
-      case $field_name . '_' . $lang . '_' . $delta  . '_upload_button':
-          if ($file_loaded) {
-            $file = $element['#file'];
+      if ($file_loaded) {
+        $file = $element['#file'];
 /*
-            $process_2nd_row = (isset($form_state['values'][$field_name][$lang][$delta]['file_data']['process_2nd_row']) && 
-                                $form_state['values'][$field_name][$lang][$delta]['file_data']['process_2nd_row']);
+        $process_2nd_row = (isset($form_state['values'][$field_name][$lang][$delta]['file_data']['process_2nd_row']) && 
+                            $form_state['values'][$field_name][$lang][$delta]['file_data']['process_2nd_row']);
 
-            $structure = od_file_preprocess_get_structure($file, $process_2nd_row);
- */
-            $structure = od_file_preprocess_get_structure($file, TRUE);
-            if (is_array($structure)) {
-              $element['file_data']['#parents'] = array(
-                $field_name,
-                $lang,
-                $delta,
-                'file_data',
-              );
-              form_set_value($element['file_data'], $structure, $form_state);
-            }
-          }
-        break;
+        $structure = od_file_preprocess_get_structure($file, $process_2nd_row);
+*/
 
-      case $field_name . '_' . $lang . '_' . $delta  . '_remove_button':
-          unset($element['file_data']);
-          unset($form_state['values'][$field_name][$lang][$delta]['file_data']);
-        break;
+        $structure = od_file_preprocess_get_structure($file, TRUE);
+        if (is_array($structure)) {
+          $element['file_data']['#parents'] = array(
+            $field_name,
+            $lang,
+            $delta,
+            'file_data',
+          );
+          form_set_value($element['file_data'], $structure, $form_state);
+        }
+      }
+    }
+    if ($form_state['triggering_element']['#name'] == $field_name . '_' . $lang . '_' . $delta  . '_remove_button') {
+      unset($element['file_data']);
+      unset($form_state['values'][$field_name][$lang][$delta]['file_data']);
     }
   }
 
@@ -161,6 +159,7 @@ function od_file_preprocess_widget_process($element, &$form_state, $form) {
       '#suffix' => '</div>',
     );
   } */
+
   return $element;
 }
 
@@ -227,21 +226,25 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
     case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': // .xlsx
     case 'application/vnd.oasis.opendocument.spreadsheet':                    // .ods
     case 'text/csv':
-    //case 'text/plain':
-    
-        module_load_include('inc', 'phpexcel');
-        $data = phpexcel_import($path, FALSE);
+
+        $structure = array(
+          //'process_2nd_row' => $process_2nd_row,
+        );
+      
+        if ($file->filemime == 'text/csv') {
+          $data = od_file_preprocess_parse_csv($path);
+        }
+        else {
+          module_load_include('inc', 'phpexcel');
+          $data = phpexcel_import($path, FALSE);
+        }
+
         if (empty($data)) return NULL;
         
         $data = $data[0]; //first worksheet
         $headers = array_shift($data);
 
-        $col_types = array_fill(0, count($headers), 'undefined');
-        
-        $structure = array(
-          //'process_2nd_row' => $process_2nd_row,
-        );
-        
+        $col_types = array_fill(0, count($headers), 'undefined');       
         $col_desc = ($process_2nd_row) ? NULL : array_shift($data);
         
         $data_type_weight = array(
@@ -302,6 +305,24 @@ function od_file_preprocess_set_element($values = array(), $wrapper = '') {
     ),
   );
 */
+  if (!empty($values['codepage'])) {
+    $element['codepage'] = array(
+      '#type' => 'select',
+      '#title' => t('Code page of loaded document'),
+      '#options' => array(
+        'CP1251' => 'cp-1251 (Windows)',
+        'UTF-8' => 'utf-8 (Unicode)',
+      ),
+      '#ajax' => array(
+        'callback' => 'od_file_preprocess_ajax_callback',
+        'wrapper' => $wrapper,
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+      '#default_value' => $values['codepage'],
+    );
+  }
+
   if (!empty($values['is_table_data'])) {
     $element['convert_to'] = array(
       '#type' => 'select',
@@ -374,11 +395,11 @@ function od_file_preprocess_set_element($values = array(), $wrapper = '') {
 /**
  *  ajax callback for 'parse_2nd_row' form element 
  */
-/*
+
 function od_file_preprocess_ajax_callback($form, $form_state) {
   return $form[$form_state['triggering_element']['#parents'][0]];
 }
-*/
+
 
 /**
  * trying to guess data type
@@ -404,4 +425,34 @@ function od_file_preprocess_get_data_type($val) {
       return 'string';
     }
   }
+}
+
+function od_file_preprocess_parse_csv($path, $codepage = 'CP1251') {
+  
+  include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel.php';
+  include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+  $objReader = new PHPExcel_Reader_CSV();
+  $objReader->setReadDataOnly(TRUE);
+  //default MS Excell - created csv settings
+  $objReader->setInputEncoding($codepage);
+  $objReader->setDelimiter(';');
+  
+  $objPHPExcel = $objReader->load($path);
+  $objWorksheet = $objPHPExcel->getActiveSheet();
+
+  $row_n = 0;
+  $data = array();
+  foreach ($objWorksheet->getRowIterator() as $row) {
+    $col_n = 0;
+    $cellIterator = $row->getCellIterator();
+    $cellIterator->setIterateOnlyExistingCells(false);
+    foreach ($cellIterator as $cell) {
+      $data[0][$row_n][$col_n] = $cell->getValue();
+      $col_n++;
+    }
+    $row_n++;
+  }
+
+  return $data;
 }
