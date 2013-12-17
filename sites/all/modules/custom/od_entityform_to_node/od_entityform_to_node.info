@@ -1,0 +1,6 @@
+name = Entityform to node copy
+description = "Creates new entity type and copies all entityform's fields to it"
+package = "Gosbook"
+core = 7.x
+dependencies[] = rules
+dependencies[] = entityform
