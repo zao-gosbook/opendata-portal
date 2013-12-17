@@ -2834,28 +2834,28 @@ my.MultiView = Backbone.View.extend({
     } else {
       this.pageViews = [{
         id: 'grid',
-        label: 'Grid',
+        label: Drupal.t('Grid'),
         view: new my.SlickGrid({
           model: this.model,
           state: this.state.get('view-grid')
         })
       }, {
         id: 'graph',
-        label: 'Graph',
+        label: Drupal.t('Graph'),
         view: new my.Graph({
           model: this.model,
           state: this.state.get('view-graph')
         })
       }, {
         id: 'map',
-        label: 'Map',
+        label: Drupal.t('Map'),
         view: new my.Map({
           model: this.model,
           state: this.state.get('view-map')
         })
       }, {
         id: 'timeline',
-        label: 'Timeline',
+        label: Drupal.t('Timeline'),
         view: new my.Timeline({
           model: this.model,
           state: this.state.get('view-timeline')
@@ -2868,13 +2868,13 @@ my.MultiView = Backbone.View.extend({
     } else {
       this.sidebarViews = [{
         id: 'filterEditor',
-        label: 'Filters',
+        label: Drupal.t('Filters'),
         view: new my.FilterEditor({
           model: this.model
         })
       }, {
         id: 'fieldsView',
-        label: 'Fields',
+        label: Drupal.t('Fields'),
         view: new my.Fields({
           model: this.model
         })
@@ -2915,7 +2915,7 @@ my.MultiView = Backbone.View.extend({
           msg += error.message;
         }
       } else {
-        msg = 'There was an error querying the backend';
+        msg = Drupal.t('There was an error querying the backend');
       }
       self.notify({message: msg, category: 'error', persist: true});
     });
@@ -3114,7 +3114,7 @@ my.MultiView = Backbone.View.extend({
   // * loader: if true show loading spinner
   notify: function(flash) {
     var tmplData = _.extend({
-      message: 'Loading',
+      message: Drupal.t('Loading'),
       category: 'warning',
       loader: false
       },
@@ -3166,7 +3166,7 @@ my.MultiView.restore = function(state) {
   if (state.backend === 'memory') {
     datasetInfo = {
       backend: 'memory',
-      records: [{stub: 'this is a stub dataset because we do not restore memory datasets'}]
+      records: [{stub: Drupal.t('this is a stub dataset because we do not restore memory datasets')}]
     };
   } else {
     datasetInfo = _.extend({
