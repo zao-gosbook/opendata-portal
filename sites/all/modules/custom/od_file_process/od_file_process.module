@@ -66,22 +66,22 @@ function od_file_process_rule_callback($file_2process, $node_2attach, $field_2at
 
       $path = drupal_realpath($file->uri);
 
-      module_load_include('inc', 'phpexcel');
-      $data = phpexcel_import($path, FALSE);
-
-      if (empty($data)) {
-        //drupal_set_message(t('can not read file'), 'error');
-        return array(
-          'saved_node' => $node_2attach,
-        );
+      if ($file->filemime == 'text/csv') {
+        $data = od_file_preprocess_parse_csv($path);
+      }
+      else {
+        module_load_include('inc', 'phpexcel');
+        $data = phpexcel_import($path, FALSE);
       }
 
       $data = $data[0];     // first worksheet
       array_shift($data);   // skip headers row
 
+/*
       if (!isset($structure['process_2nd_row']) || !$structure['process_2nd_row']) {
         array_shift($data); // skip second row if it contains columns descriptions
       }
+*/
       
       switch ($file_2process['file_data']['convert_to']) {
         case 'csv':
