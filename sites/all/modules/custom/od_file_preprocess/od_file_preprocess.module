@@ -1,6 +1,6 @@
 <?php
 
-define('CSV_DELIMETER', ',');
+define('CSV_DELIMETER', ';');
 define('CSV_ENCLOSURE', chr(34)); // "
 define('CRLF', chr(0x0d) . chr(0x0a));
 define('DT_VOCAB', 'xsd');
@@ -437,7 +437,7 @@ function od_file_preprocess_parse_csv($path, $codepage = 'CP1251') {
   $objReader->setReadDataOnly(TRUE);
   //default MS Excell - created csv settings
   $objReader->setInputEncoding($codepage);
-  $objReader->setDelimiter(';');
+  $objReader->setDelimiter(CSV_DELIMETER);
   
   $objPHPExcel = $objReader->load($path);
   $objWorksheet = $objPHPExcel->getActiveSheet();
