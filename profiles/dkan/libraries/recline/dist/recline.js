@@ -2526,13 +2526,13 @@ my.MapMenu = Backbone.View.extend({
         <div class="editor-field-type"> \
             <label class="radio"> \
               <input type="radio" id="editor-field-type-latlon" name="editor-field-type" value="latlon" checked="checked"/> \
-              Latitude / Longitude fields</label> \
+              ' + Drupal.t('Latitude / Longitude fields') + '</label> \
             <label class="radio"> \
               <input type="radio" id="editor-field-type-geom" name="editor-field-type" value="geom" /> \
-              GeoJSON field</label> \
+              ' + Drupal.t('GeoJSON field') + '</label> \
         </div> \
         <div class="editor-field-type-latlon"> \
-          <label>Latitude field</label> \
+          <label>' + Drupal.t('Latitude field') + '</label> \
           <div class="input editor-lat-field"> \
             <select> \
             <option value=""></option> \
@@ -2541,7 +2541,7 @@ my.MapMenu = Backbone.View.extend({
             {{/fields}} \
             </select> \
           </div> \
-          <label>Longitude field</label> \
+          <label>' + Drupal.t('Longitude field') + '</label> \
           <div class="input editor-lon-field"> \
             <select> \
             <option value=""></option> \
@@ -2552,7 +2552,7 @@ my.MapMenu = Backbone.View.extend({
           </div> \
         </div> \
         <div class="editor-field-type-geom" style="display:none"> \
-          <label>Geometry field (GeoJSON)</label> \
+          <label>' + Drupal.t('Geometry field (GeoJSON)') + '</label> \
           <div class="input editor-geom-field"> \
             <select> \
             <option value=""></option> \
@@ -2569,10 +2569,10 @@ my.MapMenu = Backbone.View.extend({
       <div class="editor-options" > \
         <label class="checkbox"> \
           <input type="checkbox" id="editor-auto-zoom" value="autozoom" checked="checked" /> \
-          Auto zoom to features</label> \
+          ' + Drupal.t('Auto zoom to features') + '</label> \
         <label class="checkbox"> \
           <input type="checkbox" id="editor-cluster" value="cluster"/> \
-          Cluster markers</label> \
+          ' + Drupal.t('Cluster markers') + '</label> \
       </div> \
       <input type="hidden" class="editor-id" value="map-1" /> \
     </form> \
@@ -4019,23 +4019,23 @@ my.FilterEditor = Backbone.View.extend({
   className: 'recline-filter-editor well', 
   template: ' \
     <div class="filters"> \
-      <h3>Filters</h3> \
-      <a href="#" class="js-add-filter">Add filter</a> \
+      <h3>' + Drupal.t('Filters') + '</h3> \
+      <a href="#" class="js-add-filter">' + Drupal.t('Add filter') + '</a> \
       <form class="form-stacked js-add" style="display: none;"> \
         <fieldset> \
-          <label>Field</label> \
+          <label>' + Drupal.t('Field') + '</label> \
           <select class="fields"> \
             {{#fields}} \
             <option value="{{id}}">{{label}}</option> \
             {{/fields}} \
           </select> \
-          <label>Filter type</label> \
+          <label>' + Drupal.t('Filter type') + '</label> \
           <select class="filterType"> \
-            <option value="term">Value</option> \
-            <option value="range">Range</option> \
-            <option value="geo_distance">Geo distance</option> \
+            <option value="term">' + Drupal.t('Value') + '</option> \
+            <option value="range">' + Drupal.t('Range') + '</option> \
+            <option value="geo_distance">' + Drupal.t('Geo distance') + '</option> \
           </select> \
-          <button type="submit" class="btn">Add</button> \
+          <button type="submit" class="btn">' + Drupal.t('Add') + '</button> \
         </fieldset> \
       </form> \
       <form class="form-stacked js-edit"> \
@@ -4043,7 +4043,7 @@ my.FilterEditor = Backbone.View.extend({
           {{{filterRender}}} \
         {{/filters}} \
         {{#filters.length}} \
-        <button type="submit" class="btn">Update</button> \
+        <button type="submit" class="btn">' + Drupal.t('Update') + '</button> \
         {{/filters.length}} \
       </form> \
     </div> \
@@ -4250,9 +4250,9 @@ my.QueryEditor = Backbone.View.extend({
     <form action="" method="GET" class="form-inline"> \
       <div class="input-prepend text-query"> \
         <span class="add-on"><i class="icon-search"></i></span> \
-        <input type="text" name="q" value="{{q}}" class="span2" placeholder="Search data ..." class="search-query" /> \
+        <input type="text" name="q" value="{{q}}" class="span2" placeholder="' + Drupal.t('Search data ...') + '" class="search-query" /> \
       </div> \
-      <button type="submit" class="btn">Go &raquo;</button> \
+      <button type="submit" class="btn">' + Drupal.t('Go &raquo;') + '</button> \
     </form> \
   ',
 
