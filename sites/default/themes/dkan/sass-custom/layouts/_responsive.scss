@@ -445,11 +445,13 @@ $zen-auto-include-item-base: false;
     }    
     .pane-system-main-menu {
       clear: left;
-      padding-left: 79px;
-      padding-top: 5px;
+      padding-left: 124px;
+      margin-top: -23px;
+      padding-top: 15px;
     }
     .pane-system-user-menu {
-      padding-top: 5px;
+      padding-top: 15px;
+      margin-top: -73px;
     }  
     .pane-system-main-menu ul li a,
     .pane-system-user-menu > ul li a  {
@@ -480,6 +482,8 @@ $zen-auto-include-item-base: false;
   .pane-gb-search-pane {
     margin-left: 21px;
     margin-right: 21px;
+    padding-left: 0;
+    padding-right: 0;
     
     .form-text {
       font-size: 18px;
@@ -516,3 +520,85 @@ $zen-auto-include-item-base: false;
     }
   }
 }
+
+/**
+ * addaptive facts
+ */
+@media all and (max-width: 1200px) and (min-width: 801px) {
+  .view-quick-facts {
+    padding-top: 115px;
+    padding-bottom: 20%;
+    
+    .view-content > div { 
+      
+      .views-field {
+        
+        &.views-field-field-fact-value .field-content,
+        &.views-field-field-fact-percentage .field-content {
+          width: 70px;
+          height: 70px;
+          border: 7px solid #ffa200;
+          line-height: 70px;
+          font-size: 25px;
+        }
+        &.views-field-body {
+          font-size: 18px;
+          line-height: 20px;
+          width: 400px;
+          text-transform: uppercase;
+          padding-left: 10px;
+          
+          p {
+            margin: 0;
+          }
+        }
+        &.views-field-field-fact-url {
+          .field-content {
+            width: 48px;
+            height: 48px;   
+            position:relative;  
+            
+            a {
+              display: block;
+              width: 48px;
+              height: 48px;
+              text-indent: -10000px;
+              overflow: hidden;
+              margin-left: 20px;
+              background: url("../images/ico-search-small-set.png") no-repeat;
+              
+              &:hover {
+                background-position: 0 -48px;
+              }
+            }          
+          }
+        } 
+      }
+    }
+    .views-row {
+      top: -5px;
+      
+      /* Every other three fast facts, starting from the first */
+      &:nth-child(3n+1) {
+        @include transform(translate(5%,15%));
+      }
+      &.next:nth-child(3n+1) {
+        @include transform(translate(7%,15%));
+      }  
+      /* Every other three fast facts, starting from the second */
+      &:nth-child(3n+2) {
+        @include transform(translate(9%,20%));
+      }
+      &.next:nth-child(3n+2) {
+        @include transform(translate(11%,20%));
+      }
+      /* Every other three fast facts, starting from the first */
+      &:nth-child(3n+3) {
+        @include transform(translate(13%,25%));
+      }
+      &.next:nth-child(3n+3) {
+        @include transform(translate(15%,25%));
+      }    
+    }    
+  }  
+} 
