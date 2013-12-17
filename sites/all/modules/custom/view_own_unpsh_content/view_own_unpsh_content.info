@@ -1,0 +1,4 @@
+name = View own unpublished content
+description = Grants access a user to view own unpublished content of specific type.
+package = Gosbook
+core = 7.x
