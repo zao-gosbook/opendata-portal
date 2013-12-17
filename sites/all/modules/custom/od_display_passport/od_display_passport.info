@@ -1,9 +1,4 @@
 name = od_display_passport
-description = 
+description = Get passport fro view
 core = 7.x
-package = 
-php = 
-version =
-dependencies[] = 
-files[] = 
-configure = 
+dependencies[] = views
