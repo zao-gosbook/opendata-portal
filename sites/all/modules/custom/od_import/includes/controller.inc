@@ -57,7 +57,17 @@ function od_import_import_organization_opendata($org) {
     $error = 'Ошибка открытых данных - ' . mb_strtolower($error['description']);
   }
 
-  if (!empty($error) && !is_array($data)) {
+  if (!empty($error)) {
+    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
+
+    drupal_set_message($message, 'warning');
+    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+    return FALSE;
+  }
+
+  if (!is_array($data)) {
+    $error = 'Ошибка открытых данных - неизвестная ошибка';
     $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
     $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
 
