@@ -1,0 +1,10 @@
+<?php
+/**
+ * @file
+ */
+
+function od_entity_title_translate_entity_load($entities, $type) {
+  foreach ($entities as $entity) {
+    od_entity_title_translate_translate($entity, $type);
+  }
+}

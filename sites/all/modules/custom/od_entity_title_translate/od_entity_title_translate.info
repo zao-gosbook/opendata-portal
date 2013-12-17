@@ -1,0 +1,5 @@
+name = Title Translate
+description = "Provides auto title translation"
+package = "Gosbook"
+core = 7.x
+dependencies[] = entity

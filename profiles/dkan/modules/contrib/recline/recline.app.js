@@ -41,19 +41,19 @@
                 endpoint: window.location.origin + '/api',
                 url: url,
                 id: uuid,
-                backend: 'ckan',
+                backend: 'ckan'
               });
               dataset.fetch();
               return createExplorer(dataset, state);
             }
             else {
-              $('.data-explorer').append('<div class="messages status">Error returned from datastore: ' + data + '.</div>');
+              $('.data-explorer').append(Drupal.t('<div class="messages status">Error returned from datastore: !data </div>', {'!data': data}));
             }
 
           },
           error: function(data, status) {
-            $('.data-explorer').append('<div class="messages status">Unable to connect to the datastore.</div>');
-          },
+            $('.data-explorer').append(Drupal.t('<div class="messages status">Unable to connect to the datastore.</div>'));
+          }
         });
       }
       else if (fileType == 'text/csv') {
@@ -80,9 +80,9 @@
           },
           error: function(x, t, m) {
             if (t === "timeout") {
-              $('.data-explorer').append('<div class="messages status">File was too large or unavailable for preview.</div>');
+              $('.data-explorer').append(Drupal.t('<div class="messages status">File was too large or unavailable for preview.</div>'));
             } else {
-              $('.data-explorer').append('<div class="messages status">Data preview unavailable.</div>');
+              $('.data-explorer').append(Drupal.t('<div class="messages status">Data preview unavailable.</div>'));
             }
           }
         });
@@ -97,7 +97,7 @@
         var views = createExplorer(dataset, state);
       }
       else {
-        $('.data-explorer').append('<div class="messages status">File type ' + fileType + ' not supported for preview.</div>');
+        $('.data-explorer').append(Drupal.t('<div class="messages status">File type !fileType not supported for preview.</div>', {'!fileType': fileType}));
       }
     }
   }
@@ -120,10 +120,10 @@
       views.push(
         {
           id: 'grid',
-          label: 'Grid',
+          label: Drupal.t('Grid'),
           view: new recline.View.SlickGrid({
             model: dataset
-          }),
+          })
         }
       );
     }
@@ -131,7 +131,7 @@
       views.push(
       {
         id: 'graph',
-        label: 'Graph',
+        label: Drupal.t('Graph'),
         view: new recline.View.Graph({
           model: dataset
         }),
@@ -142,10 +142,10 @@
       views.push(
       {
         id: 'map',
-        label: 'Map',
+        label: Drupal.t('Map'),
         view: new recline.View.Map({
           model: dataset
-        }),
+        })
       }
       );
     }
