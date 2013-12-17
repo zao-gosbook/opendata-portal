@@ -13,7 +13,7 @@ function view_own_unpsh_content_permission() {
         'title' => t('%type_name: View own unpublished content', array('%type_name' => $info->name)),
       ),
       "view all unpublished $type content" => array(
-        'title' => t('%type_name: View own unpublished content', array('%type_name' => $info->name)),
+        'title' => t('%type_name: View all unpublished content', array('%type_name' => $info->name)),
       )
     );
   }
