@@ -412,13 +412,14 @@ div.horizontal-tabs .form-text {
     }
   }
   .views-row {
-    @include opacity(0);
+    @include opacity(0);/**/
     position: absolute;/**/
     z-index: 100;
     @include transition(all 0.3s ease-in-out);
     
     &.next {
-      opacity: 1;
+      @include opacity(1);
+      z-index: 120;
     }
     /* Every other three fast facts, starting from the first */
     &:nth-child(3n+1) {
@@ -459,8 +460,7 @@ div.horizontal-tabs .form-text {
     cursor: pointer;
     margin-left: -25px;
     background: url("../images/ico-toggle-map.png") no-repeat 0 0;
-    z-index: 1000;
- 
+    
     &.ctools-toggle-collapsed {
       background-position: 0 100%;
       margin-top: -20px;
