@@ -1,6 +1,6 @@
 <?php
 
-define('CSV_DELIMETER', ';');
+define('CSV_DELIMETER', ',');
 define('CSV_ENCLOSURE', chr(34)); // "
 define('CRLF', chr(0x0d) . chr(0x0a));
 define('DT_VOCAB', 'xsd');
@@ -242,7 +242,6 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
         if (empty($data)) return NULL;
         
         $data = $data[0]; //first worksheet
-        //dsm($data);
         $headers = array_shift($data);
 
         $col_types = array_fill(0, count($headers), 'undefined');       
@@ -437,7 +436,7 @@ function od_file_preprocess_parse_csv($path, $codepage = 'CP1251') {
   $objReader->setReadDataOnly(TRUE);
   //default MS Excell - created csv settings
   $objReader->setInputEncoding($codepage);
-  $objReader->setDelimiter(CSV_DELIMETER);
+  $objReader->setDelimiter(';');
   
   $objPHPExcel = $objReader->load($path);
   $objWorksheet = $objPHPExcel->getActiveSheet();
