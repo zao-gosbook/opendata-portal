@@ -18,5 +18,5 @@ function od_display_passport_view($nid) {
     $view->execute();
     $data = filter_xss($view->render(), array('a', 'p', 'span', 'table', 'thead', 'tbody', 'th', 'tr', 'td'));
   }
-  print '<pre>' . $data . '</pre>';
+  print '<pre>' . check_plain($data) . '</pre>';
 }
