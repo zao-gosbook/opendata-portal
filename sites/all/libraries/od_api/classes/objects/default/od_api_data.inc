@@ -20,8 +20,8 @@ abstract class OdApiDataDefault extends OdApiObject {
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Data exists.',
-        FALSE => 'Data does not exist.',
+        TRUE => 'data exists',
+        FALSE => 'data does not exist',
       ),
     ),
   );

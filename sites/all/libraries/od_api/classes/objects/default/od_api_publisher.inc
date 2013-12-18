@@ -20,8 +20,8 @@ abstract class OdApiPublisherDefault extends OdApiObject {
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Publisher arg is valid.',
-        FALSE => 'Publisher arg is invalid.',
+        TRUE => 'publisher arg is valid',
+        FALSE => 'publisher arg is invalid',
       ),
     ),
   );

@@ -20,8 +20,8 @@ abstract class OdApiSourceDefault extends OdApiObject {
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Source arg is valid.',
-        FALSE => 'Source arg is invalid.',
+        TRUE => 'source arg is valid',
+        FALSE => 'source arg is invalid',
       ),
     ),
   );

@@ -49,7 +49,7 @@ function od_import_action_info() {
 
   $items['od_import_import_organizations_opendata'] = array(
     'type' => 'node',
-    'label' => 'Загрузить открытые данные с сайта организации',
+    'label' => 'Загрузка открытых данных с сайта организации',
     'configurable' => FALSE,
     'aggregate' => TRUE,
     'triggers' => array('any'),

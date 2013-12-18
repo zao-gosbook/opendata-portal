@@ -21,16 +21,16 @@ abstract class OdApiMetaDefault extends OdApiObject {
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Meta url is valid.',
-        FALSE => 'Meta url is invalid.',
+        TRUE => 'meta url is valid',
+        FALSE => 'meta url is invalid',
       ),
     ),
     self::SITE_OPENDATA_META_PAGE_EXISTS => array(
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Meta page exists.',
-        FALSE => 'Meta page does not exist.',
+        TRUE => 'meta page exists',
+        FALSE => 'meta page does not exist',
       ),
     ),
   );

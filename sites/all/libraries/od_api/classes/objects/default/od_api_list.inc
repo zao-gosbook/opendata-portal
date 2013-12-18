@@ -31,24 +31,24 @@ abstract class OdApiListDefault extends OdApiObject {
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Site url is valid.',
-        FALSE => 'Site url is invalid.',
+        TRUE => 'site url is valid',
+        FALSE => 'site url is invalid',
       )
     ),
     self::SITE_MAIN_PAGE_EXISTS => array(
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Site main page exists.',
-        FALSE => 'Site main page does not exist.',
+        TRUE => 'site main page exists',
+        FALSE => 'site main page does not exist',
       ),
     ),
     self::SITE_OPENDATA_PAGE_EXISTS => array(
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Site opendata page exists.',
-        FALSE => 'Site opendata page does not exist.',
+        TRUE => 'site opendata page exists',
+        FALSE => 'site opendata page does not exist',
       ),
     ),
   );
