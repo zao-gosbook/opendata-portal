@@ -152,7 +152,7 @@ div.horizontal-tabs .form-text {
 }
 
 .node-unpublished {
-  background: transparent;
+  background: #f2f2f2;
 }
 
 .front .region-header {
@@ -1325,6 +1325,28 @@ div.horizontal-tabs .form-text {
   }
 }
 
+/* apps */
+.panels-flexible-region-16-region_main_content {
+  width: 100%;
+}
+
+/* about */
+.section-about {
+  background: #fff;
+  
+  .node-page {
+    p {
+      font-size: 15px;
+      line-height: 1.35em;
+    }
+    li {
+      font-size: 15px;
+      line-height: 1.35em;      
+      padding-bottom: 8px;
+    }
+  }
+}
+
 .node-type-blog,
 .node-type-idea,
 .node-type-news {
@@ -1641,62 +1663,65 @@ div.horizontal-tabs .form-text {
 .page-taxonomy-term {   
   .region-header {
     border-bottom: 0;
+    background-repeat: no-repeat;
+    background-position: 50% 0;
     @include background-size(100% auto);
+    
     border-bottom: 0;
   }  
 
   &.page-taxonomy-term-8 {
     
     .region-header {
-      background: url("../images/header-taxonomy-education.jpg") no-repeat 50% 0;
+      background-image: url("../images/header-taxonomy-education.jpg");
     }
   }
   &.page-taxonomy-term-72 {
     
     .region-header {
-      background: url("../images/bg-geography.jpg") no-repeat 50% 0;
+      background-image: url("../images/bg-geography.jpg");
     }
   }
   &.page-taxonomy-term-71 {
     
     .region-header {
-      background: url("../images/bg-state.jpg") no-repeat 50% 0;
+      background-image: url("../images/bg-state.jpg");
     }
   }
   &.page-taxonomy-term-12 {
     
     .region-header {
-      background: url("../images/bg-transport.jpg") no-repeat 50% 0;
+      background-image: url("../images/bg-transport.jpg");
     }
   }
   &.page-taxonomy-term-10 {
     
     .region-header {
-      background: url("../images/bg-security.jpg") no-repeat 50% 0;
+      background-image: url("../images/bg-security.jpg");
     }
   }
   &.page-taxonomy-term-15 {
     
     .region-header {
-      background: url("../images/bg-health.jpg") no-repeat 50% 0;
+      background-image: url("../images/bg-health.jpg");
     }
   }
   &.page-taxonomy-term-9 {
     
     .region-header {
-      background: url("../images/bg-economy.jpg") no-repeat 50% 0;
+      background-image: url("../images/bg-economy.jpg");
     }
   }
   &.page-taxonomy-term-73 {
     
     .region-header {
-      background: url("../images/bg-construction.jpg") no-repeat 50% 0;
+      background-image: url("../images/bg-construction.jpg");
     }
   }
   &.page-taxonomy-term-74 {
     
     .region-header {
-      background: url("../images/bg-trade.jpg") no-repeat 50% 0;
+      background-image: url("../images/bg-trade.jpg");
     }
   }
   
@@ -2348,17 +2373,19 @@ div.fivestar-widget .star {
 }
 .pane-btn {
   padding: .5em 0;
+  
+  a.btn {
+    display: inline-block;
+    padding: .8em 1.6em;
+    font-size: 14px;
+    line-height: 1em;
+    color: #fff;
+    text-transform: uppercase;
+    background: #0c87e8;
+    text-decoration: none;
+  }  
 }
-a.btn {
-  display: inline-block;
-  padding: .8em 1.6em;
-  font-size: 14px;
-  line-height: 1em;
-  color: #fff;
-  text-transform: uppercase;
-  background: #0c87e8;
-  text-decoration: none;
-}
+
 
 /**
  * passport data
@@ -2781,6 +2808,107 @@ a.btn {
   }
 }
 
+/**
+ * node-resource
+ */
+.node-type-resource {
+  background: #fff;
+  
+  .node-resource {
+    
+    .field {
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+    .field-name-field-upload-structure,
+    .field-name-field-created {
+      @include clearfix;
+      padding-bottom: 12px;
+      
+      .field-label {
+        width: 290px;
+        float: left;
+      }
+    }
+    .download a {
+      background: #0C87E8 url("../images/ico-download.png") no-repeat 8px 50%;
+      @include background-size(25px auto);
+      color: #FFFFFF;
+      display: inline-block;
+      font-size: 14px;
+      line-height: 1em;
+      padding: 0.9em 1.6em .9em 45px;
+      text-decoration: none;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    /* bootstrap navigation */
+    .input-prepend.text-query {
+      .span2 {
+        padding: 13px 4px;
+      }
+    }
+    .pagination ul {
+      margin: 0;
+      padding: 0;
+    }
+    
+    .recline-data-explorer .panel.graph {
+      width: auto;
+      margin-right: 228px;
+    }
+    .alert-heading {
+      margin: 0;
+      line-height: 1.05em;
+    }
+    .recline-data-explorer .data-view-sidebar {
+      label {
+        font-size: 15px;
+        line-height: 1;
+        font-weight: bold;
+        
+        &.radio,
+        &.checkbox {
+          font-size: 12px;
+          padding-bottom: 4px;
+          
+          input {
+            margin-top: -2px;
+          }
+        }
+      }
+      .input,
+      .editor-series-group,
+      .editor-field-type    {
+        padding-bottom: 10px;
+      }     
+      .editor-buttons  {
+        padding-bottom: 15px;
+      }
+    }
+  }
+}
+
+/**
+ * organization
+ */
+.node-type-organization {
+  background: #fff;
+}
+.node-organization.view-mode-full  {
+  .field {
+    font-size: 15px;
+    text-transform: uppercase;
+    @include clearfix;
+    padding-bottom: 15px;      
+  }
+  .field-label {
+    width: 290px;
+    float: left;
+  }
+}
+ 
+ 
 /**
  * messages
  */
