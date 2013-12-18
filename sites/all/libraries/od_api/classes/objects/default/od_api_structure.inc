@@ -20,8 +20,8 @@ abstract class OdApiStructureDefault extends OdApiObject {
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Data exists.',
-        FALSE => 'Data does not exist.',
+        TRUE => 'structure exists',
+        FALSE => 'structure does not exist',
       ),
     ),
   );

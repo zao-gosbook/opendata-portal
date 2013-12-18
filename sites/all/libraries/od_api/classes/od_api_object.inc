@@ -35,16 +35,16 @@ abstract class OdApiObject {
       'type' => self::MESSAGE_TYPE_IS_ERROR,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Machine format detected.',
-        FALSE => 'Machine format did not detect.',
+        TRUE => 'machine format is detected',
+        FALSE => 'machine format is not detected',
       ),
     ),
     self::FORMAT_MICRODATA_DETECTED => array(
       'type' => self::MESSAGE_TYPE_IS_WARNING,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Microdata format detected.',
-        FALSE => 'Microdata format did not detect.',
+        TRUE => 'microdata format is detected',
+        FALSE => 'microdata format is not detected',
       ),
     ),
     self::FORMAT_RDFA_DETECTED => array(
@@ -53,8 +53,8 @@ abstract class OdApiObject {
       'descriptions' => array(
         TRUE => 'TRUE.',
         FALSE => 'FALSE.',
-        TRUE => 'Rdfa format detected.',
-        FALSE => 'Rdfa format did not detect.',
+        TRUE => 'rdfa format is detected',
+        FALSE => 'rdfa format is not detected',
       ),
     ),
     self::FORMAT_CSV_DETECTED => array(
@@ -63,16 +63,16 @@ abstract class OdApiObject {
       'descriptions' => array(
         TRUE => 'TRUE.',
         FALSE => 'FALSE.',
-        TRUE => 'Csv format detected.',
-        FALSE => 'Csv format did not detect.',
+        TRUE => 'csv format is detected',
+        FALSE => 'csv format is not detected',
       ),
     ),
     self::FORMAT_CSV_IS_UTF8 => array(
       'type' => self::MESSAGE_TYPE_IS_WARNING,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Csv format is utf8.',
-        FALSE => 'Csv format is not utf8.',
+        TRUE => 'csv format is utf8',
+        FALSE => 'csv format is not utf8',
       ),
     ),
     self::FORMAT_XML_DETECTED => array(
@@ -81,16 +81,16 @@ abstract class OdApiObject {
       'descriptions' => array(
         TRUE => 'TRUE.',
         FALSE => 'FALSE.',
-        TRUE => 'Xml format detected.',
-        FALSE => 'Xml format did not detect.',
+        TRUE => 'xml format is detected',
+        FALSE => 'xml format is not detected',
       ),
     ),
     self::FORMAT_JSON_DETECTED => array(
       'type' => self::MESSAGE_TYPE_IS_WARNING,
       'value' => NULL,
       'descriptions' => array(
-        TRUE => 'Json format detected.',
-        FALSE => 'Json format did not detect.',
+        TRUE => 'json format is detected',
+        FALSE => 'json format is not detect',
       ),
     ),
   );
