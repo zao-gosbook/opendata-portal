@@ -27,6 +27,7 @@ function bundle_copy_bundle_copy_info() {
   $info['node'] = array(
     'bundle_export_callback' => 'node_type_get_type',
     'bundle_save_callback' => 'node_type_save',
+    'bundle_clone_name_validate' => 'node_type_load',
     'export_menu' => array(
       'path' => 'admin/structure/types/export',
       'access arguments' => 'administer content types',
@@ -34,6 +35,10 @@ function bundle_copy_bundle_copy_info() {
     'import_menu' => array(
       'path' => 'admin/structure/types/import',
       'access arguments' => 'administer content types',
+    ),
+    'clone_menu' => array(
+        'path' => 'admin/structure/types/clone',
+        'access arguments' => 'administer content types',
     ),
   );
 
@@ -47,7 +52,7 @@ function bundle_copy_bundle_copy_info() {
     'import_menu' => array(
       'path' => 'admin/config/people/accounts/import',
       'access arguments' => 'administer users',
-    ),
+    ), 
   );
 
   if (module_exists('taxonomy')) {
@@ -61,7 +66,7 @@ function bundle_copy_bundle_copy_info() {
       'import_menu' => array(
         'path' => 'admin/structure/taxonomy/import',
         'access arguments' => 'administer taxonomy',
-      ),
+      ),   
     );
   }
 
@@ -92,8 +97,17 @@ function bundle_copy_menu() {
       'access arguments' => array($info['import_menu']['access arguments']),
       'type' => MENU_LOCAL_TASK
     );
+    if (isset($info['clone_menu']['path'])) {
+      $bname_validate = $bc_info[$entity_type]['bundle_clone_name_validate'];
+      $items[$info['clone_menu']['path']] = array(
+        'title' => 'Clone',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('bundle_copy_clone', $entity_type, $bname_validate),
+        'access arguments' => array($info['clone_menu']['access arguments']),
+        'type' => MENU_LOCAL_TASK
+      );
+    }
   }
-
   return $items;
 }
 
@@ -186,7 +200,7 @@ function bundle_copy_export($form, &$form_state, $entity_type = 'node') {
               }
               foreach ($all_groups[$entity_type][$key] as $view_mode => $groups) {
                 foreach ($groups as $field_group) {
-                  $group_options[$field_group->id]['fieldgroup'] = $field_group->label . ' (' . $field_group->bundle . ' - ' . $field_group->mode .')';
+                  $group_options[$field_group->id]['fieldgroup'] = $field_group->label . ' (' . $field_group->bundle . ' - ' . $field_group->mode . ')';
                   $fieldgroups[$field_group->id] = $field_group;
                 }
               }
@@ -501,6 +515,17 @@ function _bundle_copy_export_data($entity_type, $selected_data) {
           unset($field_instances[$fkey]['id']);
           unset($field_instances[$fkey]['field_id']);
           $instances[$fkey][] = $field_instances[$fkey];
+        }    
+        //Field Collection Export data
+        if ($fields[$fkey]['type'] == 'field_collection' && $fields[$fkey]['module'] == 'field_collection') {
+          $fc_fields = _bc_copy_field_collection_export($fields, $fields[$fkey]['field_name']);
+          foreach ($fc_fields as $fc_fkey => $fc_finfo) {
+            if (!isset($data['fields'][$fc_fkey])) {
+              unset($fields[$fc_fkey]['id']);
+              $data['fields'][$fc_fkey] = $fields[$fc_fkey];
+            }
+            $instances[$fc_fkey][] = $fc_finfo['instance'];
+          }
         }
       }
     }
@@ -518,6 +543,33 @@ function _bundle_copy_export_data($entity_type, $selected_data) {
   }
 
   return '$data = ' . ctools_var_export($data) . ';';
+}
+
+/**
+ * Helper function to load the fields of field collection field.
+ * Also it load recursively if field collection field exists inside a field collection.
+ *
+ * @param $fields
+ *   The info of all fields.
+ * @param $fcfield
+ *   The name of the field Collection field.
+ */
+function _bc_copy_field_collection_export($fields, $fcfield) {
+  
+  $fc_fields_data = array();
+  $fc_field_instances = field_info_instances('field_collection_item', $fcfield);
+  foreach ($fc_field_instances as $fc_fkey => $fc_finfo) {
+    
+    unset($fc_field_instances[$fc_fkey]['id']);
+    unset($fc_field_instances[$fc_fkey]['field_id']);
+    $fc_fields_data[$fc_fkey]['instance'] = $fc_field_instances[$fc_fkey];
+    if ($fields[$fc_fkey]['type'] == 'field_collection' && $fields[$fc_fkey]['module'] == 'field_collection') {
+      
+      $fc_fields_fc_fields_data = _bc_copy_field_collection_export($fields, $fields[$fc_fkey]['field_name']);
+      $fc_fields_data = array_merge($fc_fields_data, $fc_fields_fc_fields_data);
+    }
+  }
+  return $fc_fields_data;
 }
 
 /**
@@ -557,4 +609,95 @@ function _bc_bundle_export_ignore($name) {
  */
 function _bc_bundle_save_ignore($bundle) {
 
+}
+
+
+/**
+ * Menu callback: present the clone page.
+ */
+function bundle_copy_clone($form, &$form_state, $entity_type = 'node' , $bname_validate = 'node_type_load') {
+
+  $bundles = _bundle_copy_bundle_info($entity_type, FALSE);
+  $form['bundle'] = array(
+    '#title' => 'Source Bundle',
+    '#type' => 'select',
+    '#options' => $bundles,
+    '#default_value' => '',
+      '#description' => t('Select the <em>%btype</em> which you want to clone.', array('%btype' => ucfirst($entity_type))),
+  );
+  $form['name'] = array(
+    '#title' => t('New Bundle Name'),
+    '#type' => 'textfield',
+    '#description' => t('The human-readable name of this %btype type. This text will be displayed as part of the list on the <em>Add new content</em> page. It is recommended that this name begin with a capital letter and contain only letters, numbers, and spaces. This name must be unique.', array('%btype' => ucfirst($entity_type))),
+    '#required' => TRUE,
+    '#size' => 30,
+  );
+  $form['type'] = array(
+    '#type' => 'machine_name',
+    '#maxlength' => 32,
+    '#machine_name' => array(
+      'exists' => $bname_validate,
+    ),
+    '#description' => t('A unique machine-readable name for this %btype. It must only contain lowercase letters, numbers, and underscores. This name will be used for constructing the URL of the %node-add page, in which underscores will be converted into hyphens.', array('%node-add' => t('Add new content'),'%btype' => ucfirst($entity_type))),
+  );   
+  $form['next'] = array(
+    '#type' => 'submit',
+    '#value' => t('Clone'),
+  );
+  $form_state['storage']['entity_type'] =  $entity_type;
+  return $form;
+}
+/**
+ * Submit callback: Clone data.
+ */
+function bundle_copy_clone_submit($form, &$form_state) {
+  
+  $src_btype = $form_state['values']['bundle'];
+  $new_bname = $form_state['values']['name'];
+  $new_btype = $form_state['values']['type'];
+  $entity_type = $form_state['storage']['entity_type'];
+  $bc_info = bundle_copy_get_info();
+
+  if (isset($bc_info[$entity_type])) {
+    $bundle_export_callback = $bc_info[$entity_type]['bundle_export_callback'];
+    $bundle_save_callback = $bc_info[$entity_type]['bundle_save_callback'];
+
+    $new_bundle = $bundle_export_callback($src_btype);
+   
+    $new_bundle->type = $new_bundle->orig_type = $new_btype;
+    $new_bundle->name = $new_bname;
+    $new_bundle->custom = 1;
+
+    $bundle_status = $bundle_save_callback($new_bundle);
+    
+    $new_fields = field_info_instances($entity_type, $src_btype);
+    foreach ($new_fields as $key => $value) {
+      $new_fields[$key]['bundle'] = $new_btype;
+      field_create_instance($new_fields[$key]);
+    }
+
+    if (module_exists('field_group')) {
+      $all_field_groups = field_group_info_groups();
+      if (isset($all_field_groups[$entity_type][$src_btype])) {
+        $field_groups = $all_field_groups[$entity_type][$src_btype];
+        ctools_include('export');
+        foreach ($field_groups as $mode => $mode_value) {
+          foreach ($mode_value as $fieldgroup_key => $fieldgroup) {
+            unset($fieldgroup->id);
+            $fieldgroup->bundle = $new_btype;
+            $fieldgroup->identifier = $fieldgroup->group_name . '|' . $entity_type . '|' . $new_btype . '|' . $mode;
+            $fieldgroup->export_type = 0;
+            if (!isset($fieldgroup->disabled)) {
+              $fieldgroup->disabled = FALSE;
+            }
+            ctools_export_crud_save('field_group', $fieldgroup);
+            ctools_export_crud_set_status('field_group', $fieldgroup, $fieldgroup->disabled);
+          }
+          cache_clear_all('field_groups', 'cache_field');
+        }
+      }
+    }
+    field_info_cache_clear();
+    $form_state['redirect'] = str_replace("clone", "list", $bc_info[$entity_type]['clone_menu']['path']);
+  }
 }
