@@ -5,6 +5,250 @@
 
 function od_entity_title_translate_entity_load($entities, $type) {
   foreach ($entities as $entity) {
-    od_entity_title_translate_translate($entity, $type);
+    //od_file_convert_entity($entity, $type);
+    od_entity_label_translate_factory::inst()
+      ->getTranslator($type, $entity)
+      ->translateLabel($entity);
+  }
+}
+
+/**
+ * @param $entity
+ * @param $type
+ * @todo needs hook_implements_alter()
+ */
+function od_entity_title_translate_entity_update($entity, $type) {
+  od_entity_label_translate_factory::inst()
+    ->getTranslator($type, $entity)
+    ->restoreLabel($entity);
+}
+
+//
+//function od_file_convert_entity($entity, $type) {
+//  if (!($type == 'node' && isset($entity->type) && $entity->type == 'resource')) {
+//    return;
+//  }
+//
+//  $wrapper = entity_metadata_wrapper($type, $entity);
+//  if ($items = $wrapper->field_upload->value()) {
+//    $items = is_array($items) ? $items : array($items);
+//
+//    foreach ($items as $delta => &$item) {
+//      if (file_exists($item->uri)) {
+//        $new_name = basename(tempnam('', 'od'));
+//        $new_name = 'public://'. $new_name;
+//        $converted = file_get_contents($item->uri);
+//        $encoding = mb_detect_encoding($converted);
+//        $converted = iconv($encoding ? $encoding : 'CP1251', 'UTF-8//TRANSLIT', $converted);
+//        file_put_contents($new_name, $converted);
+//
+//        $item->uri = $new_name;
+//
+//        $item = (array) $item;
+//      }
+//
+//      $entity->field_upload[LANGUAGE_NONE] = $items;
+//    }
+//  }
+//}
+
+function od_entity_title_translate_get_current_language($entity, $type) {
+  return $GLOBALS['language'];
+}
+
+/**
+ * Class od_entity_label_translate_factory
+ */
+class od_entity_label_translate_factory {
+  const DEFAULT_CLASS = 'od_entity_label_translate_default_class';
+  const CLASS_PREFIX = 'od_entity_label_translate_class_';
+
+  protected static $instance = NULL;
+  protected $instances = array();
+
+  protected function __construct() {}
+
+  /**
+   * @return od_entity_label_translate_factory
+   */
+  public static function inst() {
+    if (static::$instance === NULL) {
+      $current_class = get_class();
+      static::$instance = new $current_class();
+    }
+
+    return static::$instance;
+  }
+
+  protected function getTranslatorClassName($type, $entity = NULL) {
+    return static::CLASS_PREFIX. "{$type}";
+  }
+
+  /**
+   * @param $type
+   * @param null $entity
+   * @return od_entity_label_translate_class_interface
+   */
+  public function getTranslator($type, $entity = NULL) {
+    $classname = $this->getTranslatorClassName($type, $entity);
+
+    if (!isset($this->instances[$classname])) {
+      $creation_class = $classname; //Hust a variable for preserving original $classname
+      //Check if no such class then create default class
+      if (!class_exists($classname)) {
+        $creation_class = static::DEFAULT_CLASS;
+      }
+
+      $this->instances[$classname] = new $creation_class($type);
+      $this->instances[$classname]->setLangCode(od_entity_title_translate_get_current_language($entity, $type)->langcode);
+    }
+
+    return $this->instances[$classname];
+  }
+}
+
+
+interface od_entity_label_translate_class_interface {
+  /**
+   * Translates a label of an entity
+   * @param $entity
+   * @return od_entity_label_translate_class_interface
+   */
+  function translateLabel($entity);
+
+  /**
+   * Restores original label of an entity to prevent braking it while it's saving
+   * @param $entity
+   * @return od_entity_label_translate_class_interface
+   * @todo Must save all labels somewhere else
+   */
+  function restoreLabel($entity);
+
+  /**
+   * Get current entity translation langcode
+   * @param $langcode
+   * @return string
+   *  A langcode for translation
+   */
+  function getLangCode();
+
+  /**
+   * Sets langcode for this entity to translate to
+   * @return od_entity_label_translate_class_interface
+   */
+  function setLangCode($landcode);
+
+  /**
+   * Gets label property value
+   * @param $entity
+   * @return string
+   *  A label of an entity
+   */
+  function getLabel($entity);
+
+  /**
+   * Sets new label of an entity
+   * @param $entity
+   * @param $label
+   * @return od_entity_label_translate_class_interface
+   */
+  function setLabel($entity, $label);
+
+  /**
+   * Translates label
+   * @param $entity
+   *  An entity to translate its label
+   * @return string
+   *  Translated label
+   */
+  function getTranslatedLabel($entity);
+
+  /**
+   * Creates backup copy of original entity label
+   * @param $entity
+   * @return od_entity_label_translate_class_interface
+   */
+  function backupLabel($entity);
+
+  /**
+   * Main class constructor. Shouldn't be used in child classes. Use @see ->init() instead
+   * @param $entity_type
+   */
+  function __construct($entity_type);
+}
+/**
+ * Class od_entity_label_translate_class
+ * @todo interface
+ */
+abstract class od_entity_label_translate_class implements od_entity_label_translate_class_interface {
+  protected $entity_type = NULL;
+  protected $langcode = NULL;
+
+  protected $labelProperty = NULL;
+  protected $backupProperty = '___originalLabel';
+
+  public function __construct($entity_type) {
+    $this->entity_type = $entity_type;
+    $this->init();
+  }
+
+  /**
+   * Constructor
+   */
+  protected function init() {
+    if ($this->labelProperty === NULL) {
+      throw new Exception('labelProperty can\'t be null for class '. get_class());
+    }
+  }
+
+  function setLangCode($langcode) {
+    $this->langCode = $langcode;
+
+    return $this;
+  }
+
+  function getLangCode() {
+    return $this->langcode;
+  }
+
+  function translateLabel($entity) {
+    if ($translated = $this->getTranslatedLabel($entity)) {
+      $this->backupLabel($entity);
+      $this->setLabel($entity, $translated);
+    }
+
+    return $this;
+  }
+
+  function getLabel($entity) {
+    return $entity->{$this->labelProperty};
+  }
+
+  function setLabel($entity, $label) {
+    $entity->{$this->labelProperty} = $label;
+
+    return $this;
+  }
+
+  function restoreLabel($entity) {
+    if (isset($entity->{$this->backupProperty})) {
+      $this->setLabel($entity, $entity->{$this->backupProperty});
+      unset($entity->{$this->backupProperty});
+    }
+
+    return $this;
+  }
+  function backupLabel($entity) {
+    $entity->{$this->backupProperty} = $this->getLabel($entity);
+
+    return $this;
+  }
+}
+
+class od_entity_label_translate_default_class extends od_entity_label_translate_class {
+  protected $labelProperty = ''; //But not null
+
+  function getTranslatedLabel($entity) {
+    return NULL; //Do not translate
   }
 }
