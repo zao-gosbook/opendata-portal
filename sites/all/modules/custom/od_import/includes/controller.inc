@@ -54,7 +54,7 @@ function od_import_import_organization_opendata($org) {
 
   if (!empty($errors)) {
     $error = reset($errors);
-    $error = 'Ошибка открытых данных - ' . mb_strtolower($error['description']);
+    $error = 'Ошибка открытых данных - ' . t($error['description']);
   }
 
   if (!empty($error)) {
@@ -466,7 +466,21 @@ function od_import_load_or_create_file($uri, $origin_uri) {
   return $file;
 }
 
-function od_import_get_url_content($url) {
+function od_import_get_url_content($url, $encoding = NULL) {
+  $content = od_file_preprocess_parse_csv($url);
+  $rows = reset($content); // @todo Why single array?
+  $output = '';
+  foreach ($rows as $row) {
+    $output .= implode(',', $row) . "\n";
+  }
+
+  return $output;
+
+  // Set default encoding from Windows-1251.
+  if (empty($encoding)) {
+    $encoding = 'Windows-1251';
+  }
+
   $curl = curl_init();
   curl_setopt($curl, CURLOPT_URL, $url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -474,6 +488,14 @@ function od_import_get_url_content($url) {
   curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 
   $content = curl_exec($curl);
+
+  // Detect UTF-8.
+  $is_utf8 = preg_match('//u', $content);
+  if (!$is_utf8) {
+    if ($encoding) {
+      $content = iconv($encoding, 'UTF-8', $content);
+    }
+  }
 
   $result = curl_getinfo($curl, CURLINFO_HTTP_CODE) < 400;
 
