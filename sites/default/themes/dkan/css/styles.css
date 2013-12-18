@@ -1714,7 +1714,7 @@ div.horizontal-tabs .form-text {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\00003154}}
 .node-unpublished {
-  background: transparent;
+  background: #f2f2f2;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\00003158}}
@@ -3006,88 +3006,111 @@ div.horizontal-tabs .form-text {
   margin-top: 5px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031330}}
+/* apps */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031329}}
+.panels-flexible-region-16-region_main_content {
+  width: 100%;
+}
+
+/* about */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031334}}
+.section-about {
+  background: #fff;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031338}}
+.section-about .node-page p {
+  font-size: 15px;
+  line-height: 1.35em;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031342}}
+.section-about .node-page li {
+  font-size: 15px;
+  line-height: 1.35em;
+  padding-bottom: 8px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031352}}
 .node-type-blog,
 .node-type-idea,
 .node-type-news {
   background: #fff;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031334}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031356}}
 .node-idea.view-mode-full .field-name-field-rubric {
   color: #4C4C4C;
   font-size: 16px;
   margin-bottom: 16px;
   text-transform: uppercase;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031340}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031362}}
 .node-idea.view-mode-full .field-name-field-rubric a {
   color: #4C4C4C;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031345}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031367}}
 .node-idea.view-mode-full .field-name-field-idea-vote-up-down {
   float: right;
   margin: 0 0 15px 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031349}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031371}}
 .node-idea.view-mode-full .field-name-body {
   color: #666666;
   font-size: 1.3em;
   line-height: 1.55em;
   padding-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031355}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031377}}
 .node-idea.view-mode-full .field-name-body p {
   margin: 0 0 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031359}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031381}}
 .node-idea.view-mode-full .flag-wrapper {
   font-size: 16px;
   text-transform: uppercase;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031363}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031385}}
 .node-idea.view-mode-full .flag-wrapper a {
   text-decoration: none;
   display: inline-block;
   padding: 10px 17px;
   border: 1px solid transparent;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031369}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031391}}
 .node-idea.view-mode-full .flag-wrapper a.unflag-action {
   color: red;
   border-color: red;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031373}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031395}}
 .node-idea.view-mode-full .flag-wrapper a.flag-action {
   color: green;
   border-color: green;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031379}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031401}}
 .node-idea.view-mode-full .links {
   display: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031384}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031406}}
 .node-news.view-mode-full .field-name-post-date {
   color: #ccc;
   font-size: 1.3em;
   line-height: 1.55em;
   padding-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031390}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031412}}
 .node-news.view-mode-full .field-name-body {
   color: #666666;
   font-size: 1.3em;
   line-height: 1.55em;
   padding-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031396}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031418}}
 .node-news.view-mode-full .field-name-body p {
   margin: 0 0 20px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031403}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031425}}
 .node-blog.view-mode-full .field-name-author {
   display: inline-block;
   color: #ccc;
@@ -3096,11 +3119,11 @@ div.horizontal-tabs .form-text {
   padding-bottom: 20px;
   padding-right: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031411}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031433}}
 .node-blog.view-mode-full .field-name-author * {
   display: inline-block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031415}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031437}}
 .node-blog.view-mode-full .field-name-post-date {
   display: inline-block;
   color: #ccc;
@@ -3108,34 +3131,34 @@ div.horizontal-tabs .form-text {
   line-height: 1.55em;
   padding-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031422}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031444}}
 .node-blog.view-mode-full .field-name-post-date * {
   display: inline-block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031426}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031448}}
 .node-blog.view-mode-full .field-name-body {
   color: #666666;
   font-size: 1.3em;
   line-height: 1.55em;
   padding-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031432}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031454}}
 .node-blog.view-mode-full .field-name-body p {
   margin: 0 0 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031436}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031458}}
 .node-blog.view-mode-full .field-name-field-rubric {
   color: #4C4C4C;
   font-size: 16px;
   margin-bottom: 6px;
   text-transform: uppercase;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031442}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031464}}
 .node-blog.view-mode-full .field-name-field-rubric a {
   color: #4C4C4C;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031447}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031469}}
 .node-blog.view-mode-full .links {
   margin: 0;
   padding-top: 10px;
@@ -3143,12 +3166,12 @@ div.horizontal-tabs .form-text {
   overflow: hidden;
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031457}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031479}}
 .node-blog.view-mode-full .links a {
   display: inline-block;
   font-size: 14px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031462}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031484}}
 .node-blog.view-mode-full .links .blog_usernames_blog a {
   background: none repeat scroll 0 0 #0C87E8;
   color: #FFFFFF;
@@ -3161,42 +3184,42 @@ div.horizontal-tabs .form-text {
   text-transform: uppercase;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031477}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031499}}
 .page-blog {
   background: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031480}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031502}}
 .page-blog .node-blog {
   border-right: 5px solid #BFBFBF;
   margin-bottom: 4.5em;
   padding-right: 4%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031485}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031507}}
 .page-blog .node-blog h2 {
   font-size: 2em;
   line-height: 1.1em;
   margin: 0 0 0.15em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031490}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031512}}
 .page-blog .node-blog h2 a {
   color: #3D9FED;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031495}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031517}}
 .page-blog .node-blog .field-name-body {
   color: #666666;
   font-size: 1.3em;
   line-height: 1.55em;
   padding-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031501}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031523}}
 .page-blog .node-blog .field-name-field-date-created {
   color: #B5B5B5;
   float: left;
   font-size: 1.25em;
   width: 50%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031507}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031529}}
 .page-blog .node-blog .field-name-field-comments-count {
   background: url("../images/ico-comments.png") no-repeat scroll 0 50% transparent;
   color: #FF8A00;
@@ -3204,16 +3227,16 @@ div.horizontal-tabs .form-text {
   font-size: 1.25em;
   padding-left: 25px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031514}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031536}}
 .page-blog .node-blog .field-name-field-comments-count a {
   color: #FF8A00;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031518}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031540}}
 .page-blog .node-blog .field-name-field-comments-count em {
   font-style: normal;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031522}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031544}}
 .page-blog .node-blog .links {
   margin: 0;
   padding-top: 10px;
@@ -3221,12 +3244,12 @@ div.horizontal-tabs .form-text {
   overflow: hidden;
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031532}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031554}}
 .page-blog .node-blog .links a {
   display: inline-block;
   font-size: 14px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031538}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031560}}
 .page-blog .node-blog .node-readmore a {
   background: none repeat scroll 0 0 #0C87E8;
   color: #FFFFFF;
@@ -3239,17 +3262,17 @@ div.horizontal-tabs .form-text {
   text-transform: uppercase;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031552}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031574}}
 .page-blog .pane-pane-messages .action-links {
   margin: 0;
   padding: 0 0 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031556}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031578}}
 .page-blog .pane-pane-messages .action-links li {
   list-style: none;
   margin: 0 10px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031560}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031582}}
 .page-blog .pane-pane-messages .action-links li a {
   background: none repeat scroll 0 0 #0C87E8;
   color: #FFFFFF;
@@ -3265,7 +3288,7 @@ div.horizontal-tabs .form-text {
 /**
  * page rubric
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031580}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031602}}
 .pane-od-rubric-menu-block-rubric-menu .menu-icon {
   float: left;
   padding: 0 1% 0 7%;
@@ -3276,7 +3299,7 @@ div.horizontal-tabs .form-text {
   font-size: 28px;
   background: none repeat scroll 0 0 #FF8A00;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031590}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031612}}
 .pane-od-rubric-menu-block-rubric-menu .menu-icon:after {
   background: url("../images/arr-orange-left.png") no-repeat scroll 0 0 transparent;
   content: "";
@@ -3292,32 +3315,32 @@ div.horizontal-tabs .form-text {
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031601}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031623}}
 .pane-od-rubric-menu-block-rubric-menu .menu-icon img {
   float: left;
   position: relative;
   top: 1px;
   margin-left: -20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031607}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031629}}
 .pane-od-rubric-menu-block-rubric-menu .menu-icon span {
   position: relative;
   top: -1px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031612}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031634}}
 .pane-od-rubric-menu-block-rubric-menu .category-menu {
   margin: 0;
   padding: 1px 0 0 2em;
   float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031617}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031639}}
 .pane-od-rubric-menu-block-rubric-menu .category-menu li {
   float: left;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031623}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031645}}
 .pane-od-rubric-menu-block-rubric-menu .category-menu li a {
   display: block;
   height: 3.15em;
@@ -3327,86 +3350,88 @@ div.horizontal-tabs .form-text {
   padding: 0 1.25em;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031633}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031655}}
 .pane-od-rubric-menu-block-rubric-menu .category-menu li a.active, .pane-od-rubric-menu-block-rubric-menu .category-menu li a:hover {
   color: #ffa200;
   background: #fff;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031642}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031664}}
 .page-taxonomy-term .region-header {
   border-bottom: 0;
+  background-repeat: no-repeat;
+  background-position: 50% 0;
   -webkit-background-size: 100% auto;
   -moz-background-size: 100% auto;
   -o-background-size: 100% auto;
   background-size: 100% auto;
   border-bottom: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031650}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031675}}
 .page-taxonomy-term.page-taxonomy-term-8 .region-header {
-  background: url("../images/header-taxonomy-education.jpg") no-repeat 50% 0;
+  background-image: url("../images/header-taxonomy-education.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031656}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031681}}
 .page-taxonomy-term.page-taxonomy-term-72 .region-header {
-  background: url("../images/bg-geography.jpg") no-repeat 50% 0;
+  background-image: url("../images/bg-geography.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031662}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031687}}
 .page-taxonomy-term.page-taxonomy-term-71 .region-header {
-  background: url("../images/bg-state.jpg") no-repeat 50% 0;
+  background-image: url("../images/bg-state.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031668}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031693}}
 .page-taxonomy-term.page-taxonomy-term-12 .region-header {
-  background: url("../images/bg-transport.jpg") no-repeat 50% 0;
+  background-image: url("../images/bg-transport.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031674}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031699}}
 .page-taxonomy-term.page-taxonomy-term-10 .region-header {
-  background: url("../images/bg-security.jpg") no-repeat 50% 0;
+  background-image: url("../images/bg-security.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031680}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031705}}
 .page-taxonomy-term.page-taxonomy-term-15 .region-header {
-  background: url("../images/bg-health.jpg") no-repeat 50% 0;
+  background-image: url("../images/bg-health.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031686}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031711}}
 .page-taxonomy-term.page-taxonomy-term-9 .region-header {
-  background: url("../images/bg-economy.jpg") no-repeat 50% 0;
+  background-image: url("../images/bg-economy.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031692}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031717}}
 .page-taxonomy-term.page-taxonomy-term-73 .region-header {
-  background: url("../images/bg-construction.jpg") no-repeat 50% 0;
+  background-image: url("../images/bg-construction.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031698}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031723}}
 .page-taxonomy-term.page-taxonomy-term-74 .region-header {
-  background: url("../images/bg-trade.jpg") no-repeat 50% 0;
+  background-image: url("../images/bg-trade.jpg");
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031703}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031728}}
 .page-taxonomy-term .pane-dataset-datasets-total-count {
   display: none;
   /**/
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031707}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031732}}
 .page-taxonomy-term .pane-gb-search-pane {
   margin-left: 0;
   margin-right: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031711}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031736}}
 .page-taxonomy-term .view-rubric-nodes {
   /*@include column-count(3);
   @include column-gap(20px);*/
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031715}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031740}}
 .page-taxonomy-term .view-rubric-nodes .view-header {
   width: 2%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031718}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031743}}
 .page-taxonomy-term .view-rubric-nodes .view-header img {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031722}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031747}}
 .page-taxonomy-term .view-rubric-nodes .view-content {
   position: relative;
   height: 400px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031726}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031751}}
 .page-taxonomy-term .view-rubric-nodes .views-row {
   background: #fff;
   /*padding: 1.1em;*/
@@ -3414,11 +3439,11 @@ div.horizontal-tabs .form-text {
   /**/
   width: 32%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031732}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031757}}
 .page-taxonomy-term .view-rubric-nodes .views-row .node {
   padding: 1.1em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031735}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031760}}
 .page-taxonomy-term .view-rubric-nodes .views-row h2 {
   font-size: 1.4em;
   line-height: 1.5em;
@@ -3426,12 +3451,12 @@ div.horizontal-tabs .form-text {
   padding: 0;
   margin: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031742}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031767}}
 .page-taxonomy-term .view-rubric-nodes .views-row h2 a {
   color: #3d9fed;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031747}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031772}}
 .page-taxonomy-term .view-rubric-nodes .views-row .field-name-body {
   color: #666666;
   font-size: 1.4em;
@@ -3440,18 +3465,18 @@ div.horizontal-tabs .form-text {
   height: 3.75em;
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031755}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031780}}
 .page-taxonomy-term .view-rubric-nodes .views-row .field-name-body p {
   margin: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031759}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031784}}
 .page-taxonomy-term .view-rubric-nodes .views-row .field-name-field-date-created {
   float: left;
   width: 50%;
   color: #b5b5b5;
   font-size: 1.25em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031765}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031790}}
 .page-taxonomy-term .view-rubric-nodes .views-row .field-name-field-comments-count {
   float: right;
   padding-left: 25px;
@@ -3459,12 +3484,12 @@ div.horizontal-tabs .form-text {
   color: #ff8a00;
   background: url("../images/ico-comments.png") no-repeat 0 50%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031772}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031797}}
 .page-taxonomy-term .view-rubric-nodes .views-row .field-name-field-comments-count a {
   color: #ff8a00;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031776}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031801}}
 .page-taxonomy-term .view-rubric-nodes .views-row .field-name-field-comments-count a em {
   font-style: normal;
 }
@@ -3472,16 +3497,16 @@ div.horizontal-tabs .form-text {
 /**
  * Passport
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031789}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031814}}
 .entityform {
   padding-top: 2em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031792}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031817}}
 .entityform .form-item {
   margin: 0;
   clear: both;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031797}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031822}}
 .entityform .form-wrapper,
 .entityform .field-group-htabs {
   padding: 0 0 3em;
@@ -3489,19 +3514,19 @@ div.horizontal-tabs .form-text {
   display: table;
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031805}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031830}}
 .entityform .form-text,
 .entityform .form-select,
 .entityform .form-textarea {
   float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031808}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031833}}
 .entityform .form-textarea-wrapper {
   float: left;
   width: 60%;
   margin-right: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031813}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031838}}
 .entityform .description {
   display: table;
   padding-top: 1.2em;
@@ -3509,7 +3534,7 @@ div.horizontal-tabs .form-text {
   font-size: 1.2em;
   line-height: 1em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031823}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031848}}
 .entityform fieldset.form-wrapper {
   border: 0;
   clear: both;
@@ -3517,7 +3542,7 @@ div.horizontal-tabs .form-text {
   padding-top: 2.3em;
   padding-bottom: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031830}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031855}}
 .entityform fieldset.form-wrapper legend {
   color: #4d4d4d;
   font-size: 2em;
@@ -3526,49 +3551,49 @@ div.horizontal-tabs .form-text {
   font-weight: normal;
   text-transform: uppercase;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031838}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031863}}
 .entityform fieldset.form-wrapper legend span {
   position: absolute;
   top: 0;
   left: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031844}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031869}}
 .entityform fieldset.form-wrapper label {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031849}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031874}}
 .entityform .date-no-float {
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031852}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031877}}
 .entityform .container-inline-date > .form-item {
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031855}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031880}}
 .entityform .container-inline-date .date-padding {
   float: none;
   padding: 10px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031859}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031884}}
 .entityform .container-inline-date .form-item .form-item {
   float: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031862}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031887}}
 .entityform .container-inline-date .form-item .form-item .form-text {
   width: 33%;
   margin-right: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031866}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031891}}
 .entityform .container-inline-date .form-item .form-item .description {
   clear: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031869}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031894}}
 .entityform fieldset.filter-wrapper {
   padding-top: 10px;
   padding-left: 0;
   padding-bottom: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031874}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031899}}
 .entityform fieldset.filter-wrapper label {
   display: block;
   float: left;
@@ -3576,31 +3601,31 @@ div.horizontal-tabs .form-text {
   padding-top: .5em;
   padding-right: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031881}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031906}}
 .entityform fieldset.filter-wrapper .form-select {
   width: 10em;
   padding: .5em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031885}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031910}}
 .entityform fieldset.filter-wrapper .form-item {
   padding: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031889}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031914}}
 .entityform div.horizontal-tabs {
   border: 0;
   margin: 0;
   width: 60%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031894}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031919}}
 .entityform div.horizontal-tabs .horizontal-tabs-panes {
   padding: 2em;
   background: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031898}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031923}}
 .entityform div.horizontal-tabs .horizontal-tabs-panes fieldset {
   padding: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031902}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031927}}
 .entityform div.horizontal-tabs ul.horizontal-tabs-list {
   background: transparent;
   border-bottom: 1px solid #000;
@@ -3608,7 +3633,7 @@ div.horizontal-tabs .form-text {
   overflow: hidden;
   border-right: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031909}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031934}}
 .entityform div.horizontal-tabs ul.horizontal-tabs-list li {
   border: 0;
   float: left;
@@ -3616,7 +3641,7 @@ div.horizontal-tabs .form-text {
   min-width: none;
   padding: 0 2px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031916}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031941}}
 .entityform div.horizontal-tabs ul.horizontal-tabs-list li a, .entityform div.horizontal-tabs ul.horizontal-tabs-list li a:hover {
   display: block;
   padding: 0 2em;
@@ -3628,48 +3653,48 @@ div.horizontal-tabs .form-text {
   margin: 0;
   border: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031927}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031952}}
 .entityform div.horizontal-tabs ul.horizontal-tabs-list li a strong, .entityform div.horizontal-tabs ul.horizontal-tabs-list li a:hover strong {
   font-weight: normal;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031932}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031957}}
 .entityform div.horizontal-tabs ul.horizontal-tabs-list li.selected a {
   background: #0c87e8;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031935}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031960}}
 .entityform div.horizontal-tabs ul.horizontal-tabs-list li.selected a strong {
   color: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031942}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031967}}
 .entityform div.horizontal-tabs .horizontal-tab-hidden {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031945}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031970}}
 .entityform div.horizontal-tabs label {
   display: inline-block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031948}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031973}}
 .entityform div.horizontal-tabs label.option {
   padding-left: 7px;
   font-size: 14px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031953}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031978}}
 .entityform div.horizontal-tabs .form-text {
   background: #e5e5e5;
   color: #000;
   width: 80%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031958}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031983}}
 .entityform div.horizontal-tabs .form-submit {
   border: 1px solid #0c87e8;
   background: #fff;
   color: #0c87e8;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031963}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031988}}
 .entityform div.horizontal-tabs .description {
   clear: both;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031967}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031992}}
 .entityform div.autocomplete-deluxe-multiple {
   display: block;
   padding: 1em;
@@ -3683,18 +3708,18 @@ div.horizontal-tabs .form-text {
   border-color: transparent;
   background: white url("../images/form-autocomplete.png") no-repeat 100% 50%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031976}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032001}}
 .entityform div.autocomplete-deluxe-multiple .form-text:focus {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031979}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032004}}
 .entityform div.autocomplete-deluxe-multiple .autocomplete-deluxe-throbber {
   display: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031984}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032009}}
 .form-submit {
   padding: 1.25em 1.25em;
   border: 0;
@@ -3704,17 +3729,17 @@ div.horizontal-tabs .form-text {
   text-transform: uppercase;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031992}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032017}}
 html.js input.form-autocomplete {
   background: white url("../images/form-autocomplete.png") no-repeat 100% 50%;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000031995}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032020}}
 .ui-widget {
   font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032000}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032025}}
 .entitytype-opendata_query-form h3 {
   color: #4d4d4d;
   margin: 0 0 20px;
@@ -3723,26 +3748,26 @@ html.js input.form-autocomplete {
   padding-bottom: 12px;
   width: 65%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032011}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032036}}
 .entitytype-opendata_query-form .field-name-field-od-query-type *,
 .entitytype-opendata_query-form .field-name-field-od-query-data-trouble * {
   display: inline;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032015}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032040}}
 .entitytype-opendata_query-form .field-name-field-od-query-type label[for="edit-field-od-query-type-und"],
 .entitytype-opendata_query-form .field-name-field-od-query-type label[for="edit-field-od-query-data-trouble-und"],
 .entitytype-opendata_query-form .field-name-field-od-query-data-trouble label[for="edit-field-od-query-type-und"],
 .entitytype-opendata_query-form .field-name-field-od-query-data-trouble label[for="edit-field-od-query-data-trouble-und"] {
   padding-right: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032018}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032043}}
 .entitytype-opendata_query-form .field-name-field-od-query-type .form-radios .form-item,
 .entitytype-opendata_query-form .field-name-field-od-query-data-trouble .form-radios .form-item {
   clear: none;
   padding-right: 18px;
   padding-top: 6px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032024}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032049}}
 .entitytype-opendata_query-form .field-name-field-od-query-data-rubrics .form-checkboxes {
   width: 40%;
   -webkit-column-count: 2;
@@ -3751,28 +3776,28 @@ html.js input.form-autocomplete {
   -o-column-count: 2;
   column-count: 2;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032028}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032053}}
 .entitytype-opendata_query-form .field-name-field-od-query-data-rubrics .form-checkboxes .form-item {
   display: inline-block;
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032033}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032058}}
 .entitytype-opendata_query-form .field-widget-markup {
   padding-bottom: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032036}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032061}}
 .entitytype-opendata_query-form .form-wrapper {
   padding-left: 27px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032041}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032066}}
 .entitytype-opendata_query-form .form-wrapper.field-widget-markup, .entitytype-opendata_query-form .form-wrapper.form-actions, .entitytype-opendata_query-form .form-wrapper.field-name-field-od-query-type {
   padding-left: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032045}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032070}}
 .entitytype-opendata_query-form .field-name-field-od-query-mark-next {
   padding-bottom: 30px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032048}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032073}}
 .entitytype-opendata_query-form .field-name-field-od-query-mark-next p {
   margin: 0;
   font-size: 16px;
@@ -3782,75 +3807,75 @@ html.js input.form-autocomplete {
 /**
  * view-organizations
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032060}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032085}}
 .page-organizations {
   background: #fff;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032066}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032091}}
 .view-organizations .view-filters label {
   float: left;
   padding: 8px 15px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032071}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032096}}
 .view-organizations .view-filters .form-select,
 .view-organizations .view-filters .form-text {
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032074}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032099}}
 .view-organizations .view-filters .views-widget {
   float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032077}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032102}}
 .view-organizations .view-filters .views-exposed-form .views-exposed-widget .form-submit {
   margin-top: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032082}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032107}}
 .view-organizations tr.odd {
   background: #f4f4f4;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032086}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032111}}
 .view-organizations td,
 .view-organizations th {
   padding: .8em;
   text-align: left;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032091}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032116}}
 table {
   width: 100%;
   font-size: 15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032097}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032122}}
 table tr.odd, table tr.even {
   border: 0;
   background: transparent;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032102}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032127}}
 table th {
   text-align: left;
   padding: 0 1em 1em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032106}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032131}}
 table th a {
   color: #000;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032110}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032135}}
 table td {
   padding: 0 1em 1em;
   vertical-align: top;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032114}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032139}}
 table td.views-field-title a {
   font-size: 2em;
   line-height: 1.4em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032118}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032143}}
 table td.views-field-title a a {
   color: #0c87e8;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032123}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032148}}
 table td.views-field-counter {
   vertical-align: middle;
 }
@@ -3858,12 +3883,12 @@ table td.views-field-counter {
 /**
  * ideas
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032132}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032157}}
 .section-ideas .region-content {
   padding-top: 30px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032137}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032162}}
 .view-ideas .view-header a {
   background: none repeat scroll 0 0 #0C87E8;
   color: #FFFFFF;
@@ -3875,40 +3900,40 @@ table td.views-field-counter {
   text-transform: uppercase;
   margin-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032149}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032174}}
 .view-ideas .views-row {
   padding-bottom: 57px;
   overflow: hidden;
   text-transform: uppercase;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032155}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032180}}
 .view-ideas .views-field-field-rubric-image img {
   float: left;
   margin-top: -4px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032160}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032185}}
 .view-ideas .views-field-field-rubric {
   color: #4d4d4d;
   font-size: 1.2em;
   padding-bottom: .35em;
   margin-left: 70px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032166}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032191}}
 .view-ideas .views-field-title {
   font-size: 2em;
   line-height: 1.4em;
   margin-left: 70px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032171}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032196}}
 .view-ideas .views-field-title a {
   color: #0c87e8;
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032176}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032201}}
 .view-ideas .views-field-ops {
   margin-left: 70px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032179}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032204}}
 .view-ideas .views-field-ops a {
   display: inline-block;
   color: #fff;
@@ -3917,7 +3942,7 @@ table td.views-field-counter {
   padding: 0.2em 1em;
   background: #b9b9b9;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032188}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032213}}
 .view-ideas .views-field-field-idea-vote-up-down {
   float: right;
   padding: 0 0 17px 30px;
@@ -3927,17 +3952,17 @@ table td.views-field-counter {
 /**
  * widget up-down
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032198}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032223}}
 .vud-widget-thumbs {
   margin: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032201}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032226}}
 .vud-widget-thumbs .up-score {
   border: 0;
   padding-left: 0;
   padding-right: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032209}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032234}}
 .vud-widget-thumbs .up-inactive,
 .vud-widget-thumbs .down-inactive,
 .vud-widget-thumbs .up-active,
@@ -3950,41 +3975,41 @@ table td.views-field-counter {
   text-align: center;
   width: 44px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032218}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032243}}
 .vud-widget-thumbs .up-inactive {
   background-position: 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032221}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032246}}
 .vud-widget-thumbs .up-inactive:hover {
   background-position: 0 -44px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032225}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032250}}
 .vud-widget-thumbs .down-inactive {
   background-position: -44px 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032228}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032253}}
 .vud-widget-thumbs .down-inactive:hover {
   background-position: 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032232}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032257}}
 .vud-widget-thumbs .up-active {
   background-position: 0 -44px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032235}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032260}}
 .vud-widget-thumbs .down-active {
   background-position: -44px -44px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032239}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032264}}
 .vud-widget-thumbs .vote-current-score {
   color: #4d4d4d;
   font-size: 1.2em;
   padding-left: 4px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032244}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032269}}
 .vud-widget-thumbs .vote-current-score strong {
   font-weight: normal;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032248}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032273}}
 .vud-widget-thumbs .voted-how {
   display: none;
 }
@@ -3992,13 +4017,13 @@ table td.views-field-counter {
 /**
  * widget five-star
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032257}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032282}}
 div.fivestar-widget .star,
 div.fivestar-widget .star a {
   background-image: url("../images/star.png");
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032260}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032285}}
 div.fivestar-widget .star {
   margin-right: 3px;
 }
@@ -4006,11 +4031,11 @@ div.fivestar-widget .star {
 /**
  * apps
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032267}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032292}}
 .page-apps .pane-page-content .panels-flexible-region {
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032270}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032295}}
 .page-apps .pane-page-content .panels-flexible-region h2 {
   margin: 0 0 .5em;
   font-size: 24px;
@@ -4018,27 +4043,27 @@ div.fivestar-widget .star {
   color: #4d4d4d;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032277}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032302}}
 .pane-apps-top-3-apps {
   padding: 0 0 1.6%;
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032281}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032306}}
 .pane-apps-top-3-apps .view {
   margin: 0 -1%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032285}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032310}}
 .pane-apps-top-3-apps .views-row {
   float: left;
   width: 31.3333%;
   margin: 0 1%;
   background: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032291}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032316}}
 .pane-apps-top-3-apps .views-row .views-field-field-app-image {
   padding: 1.4em 2.2em 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032294}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032319}}
 .pane-apps-top-3-apps .views-row .views-field-field-app-image img {
   border: 3px solid #dcdcdc;
   -webkit-box-sizing: border-box;
@@ -4047,7 +4072,7 @@ div.fivestar-widget .star {
   width: 100%;
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032301}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032326}}
 .pane-apps-top-3-apps .views-row .views-field-title {
   padding: 0 2.2em 0;
   margin-bottom: 1.18em;
@@ -4061,40 +4086,40 @@ div.fivestar-widget .star {
   box-sizing: padding-box;
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032312}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032337}}
 .pane-apps-top-3-apps .views-row .views-field-title a {
   text-decoration: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032318}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032343}}
 .page-apps .pane-page-content .region-app-2-col {
   margin: 0 -1%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032321}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032346}}
 .page-apps .pane-page-content .region-app-2-col .panels-flexible-region {
   width: 48%;
   background: #fff;
   margin: 0 1% 1.6em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032326}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032351}}
 .page-apps .pane-page-content .region-app-2-col .panels-flexible-region .inside {
   padding: 1.8em 2.2em 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032329}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032354}}
 .page-apps .pane-page-content .region-app-2-col .panels-flexible-region .views-row {
   padding-bottom: 26px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032332}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032357}}
 .page-apps .pane-page-content .region-app-2-col .panels-flexible-region .views-field-title {
   font-size: 16px;
   text-transform: uppercase;
   padding-bottom: 4px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032337}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032362}}
 .page-apps .pane-page-content .region-app-2-col .panels-flexible-region .views-field-title a {
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032341}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032366}}
 .page-apps .pane-page-content .region-app-2-col .panels-flexible-region .views-field-name {
   color: #b9b9b9;
   font-size: 14px;
@@ -4102,13 +4127,12 @@ div.fivestar-widget .star {
   text-transform: uppercase;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032349}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032374}}
 .pane-btn {
   padding: .5em 0;
 }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032352}}
-a.btn {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032377}}
+.pane-btn a.btn {
   display: inline-block;
   padding: .8em 1.6em;
   font-size: 14px;
@@ -4122,12 +4146,12 @@ a.btn {
 /**
  * passport data
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032366}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032393}}
 .node-type-dataset {
   background: #fff;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032371}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032398}}
 .addtoany_list.a2a_kit_size_32 a span {
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
@@ -4141,56 +4165,56 @@ a.btn {
   width: 45px;
   background-size: cover;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032380}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032407}}
 .addtoany_list.a2a_kit_size_32 a span.a2a_s_twitter {
   background: url("../images/ico-social-twitter.png") no-repeat;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032383}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032410}}
 .addtoany_list.a2a_kit_size_32 a span.a2a_s_facebook {
   background: url("../images/ico-social-facebook.png") no-repeat;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032386}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032413}}
 .addtoany_list.a2a_kit_size_32 a span.a2a_s_google_plus {
   background: url("../images/ico-social-google.png") no-repeat;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032393}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032420}}
 .dataset-left-col {
   width: 30%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032396}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032423}}
 .dataset-left-col h2.pane-title {
   color: #666666;
   font-size: 24px;
   line-height: 1.0em;
   margin: 0 0 .4em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032402}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032429}}
 .dataset-left-col .panel-pane {
   margin-bottom: 40px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032406}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032433}}
 .dataset-left-col .field-name-field-spatial,
 .dataset-left-col .field-name-field-geolocation {
   border: 10px solid #e5e5e5;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032409}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032436}}
 .dataset-left-col .field-name-field-spatial .geolocation-map,
 .dataset-left-col .field-name-field-geolocation .geolocation-map {
   width: 100% !important;
   margin: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032415}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032442}}
 .dataset-right-col {
   width: 65%;
   float: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032419}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032446}}
 .dataset-right-col > .inside {
   padding-left: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032426}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032453}}
 .dataset-right-col .pane-taxonomy-term-field-rubric-image,
 .dataset-right-col .pane-taxonomy-term-field-rubric-image *,
 .dataset-right-col .pane-node-field-rubric,
@@ -4200,13 +4224,13 @@ a.btn {
   font-size: 16px;
   text-transform: uppercase;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032432}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032459}}
 .dataset-right-col .pane-node-field-rubric a {
   text-decoration: none;
   position: relative;
   top: -30px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032439}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032466}}
 .dataset-right-col .pane-node-body,
 .dataset-right-col .pane-node-body p {
   font-size: 18px;
@@ -4214,7 +4238,7 @@ a.btn {
   color: #666;
   margin: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032450}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032477}}
 .dataset-right-col h3,
 .dataset-right-col .data-row-developers h2.pane-title,
 .dataset-right-col .data-row-comments h2,
@@ -4226,13 +4250,13 @@ a.btn {
   color: #666;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032457}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032484}}
 .pane-if-you-unlogged {
   padding-top: 50px;
   font-size: 18px;
   color: #434343;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032464}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032491}}
 .pane-if-you-unlogged a {
   display: inline-block;
   padding: .75em 1.6em;
@@ -4245,21 +4269,21 @@ a.btn {
   text-decoration: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032477}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032504}}
 .data-row-links {
   padding-top: 25px;
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032482}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032509}}
 .data-row-links .panel-pane,
 .data-row-links .views-field {
   float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032485}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032512}}
 .data-row-links .download {
   margin-right: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032488}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032515}}
 .data-row-links .download a {
   display: inline-block;
   padding: .75em 1.6em;
@@ -4273,14 +4297,14 @@ a.btn {
   position: relative;
   top: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032502}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032529}}
 .data-row-links .views-field-field-format {
   width: 60px;
   height: 56px;
   background: url("../images/ico-filetype.png") no-repeat;
   margin-right: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032508}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032535}}
 .data-row-links .views-field-field-format .field-content {
   text-align: center;
   color: #777;
@@ -4288,11 +4312,11 @@ a.btn {
   text-transform: uppercase;
   font-size: 18px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032516}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032543}}
 .data-row-links .views-field-title {
   margin-right: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032519}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032546}}
 .data-row-links .views-field-title a {
   color: #777777;
   font-size: 18px;
@@ -4306,21 +4330,21 @@ a.btn {
   line-height: 60px;
   background: url("../images/arr-down.png") no-repeat 100% 50%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032533}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032560}}
 .data-row-links .pane-node-field-vote {
   float: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032537}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032564}}
 .data-row-links .pane-node-field-vote .vud-widget-thumbs div, .data-row-links .pane-node-field-vote .vud-widget-thumbs p {
   float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032540}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032567}}
 .data-row-links .pane-node-field-vote .vud-widget-thumbs .vote-current-score {
   text-indent: -10000px;
   padding-top: 0;
   margin-top: -9px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032545}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032572}}
 .data-row-links .pane-node-field-vote .vud-widget-thumbs .vote-current-score strong {
   display: block;
   text-indent: 0;
@@ -4329,7 +4353,7 @@ a.btn {
   font-size: 18px;
   padding-left: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032555}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032582}}
 .data-row-links .pane-node-total-count {
   float: right;
   padding-left: 63px;
@@ -4341,11 +4365,11 @@ a.btn {
   font-size: 18px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032566}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032593}}
 .data-row-maininfo {
   color: #666;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032570}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032597}}
 .data-row-maininfo h2,
 .data-row-maininfo .field-label {
   float: left;
@@ -4356,51 +4380,51 @@ a.btn {
   font-weight: normal;
   text-transform: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032580}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032607}}
 .data-row-maininfo .field,
 .data-row-maininfo .field-items {
   font-size: 18px;
   line-height: 1em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032584}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032611}}
 .data-row-maininfo .panel-pane {
   overflow: hidden;
   padding-bottom: 12px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032591}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032618}}
 .data-row-versions .view-header {
   padding-bottom: 12px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032594}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032621}}
 .data-row-versions .panel-3col-33 {
   padding-bottom: 40px;
   color: #666;
   font-size: 18px;
   line-height: 25px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032600}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032627}}
 .data-row-versions .panel-3col-33 .panel-col {
   width: 190px;
   float: right;
   border-right: 5px solid #bfbfbf;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032605}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032632}}
 .data-row-versions .panel-3col-33 .panel-col .inside {
   margin-right: 27px;
   text-align: center;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032609}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032636}}
 .data-row-versions .panel-3col-33 .panel-col .views-field-timestamp {
   text-align: center;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032613}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032640}}
 .data-row-versions .panel-3col-33 .panel-col-first {
   width: 70px;
   float: left;
   border: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032618}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032645}}
 .data-row-versions .panel-3col-33 .panel-col-first .field-content {
   text-align: center;
   color: #777;
@@ -4409,7 +4433,7 @@ a.btn {
   height: 56px;
   background: url("../images/ico-filetype.png") no-repeat;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032627}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032654}}
 .data-row-versions .panel-3col-33 .download a {
   background: none repeat scroll 0 0 #0C87E8;
   color: #FFFFFF;
@@ -4422,33 +4446,33 @@ a.btn {
   text-transform: uppercase;
   margin-bottom: .75em;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032639}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032666}}
 .data-row-versions .panel-3col-33 .panel-col-last {
   width: auto;
   margin: 0 208px 0 78px;
   border: 0;
   float: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032645}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032672}}
 .data-row-versions .panel-3col-33 .panel-col-last .views-field-title {
   text-transform: uppercase;
   font-size: 24px;
   line-height: 30px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032650}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032677}}
 .data-row-versions .panel-3col-33 .panel-col-last p {
   margin: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032655}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032682}}
 .data-row-versions .views-row-last .panel-3col-33 {
   padding: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032660}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032687}}
 .data-row-passport table {
   margin: 12px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032663}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032690}}
 .data-row-passport table th, .data-row-passport table td {
   font-weight: normal;
   font-size: 18px;
@@ -4458,18 +4482,18 @@ a.btn {
   background: #d5d5d5;
   vertical-align: top;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032673}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032700}}
 .data-row-passport table tr:nth-child(2n) th, .data-row-passport table tr:nth-child(2n) td {
   background: #eee;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032678}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032705}}
 .data-row-passport table thead th, .data-row-passport table thead td {
   background: #112b4c;
   color: #fff;
   text-transform: uppercase;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032686}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032713}}
 .data-row-developers .pane-content {
   font-size: 18px;
   line-height: 1.3em;
@@ -4479,21 +4503,21 @@ a.btn {
   margin-top: 12px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032696}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032723}}
 .data-row-comments .form-submit {
   margin: 20px 20px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032699}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032726}}
 .data-row-comments h2 {
   margin-bottom: 12px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032703}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032730}}
 .pane-node-comment-form {
   padding-bottom: 30px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032706}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032733}}
 .comment {
   font-size: 18px;
   line-height: 1.15em;
@@ -4502,41 +4526,41 @@ a.btn {
   background-color: #d5d5d5;
   border-bottom: 1px solid #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032714}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032741}}
 .comment.odd {
   background-color: #eeeeee;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032718}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032745}}
 .comment .group-left {
   float: none;
   width: auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032724}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032751}}
 .comment .field-name-ds-user-picture img {
   float: left;
   margin: 0 18px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032729}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032756}}
 .comment .group-right {
   float: none;
   width: auto;
   display: table;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032735}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032762}}
 .comment .field-name-post-date,
 .comment .field-name-post-date * {
   display: inline-block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032738}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032765}}
 .comment a.username {
   text-decoration: none;
   padding-left: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032742}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032769}}
 .comment .field-name-comment-body {
   padding: 3px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032745}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032772}}
 .comment .field-name-comment-body p {
   margin: 0;
 }
@@ -4544,46 +4568,156 @@ a.btn {
 /**
  * opendata-import
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032754}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032781}}
 .page-opendata-import {
   background: #fff;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032758}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032785}}
 .view-opendata-import {
   font-size: 15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032761}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032788}}
 .view-opendata-import .item-list {
   margin: 20px 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032764}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032791}}
 .view-opendata-import .item-list h3 {
   margin: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032767}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032794}}
 .view-opendata-import .item-list li {
   padding: 3px 0;
   text-transform: uppercase;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032772}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032799}}
 .view-opendata-import tr.odd {
   background-color: #f4f4f4;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032775}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032802}}
 .view-opendata-import th {
   padding: 10px 15px;
   text-align: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032779}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032806}}
 .view-opendata-import td {
   padding: 10px 15px;
 }
 
 /**
+ * node-resource
+ */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032814}}
+.node-type-resource {
+  background: #fff;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032817}}
+.node-type-resource .node-resource {
+  /* bootstrap navigation */
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032819}}
+.node-type-resource .node-resource .field {
+  font-size: 15px;
+  text-transform: uppercase;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032824}}
+.node-type-resource .node-resource .field-name-field-upload-structure,
+.node-type-resource .node-resource .field-name-field-created {
+  overflow: hidden;
+  padding-bottom: 12px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032828}}
+.node-type-resource .node-resource .field-name-field-upload-structure .field-label,
+.node-type-resource .node-resource .field-name-field-created .field-label {
+  width: 290px;
+  float: left;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032833}}
+.node-type-resource .node-resource .download a {
+  background: #0c87e8 url("../images/ico-download.png") no-repeat 8px 50%;
+  -webkit-background-size: 25px auto;
+  -moz-background-size: 25px auto;
+  -o-background-size: 25px auto;
+  background-size: 25px auto;
+  color: #FFFFFF;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1em;
+  padding: 0.9em 1.6em .9em 45px;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032847}}
+.node-type-resource .node-resource .input-prepend.text-query .span2 {
+  padding: 13px 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032851}}
+.node-type-resource .node-resource .pagination ul {
+  margin: 0;
+  padding: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032856}}
+.node-type-resource .node-resource .recline-data-explorer .panel.graph {
+  width: auto;
+  margin-right: 228px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032860}}
+.node-type-resource .node-resource .alert-heading {
+  margin: 0;
+  line-height: 1.05em;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032865}}
+.node-type-resource .node-resource .recline-data-explorer .data-view-sidebar label {
+  font-size: 15px;
+  line-height: 1;
+  font-weight: bold;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032871}}
+.node-type-resource .node-resource .recline-data-explorer .data-view-sidebar label.radio, .node-type-resource .node-resource .recline-data-explorer .data-view-sidebar label.checkbox {
+  font-size: 12px;
+  padding-bottom: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032875}}
+.node-type-resource .node-resource .recline-data-explorer .data-view-sidebar label.radio input, .node-type-resource .node-resource .recline-data-explorer .data-view-sidebar label.checkbox input {
+  margin-top: -2px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032882}}
+.node-type-resource .node-resource .recline-data-explorer .data-view-sidebar .input,
+.node-type-resource .node-resource .recline-data-explorer .data-view-sidebar .editor-series-group,
+.node-type-resource .node-resource .recline-data-explorer .data-view-sidebar .editor-field-type {
+  padding-bottom: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032885}}
+.node-type-resource .node-resource .recline-data-explorer .data-view-sidebar .editor-buttons {
+  padding-bottom: 15px;
+}
+
+/**
+ * organization
+ */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032895}}
+.node-type-organization {
+  background: #fff;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032899}}
+.node-organization.view-mode-full .field {
+  font-size: 15px;
+  text-transform: uppercase;
+  overflow: hidden;
+  padding-bottom: 15px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032905}}
+.node-organization.view-mode-full .field-label {
+  width: 290px;
+  float: left;
+}
+
+/**
  * messages
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032787}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/_dkan\.scss}line{font-family:\000032915}}
 .messages, .messages--status, .messages--warning, .messages--error {
   font-size: 16px;
 }
@@ -5145,67 +5279,72 @@ a.btn {
   }
 
   /* IPad screen */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003443}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003442}}
+  .pane-page-title {
+    padding: 0 21px;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003446}}
   .region-header #name-and-slogan a {
     font-size: 23px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003446}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003449}}
   .region-header .pane-system-main-menu {
     clear: left;
     padding-left: 124px;
     margin-top: -23px;
     padding-top: 15px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003452}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003455}}
   .region-header .pane-system-user-menu {
     padding-top: 15px;
     margin-top: -73px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003457}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003460}}
   .region-header .pane-system-main-menu ul li a,
   .region-header .pane-system-user-menu > ul li a {
     font-size: .9em;
   }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003462}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003465}}
   .region-orange .pane-dataset-datasets-total-count h2 {
     font-size: 17px;
     padding: 1.1% 15px 1% 21px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003466}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003469}}
   .region-orange .pane-dataset-datasets-total-count .view {
     font-size: 17px;
     padding: 1.1% 21px 0.8% 28px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003470}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003473}}
   .region-orange .pane-dataset-datasets-total-count .view span {
     font-size: 30px;
   }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003475}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003478}}
   .panels-flexible-region-4-region_main_content {
     width: 100%;
   }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003478}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003481}}
   .not-front .region-content {
     padding-left: 21px;
     padding-right: 21px;
   }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003482}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003485}}
   .pane-gb-search-pane {
     margin-left: 21px;
     margin-right: 21px;
     padding-left: 0;
     padding-right: 0;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003488}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003491}}
   .pane-gb-search-pane .form-text {
     font-size: 18px;
     line-height: 18px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003492}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003495}}
   .pane-gb-search-pane .form-submit {
     background-size: cover;
     height: 70px;
@@ -5213,27 +5352,32 @@ a.btn {
     width: 67px;
   }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003499}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003503}}
+  .region-content .pane-gb-search-pane {
+    margin: 0;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003507}}
   .pane-rubrics-rubrics-front {
     margin-left: 21px;
     margin-right: 21px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003503}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003511}}
   .pane-rubrics-rubrics-front .title {
     font-size: 18px;
     line-height: 23px;
     padding: 0 0;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003509}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003517}}
   .pane-rubrics-rubrics-front .views-row .taxonomy-term .content img {
     margin-bottom: 0;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003512}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003520}}
   .pane-rubrics-rubrics-front .views-row .taxonomy-term h2 {
     font-size: 21px;
     line-height: 26px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003516}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003524}}
   .pane-rubrics-rubrics-front .views-row .taxonomy-term h2 a {
     padding-top: 52%;
   }
@@ -5242,12 +5386,18 @@ a.btn {
  * addaptive facts
  */
 @media all and (max-width: 1200px) and (min-width: 801px) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003528}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003536}}
+  .pane-page-title h1 {
+    margin: .5em 0 .6em;
+    font-size: 22px;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003540}}
   .view-quick-facts {
     padding-top: 115px;
     padding-bottom: 20%;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003537}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003549}}
   .view-quick-facts .view-content > div .views-field.views-field-field-fact-value .field-content, .view-quick-facts .view-content > div .views-field.views-field-field-fact-percentage .field-content {
     width: 70px;
     height: 70px;
@@ -5255,7 +5405,7 @@ a.btn {
     line-height: 70px;
     font-size: 25px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003544}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003556}}
   .view-quick-facts .view-content > div .views-field.views-field-body {
     font-size: 18px;
     line-height: 20px;
@@ -5263,17 +5413,17 @@ a.btn {
     text-transform: uppercase;
     padding-left: 10px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003551}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003563}}
   .view-quick-facts .view-content > div .views-field.views-field-body p {
     margin: 0;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003556}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003568}}
   .view-quick-facts .view-content > div .views-field.views-field-field-fact-url .field-content {
     width: 48px;
     height: 48px;
     position: relative;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003561}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003573}}
   .view-quick-facts .view-content > div .views-field.views-field-field-fact-url .field-content a {
     display: block;
     width: 48px;
@@ -5283,18 +5433,18 @@ a.btn {
     margin-left: 20px;
     background: url("../images/ico-search-small-set.png") no-repeat;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003570}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003582}}
   .view-quick-facts .view-content > div .views-field.views-field-field-fact-url .field-content a:hover {
     background-position: 0 -48px;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003578}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003590}}
   .view-quick-facts .views-row {
     top: -5px;
     /* Every other three fast facts, starting from the first */
     /* Every other three fast facts, starting from the second */
     /* Every other three fast facts, starting from the first */
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003582}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003594}}
   .view-quick-facts .views-row:nth-child(3n+1) {
     -webkit-transform: translate(5%, 15%);
     -moz-transform: translate(5%, 15%);
@@ -5302,7 +5452,7 @@ a.btn {
     -o-transform: translate(5%, 15%);
     transform: translate(5%, 15%);
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003585}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003597}}
   .view-quick-facts .views-row.next:nth-child(3n+1) {
     -webkit-transform: translate(7%, 15%);
     -moz-transform: translate(7%, 15%);
@@ -5310,7 +5460,7 @@ a.btn {
     -o-transform: translate(7%, 15%);
     transform: translate(7%, 15%);
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003589}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003601}}
   .view-quick-facts .views-row:nth-child(3n+2) {
     -webkit-transform: translate(9%, 20%);
     -moz-transform: translate(9%, 20%);
@@ -5318,7 +5468,7 @@ a.btn {
     -o-transform: translate(9%, 20%);
     transform: translate(9%, 20%);
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003592}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003604}}
   .view-quick-facts .views-row.next:nth-child(3n+2) {
     -webkit-transform: translate(11%, 20%);
     -moz-transform: translate(11%, 20%);
@@ -5326,7 +5476,7 @@ a.btn {
     -o-transform: translate(11%, 20%);
     transform: translate(11%, 20%);
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003596}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003608}}
   .view-quick-facts .views-row:nth-child(3n+3) {
     -webkit-transform: translate(13%, 25%);
     -moz-transform: translate(13%, 25%);
@@ -5334,12 +5484,193 @@ a.btn {
     -o-transform: translate(13%, 25%);
     transform: translate(13%, 25%);
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003599}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003611}}
   .view-quick-facts .views-row.next:nth-child(3n+3) {
     -webkit-transform: translate(15%, 25%);
     -moz-transform: translate(15%, 25%);
     -ms-transform: translate(15%, 25%);
     -o-transform: translate(15%, 25%);
     transform: translate(15%, 25%);
+  }
+
+  /* rubrics */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003618}}
+  .page-taxonomy-term .region-header {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003623}}
+  .page-taxonomy-term .view-rubric-nodes .views-row h2,
+  .page-taxonomy-term .view-rubric-nodes .views-row .field-name-body {
+    font-size: 1.25em;
+  }
+
+  /* dataset */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003628}}
+  .region-facet .facetapi-facetapi-links li a {
+    font-size: 1.05em;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003631}}
+  .region-facet .pane-title {
+    font-size: 1.5em;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003635}}
+  .pane-search-api-sorts-search-sorts h2,
+  .pane-search-api-sorts-search-sorts .search-api-sorts a {
+    font-size: 1.05em;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003638}}
+  .pane-datasets-search-dataset-search .view-header {
+    font-size: 35px;
+    line-height: 29px;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003644}}
+  .dataset-search-facets .node-dataset .field-name-field-contact-name,
+  .dataset-search-facets .node-dataset .field-name-field-organization,
+  .dataset-search-facets .node-dataset .field-name-field-owner {
+    font-size: 13px;
+    line-height: 1.0em;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003648}}
+  .dataset-search-facets .node.node-teaser .field-name-body {
+    font-size: 1.2em;
+    line-height: 1.25em;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003652}}
+  .pane-datasets-search-dataset-search .view-content {
+    font-size: .9em;
+  }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003659}}
+  .dataset-search-facets .node.node-teaser {
+    margin-bottom: 3em;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003662}}
+  .dataset-search-facets .node.node-teaser h2 {
+    font-size: 2em;
+    line-height: 1.1em;
+    margin: 0 0 .15em;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003667}}
+  .dataset-search-facets .node.node-teaser .field-name-body {
+    font-size: 1.2em;
+    line-height: 1.25em;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003672}}
+  .dataset-search-facets .node.node-teaser .data-and-resources .form-item {
+    margin: 0;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003675}}
+  .dataset-search-facets .node.node-teaser .data-and-resources ul {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003680}}
+  .dataset-search-facets .node.node-teaser .data-and-resources ul li {
+    list-style: none;
+    margin: 0 1px 0 0;
+    padding: 0;
+    float: left;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003686}}
+  .dataset-search-facets .node.node-teaser .data-and-resources ul li a {
+    display: block;
+    padding: .4em .6em;
+    color: #fff;
+    background: #ffa200;
+    text-decoration: none;
+    font-size: 1.2em;
+    text-transform: uppercase;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003696}}
+  .dataset-search-facets .node.node-teaser .data-and-resources ul .count-resource {
+    display: none;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003701}}
+  .dataset-search-facets .node.node-teaser .links {
+    display: none;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003706}}
+  .dataset-search-facets .views-row {
+    margin-bottom: 3em;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003709}}
+  .dataset-search-facets .views-row .node {
+    border-right: 0;
+    padding-right: 0;
+    margin-bottom: 0;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003715}}
+  .dataset-search-facets .views-row .views-field-title .field-content {
+    font-size: 2em;
+    line-height: 1.1em;
+    margin: 0 0 .15em;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003721}}
+  .dataset-search-facets .views-row h2 {
+    font-size: 2em;
+    line-height: 1.1em;
+    margin: 0 0 .15em;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003728}}
+  .dataset-search-facets .views-row .field-name-body,
+  .dataset-search-facets .views-row .views-field-body {
+    font-size: 1.2em;
+    line-height: 1.25em;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003734}}
+  .dataset-search-facets .views-row .field-name-post-date,
+  .dataset-search-facets .views-row .views-field-changed,
+  .dataset-search-facets .views-row .views-field-created {
+    font-size: 1.3em;
+    line-height: 1.55em;
+  }
+
+  /* table title */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003742}}
+  table td.views-field-title a {
+    font-size: 1.25em;
+    line-height: 1.3em;
+  }
+
+  /* statistics */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003749}}
+  .pane-overall-statistics h2.pane-title {
+    font-size: 1.8em;
+    margin: 0;
+  }
+
+  /* blog */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003758}}
+  .page-blog .node-blog .field-name-body {
+    color: #666666;
+    font-size: 1.15em;
+    line-height: 1.25em;
+    padding-bottom: 15px;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003764}}
+  .page-blog .node-blog .field-name-body p {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003768}}
+  .page-blog .node-blog .field-name-body p:last-child {
+    margin-bottom: 0;
+  }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/hammer\.dkan\.gosbook\.ru\/www\/sites\/default\/themes\/dkan\/sass-custom\/layouts\/_responsive\.scss}line{font-family:\00003773}}
+  .page-blog .node-blog .node-readmore a {
+    font-size: 14px;
+    padding: 0.75em 1.0em;
+    position: relative;
   }
 }

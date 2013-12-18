@@ -439,6 +439,9 @@ $zen-auto-include-item-base: false;
   }
   
   /* IPad screen */
+  .pane-page-title {
+    padding: 0 21px;
+  }
   .region-header {
     #name-and-slogan a {
       font-size: 23px;
@@ -496,6 +499,11 @@ $zen-auto-include-item-base: false;
       width: 67px;
     }    
   }
+  .region-content {
+    .pane-gb-search-pane {
+      margin: 0;
+    }
+  }
   .pane-rubrics-rubrics-front  {
     margin-left: 21px;
     margin-right: 21px;
@@ -525,6 +533,10 @@ $zen-auto-include-item-base: false;
  * addaptive facts
  */
 @media all and (max-width: 1200px) and (min-width: 801px) {
+  .pane-page-title h1 {
+    margin: .5em 0 .6em;
+    font-size: 22px;
+  }
   .view-quick-facts {
     padding-top: 115px;
     padding-bottom: 20%;
@@ -600,5 +612,168 @@ $zen-auto-include-item-base: false;
         @include transform(translate(15%,25%));
       }    
     }    
+  } 
+  /* rubrics */  
+  .page-taxonomy-term {   
+    .region-header {
+      @include background-size(cover);
+    }
+  }
+  .page-taxonomy-term .view-rubric-nodes .views-row h2,
+  .page-taxonomy-term .view-rubric-nodes .views-row .field-name-body  {
+    font-size: 1.25em;
+  }
+  
+  /* dataset */
+  .region-facet .facetapi-facetapi-links li a {
+    font-size: 1.05em;
+  }
+  .region-facet .pane-title {
+    font-size: 1.5em;
+  }
+  .pane-search-api-sorts-search-sorts h2,
+  .pane-search-api-sorts-search-sorts .search-api-sorts a  {
+    font-size: 1.05em;
+  }
+  .pane-datasets-search-dataset-search .view-header {
+    font-size: 35px;
+    line-height: 29px;
   }  
-} 
+  .dataset-search-facets .node-dataset .field-name-field-contact-name, 
+  .dataset-search-facets .node-dataset .field-name-field-organization, 
+  .dataset-search-facets .node-dataset .field-name-field-owner  {
+    font-size: 13px;
+    line-height: 1.0em;
+  }
+  .dataset-search-facets .node.node-teaser .field-name-body {
+    font-size: 1.2em;
+    line-height: 1.25em;
+  }  
+  .pane-datasets-search-dataset-search .view-content  {
+    font-size: .9em;
+  }
+  .dataset-search-facets {
+    
+    .node {
+      
+      &.node-teaser {
+        margin-bottom: 3em;
+        
+        h2 {
+          font-size: 2em;
+          line-height: 1.1em;
+          margin: 0 0 .15em;
+        }
+        .field-name-body {
+          font-size: 1.2em;
+          line-height: 1.25em;
+        }
+        .data-and-resources {
+          .form-item {
+            margin: 0;
+          }
+          ul {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            
+            li {
+              list-style: none;
+              margin: 0 1px 0 0;
+              padding: 0;
+              float: left;
+              
+              a {
+                display: block;
+                padding: .4em .6em;
+                color: #fff;
+                background: #ffa200;
+                text-decoration: none;
+                font-size: 1.2em;
+                text-transform: uppercase;
+              }
+            }
+            .count-resource {
+              display: none;
+            }
+          }
+        }
+        .links {
+          display: none;
+        }
+      }
+    }
+    .views-row {
+      margin-bottom: 3em;
+      
+      .node {
+        border-right: 0;
+        padding-right: 0;
+        margin-bottom: 0;      
+      }
+      
+      .views-field-title .field-content {
+        font-size: 2em;
+        line-height: 1.1em;
+        margin: 0 0 .15em;
+           
+      }
+      h2 {
+        font-size: 2em;
+        line-height: 1.1em;
+        margin: 0 0 .15em;
+        
+      }
+      .field-name-body,
+      .views-field-body {
+        font-size: 1.2em;
+        line-height: 1.25em;
+      }
+      .field-name-post-date,
+      .views-field-changed,
+      .views-field-created    {
+        font-size: 1.3em;
+        line-height: 1.55em;      
+      }
+    }
+  } 
+  
+  /* table title */
+  table td.views-field-title a {
+    font-size: 1.25em;
+    line-height: 1.3em;
+  }
+  
+  /* statistics */
+  .pane-overall-statistics {
+    h2.pane-title {
+      font-size: 1.8em;
+      margin: 0;
+    }
+  }
+  
+  /* blog */
+  .page-blog .node-blog {
+    
+    .field-name-body {
+      color: #666666;
+      font-size: 1.15em;
+      line-height: 1.25em;
+      padding-bottom: 15px;
+      
+      p {
+        margin-top: 0;
+        margin-bottom: 15px;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }  
+    }
+    .node-readmore a {
+      font-size: 14px;
+      padding: 0.75em 1.0em;
+      position: relative;
+    }    
+  }  
+}
