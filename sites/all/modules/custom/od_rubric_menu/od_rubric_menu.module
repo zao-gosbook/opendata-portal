@@ -25,7 +25,7 @@ function od_rubric_menu_block_view($delta = '') {
     $output .= '<li class="menu-item">';
     $output .= '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . arg(2);
     $output .= '" rel="nofollow">' . t('Data') . '</a>' . '</li>';
-    $output .= '<li class="menu-item">' . l(t('Contests'), 'wtf-is-contests') . '</li>';
+    $output .= '<li class="menu-item">' . l(t('Contests'), 'competition') . '</li>';
     // menu link "application"
     $query = new EntityFieldQuery;
     $result = $query->entityCondition('entity_type', 'node')
