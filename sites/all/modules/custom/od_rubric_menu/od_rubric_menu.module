@@ -11,34 +11,38 @@ function od_rubric_menu_block_info() {
 function od_rubric_menu_block_view($delta = '') {
   /*
    * @todo: Сделать небольшой рефакторинг кода
-   * @fixme: arg(2) -- херня. Если номер сменится, то менять надо весь код
    * @fixme: Использовать темплейт крайне желательно
    * @fixme: Рендер этого блока можно сделать отдельной функцией, чтобы легко было переносить функционал в custom pane
    * @fixme: Ссылки забиты насильно руками. Было бы лучше достать их в каком-нибудь меню
    */
   $block = array();
-  if ($delta == 'block_rubric_menu' && arg(0) == 'taxonomy' && arg(1) == 'term' && is_numeric(arg(2)) && ($term = taxonomy_term_load(arg(2)))) { //@fixme: drupal_match_path() + term_load could be a better decision
-    global $language;
+  if ($delta != 'block_rubric_menu') {
+    return;
+  }
+
+  if (($tid = arg(2)) && is_numeric($tid) && ($term = taxonomy_term_load($tid))) {
+    $tw = entity_metadata_wrapper('taxonomy_term', $term);
     $output = '';
-    $img = empty($term->field_rubric_image['und'][0]['uri']) ? '' : image_style_url('thumbnail', file_uri_target($term->field_rubric_image['und'][0]['uri'])); //@fixme: und???
-    if ($img) {
-      $output .= ' <div class="menu-icon"><img src="' . $img . '</div>';
+    //Check if we have image for this term
+    if ($image = $tw->field_rubric_image->value()) {
+      $output .= '<div class="menu-icon"><img src="' .  image_style_url('thumbnail', file_uri_target($image['uri'])) . '</div>';
     }
+
     $output .= '<div class="menu-caption"><span>';
-    $output .= i18n_taxonomy_term_name($term, $language->language); //@todo Use auto translate here
+    $output .= $tw->label(); //Will be auto translated name
     $output .= '</span></div>';
     $output .= '<ul class="category-menu">';
     $output .= '<li class="menu-item">' . l(t('News'), 'news') . '</li>';
     $output .= '<li class="menu-item">';
-    $output .= '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . arg(2); //@fixme: l()|url() + options['query']...
+    $output .= '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . $term->tid; //@fixme: l()|url() + options['query']...
     $output .= '" rel="nofollow">' . t('Data') . '</a>' . '</li>';
-    $output .= '<li class="menu-item">' . l(t('Contests'), 'taxonomy/term/'. arg(2). '/competition') . '</li>';
+    $output .= '<li class="menu-item">' . l(t('Contests'), 'taxonomy/term/'. $term->tid. '/competition') . '</li>';
     // menu link "application"
     $query = new EntityFieldQuery;
     $result = $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', 'app')
       ->propertyCondition('status', 1)
-      ->fieldCondition('field_rubric', 'tid', arg(2), '=')
+      ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
       ->execute();
     if (count($result)) {
       $output .= '<li class="menu-item">' . l(t('Application'), '/apps') . '</li>';
@@ -49,10 +53,10 @@ function od_rubric_menu_block_view($delta = '') {
     $result = $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', 'blog')
       ->propertyCondition('status', 1)
-      ->fieldCondition('field_rubric', 'tid', arg(2), '=')
+      ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
       ->execute(); //@fixme: Might be better to execute view here? or it's fine? View can be cached.
     if (count($result)) {
-      $output .= '<li class="menu-item">' . l(t('Blogs'), 'blog/rubric/'. arg(2)) . '</li>';
+      $output .= '<li class="menu-item">' . l(t('Blogs'), "taxonomy/term/{$term->tid}/blogs") . '</li>';
     }
 
     //menu link "map"
@@ -60,10 +64,10 @@ function od_rubric_menu_block_view($delta = '') {
     $result = $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', 'dataset')
       ->propertyCondition('status', 1)
-      ->fieldCondition('field_rubric', 'tid', arg(2), '=')
+      ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
       ->execute();
     if (count($result)) {
-      $output .= '<li class="menu-item">' . l(t('Map'), 'datasets-map/' . arg(2)) . '</li>';
+      $output .= '<li class="menu-item">' . l(t('Map'), 'datasets-map/' . $term->tid) . '</li>';
     }
 
     $output .= '</ul>';
