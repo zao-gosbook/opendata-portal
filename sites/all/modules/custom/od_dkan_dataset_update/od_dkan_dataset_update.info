@@ -1,0 +1,4 @@
+name = Opendata portal dkan dataset update
+description = Make some updates for "Dkan dataset" module.
+core = 7.x
+dependencies[] = dkan_dataset
