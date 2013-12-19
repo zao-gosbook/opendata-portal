@@ -10,7 +10,7 @@ function od_rubric_menu_block_info() {
 
 function od_rubric_menu_block_view($delta = '') {
   $block = array();
-  if ($delta == 'block_rubric_menu' && arg(0) == 'taxonomy' && arg(1) == 'term' && is_numeric(arg(2)) && $term = taxonomy_term_load(arg(2))) {
+  if ($delta == 'block_rubric_menu' && arg(0) == 'taxonomy' && arg(1) == 'term' && is_numeric(arg(2)) && ($term = taxonomy_term_load(arg(2)))) {
     global $language;
     $output = '';
     $img = empty($term->field_rubric_image['und'][0]['uri']) ? '' : image_style_url('thumbnail', file_uri_target($term->field_rubric_image['und'][0]['uri']));
@@ -25,7 +25,7 @@ function od_rubric_menu_block_view($delta = '') {
     $output .= '<li class="menu-item">';
     $output .= '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . arg(2);
     $output .= '" rel="nofollow">' . t('Data') . '</a>' . '</li>';
-    $output .= '<li class="menu-item">' . l(t('Contests'), 'competition') . '</li>';
+    $output .= '<li class="menu-item">' . l(t('Contests'), 'rubriki/'. arg(2). '/competition') . '</li>';
     // menu link "application"
     $query = new EntityFieldQuery;
     $result = $query->entityCondition('entity_type', 'node')
