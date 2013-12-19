@@ -41,7 +41,7 @@ this.recline.Backend.CSV = this.recline.Backend.CSV || {};
         dfd.resolve(out);
       };
       reader.onerror = function (e) {
-        alert('Failed to load file. Code: ' + e.target.error.code);
+        alert(Drupal.t('Failed to load file. Code: ') + e.target.error.code);
       };
       reader.readAsText(dataset.file, encoding);
     } else if (dataset.data) {
@@ -365,7 +365,7 @@ this.recline.Backend.DataProxy = this.recline.Backend.DataProxy || {};
     var dfd = new Deferred();
     var timer = setTimeout(function() {
       dfd.reject({
-        message: 'Request Error: Backend did not respond after ' + (my.timeout / 1000) + ' seconds'
+        message: Drupal.t('Request Error: Backend did not respond after ') + (my.timeout / 1000) + Drupal.t(' seconds')
       });
     }, my.timeout);
     ourFunction.done(function(args) {
@@ -1070,7 +1070,7 @@ my.Field = Backbone.Model.extend({
   initialize: function(data, options) {
     // if a hash not passed in the first argument throw error
     if ('0' in data) {
-      throw new Error('Looks like you did not pass a proper hash with id to Field constructor');
+      throw new Error(Drupal.t('Looks like you did not pass a proper hash with id to Field constructor'));
     }
     if (this.attributes.label === null) {
       this.set({label: this.id});
@@ -1634,20 +1634,20 @@ my.FlotControls = Backbone.View.extend({
   <div class="editor"> \
     <form class="form-stacked"> \
       <div class="clearfix"> \
-        <label>Graph Type</label> \
+        <label>' + Drupal.t('Graph Type') + '</label> \
         <div class="input editor-type"> \
           <select> \
-          <option value="lines-and-points">Lines and Points</option> \
-          <option value="lines">Lines</option> \
-          <option value="points">Points</option> \
-          <option value="bars">Bars</option> \
-          <option value="columns">Columns</option> \
+          <option value="lines-and-points">' + Drupal.t('Lines and Points') + '</option> \
+          <option value="lines">' + Drupal.t('Lines') + '</option> \
+          <option value="points">' + Drupal.t('Points') + '</option> \
+          <option value="bars">' + Drupal.t('Bars') + '</option> \
+          <option value="columns">' + Drupal.t('Columns') + '</option> \
           </select> \
         </div> \
-        <label>Group Column (Axis 1)</label> \
+        <label>' + Drupal.t('Group Column (Axis 1)') + '</label> \
         <div class="input editor-group"> \
           <select> \
-          <option value="">Please choose ...</option> \
+          <option value="">' + Drupal.t('Please choose ...') + '</option> \
           {{#fields}} \
           <option value="{{id}}">{{label}}</option> \
           {{/fields}} \
@@ -1657,10 +1657,10 @@ my.FlotControls = Backbone.View.extend({
         </div> \
       </div> \
       <div class="editor-buttons"> \
-        <button class="btn editor-add">Add Series</button> \
+        <button class="btn editor-add">' + Drupal.t('Add Series') + '</button> \
       </div> \
       <div class="editor-buttons editor-submit" comment="hidden temporarily" style="display: none;"> \
-        <button class="editor-save">Save</button> \
+        <button class="editor-save">' + Drupal.t('Save') + '</button> \
         <input type="hidden" class="editor-id" value="chart-1" /> \
       </div> \
     </form> \
@@ -1668,8 +1668,8 @@ my.FlotControls = Backbone.View.extend({
 ',
   templateSeriesEditor: ' \
     <div class="editor-series js-series-{{seriesIndex}}"> \
-      <label>Series <span>{{seriesName}} (Axis 2)</span> \
-        [<a href="#remove" class="action-remove-series">Remove</a>] \
+      <label>' + Drupal.t('Series') + ' <span>{{seriesName}} ' + Drupal.t('(Axis 2)') + '</span> \
+        [<a href="#remove" class="action-remove-series">' + Drupal.t('Remove') + '</a>] \
       </label> \
       <div class="input"> \
         <select> \
@@ -1961,7 +1961,7 @@ my.GridRow = Backbone.View.extend({
       {{#cells}} \
       <td data-field="{{field}}" style="width: {{width}}px; max-width: {{width}}px; min-width: {{width}}px;"> \
         <div class="data-table-cell-content"> \
-          <a href="javascript:{}" class="data-table-cell-edit" title="Edit this cell">&nbsp;</a> \
+          <a href="javascript:{}" class="data-table-cell-edit" title="' + Drupal.t('Edit this cell') + '">&nbsp;</a> \
           <div class="data-table-cell-value">{{{value}}}</div> \
         </div> \
       </td> \
@@ -2001,8 +2001,8 @@ my.GridRow = Backbone.View.extend({
       <textarea class="data-table-cell-editor-editor" bind="textarea">{{value}}</textarea> \
       <div id="data-table-cell-editor-actions"> \
         <div class="data-table-cell-editor-action"> \
-          <button class="okButton btn primary">Update</button> \
-          <button class="cancelButton btn danger">Cancel</button> \
+          <button class="okButton btn primary">' + Drupal.t('Update') + '</button> \
+          <button class="cancelButton btn danger">' + Drupal.t('Cancel') + '</button> \
         </div> \
       </div> \
     </div> \
@@ -2029,13 +2029,13 @@ my.GridRow = Backbone.View.extend({
     var newData = {};
     newData[field] = newValue;
     this.model.set(newData);
-    this.trigger('recline:flash', {message: "Updating row...", loader: true});
+    this.trigger('recline:flash', {message: Drupal.t('Updating row...'), loader: true});
     this.model.save().then(function(response) {
-        this.trigger('recline:flash', {message: "Row updated successfully", category: 'success'});
+        this.trigger('recline:flash', {message: Drupal.t('Row updated successfully'), category: 'success'});
       })
       .fail(function() {
         this.trigger('recline:flash', {
-          message: 'Error saving row',
+          message: Drupal.t('Error saving row'),
           category: 'error',
           persist: true
         });
@@ -2343,7 +2343,7 @@ my.Map = Backbone.View.extend({
           self.features.addData(feature);
         } catch (except) {
           wrongSoFar += 1;
-          var msg = 'Wrong geometry value';
+          var msg = Drupal.t('Wrong geometry value');
           if (except.message) msg += ' (' + except.message + ')';
           if (wrongSoFar <= 10) {
             self.trigger('recline:flash', {message: msg, category:'error'});
@@ -2352,7 +2352,7 @@ my.Map = Backbone.View.extend({
       } else {
         wrongSoFar += 1;
         if (wrongSoFar <= 10) {
-          self.trigger('recline:flash', {message: 'Wrong geometry value', category:'error'});
+          self.trigger('recline:flash', {message: Drupal.t('Wrong geometry value'), category:'error'});
         }
       }
       return true;
@@ -2564,7 +2564,7 @@ my.MapMenu = Backbone.View.extend({
         </div> \
       </div> \
       <div class="editor-buttons"> \
-        <button class="btn editor-update-map">Update</button> \
+        <button class="btn editor-update-map">' + Drupal.t('Update') + '</button> \
       </div> \
       <div class="editor-options" > \
         <label class="checkbox"> \
@@ -3573,7 +3573,7 @@ my.SlickGrid = Backbone.View.extend({
       $input = $('<input type="checkbox" />').data('option', 'autoresize').attr('id','slick-option-autoresize');
       $input.appendTo($li);
       $('<label />')
-          .text('Force fit columns')
+          .text(Drupal.t('Force fit columns'))
           .attr('for','slick-option-autoresize')
           .appendTo($li);
       if (grid.getOptions().forceFitColumns) {
@@ -3768,7 +3768,7 @@ my.Timeline = Backbone.View.extend({
     if (out.timeline.date.length === 0) {
       var tlEntry = {
         "startDate": '2000,1,1',
-        "headline": 'No data to show!'
+        "headline": Drupal.t('No data to show!')
       };
       out.timeline.date.push(tlEntry);
     }
@@ -3940,7 +3940,7 @@ my.Fields = Backbone.View.extend({
   className: 'recline-fields-view', 
   template: ' \
     <div class="accordion fields-list well"> \
-    <h3>Fields <a href="#" class="js-show-hide">+</a></h3> \
+    <h3>' + Drupal.t('Fields') + ' <a href="#" class="js-show-hide">+</a></h3> \
     {{#fields}} \
       <div class="accordion-group field"> \
         <div class="accordion-heading"> \
@@ -4054,7 +4054,7 @@ my.FilterEditor = Backbone.View.extend({
         <fieldset> \
           <legend> \
             {{field}} <small>{{type}}</small> \
-            <a class="js-remove-filter" href="#" title="Remove this filter" data-filter-id="{{id}}">&times;</a> \
+            <a class="js-remove-filter" href="#" title="' + Drupal.t('Remove this filter') + '" data-filter-id="{{id}}">&times;</a> \
           </legend> \
           <input type="text" value="{{term}}" name="term" data-filter-field="{{field}}" data-filter-id="{{id}}" data-filter-type="{{type}}" /> \
         </fieldset> \
@@ -4065,11 +4065,11 @@ my.FilterEditor = Backbone.View.extend({
         <fieldset> \
           <legend> \
             {{field}} <small>{{type}}</small> \
-            <a class="js-remove-filter" href="#" title="Remove this filter" data-filter-id="{{id}}">&times;</a> \
+            <a class="js-remove-filter" href="#" title="' + Drupal.t('Remove this filter') + '" data-filter-id="{{id}}">&times;</a> \
           </legend> \
-          <label class="control-label" for="">From</label> \
+          <label class="control-label" for="">' + Drupal.t('From') + '</label> \
           <input type="text" value="{{start}}" name="start" data-filter-field="{{field}}" data-filter-id="{{id}}" data-filter-type="{{type}}" /> \
-          <label class="control-label" for="">To</label> \
+          <label class="control-label" for="">' + Drupal.t('To') + '</label> \
           <input type="text" value="{{stop}}" name="stop" data-filter-field="{{field}}" data-filter-id="{{id}}" data-filter-type="{{type}}" /> \
         </fieldset> \
       </div> \
@@ -4079,13 +4079,13 @@ my.FilterEditor = Backbone.View.extend({
         <fieldset> \
           <legend> \
             {{field}} <small>{{type}}</small> \
-            <a class="js-remove-filter" href="#" title="Remove this filter" data-filter-id="{{id}}">&times;</a> \
+            <a class="js-remove-filter" href="#" title="' + Drupal.t('Remove this filter') + '" data-filter-id="{{id}}">&times;</a> \
           </legend> \
-          <label class="control-label" for="">Longitude</label> \
+          <label class="control-label" for="">' + Drupal.t('Longitude') + '</label> \
           <input type="text" value="{{point.lon}}" name="lon" data-filter-field="{{field}}" data-filter-id="{{id}}" data-filter-type="{{type}}" /> \
-          <label class="control-label" for="">Latitude</label> \
+          <label class="control-label" for="">' + Drupal.t('Latitude') + '</label> \
           <input type="text" value="{{point.lat}}" name="lat" data-filter-field="{{field}}" data-filter-id="{{id}}" data-filter-type="{{type}}" /> \
-          <label class="control-label" for="">Distance (km)</label> \
+          <label class="control-label" for="">' + Drupal.t('Distance (km)') + '</label> \
           <input type="text" value="{{distance}}" name="distance" data-filter-field="{{field}}" data-filter-id="{{id}}" data-filter-type="{{type}}" /> \
         </fieldset> \
       </div> \
@@ -4291,17 +4291,17 @@ my.ValueFilter = Backbone.View.extend({
   className: 'recline-filter-editor well', 
   template: ' \
     <div class="filters"> \
-      <h3>Filters</h3> \
-      <button class="btn js-add-filter add-filter">Add filter</button> \
+      <h3>' + Drupal.t('Filters') + '</h3> \
+      <button class="btn js-add-filter add-filter">' + Drupal.t('Add filter') + '</button> \
       <form class="form-stacked js-add" style="display: none;"> \
         <fieldset> \
-          <label>Field</label> \
+          <label>' + Drupal.t('Field') + '</label> \
           <select class="fields"> \
             {{#fields}} \
             <option value="{{id}}">{{label}}</option> \
             {{/fields}} \
           </select> \
-          <button type="submit" class="btn">Add</button> \
+          <button type="submit" class="btn">' + Drupal.t('Add') + '</button> \
         </fieldset> \
       </form> \
       <form class="form-stacked js-edit"> \
@@ -4309,7 +4309,7 @@ my.ValueFilter = Backbone.View.extend({
           {{{filterRender}}} \
         {{/filters}} \
         {{#filters.length}} \
-        <button type="submit" class="btn update-filter">Update</button> \
+        <button type="submit" class="btn update-filter">' + Drupal.t('Update') + '</button> \
         {{/filters.length}} \
       </form> \
     </div> \
@@ -4319,7 +4319,7 @@ my.ValueFilter = Backbone.View.extend({
       <div class="filter-{{type}} filter"> \
         <fieldset> \
           {{field}} \
-          <a class="js-remove-filter" href="#" title="Remove this filter" data-filter-id="{{id}}">&times;</a> \
+          <a class="js-remove-filter" href="#" title="' + Drupal.t('Remove this filter') + '" data-filter-id="{{id}}">&times;</a> \
           <input type="text" value="{{term}}" name="term" data-filter-field="{{field}}" data-filter-id="{{id}}" data-filter-type="{{type}}" /> \
         </fieldset> \
       </div> \
