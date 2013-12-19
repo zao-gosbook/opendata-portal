@@ -52,7 +52,7 @@ function od_rubric_menu_block_view($delta = '') {
       ->fieldCondition('field_rubric', 'tid', arg(2), '=')
       ->execute(); //@fixme: Might be better to execute view here? or it's fine? View can be cached.
     if (count($result)) {
-      $output .= '<li class="menu-item">' . l(t('Blogs'), '/blog/rubric/'. arg(2)) . '</li>';
+      $output .= '<li class="menu-item">' . l(t('Blogs'), 'blog/rubric/'. arg(2)) . '</li>';
     }
 
     //menu link "map"
