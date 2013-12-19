@@ -4,7 +4,7 @@
  * Implements hook_menu_alter().
  */
 function od_dkan_dataset_update_menu_alter(&$items) {
-  $items['node/%node/resource']['access callback'] = 'od_dkan_dataset_add_resource_access';
+  $items['node/%node/resource']['access callback'] = 'od_dkan_dataset_update_add_resource_access';
 }
 
 function od_dkan_dataset_update_add_resource_access($node) {
