@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Implements hook_menu_alter().
+ */
+function od_dkan_dataset_update_menu_alter(&$items) {
+  $items['node/%node/resource']['access callback'] = 'od_dkan_dataset_add_resource_access';
+}
+
+function od_dkan_dataset_update_add_resource_access($node) {
+  $user_has_access = node_access('edit', $node);
+  $resource_not_exists = empty($node->field_resources['und'][0]['target_id']);
+
+  return $user_has_access && $resource_not_exists;
+}
