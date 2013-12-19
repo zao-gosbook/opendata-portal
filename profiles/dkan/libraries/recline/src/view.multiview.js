@@ -108,7 +108,7 @@ my.MultiView = Backbone.View.extend({
         </div> \
       </div> \
       <div class="recline-results-info"> \
-        <span class="doc-count">{{recordCount}}</span> records\
+        <span class="doc-count">{{recordCount}}</span> ' + Drupal.t('records') + '\
       </div> \
       <div class="menu-right"> \
         <div class="btn-group" data-toggle="buttons-checkbox"> \
