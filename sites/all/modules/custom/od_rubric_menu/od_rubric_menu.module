@@ -32,7 +32,7 @@ function od_rubric_menu_block_view($delta = '') {
     $output .= $tw->label(); //Will be auto translated name
     $output .= '</span></div>';
     $output .= '<ul class="category-menu">';
-    $output .= '<li class="menu-item">' . l(t('News'), 'news') . '</li>';
+    $output .= '<li class="menu-item">' . l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
     $output .= '<li class="menu-item">';
     $output .= '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . $term->tid; //@fixme: l()|url() + options['query']...
     $output .= '" rel="nofollow">' . t('Data') . '</a>' . '</li>';
