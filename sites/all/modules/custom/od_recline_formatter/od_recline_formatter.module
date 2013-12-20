@@ -15,6 +15,15 @@ function od_recline_formatter_field_formatter_info() {
 }
 
 /**
+ * Implements hook_field_formatter_info_alter().
+ */
+function od_recline_formatter_field_formatter_info_alter(&$items) {
+  if (!in_array('recline_field', $items['file_url_plain']['field types'])) {
+    $items['file_url_plain']['field types'][] = 'recline_field';
+  }
+}
+
+/**
  * Implements hook_field_formatter_view().
  */
 function od_recline_formatter_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {

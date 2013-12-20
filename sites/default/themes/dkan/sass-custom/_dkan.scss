@@ -438,10 +438,10 @@ div.horizontal-tabs .form-text {
     }
     /* Every other three fast facts, starting from the first */
     &:nth-child(3n+1) {
-      @include transform(translate(10%,30%));
+      @include transform(translate(10%,-4%));
     }
     &.next:nth-child(3n+1) {
-      @include transform(translate(12%,30%));
+      @include transform(translate(12%,1%));
     }  
     /* Every other three fast facts, starting from the second */
     &:nth-child(3n+2) {
@@ -3095,6 +3095,12 @@ div.fivestar-widget .star {
         margin-right: 20px;
       }
     }
+    .field-name-title {
+      h2 {
+        margin: 0 0 .2em;
+        line-height: 1.1em;
+      }
+    }
     .field-type-datetime {
       font-size: 16px;
       color: #b5b5b5;
@@ -3120,6 +3126,57 @@ div.fivestar-widget .star {
     }
   }
 }
+/* node-type-competition  */
+.node-type-competition {
+  background: #fff;
+}
+#pane-competition {
+  .panel-pane {
+    padding-bottom: 20px;
+    font-size: 16px;
+    
+    .field-label {
+      text-transform: uppercase;
+      padding-bottom: 4px;
+    }
+  }
+  .pane-node-field-competition-photo {
+    padding-bottom: 0;
+    
+    img {
+      float: left;
+      width: 15%;
+      margin-right: 20px;
+      margin-bottom: 20px;
+    }
+  }
+  .field-name-field-competition-rubric {
+    text-transform: uppercase;
+    
+    a {
+      color: #777;
+    }
+  }
+  .pane-node-field-competition-phone {
+    .field-item {
+      font-size: 20px;
+      color: #777;
+    }
+  }
+}
+/* login or register */
+.pane-node-comment-form a[href*="/user/login"] {
+  display: inline-block;
+  padding: .8em 1.6em;
+  font-size: 14px;
+  line-height: 1em;
+  color: #fff;
+  text-transform: uppercase;
+  background: #0c87e8;
+  text-decoration: none;
+}
+
+
 .chzn-container-multi .chzn-choices .search-field input {
   width: 25px;
   height: 45px;
