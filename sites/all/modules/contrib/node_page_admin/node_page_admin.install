@@ -1,0 +1,33 @@
+<?php 
+
+/**
+ * @file
+ * Install file for node_page_admin module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function node_page_admin_uninstall() {
+  variable_del('node_page_admin_type');
+}
+
+/**
+ * Changes variable names.
+ */
+function node_page_admin_update_7001() {
+  if (variable_get('node_page_admin_enabled', FALSE)) {
+    if (variable_get('node_page_admin_node_page_disabled', FALSE)) {
+      $value = NODE_PAGE_ADMIN_DISABLED;
+    }
+    else {
+      $value = NODE_PAGE_ADMIN_PERMISSION;
+    }
+  }
+  else {
+    $value = NODE_PAGE_ADMIN_CORE;
+  }
+  variable_del('node_page_admin_enabled');
+  variable_del('node_page_admin_node_page_disabled');
+  variable_set('node_page_admin_type', $value);
+}

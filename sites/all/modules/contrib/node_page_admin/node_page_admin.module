@@ -1,0 +1,84 @@
+<?php 
+
+/**
+ * @file
+ * Module file for node_page_admin module.
+ */
+
+/**
+ * Node page disabled.
+ */
+define('NODE_PAGE_ADMIN_DISABLED', 0);
+
+/**
+ * Node page handled by Drupal core.
+ */
+define('NODE_PAGE_ADMIN_CORE', 1);
+
+/**
+ * Node page handled by 'access node page' permission.
+ */
+define('NODE_PAGE_ADMIN_PERMISSION', 2);
+
+/**
+ * Implements hook_help().
+ */
+function node_page_admin_help($path, $arg) {
+  switch ($path) {
+    case 'admin/config/system/node_page_admin':
+      $output = '<p>' . t('Provides administration settings to handle /node page access.') . '</p>';
+      $output .= '<p>' . t('Check current behaviour: !link', array('!link' => l(url('node', array('absolute' => TRUE)), 'node', array('absolute' => TRUE)))) . '</p>';
+      return $output;
+    case 'admin/help#node_page_admin':
+      return t('This module will add administration settings to handle access to /node page.');
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function node_page_admin_permission() {
+  $perm = array();
+  
+  $perm['access node page'] = array(
+    'title' => t('Access node page'),
+    'description' => t('Access to /node path'),
+  );
+  
+  return $perm;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function node_page_admin_menu() {
+  $menu = array();
+  
+  $menu['admin/config/system/node_page_admin'] = array(
+    'title' => 'Node page administration',
+    'description' => 'Administration panel to handler node page access',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('node_page_admin_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'node_page_admin.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $menu;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function node_page_admin_menu_alter(&$menu) {
+  switch (variable_get('node_page_admin_type', NODE_PAGE_ADMIN_CORE)) {
+    case NODE_PAGE_ADMIN_DISABLED:
+      unset($menu['node']);
+      break;
+    case NODE_PAGE_ADMIN_PERMISSION:
+      $menu['node']['access arguments'] = array('access node page');
+      break;
+    case NODE_PAGE_ADMIN_CORE:
+      break;    
+  }
+}

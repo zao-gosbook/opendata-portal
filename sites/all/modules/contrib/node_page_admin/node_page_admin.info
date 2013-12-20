@@ -1,0 +1,12 @@
+name = Node page administration
+description = Adds an administration panel to handle /node access.
+core = 7.x
+
+configure = admin/config/system/node_page_admin
+
+; Information added by drupal.org packaging script on 2011-10-12
+version = "7.x-1.0"
+core = "7.x"
+project = "node_page_admin"
+datestamp = "1318428107"
+
