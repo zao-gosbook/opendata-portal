@@ -137,6 +137,7 @@ div.horizontal-tabs .form-text {
   }
 }
 
+
 .page-node-add,
 .page-node-edit {
   background: #fff;
@@ -156,7 +157,8 @@ div.horizontal-tabs .form-text {
 }
 
 .front .region-header {
-  background-size: cover;
+  @include background-size(cover);
+  overflow: hidden;
 }
 .region-header {
   /*height: 660px;*/
@@ -361,6 +363,7 @@ div.horizontal-tabs .form-text {
 .view-quick-facts {
   padding-top: 115px;
   padding-bottom: 24%;
+  overflow: hidden;
   
   .view-content > div {
     display: table;
@@ -371,16 +374,20 @@ div.horizontal-tabs .form-text {
       vertical-align: middle;
       color: #fff;
       
-      &.views-field-field-fact-value .field-content,
-      &.views-field-field-fact-percentage .field-content {
+      &.views-field-field-fact-value,
+      &.views-field-field-fact-percentage {
         width: 180px;
-        height: 180px;
-        border: 12px solid #ffa200;
-        @include border-radius(100%);
-        text-align: center;
-        line-height: 180px;
-        font-size: 78px;
-      }
+        
+        .field-content {
+          width: 180px;
+          height: 180px;
+          border: 12px solid #ffa200;
+          @include border-radius(100%);
+          text-align: center;
+          line-height: 180px;
+          font-size: 78px;
+        }        
+      } 
       &.views-field-body {
         font-size: 35px;
         line-height: 34px;
@@ -423,6 +430,7 @@ div.horizontal-tabs .form-text {
     position: absolute;/**/
     z-index: 100;
     @include transition(all 0.3s ease-in-out);
+    width: 40%;
     
     &.next {
       @include opacity(1);
@@ -437,17 +445,17 @@ div.horizontal-tabs .form-text {
     }  
     /* Every other three fast facts, starting from the second */
     &:nth-child(3n+2) {
-      @include transform(translate(50%,20%));
+      @include transform(translate(80%,20%));
     }
     &.next:nth-child(3n+2) {
-      @include transform(translate(52%,20%));
+      @include transform(translate(85%,20%));
     }
     /* Every other three fast facts, starting from the first */
     &:nth-child(3n+3) {
-      @include transform(translate(32%,10%));
+      @include transform(translate(180%,10%));
     }
     &.next:nth-child(3n+3) {
-      @include transform(translate(30%,10%));
+      @include transform(translate(140%,10%));
     }    
   }
 }
@@ -486,7 +494,8 @@ div.horizontal-tabs .form-text {
     width: 100%;
   }
   
-  .pane-dataset-datasets-total-count {
+  .pane-dataset-datasets-total-count,
+  .pane-dataset-datasets-total-count-for-guest  {
     @include clearfix;
     text-transform: uppercase;
     
@@ -791,10 +800,67 @@ div.horizontal-tabs .form-text {
 
 }
 
+
+/**
+ * user dataset
+ */
+.page-dataset-actions-add-new-dataset {
+  .pane-user-name-raw {
+    color: #4D4D4D;
+    font-size: 38px;
+    line-height: 42px;
+    margin-top: 0;
+  }
+}
+.pane-superfish-2 {
+  margin: 20px 0;
+
+  > ul {
+    border-bottom: 1px solid #000;
+    margin: 0;
+    padding: 0;
+    display: table;
+    width: 100%;
+  
+    > li {
+      padding-right: 1px;
+      
+      a {
+        display: block;
+        padding: .5em 1.75em;
+        background-color: #b9b9b9;
+        color: #fff;
+        text-transform: uppercase;
+        text-decoration: none;
+        
+        &:hover,
+        &.active {
+          background-color: #0c87e8;
+        }
+      }
+      &.sfHover {
+        > a {
+          background-color: #0c87e8;
+        }
+      }
+      ul {
+        a {
+          
+        }
+      }
+    }
+  }
+  .sf-sub-indicator {
+    margin-top: -5px;
+    right: 0.55em;
+    top: 50%;
+  }    
+}  
+
+
 /**
  * user profile
  */
- 
 .page-user {
   background: #fff;
   
@@ -840,47 +906,6 @@ div.horizontal-tabs .form-text {
   }
   .pane-superfish-2 {
     margin-left: 36%;
-  
-    > ul {
-      border-bottom: 1px solid #000;
-      margin: 0;
-      padding: 0;
-      display: table;
-      width: 100%;
-    
-      > li {
-        padding-right: 1px;
-        
-        a {
-          display: block;
-          padding: .5em 1.75em;
-          background-color: #b9b9b9;
-          color: #fff;
-          text-transform: uppercase;
-          text-decoration: none;
-          
-          &:hover,
-          &.active {
-            background-color: #0c87e8;
-          }
-        }
-        &.sfHover {
-          > a {
-            background-color: #0c87e8;
-          }
-        }
-        ul {
-          a {
-            
-          }
-        }
-      }
-    }
-    .sf-sub-indicator {
-      margin-top: -5px;
-      right: 0.55em;
-      top: 50%;
-    }    
   }
   .pane-page-content {
     margin-left: 36%;
@@ -1866,9 +1891,9 @@ div.horizontal-tabs .form-text {
         left: 0;
       }
     }
-    label {
-      /* display: none;  */
-    }
+    /*label {
+      display: none;
+    }*/
  
   }
   .date-no-float  {
@@ -1905,7 +1930,7 @@ div.horizontal-tabs .form-text {
     }
     .form-select {
       width: 10em;
-      padding: .5em;
+      padding: 0.85em 0.5em;
     }
     .form-item    {
       padding: 0;
@@ -1968,7 +1993,7 @@ div.horizontal-tabs .form-text {
        display: none;
     }
     label {
-      display: inline-block;
+      /*display: inline-block;*/
       
       &.option {
         padding-left: 7px;
@@ -2463,6 +2488,7 @@ div.fivestar-widget .star {
   }
   
   .pane-node-body,
+  .pane-node-title,
   .pane-node-body p {
     font-size: 18px;
     line-height: 1.4em;
@@ -2907,7 +2933,243 @@ div.fivestar-widget .star {
     float: left;
   }
 }
+
+/**
+ * app
+ */
+.node-type-app {
+  background: #fff;
+}
+.node-app.view-mode-full  {
+  .field {
+    font-size: 15px;
+    text-transform: uppercase;
+    @include clearfix;
+    padding-bottom: 15px;      
+  }
+  .field-label {
+    width: 290px;
+    float: left;
+  }
+  .field-type-fivestar {
+    .field-items {
+      float: left;
+    }
+  }
+}
+
+/**
+ * doc
+ */
+.node-type-document {
+  background: #fff;
+}
+.node-document.view-mode-full  {
+  .field {
+    font-size: 15px;
+    text-transform: uppercase;
+    @include clearfix;
+    padding-bottom: 15px;      
+  }
+  .field-name-body {
+    text-transform: none;
+    
+    p {
+      margin-top: 0;
+    }
+  }
+  .field-name-field-tags {
+    .field-items {
+      margin-left: 290px;
+      
+      .field-item {
+        float: left;
+        margin-right: 8px;
+      }
+    }
+  }
+  .field-label {
+    width: 290px;
+    float: left;
+  }
+}
+
+/**
+ * page messages
+ */ 
+.page-messages {
+  background: #fff;
+  
+  .pane-pane-messages .action-links  {
+    margin: 0;
+    padding: 0 0 20px;
+    
+    li {
+      list-style: none;
+      margin: 0 10px 0 0;
+      
+      a {
+        background: none repeat scroll 0 0 #0C87E8;
+        color: #FFFFFF;
+        display: inline-block;
+        font-size: 14px;
+        line-height: 1em;
+        padding: 0.8em 1.6em;
+        text-decoration: none;
+        text-transform: uppercase;
+      }    
+    }
+  }
+  #privatemsg-list  {
+    th,
+    td {
+      padding: 1em;
+      text-align: left;
+    }
+    tr.odd {
+      background: #f4f4f4;
+    }
+    tr.selected td {
+      background: #ccc;
+    }
+    td:first-child,
+    th:first-child {
+      width: 40px;
+      text-align: center;
+    }
+    .container-inline {
+      .form-text,
+      .form-select {
+        width: 22%;
+      }
+    }
+    #edit-delete {
+      background: #c00;
+    }
+    fieldset {
+      font-size: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+    }
+    fieldset#edit-filter div.form-item label  {
+      font-size: 18px;
+      padding-top: 19px;
+    }
+  }
+  div#privatemsg-filter-tags a, 
+  span.privatemsg-filter-tags-label  {
+    background: none repeat scroll 0 0 #0C87E8;
+    color: #FFFFFF;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1em;
+    padding: 0.8em 1.6em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+}
+.page-messages-view .privatemsg-message {
+  font-size: 14px;
+}
+.privatemsg-reply {
+  margin: 0;
+}
+.filter-wrapper .form-item label {
+  font-size: 18px;
+}
  
+/**
+ * section-taxonomy
+ */
+.section-taxonomy {
+  background: #fff;  
+  
+  .pane-page-content .views-row {
+    border-right: 5px solid #bfbfbf;
+    padding-right: 4%;
+    margin-bottom: 4.5em;
+    
+    .field-type-image {
+      img {
+        float: left;
+        margin-right: 20px;
+      }
+    }
+    .field-type-datetime {
+      font-size: 16px;
+      color: #b5b5b5;
+      text-transform: uppercase;
+      padding-bottom: .3em;
+    }
+    .field-type-list-text {
+      font-size: 16px;
+      color: #4c4c4c;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .field-type-text {
+      font-size: 1.3em;
+      line-height: 1.55em;
+      padding-bottom: 0.2em;
+      color: #666;      
+    }
+    .field-type-link-field {
+      padding-top: 20px;
+      font-size: 1.3em;
+      color: #000;          
+    }
+  }
+}
+.chzn-container-multi .chzn-choices .search-field input {
+  width: 25px;
+  height: 45px;
+  font-size: 16px;
+  line-height: 34px;
+} 
+.chzn-container-multi .chzn-choices .search-choice {
+  margin: 12px 0 3px 10px;
+}
+.chzn-container {
+  width: 60% !important; 
+}
+.chzn-container-multi .chzn-choices {
+  border-color: #CCCCCC;
+  background-image: linear-gradient(#fff, #fff);
+}
+.chzn-container-active .chzn-choices {
+  border-color: #ffa200;
+  @include box-shadow(0 0 5px rgba(255, 162, 0, .65));
+}
+ 
+/**
+ * publish
+ */ 
+.entitytype-request_to_become_a_publisher-form {
+  
+  fieldset.form-wrapper {
+    padding-top: 3.4em;
+  }
+  .hierarchical-select-wrapper .hierarchical-select select {
+    width: 30%;
+    margin-bottom: 10px;
+  }
+  .hierarchical-select-wrapper .selects {
+    width: 100%;
+  }
+  .hierarchical-select-wrapper .hierarchical-select .selects .grippie {
+    width: 30%;
+    position: relative;
+    top: -10px;
+  }  
+  .geolocation-address .form-type-textfield {
+    .form-text {
+      width: 95%;
+    }
+  }
+  .field-widget-geolocation-googlemap {
+    padding-bottom: 0;
+  }
+}
  
 /**
  * messages

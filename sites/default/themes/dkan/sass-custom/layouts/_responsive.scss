@@ -200,7 +200,8 @@ $zen-auto-include-item-base: false;
       width: auto;
     }
   }
-  .region-orange .pane-dataset-datasets-total-count {
+  .region-orange .pane-dataset-datasets-total-count,
+  .region-orange .pane-dataset-datasets-total-count-for-guest  {
     h2 {
       font-size: 17px;
       padding: 1.2% 10px 3px 10px;
@@ -461,7 +462,8 @@ $zen-auto-include-item-base: false;
       font-size: .9em;
     }    
   }
-  .region-orange .pane-dataset-datasets-total-count {
+  .region-orange .pane-dataset-datasets-total-count,
+  .region-orange .pane-dataset-datasets-total-count-for-guest  {
     h2 {
       font-size: 17px;
       padding: 1.1% 15px 1% 21px;
@@ -481,6 +483,10 @@ $zen-auto-include-item-base: false;
   .not-front .region-content {
     padding-left: 21px;
     padding-right: 21px;
+  }
+  .front .region-content .pane-gb-search-pane {
+    margin-left: 21px;
+    margin-right: 21px;
   }
   .pane-gb-search-pane {
     margin-left: 21px;
@@ -592,25 +598,25 @@ $zen-auto-include-item-base: false;
       
       /* Every other three fast facts, starting from the first */
       &:nth-child(3n+1) {
-        @include transform(translate(5%,15%));
+        @include transform(translate(10%,30%));
       }
       &.next:nth-child(3n+1) {
-        @include transform(translate(7%,15%));
+        @include transform(translate(12%,30%));
       }  
       /* Every other three fast facts, starting from the second */
       &:nth-child(3n+2) {
-        @include transform(translate(9%,20%));
+        @include transform(translate(80%,20%));
       }
       &.next:nth-child(3n+2) {
-        @include transform(translate(11%,20%));
+        @include transform(translate(85%,20%));
       }
       /* Every other three fast facts, starting from the first */
       &:nth-child(3n+3) {
-        @include transform(translate(13%,25%));
+        @include transform(translate(180%,10%));
       }
       &.next:nth-child(3n+3) {
-        @include transform(translate(15%,25%));
-      }    
+        @include transform(translate(140%,10%));
+      }      
     }    
   } 
   /* rubrics */  
@@ -775,5 +781,106 @@ $zen-auto-include-item-base: false;
       padding: 0.75em 1.0em;
       position: relative;
     }    
+  } 
+  
+  /* dataset */
+  .dataset-left-col {
+    .panel-pane {
+      margin-bottom: 20px;
+    }
+    h2.pane-title {
+     font-size: 20px;
+    }    
+  }
+  .dataset-right-col {
+    
+    h3,
+    .data-row-developers h2.pane-title,
+    .data-row-comments h2,
+    .group_additional label,
+    .view-header h2 {
+      font-size: 23px;
+      margin: 1.7em 0 .2em;
+    }
+    .pane-node-body,
+    .pane-node-title,
+    .pane-node-body p {
+      font-size: 16px;
+    }
+    .data-row-links  {
+      
+      .download {
+        margin-rihght: 15px;
+        
+        a {
+          padding: .55em 1.2em;
+          font-size: 16px;
+        }         
+      }   
+      .views-field-field-format {
+        width: 46px;
+        height: 43px;
+        margin-right: 15px;
+        @include background-size(cover);
+        
+        .field-content {
+          line-height: 54px;
+          font-size: 14px;
+        }        
+      }  
+      .views-field-title a {
+        font-size: 15px;
+        top: 2px;
+        padding-right: 24px;
+        height: 56px;
+        line-height: 49px;
+        background-position: 100% 45%;
+        @include background-size(15px auto);
+      } 
+      .pane-node-total-count {
+        float: left;
+        padding-left: 54px;
+        margin-right: 15px;
+        @include background-size(45px auto);
+        line-height: 35px;
+        font-size: 16px;
+        margin-top: 9px;
+      }
+      .pane-node-field-vote .vud-widget-thumbs .vote-current-score strong {
+        font-size: 16px;
+        padding-top: 3px;
+      }   
+      .pane-node-field-vote {
+        padding-top: 3px;
+      }
+    }
+  }
+  .data-row-maininfo {
+
+    h2,
+    .field-label {
+      font-size: 15px;
+    }
+    .field,
+    .field-items {
+      font-size: 15px;  
+      color: #000;
+    }
+    .panel-pane {
+      padding-bottom: 8px;
+    }
+  } 
+  .data-row-passport table th, 
+  .data-row-passport table td {
+    font-size: 14px;
+    padding: .55em .8em;
+  }
+  .data-row-developers .pane-content {
+    font-size: 14px;
   }  
+  
+  /* comment */
+  .comment {
+    font-size: 14px;
+  }
 }
