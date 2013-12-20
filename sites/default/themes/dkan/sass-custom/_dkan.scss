@@ -3229,6 +3229,24 @@ div.fivestar-widget .star {
 }
  
 /**
+ * forum 
+ */  
+.page-forum {
+  background: #fff;
+  
+  table th,
+  table td {
+    padding: 1em;
+  }
+  #forum {
+    font-size: 15px;
+  }
+  .forum-statistics-sub-body {
+    padding: 0.3em 0.5em 0.2em 2em;
+  }
+}
+ 
+/**
  * messages
  */
 .messages {

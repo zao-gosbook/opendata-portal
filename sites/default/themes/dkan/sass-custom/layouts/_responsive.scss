@@ -551,6 +551,10 @@ $zen-auto-include-item-base: false;
       
       .views-field {
         
+        &.views-field.views-field-field-fact-value,
+        &.views-field.views-field-field-fact-percentage {
+          width: 97px;
+        }
         &.views-field-field-fact-value .field-content,
         &.views-field-field-fact-percentage .field-content {
           width: 70px;
@@ -883,4 +887,43 @@ $zen-auto-include-item-base: false;
   .comment {
     font-size: 14px;
   }
+}
+
+/**
+ * addaptive facts
+ */
+@media all and (max-width: 1600px) and (min-width: 1200px) {
+  .view-quick-facts {
+    .views-row {
+      top: -50px;
+      width: 52%;
+      
+      /* Every other three fast facts, starting from the first */
+      &:nth-child(3n+1) {
+        @include transform(translate(10%,30%));
+      }
+      &.next:nth-child(3n+1) {
+        @include transform(translate(12%,30%));
+      }  
+      /* Every other three fast facts, starting from the second */
+      &:nth-child(3n+2) {
+        @include transform(translate(80%,20%));
+      }
+      &.next:nth-child(3n+2) {
+        @include transform(translate(85%,20%));
+      }
+      /* Every other three fast facts, starting from the first */
+      &:nth-child(3n+3) {
+        @include transform(translate(180%,15%));
+      }
+      &.next:nth-child(3n+3) {
+        @include transform(translate(70%,15%));
+      }      
+    }
+    .view-content > div .views-field.views-field-body {
+      font-size: 28px;
+      line-height: 30px;
+      width: 573px;
+    }       
+  } 
 }
