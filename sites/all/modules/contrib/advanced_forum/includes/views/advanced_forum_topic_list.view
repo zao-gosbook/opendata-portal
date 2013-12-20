@@ -331,7 +331,7 @@ $handler->display->display_options['fields']['comment_count']['format_plural'] =
 $handler->display->display_options['fields']['totalcount']['id'] = 'totalcount';
 $handler->display->display_options['fields']['totalcount']['table'] = 'node_counter';
 $handler->display->display_options['fields']['totalcount']['field'] = 'totalcount';
-$handler->display->display_options['fields']['totalcount']['label'] = 'Views';
+$handler->display->display_options['fields']['totalcount']['label'] = 'Views count';
 $handler->display->display_options['fields']['totalcount']['alter']['alter_text'] = 0;
 $handler->display->display_options['fields']['totalcount']['alter']['make_link'] = 0;
 $handler->display->display_options['fields']['totalcount']['alter']['word_boundary'] = 1;
@@ -451,7 +451,7 @@ $translatables['advanced_forum_topic_list'] = array(
   t(' new'),
   t('Replies'),
   t('[comment_count]<br />[new_comments] '),
-  t('Views'),
+  t('Views count'),
   t('Last comment author'),
   t('by [last_comment_name]'),
   t('Last post'),
