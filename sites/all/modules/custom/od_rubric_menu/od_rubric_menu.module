@@ -20,7 +20,7 @@ function od_rubric_menu_block_view($delta = '') {
     return;
   }
 
-  if (($tid = arg(2)) && is_numeric($tid) && ($term = taxonomy_term_load($tid))) {
+  if (arg(0) == 'taxonomy' && arg(1) == 'term' && ($tid = arg(2)) && is_numeric($tid) && ($term = taxonomy_term_load($tid))) {
     $tw = entity_metadata_wrapper('taxonomy_term', $term);
     $output = '';
 
