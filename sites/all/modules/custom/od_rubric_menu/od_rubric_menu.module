@@ -23,13 +23,20 @@ function od_rubric_menu_block_view($delta = '') {
   if (($tid = arg(2)) && is_numeric($tid) && ($term = taxonomy_term_load($tid))) {
     $tw = entity_metadata_wrapper('taxonomy_term', $term);
     $output = '';
-    //Check if we have image for this term
-    if ($image = $tw->field_rubric_image->value()) {
-      $output .= '<div class="menu-icon"><img src="' .  image_style_url('thumbnail', file_uri_target($image['uri'])) . '</div>';
+
+    try {
+      //Check if we have image for this term
+      /*if ($image = $tw->field_rubric_image->value()) {
+        $output .= '<div class="menu-icon"><img src="' .  image_style_url('thumbnail', file_uri_target($image['uri'])) . '</div>';
+      }*/
+    }
+    catch (EntityMetadataWrapperException $e) {
+      //Silence
+      dpm($e);
     }
 
     $output .= '<div class="menu-caption"><span>';
-    $output .= $tw->label(); //Will be auto translated name
+    $output .= $tw->name->value(); //Will be auto translated name
     $output .= '</span></div>';
     $output .= '<ul class="category-menu">';
     $output .= '<li class="menu-item">' . l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
