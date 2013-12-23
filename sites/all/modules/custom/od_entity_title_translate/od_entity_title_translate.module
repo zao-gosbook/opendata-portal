@@ -22,6 +22,22 @@ function od_entity_title_translate_entity_view_alter(&$build, $type) {
     ->triggerEvent('entity_view');
 }
 
+function od_entity_title_translate_field_attach_view_alter(&$output, $context) {
+  if (isset($context['entity_type']) && isset($context['entity'])) {
+    $wrapper = entity_metadata_wrapper($context['entity_type'], $context['entity']);
+    $pi = $wrapper->getPropertyInfo();
+    $entity_info = entity_get_info();
+    foreach ($output as $fieldname => $build) {
+      if (isset($pi[$fieldname]) && isset($pi[$fieldname]['type']) && isset($entity_info[$pi[$fieldname]['type']])) {
+        od_entity_label_translate_factory::inst()
+          ->getTranslator($pi[$fieldname]['type'], $output)
+          ->triggerEvent('field_attach_view');
+      }
+      //if (isset($build))
+    }
+  }
+}
+
 /**
  * @param $entity
  * @param $type
