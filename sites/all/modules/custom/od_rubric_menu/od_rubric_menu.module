@@ -26,9 +26,9 @@ function od_rubric_menu_block_view($delta = '') {
 
     try {
       //Check if we have image for this term
-      /*if ($image = $tw->field_rubric_image->value()) {
+      if ($image = $tw->field_rubric_image->value()) {
         $output .= '<div class="menu-icon"><img src="' .  image_style_url('thumbnail', file_uri_target($image['uri'])) . '</div>';
-      }*/
+      }
     }
     catch (EntityMetadataWrapperException $e) {
       //Silence
