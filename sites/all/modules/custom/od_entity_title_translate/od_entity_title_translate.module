@@ -15,6 +15,22 @@ function od_entity_title_translate_entity_load($entities, $type) {
   }
 }
 
+function od_entity_title_translate_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'od_preprocess_wizard_entityform_edit_form') {
+    //$form['#entity']->field_organization[LANGUAGE_NONE][0]['target_id'] = 531;
+
+    //$form['field_organization'][LANGUAGE_NONE][0]['target_id']['#default_value'] = 531;
+
+    $context = array(
+      'form' => &$form,
+    );
+
+    od_entity_label_translate_factory::inst()
+      ->getTranslator('entityform', $context)
+      ->triggerEvent('form_alter');
+  }
+}
+
 function od_entity_title_translate_entity_view_alter(&$build, $type) {
   $context = array(
     'build' => &$build,
