@@ -1,0 +1,5 @@
+name = Opendata Portal Common
+description = "Common features, hacks, custom fixes and kostils."
+package = "Gosbook"
+core = 7.x
+;dependencies[] = entity

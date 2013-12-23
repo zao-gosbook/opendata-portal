@@ -1,0 +1,10 @@
+<?php
+/**
+ * @file
+ */
+function od_common_module_implements_alter(&$implementations, $hook) {
+  //Убиваем имплементацию hook_node_view() модуля dkan_datastore
+  if ($hook == 'node_view' && isset($implementations['dkan_datastore'])) {
+    unset($implementations['dkan_datastore']);
+  }
+}
