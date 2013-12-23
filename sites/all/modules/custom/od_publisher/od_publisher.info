@@ -1,7 +1,5 @@
-name = Entity Title Translate
-description = "Provides auto entity title translation"
+name = Publisher Workflow
+description = "Contains all custom workflow for publisher's role"
 package = "Gosbook"
 core = 7.x
 dependencies[] = entity
-
-files[] = include/translators/od_entity_label_translate_class_taxonomy_term.inc
