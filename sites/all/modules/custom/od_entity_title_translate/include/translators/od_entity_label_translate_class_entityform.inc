@@ -17,7 +17,7 @@ class od_entity_label_translate_class_entityform extends od_entity_label_transla
     $entity_wrapper = entity_metadata_wrapper($this->entity_type, $entity);
     if ($entity_wrapper->{'type'}->value() == 'od_preprocess_wizard') {
       $user_wrapper = entity_metadata_wrapper('user', $GLOBALS['user']->uid);
-      if ($organization = node_load(531)) { //$user_wrapper->field_organization->value()) {
+      if ($organization = $user_wrapper->field_organization->value()) {
         $entity_wrapper->field_organization->set($organization);
       }
     }
