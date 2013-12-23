@@ -23,6 +23,14 @@ function od_dataset_service_services_resources() {
               'default' => '0',
             ),
             array(
+              'name' => 'identifier',
+              'type' => 'string',
+              'description' => 'Name of dataset',
+              'source' => array('param' => 'identifier'),
+              'optional' => TRUE,
+              'default' => '',
+            ),
+            array(
               'name' => 'owner_name',
               'type' => 'string',
               'description' => 'Name of dataset owner',
@@ -71,29 +79,38 @@ function od_dataset_service_services_resources() {
   return $api;
 }
 
-
 /**
 * Callback function for datasets retrieve
 */
-function _od_dataset_service_retrieve($fn, $owner_name, $owner_id, $keyword, $offset, $limit) {
-  
-  // Check for mad values
-  $owner_name = rawurldecode($owner_name) ? rawurldecode($owner_name) : 'all';
-  $owner_id = rawurldecode($owner_id) ? rawurldecode($owner_id) : 'all';
-  $keyword = rawurldecode($keyword) ? rawurldecode($keyword) : 'all';
-  $offset = intval($offset) ? intval($offset) : 0;
-  $limit = intval($limit) ? intval($limit) : 20;
+function _od_dataset_service_retrieve($fn, $identifier, $owner_name, $owner_id, $keyword, $offset, $limit) {
+  $result = array();
 
+  switch ($fn) {
+    case 'search':
 
-  return od_dataset_service_find_items($owner_name, $owner_id, $keyword, $offset, $limit);
+      // Check for mad values
+      $owner_name = rawurldecode($owner_name) ? rawurldecode($owner_name) : 'all';
+      $owner_id = rawurldecode($owner_id) ? rawurldecode($owner_id) : 'all';
+      $keyword = rawurldecode($keyword) ? rawurldecode($keyword) : 'all';
+      $offset = intval($offset) ? intval($offset) : 0;
+      $limit = intval($limit) ? intval($limit) : 20;
+
+      $result = _od_dataset_service_retrieve_search_datasets($owner_name, $owner_id, $keyword, $offset, $limit);
+      break;
+    case 'content':
+      if (!empty($identifier)) {
+        $result = _od_dataset_service_retrieve_content_dataset_headers($identifier);
+      }
+      break;
+  }
+
+  return $result;
 }
 
-
 /**
-* Gets blog posts
-*/
-function od_dataset_service_find_items($owner_name, $owner_id, $keyword, $offset, $limit) {
-  
+ * Gets blog posts.
+ */
+function _od_dataset_service_retrieve_search_datasets($owner_name, $owner_id, $keyword, $offset, $limit) {
   $args = array($owner_name, $owner_id, $keyword);
   
   $view = views_get_view('datasets_rest');
@@ -102,6 +119,51 @@ function od_dataset_service_find_items($owner_name, $owner_id, $keyword, $offset
   $view->set_items_per_page($limit);
   $view->execute();
   $result = json_decode(filter_xss($view->render(), array()));
+
   return $result->datasets;
 }
 
+function _od_dataset_service_retrieve_content_dataset_headers($identifier) {
+  $result = array();
+  $dataset = od_dataset_service_load_dataset($identifier);
+
+  if (empty($dataset)) {
+    return $result;
+  }
+
+  if (empty($dataset->field_resources['und'][0]['target_id'])) {
+    return $result;
+  }
+
+  $resource = node_load($dataset->field_resources['und'][0]['target_id']);
+
+  $file_uri = $resource->field_upload['und'][0]['uri'];
+
+  $uri = file_create_url($file_uri);
+
+  $content = od_file_preprocess_parse_csv($uri);
+
+  $rows = reset($content);
+  $row = reset($rows);
+
+  return array('keys' => $row);
+}
+
+
+function od_dataset_service_load_dataset($identifier) {
+  $node = FALSE;
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node');
+  $query->entityCondition('bundle', 'dataset');
+  $query->fieldCondition('field_dataset_id', 'value', $identifier);
+  $query->range(0, 1);
+  $query->addMetaData('account', user_load(1));
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $query_node = reset($result['node']);
+    $node = node_load($query_node->nid);
+  }
+
+  return $node;
+}
