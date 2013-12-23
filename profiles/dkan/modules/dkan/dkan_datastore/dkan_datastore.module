@@ -234,7 +234,6 @@ function dkan_datastore_permission() {
  * Implements hook_node_view().
  */
 function dkan_datastore_node_view($node, $view_mode, $langcode) {
-  return; // @todo delete this shit
   if ($node->type == 'resource') {
     $status = dkan_datastore_status($node);
     if (user_access('manage datastore') && $status = dkan_datastore_status($node)) {
