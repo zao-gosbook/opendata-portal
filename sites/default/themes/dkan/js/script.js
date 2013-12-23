@@ -83,5 +83,14 @@
       }   
     }
   }
+
+  Drupal.behaviors.preventClickHrefUserMenu = {
+    attach: function(context, settings) {
+      $(context).find('.sf-menu-for-profile.sf-horizontal>li').bind('click', function(e) {
+        e.preventDefault();
+        return false;
+      });
+    }
+  }
   
 })(jQuery, Drupal, this, this.document);
