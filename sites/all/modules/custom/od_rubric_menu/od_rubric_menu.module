@@ -32,7 +32,7 @@ function od_rubric_menu_block_view($delta = '') {
     }
     catch (EntityMetadataWrapperException $e) {
       //Silence
-      dpm($e);
+      //dpm($e);
     }
 
     $output .= '<div class="menu-caption"><span>';
