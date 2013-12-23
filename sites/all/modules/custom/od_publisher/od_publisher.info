@@ -1,0 +1,5 @@
+name = Publisher Workflow
+description = "Contains all custom workflow for publisher's role"
+package = "Gosbook"
+core = 7.x
+dependencies[] = entity

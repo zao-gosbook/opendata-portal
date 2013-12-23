@@ -1,0 +1,53 @@
+<?php
+/**
+ * @file
+ */
+
+function od_publisher_permission() {
+  $perms = array();
+
+  $perms['od_publisher_map_publisher'] = array(
+    'title' => t('Map the selected role as a publisher role'),
+  );
+
+  return $perms;
+}
+
+function od_publisher_node_access($node, $op, $account) {
+  //Check if passed user is not superadmin (uid=1) or user is not a publisher
+  if (user_access('administer', $account) || !user_access('od_publisher_map_publisher', $account)) {
+    return NODE_ACCESS_IGNORE; //Do not do anything
+  }
+
+
+  if ($node->type == 'dataset') {
+    $node_wrapper = entity_metadata_wrapper('node', $node);
+    $user_wrapper = entity_metadata_wrapper('user', $account);
+    //Check if publisher's organization doesn't match the node's organizations
+    if ($op != 'view' && ($organization = $node_wrapper->field_organization->value()) && !od_publisher_api_user_has_organization($organization->nid, $account)) {
+      return NODE_ACCESS_DENY; //Deny the operation for non publishers
+    }
+  }
+
+  return NODE_ACCESS_IGNORE;
+}
+
+/**
+ * Checks if user has organization passed by $nid
+ * @param $nid
+ *  nid of an organization to check
+ * @param null $account
+ * @return bool
+ *
+ * @todo: $nid should be $nids (array of nids)
+ * @todo: support multi field values
+ */
+function od_publisher_api_user_has_organization($nid, $account = NULL) {
+  $account = $account === NULL ? $GLOBALS['user'] : $account;
+  $user_wrapper = entity_metadata_wrapper('user', $account);
+  if ($organization = $user_wrapper->field_organization->value()) {
+    return $organization->nid == $nid;
+  }
+
+  return FALSE;
+}

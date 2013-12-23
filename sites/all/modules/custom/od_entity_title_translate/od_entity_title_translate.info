@@ -5,3 +5,4 @@ core = 7.x
 dependencies[] = entity
 
 files[] = include/translators/od_entity_label_translate_class_taxonomy_term.inc
+files[] = include/translators/od_entity_label_translate_class_entityform.inc
