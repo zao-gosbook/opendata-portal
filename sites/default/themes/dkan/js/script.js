@@ -86,9 +86,9 @@
 
   Drupal.behaviors.preventClickHrefUserMenu = {
     attach: function(context, settings) {
-      $(context).find('.sf-menu-for-profile.sf-horizontal>li').bind('click', function(e) {
-        //e.preventDefault();
-        //return false;
+      $(context).find('.sf-menu-for-profile.sf-horizontal>li.menuparent>a').bind('click', function(e) {
+        e.preventDefault();
+        return false;
       });
     }
   }
