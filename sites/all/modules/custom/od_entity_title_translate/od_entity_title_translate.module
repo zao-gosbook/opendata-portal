@@ -5,10 +5,13 @@
 
 function od_entity_title_translate_entity_load($entities, $type) {
   foreach ($entities as $entity) {
+    $context = array(
+      'entity' => $entity,
+    );
     //od_file_convert_entity($entity, $type);
     od_entity_label_translate_factory::inst()
-      ->getTranslator($type, $entity)
-      ->triggerEvent('entity_load', $entity);
+      ->getTranslator($type, $context)
+      ->triggerEvent('entity_load');
   }
 }
 
@@ -126,7 +129,7 @@ class od_entity_label_translate_factory {
       }
 
       $this->instances[$classname] = new $creation_class($type, $context);
-      $this->instances[$classname]->setLangCode(od_entity_title_translate_get_current_language($entity, $type)->language);
+      $this->instances[$classname]->setLangCode(od_entity_title_translate_get_current_language($context, $type)->language);
     }
     else {
       $this->instances[$classname]->setContext($context);
@@ -253,7 +256,7 @@ abstract class od_entity_label_translate_abstract implements od_entity_label_tra
   protected function init() {}
 
   function setContext(&$context) {
-    $this->context = $context;
+    $this->context = &$context;
   }
 
   function setLangCode($langcode) {
