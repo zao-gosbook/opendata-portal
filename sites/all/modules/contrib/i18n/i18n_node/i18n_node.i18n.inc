@@ -33,7 +33,36 @@ function i18n_node_i18n_object_info() {
       'translate path' => 'admin/structure/types/manage/%node_type/translate/%i18n_language',
     )
   );
+
+  $info['node'] = array(
+    'title' => t('Taxonomy term'),
+    'class' => 'i18n_node',
+    'entity' => 'node',
+    'key' => 'nid',
+    'placeholders' => array(
+      '%node' => 'tid',
+    ),
+    // Auto generate edit path
+    'edit path' => 'node/%node/edit',
+    // Auto-generate translate tab
+    'translate tab' => 'node/%node/translates',
+    'translation set' => TRUE,
+    'string translation' => array(
+      'textgroup' => 'node',
+      'type' => 'node',
+      'properties' => array(
+        'title' => t('Title'),
+      ),
+    )
+  );
+
   return $info;
+}
+
+class i18n_node extends i18n_string_object_wrapper {
+  function get_translate_access() {
+    return TRUE;
+  }
 }
 
 /**
