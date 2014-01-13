@@ -79,7 +79,7 @@
           setTimeout(function(){
             $($fact[n]).addClass('next');
           }, 500)
-        }, 6000); 
+        }, 6000);
       }   
     }
   }
