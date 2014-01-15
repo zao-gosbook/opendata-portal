@@ -36,7 +36,7 @@ function od_rubric_menu_block_view($delta = '') {
     }
 
     $output .= '<div class="menu-caption"><span>';
-    $output .= $tw->name->value(); //Will be auto translated name
+    $output .= l($tw->name->value(), "taxonomy/term/{$term->tid}"); //Will be auto translated name
     $output .= '</span></div>';
     $output .= '<ul class="category-menu">';
     $output .= '<li class="menu-item">' . l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
