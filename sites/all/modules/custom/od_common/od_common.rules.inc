@@ -116,7 +116,7 @@ function _od_common_callbacks_date_formats() {
 }
 
 function od_common_rules_actions_od_common_format_date($timestamp, $format_name) {
-  return array('date_formated' => format_date($timestamp, $format_name));
+  return array('date_formated' => format_date($timestamp, str_replace('date_format_', '', $format_name)));
 }
 
 function common_rules_actions_copy_entity_form_to_node($ef, $node_type, $save_node = FALSE) {
