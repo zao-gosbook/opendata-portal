@@ -82,7 +82,7 @@ function od_common_rules_action_info() {
       'label' => t('Format timestamp to appropriate format'),
       'parameter' => array(
         'timestamp' => array(
-          'type' => 'integer',
+          'type' => 'date',
           'label' => t('Valid unix timestamp'),
         ),
         'format' => array(
