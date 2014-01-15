@@ -98,7 +98,7 @@ function od_common_rules_action_info() {
         ),
       ),
       'group' => t('Gosbook'),
-      'base' => 'common_rules_actions_copy_entity_form_to_node',
+      'base' => 'od_common_rules_actions_od_common_format_date',
     ),
   );
 }
