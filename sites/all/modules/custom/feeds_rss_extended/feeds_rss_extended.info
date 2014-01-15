@@ -1,0 +1,8 @@
+name = Feeds RSS Extended
+description = Extends RSS/Atom/RDF parser for Feeds.
+package = Feeds
+core = 7.x
+dependencies[] = feeds
+
+; Plugins
+files[] = plugins/FreFeedsSyndicationParser.inc

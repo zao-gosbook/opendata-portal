@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Implements hook_feeds_plugins().
+ */
+function feeds_rss_extended_feeds_plugins() {
+  $info = array();
+   $info['FreFeedsSyndicationParser'] = array(
+    'name' => 'Common syndication parser (extended)',
+    'description' => 'Parse RSS and Atom feeds (with additional items).',
+    'help' => 'Parse XML feeds in RSS 1, RSS 2 and Atom format.',
+    'handler' => array(
+      'parent' => 'FeedsSyndicationParser',
+      'class' => 'FreFeedsSyndicationParser',
+      'file' => 'FreFeedsSyndicationParser.inc',
+      'path' => drupal_get_path('module', 'feeds_rss_extended') . '/plugins',
+    ),
+  );
+  return $info;
+}
+
+/**
+ * Implements hook_enable().
+ *
+ * Clear Feed's plugin cache so that this plugin shows up.
+ */
+function feeds_rss_extended_enable() {
+  cache_clear_all('plugins:feeds:plugins', 'cache');
+}
