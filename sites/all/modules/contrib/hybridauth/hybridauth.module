@@ -251,7 +251,7 @@ function hybridauth_element_info() {
     '#theme' => 'hybridauth_widget',
     // '#theme_wrappers' => array('form_element'),
     '#hybridauth_id' => 'hybridauth',
-    '#title' => variable_get('hybridauth_widget_title', 'Or log in with...'),
+    '#title' => t(variable_get('hybridauth_widget_title', 'Or log in with...')),
     '#weight' => variable_get('hybridauth_widget_weight', 100),
     '#hybridauth_widget_type' => variable_get('hybridauth_widget_type', 'list'),
     '#hybridauth_widget_use_overlay' => variable_get('hybridauth_widget_use_overlay', 1),

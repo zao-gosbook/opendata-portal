@@ -78,7 +78,7 @@ function hybridauth_admin_settings() {
   $form['vtabs']['fset_widget']['hybridauth_widget_title'] = array(
     '#type' => 'textfield',
     '#title' => t('Widget title'),
-    '#default_value' => variable_get('hybridauth_widget_title', 'Or log in with...'),
+    '#default_value' => t(variable_get('hybridauth_widget_title', 'Or log in with...')),
   );
   $options = array(
     'list' => t('Enabled providers icons'),
