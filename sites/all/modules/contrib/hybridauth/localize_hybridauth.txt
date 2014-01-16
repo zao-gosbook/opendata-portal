@@ -1,0 +1,39 @@
+diff --git a/hybridauth.admin.inc b/hybridauth.admin.inc
+index 923a93e..f66780d 100644
+--- a/hybridauth.admin.inc
++++ b/hybridauth.admin.inc
+@@ -78,7 +78,7 @@ function hybridauth_admin_settings() {
+   $form['vtabs']['fset_widget']['hybridauth_widget_title'] = array(
+     '#type' => 'textfield',
+     '#title' => t('Widget title'),
+-    '#default_value' => variable_get('hybridauth_widget_title', 'Or log in with...'),
++    '#default_value' => t(variable_get('hybridauth_widget_title', 'Or log in with...')),
+   );
+   $options = array(
+     'list' => t('Enabled providers icons'),
+diff --git a/hybridauth.module b/hybridauth.module
+index 461363c..4745a87 100644
+--- a/hybridauth.module
++++ b/hybridauth.module
+@@ -251,7 +251,7 @@ function hybridauth_element_info() {
+     '#theme' => 'hybridauth_widget',
+     // '#theme_wrappers' => array('form_element'),
+     '#hybridauth_id' => 'hybridauth',
+-    '#title' => variable_get('hybridauth_widget_title', 'Or log in with...'),
++    '#title' => t(variable_get('hybridauth_widget_title', 'Or log in with...')),
+     '#weight' => variable_get('hybridauth_widget_weight', 100),
+     '#hybridauth_widget_type' => variable_get('hybridauth_widget_type', 'list'),
+     '#hybridauth_widget_use_overlay' => variable_get('hybridauth_widget_use_overlay', 1),
+diff --git a/hybridauth_bonus/hybridauth_bonus.module b/hybridauth_bonus/hybridauth_bonus.module
+index de67370..e6f38e8 100644
+--- a/hybridauth_bonus/hybridauth_bonus.module
++++ b/hybridauth_bonus/hybridauth_bonus.module
+@@ -148,7 +148,7 @@ function _hybridauth_bonus_form_alter(&$form, &$form_state, $form_id) {
+   }
+ 
+   if (isset($form['hybridauth'])) {
+-    $form['hybridauth']['#title'] = variable_get('hybridauth_bonus_widget_title_' . $form_id, 'Or log in with...');
++    $form['hybridauth']['#title'] = t(variable_get('hybridauth_bonus_widget_title_' . $form_id, 'Or log in with...'));
+     $form['hybridauth']['#hybridauth_widget_type'] = variable_get('hybridauth_bonus_widget_type_' . $form_id, 'list');
+     $form['hybridauth']['#hybridauth_widget_use_overlay'] = variable_get('hybridauth_bonus_widget_use_overlay_' . $form_id, 1);
+     $form['hybridauth']['#hybridauth_widget_link_text'] = variable_get('hybridauth_bonus_widget_link_text_' . $form_id, 'Social network account');
