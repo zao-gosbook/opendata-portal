@@ -148,7 +148,7 @@ function _hybridauth_bonus_form_alter(&$form, &$form_state, $form_id) {
   }
 
   if (isset($form['hybridauth'])) {
-    $form['hybridauth']['#title'] = variable_get('hybridauth_bonus_widget_title_' . $form_id, 'Or log in with...');
+    $form['hybridauth']['#title'] = t(variable_get('hybridauth_bonus_widget_title_' . $form_id, 'Or log in with...'));
     $form['hybridauth']['#hybridauth_widget_type'] = variable_get('hybridauth_bonus_widget_type_' . $form_id, 'list');
     $form['hybridauth']['#hybridauth_widget_use_overlay'] = variable_get('hybridauth_bonus_widget_use_overlay_' . $form_id, 1);
     $form['hybridauth']['#hybridauth_widget_link_text'] = variable_get('hybridauth_bonus_widget_link_text_' . $form_id, 'Social network account');
