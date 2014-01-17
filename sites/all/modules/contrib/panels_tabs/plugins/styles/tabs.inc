@@ -37,7 +37,7 @@ function theme_panels_tabs_style_render_region($vars) {
     '#prefix' => '<div id="' . $tab_id . '">',
     '#suffix' => '</div>',
     '#attached' => array(
-      'library' => array(array('system', 'ui.tabs')),
+      'library' => array(array('system', 'ui.tabs'), array('system', 'jquery.cookie')),
       'js' => array(
         drupal_get_path('module', 'panels_tabs') . '/js/panels_tabs.js' => array('type' => 'file'),
       ),
