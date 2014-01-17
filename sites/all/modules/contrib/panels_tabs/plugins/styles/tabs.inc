@@ -46,6 +46,9 @@ function theme_panels_tabs_style_render_region($vars) {
 
   $settings = array();
   $settings['panelsTabs']['tabsID'][] = $tab_id;
+  $settings['panelsTabs']['tabsConfig'][$tab_id] = array(
+    'saveActiveTab' => isset($vars['settings']['panel_tab_save_active_tab']) ? (boolean) $vars['settings']['panel_tab_save_active_tab'] : TRUE,
+  );
 
   $element['#attached']['js'][] = array(
     'type' => 'setting',
@@ -92,6 +95,13 @@ function panels_tabs_pane_settings_form($style_settings) {
       'region' => t('Fixed, based on region id (select this when panel region can be placed on the page only once)'),
       'random' => t('Generate random id (select this when panel region can be placed on the page multiple times)'),
     ),
+  );
+
+  $form['panel_tab_save_active_tab'] = array(
+    '#type' => 'checkbox',
+    '#title' => t("Save active tab and restore after page is loaded"),
+    '#decsription' => t("If this is checked selected tab will be saved after user selects a tab and restored after page reload"),
+    '#default_value' => isset($style_settings['panel_tab_save_active_tab']) ? $style_settings['panel_tab_save_active_tab'] : TRUE,
   );
 
   return $form;

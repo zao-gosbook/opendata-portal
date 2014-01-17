@@ -1,0 +1,59 @@
+diff --git a/js/panels_tabs.js b/js/panels_tabs.js
+index 0437f7a..261a9e6 100644
+--- a/js/panels_tabs.js
++++ b/js/panels_tabs.js
+@@ -4,13 +4,25 @@
+  * JS related to the tabs in the Panels tabs.
+  */
+ Drupal.behaviors.panelsTabs = {
+-  attach: function (context) {
++  attach: function (context, settings) {
+     var tabsID = Drupal.settings.panelsTabs.tabsID;
++    var activeCookieName = 'panelsTabs:activeTab:'+tabsID;
++    var tabConfig = settings.panelsTabs.tabsConfig[tabsID] || {};
++    var saveActiveTab = tabConfig.saveActiveTab || false;
++
++    function callbackSaveActiveTab(event, ui) {
++      if (saveActiveTab) {
++        $.cookie(activeCookieName, ui.index, {path: window.location.href, expires: 365});
++      }
++    }
+ 
+     for (var key in Drupal.settings.panelsTabs.tabsID) {
+       $('#' + tabsID[key] +':not(.tabs-processed)', context)
+         .addClass('tabs-processed')
+-        .tabs();
++        .tabs({
++          selected: saveActiveTab ? ($.cookie(activeCookieName) || 0) : 0,
++          select: callbackSaveActiveTab
++        });
+     }
+   }
+ };
+diff --git a/plugins/styles/tabs.inc b/plugins/styles/tabs.inc
+index b18e4ec..df445b9 100644
+--- a/plugins/styles/tabs.inc
++++ b/plugins/styles/tabs.inc
+@@ -46,6 +46,9 @@ function theme_panels_tabs_style_render_region($vars) {
+ 
+   $settings = array();
+   $settings['panelsTabs']['tabsID'][] = $tab_id;
++  $settings['panelsTabs']['tabsConfig'][$tab_id] = array(
++    'saveActiveTab' => isset($vars['settings']['panel_tab_save_active_tab']) ? (boolean) $vars['settings']['panel_tab_save_active_tab'] : TRUE,
++  );
+ 
+   $element['#attached']['js'][] = array(
+     'type' => 'setting',
+@@ -94,5 +97,12 @@ function panels_tabs_pane_settings_form($style_settings) {
+     ),
+   );
+ 
++  $form['panel_tab_save_active_tab'] = array(
++    '#type' => 'checkbox',
++    '#title' => t("Save active tab and restore after page is loaded"),
++    '#decsription' => t("If this is checked selected tab will be saved after user selects a tab and restored after page reload"),
++    '#default_value' => isset($style_settings['panel_tab_save_active_tab']) ? $style_settings['panel_tab_save_active_tab'] : TRUE,
++  );
++
+   return $form;
+ }
