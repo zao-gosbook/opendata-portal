@@ -28,10 +28,12 @@ class OdApiRDFaParser extends OdApiParser {
     return ARC2::getRDFParser();
   }
 
-  public function parse($url) {
+  public function parse($url, $actual_url = NULL) {
     $this->url = $url;
     // Using "@" for ignoring ARC2 library errors.
-    @$this->parser->parse($url);
+
+    $parsing_url = !empty($actual_url) ? $actual_url : $this->url;
+    $this->parser->parse($parsing_url);
 
     $subjects = $this->parser->getSimpleIndex();
 
@@ -52,6 +54,11 @@ class OdApiRDFaParser extends OdApiParser {
 
         unset($subjects[$link]);
       }
+    }
+
+    if (!empty($actual_url)) {
+      $subjects[$this->url] = isset($subjects[$this->url]) ? array_merge($subjects[$this->url], $subjects[$actual_url]) : $subjects[$actual_url];
+      unset($subjects[$actual_url]);
     }
 
     $this->subjects = $subjects;

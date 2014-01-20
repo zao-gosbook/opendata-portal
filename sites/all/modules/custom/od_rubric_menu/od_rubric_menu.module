@@ -76,7 +76,20 @@ function od_rubric_menu_block_view($delta = '') {
     if (count($result)) {
       $output .= '<li class="menu-item">' . l(t('Map'), 'datasets-map/' . $term->tid) . '</li>';
     }
-
+    
+    //menu link "Documents"
+    $query = new EntityFieldQuery;
+    $result = $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'document')
+      ->propertyCondition('status', 1)
+      ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+      ->execute();
+    if (count($result)) {
+     $output .= '<li class="menu-item">';
+     $output .= '<a href="' . url('library') . '?f[0]=field_rubric%3A' . $term->tid; //@fixme: l()|url() + options['query']...
+     $output .= '" rel="nofollow">' . t('Documents') . '</a>' . '</li>';
+    }
+    
     $output .= '</ul>';
     $block['content'] = $output;
   }

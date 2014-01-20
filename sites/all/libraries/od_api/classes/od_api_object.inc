@@ -301,7 +301,9 @@ abstract class OdApiObject {
 
   public function parseRDFa() {
     $this->parserRDFa = new OdApiRDFaParser();
-    $this->parserRDFa->parse($this->urls['semantic']);
+
+    $actual_url = $this->url !== $this->urls['semantic'] ? $this->urls['semantic'] : NULL;
+    $this->parserRDFa->parse($this->url, $actual_url);
 
     $this->_parseRdf();
   }

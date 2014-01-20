@@ -221,7 +221,7 @@ class OdApi {
     // List object.
     $list_args = array('list' => $site);
     $list_result = $this->getResult($list_args);
-    if (!$list_result) {
+    if (empty($list_result)) {
       return $list_result;
     }
     $list_result = $list_result['meta'];
@@ -231,10 +231,13 @@ class OdApi {
       $meta_args = $meta['#api'];
       $meta_result = $this->getResult($meta_args);
       $meta = $meta_result;
-      if (!$meta) {
+      if (empty($meta)) {
         continue;
       }
       unset($meta['#version']);
+      if (empty($meta['source'])) {
+        continue;
+      }
       $meta['data'] = $meta['source'];
       unset($meta['source']);
 
@@ -249,7 +252,7 @@ class OdApi {
       $source_result = $this->getResult($source_args);
       $meta['data'] = $source_result ? $source_result['data'] : $source_result;
       unset($source_result['data']['#version']);
-      if (!$meta['data'] || !is_array($meta['data'])) {
+      if (empty($meta['data']) || !is_array($meta['data'])) {
         continue;
       }
 
@@ -259,7 +262,7 @@ class OdApi {
         $data_result = $this->getResult($data_args);
         $data = $data_result;
         unset($data['#version']);
-        if (!$data) {
+        if (empty($data)) {
           continue;
         }
 
