@@ -35,7 +35,7 @@ class OdApiList23 extends OdApiListDefault {
     $this->od_api->opendata_page_url = $this->url;
 
     // Visual representation.
-    $urls['semantic'] = $this->url;
+    $urls['semantic'] = isset($this->od_api->vars['opendata_list_semantic_url']) ? ($this->od_api->main_page_url . $this->od_api->vars['opendata_list_semantic_url']) : $this->url;
 
     // File url template.
     $file_url = $this->url . '/opendatalist.!extension';
