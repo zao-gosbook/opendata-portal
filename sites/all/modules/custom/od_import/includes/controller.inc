@@ -43,12 +43,25 @@ function od_import_import_organization_opendata($org) {
   // Set date format.
   $format = 'Y-m-d H:i:s';
 
-  // Get organization url.
-  $org_url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
+  // Define variables for opendata API library.
+  $vars = array();
+
+  // Get organization opendata site url.
+  if (!empty($org->field_opendata_portal_url[LANGUAGE_NONE][0]['url'])) {
+    $opendata_site_url = $org->field_opendata_portal_url[LANGUAGE_NONE][0]['url'];
+  }
+  else {
+    $opendata_site_url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
+  }
+
+  // Get organization opendata page url.
+  if (!empty($org->field_opendata_page_url[LANGUAGE_NONE][0]['value'])) {
+    $vars['opendata_list_semantic_url'] = $org->field_opendata_page_url[LANGUAGE_NONE][0]['value'];
+  }
 
   $time_start = date($format);
   $od = new OdApi();
-  $data = $od->getOpendata($org_url);
+  $data = $od->getOpendata($opendata_site_url, $vars);
 
   $errors = $od->getErrors();
 
@@ -63,7 +76,8 @@ function od_import_import_organization_opendata($org) {
 
     drupal_set_message($message, 'warning');
     watchdog('od_import', $message, array(), WATCHDOG_WARNING);
-    return FALSE;
+    // Allow download part of opendata.
+    // return FALSE;
   }
 
   if (!is_array($data)) {
@@ -73,7 +87,8 @@ function od_import_import_organization_opendata($org) {
 
     drupal_set_message($message, 'warning');
     watchdog('od_import', $message, array(), WATCHDOG_WARNING);
-    return FALSE;
+    // Allow download part of opendata.
+    // eturn FALSE;
   }
 
   $meta_added_count = 0;
@@ -81,6 +96,11 @@ function od_import_import_organization_opendata($org) {
   $meta_existed_count = 0;
   $dataset_list = array();
   foreach ($data as $meta) {
+    // Skip opendata meta with error.
+    if ($meta === FALSE) {
+      continue;
+    }
+
     $identifier = $meta['identifier'];
 
     $dataset_node = od_import_load_dataset($identifier);
