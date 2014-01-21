@@ -5,23 +5,23 @@
 
 function od_common_rules_action_info() {
   return array(
-//    'generate_password' => array(
-//      'label' => t('Generate password'),
-//      'parameter' => array(
-//        'length' => array(
-//          'type' => 'integer',
-//          'label' => t('Length'),
-//        ),
-//      ),
-//      'group' => t('Gosbook'),
-//      'base' => 'common_rules_actions_generate_pass',
-//      'provides' => array(
-//        'password_generated' => array(
-//          'type' => 'text',
-//          'label' => t('Generated password'),
-//        ),
-//      ),
-//    ),
+    'generate_password' => array(
+      'label' => t('Generate password'),
+      'parameter' => array(
+        'length' => array(
+          'type' => 'integer',
+          'label' => t('Length'),
+        ),
+      ),
+      'group' => t('Gosbook'),
+      'base' => 'common_rules_actions_generate_pass',
+      'provides' => array(
+        'password_generated' => array(
+          'type' => 'text',
+          'label' => t('Generated password'),
+        ),
+      ),
+    ),
 //    'set_users_password' => array(
 //      'label' => t('Set users password'),
 //      'parameter' => array(
