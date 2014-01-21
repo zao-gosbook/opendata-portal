@@ -70,10 +70,6 @@ function od_common_rules_action_info() {
           'label' => t('Created node'),
           'save' => TRUE,
         ),
-//        'node_type_created' => array(
-//          'type' => 'boolean',
-//          'label' => t('Returns true if new node type has been created'),
-//        ),
       ),
       'group' => t('Gosbook'),
       'base' => 'common_rules_actions_copy_entity_form_to_node_deprecated',
