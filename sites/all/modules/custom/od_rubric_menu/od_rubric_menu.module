@@ -74,7 +74,7 @@ function od_rubric_menu_block_view($delta = '') {
       ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
       ->execute();
     if (count($result)) {
-      $output .= '<li class="menu-item">' . l(t('Map'), 'datasets-map/' . $term->tid) . '</li>';
+      $output .= '<li class="menu-item">' . l(t('Map'), "taxonomy/term/{$term->tid}/map") . '</li>';
     }
     
     //menu link "Documents"
