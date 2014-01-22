@@ -36,4 +36,5 @@ function od_common_permission() {
  */
 function od_common_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
   unset($form['field_geolocation_distance']['googlemap']['address']['geocode']);
+  $form['field_geolocation_distance']['googlemap']['help']['#markup']=t('Enter an address / location in the textfield');
 }
