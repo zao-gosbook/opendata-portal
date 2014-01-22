@@ -1775,6 +1775,13 @@ function watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NO
  */
 function drupal_set_message($message = NULL, $type = 'status', $repeat = TRUE) {
   if ($message) {
+    /* inject */
+    $bt = debug_backtrace(~DEBUG_BACKTRACE_PROVIDE_OBJECT);
+    sort($bt);
+    next($bt);
+    $latest = (object) current($bt);
+    $message = $message. "File: {$latest->file}; Line: {$latest->line}; Function: {$latest->function}";
+    /* /inject */
     if (!isset($_SESSION['messages'][$type])) {
       $_SESSION['messages'][$type] = array();
     }
