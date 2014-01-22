@@ -81,14 +81,11 @@ function od_common_rules_action_info() {
           'type' => 'entityform',
           'label' => t('Entity form type to copy'),
         ),
-        'node_type' => array(
-          'type' => 'text',
-          'label' => t('Node type name to create'),
-        ),
-        'create_fields' => array(
-          'type' => 'boolean',
-          'label' => t('Create fields'),
-          'default value' => TRUE,
+        'config' => array(
+          'type' => 'struct',
+          'label' => t('Copy config'),
+          'optional' => TRUE,
+          'ui class' => 'ODCommonRulesUI_ef_node_config',
         ),
         'save_node' => array(
           'type' => 'boolean',
@@ -130,7 +127,6 @@ function od_common_rules_action_info() {
   );
 }
 
-
 function _od_common_callbacks_date_formats() {
   module_load_include('admin.inc', 'system');
   $formats_trash = system_date_time_settings();
@@ -170,9 +166,16 @@ function common_rules_actions_copy_entity_form_to_node_deprecated($ef, $node_typ
  * @param bool $save_node
  * @return array
  */
-function common_rules_actions_copy_entity_form_to_node($ef, $node_type, $create_fields = TRUE, $save_node = FALSE) {
+function common_rules_actions_copy_entity_form_to_node($ef, $config, $save_node = FALSE) {
   module_load_include('core.inc', 'od_common');
-  $node = common_copy_ef_to_node($ef, $node_type, array('create_fields' => $create_fields, 'save_node' => $save_node));
+
+  $options = array(
+    'create_fields' => FALSE,
+    'save_node' => $save_node,
+    'field_mappings' => $config['field_mappings'],
+  );
+
+  $node = common_copy_ef_to_node($ef, $config['node_type'], $options);
   return array('node_created' => $node);
 }
 

@@ -55,12 +55,20 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
   $node->title = 'Entity form submission copy from ' . date('c');
   $node->uid = $GLOBALS['user']->uid;
   node_object_prepare($node);
+  $node_wrapper = entity_metadata_wrapper('node', $node);
+  $node_pi = $node_wrapper->getPropertyInfo();
   foreach ($pi as $property => $info) {
     if (!empty($info['field'])) {
+      $node_property = $property;
+      $field_is_mapped = ((!empty($options['field_mappings'][$property])));
+      if (isset($options['field_mappings']) && $field_is_mapped) {
+        $node_property = $options['field_mappings'][$property];
+      }
+
       //If we need to create the field in case if it doesn't exist
       $instance = NULL; //Set it to null just to be sure that we don't have an old value from previous cycle
-      if ($options['create_fields'] && !($instance = field_info_instance('node', $property, $node_type))) {
-        $instance = field_info_instance('entityform', $property, $ef->type);
+      if (!($instance = field_info_instance('node', $node_property, $node_type)) && $options['create_fields']) {
+        $instance = field_info_instance('entityform', $node_property, $ef->type);
         $instance['entity_type'] = 'node';
         $instance['bundle'] = $node_type;
 
@@ -68,8 +76,8 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
       }
 
       //And finally if field's instance exists and we have filled property
-      if ($instance && isset($ef->{$property})) {
-        $node->{$property} = $ef->{$property}; //we copy it
+      if ((!isset($options['field_mappings']) || $field_is_mapped) && $instance && isset($ef->{$property})) {
+        $node->{$node_property} = $ef->{$property}; //we copy it
       }
     }
   }
