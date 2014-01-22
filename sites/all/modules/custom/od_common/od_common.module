@@ -16,8 +16,6 @@ function od_common_module_implements_alter(&$implementations, $hook) {
   }
 }
 
-
-
 /**
  * Implements hook_permission()
  */
@@ -43,7 +41,14 @@ function od_common_form_views_exposed_form_alter(&$form, &$form_state, $form_id)
  * Implements hook_preprocess_THEMEHOOK()
  */
 function od_common_preprocess_date_combo(&$vars) {
-  $vars['theme_hook_suggestion'] = 'od_common_date_combo';
+  $paths = array(
+    'dataset-actions/add-new-dataset',
+    'eform/submit/od-preprocess-wizard',
+  );
+
+  if (drupal_match_path($_GET['q'], implode("\n", $paths))) {
+    $vars['theme_hook_suggestion'] = 'od_common_date_combo';
+  }
 }
 
 /**
