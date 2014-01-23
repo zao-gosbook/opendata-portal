@@ -11,46 +11,46 @@ class ARC2_ClassTest extends PHPUnit_Framework_TestCase {
 
     public function testCamelCase() {
          $this->assertSame("Fish", $this->arc2->camelCase("fish"));
-         $this->assertSame("fish", $this->arc2->camelCase("fish", TRUE));
-         $this->assertSame("fish", $this->arc2->camelCase("fish", TRUE, TRUE));
+         $this->assertSame("fish", $this->arc2->camelCase("fish", true));
+         $this->assertSame("fish", $this->arc2->camelCase("fish", true, true));
 
          $this->assertSame("FishHeads", $this->arc2->camelCase("fish_heads"));
-         $this->assertSame("fishHeads", $this->arc2->camelCase("fish_heads", TRUE));
-         $this->assertSame("fishHeads", $this->arc2->camelCase("fish_heads", TRUE, TRUE));
+         $this->assertSame("fishHeads", $this->arc2->camelCase("fish_heads", true));
+         $this->assertSame("fishHeads", $this->arc2->camelCase("fish_heads", true, true));
 
          $this->assertSame("ALLCAPITALS", $this->arc2->camelCase("ALL_CAPITALS"));
     }
 
     public function testDeCamelCase() {
          $this->assertSame("fish", $this->arc2->deCamelCase("fish"));
-         $this->assertSame("Fish", $this->arc2->deCamelCase("fish", TRUE));
+         $this->assertSame("Fish", $this->arc2->deCamelCase("fish", true));
 
          $this->assertSame("fish heads", $this->arc2->deCamelCase("fish_heads"));
-         $this->assertSame("Fish heads", $this->arc2->deCamelCase("fish_heads", TRUE));
+         $this->assertSame("Fish heads", $this->arc2->deCamelCase("fish_heads", true));
 
          $this->assertSame("ALL CAPITALS", $this->arc2->deCamelCase("ALL_CAPITALS"));
     }
 
 
     public function testV() {
-        $this->assertSame(FALSE, $this->arc2->v(NULL));
-        $this->assertSame(FALSE, $this->arc2->v("cats", FALSE, array()));
-        $this->assertSame(TRUE, $this->arc2->v("cats", FALSE, array("cats" => TRUE)));
+        $this->assertSame(false, $this->arc2->v(null));
+        $this->assertSame(false, $this->arc2->v("cats", false, array()));
+        $this->assertSame(true, $this->arc2->v("cats", false, array("cats" => true)));
 
         $o = new stdclass;
-        $o->cats = TRUE;
-        $this->assertSame(TRUE, $this->arc2->v("cats", FALSE, $o));
+        $o->cats = true;
+        $this->assertSame(true, $this->arc2->v("cats", false, $o));
     }
 
     public function testV1() {
-        $this->assertSame(FALSE, $this->arc2->v1(NULL));
-        $this->assertSame(FALSE, $this->arc2->v1("cats", FALSE, array()));
-        $this->assertSame(TRUE, $this->arc2->v1("cats", FALSE, array("cats" => TRUE)));
-        $this->assertSame("blackjack", $this->arc2->v1("cats", "blackjack", array("cats" => NULL)));
+        $this->assertSame(false, $this->arc2->v1(null));
+        $this->assertSame(false, $this->arc2->v1("cats", false, array()));
+        $this->assertSame(true, $this->arc2->v1("cats", false, array("cats" => true)));
+        $this->assertSame("blackjack", $this->arc2->v1("cats", "blackjack", array("cats" => null)));
 
         $o = new stdclass;
-        $o->cats = TRUE;
-        $this->assertSame(TRUE, $this->arc2->v1("cats", FALSE, $o));
+        $o->cats = true;
+        $this->assertSame(true, $this->arc2->v1("cats", false, $o));
 
         $o = new stdclass;
         $o->cats = 0;
