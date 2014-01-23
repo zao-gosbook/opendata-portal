@@ -104,13 +104,18 @@
         var $this = $(element);
 
         var target = viewContent.find('.views-row').slice(9);
+        $this.parent().parent().find('span').hide();
+        //Hide
         if (!view.hasClass('more-toggle-collapsed')) {
           target.slideUp();
           view.addClass('more-toggle-collapsed').removeClass('more-toggle-expanded');
+          $this.parent().parent().find('.state-show').show();
         }
+        //Show
         else {
           target.slideDown();
           view.addClass('more-toggle-expanded').removeClass('more-toggle-collapsed');
+          $this.parent().parent().find('.state-hide').show();
         }
       }
 
