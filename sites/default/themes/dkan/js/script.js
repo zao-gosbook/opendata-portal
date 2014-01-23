@@ -92,5 +92,35 @@
       });
     }
   }
+
+  Drupal.behaviors.showHideElementsFront = {
+    attach: function(context, settings) {
+      var showHideToggleEl = $(context).find('.view:not(.processed-showHideElementsFront) div.show-hide-toggle-wrapper>span>a');
+      var view = showHideToggleEl.parents('.view:eq(0)');
+      var viewContent = view.find('.view-content');
+      view.addClass('.processed-showHideElementsFront');
+
+      function processClick(element) {
+        var $this = $(element);
+
+        var target = viewContent.find('.views-row').slice(9);
+        if (!view.hasClass('more-toggle-collapsed')) {
+          target.slideUp();
+          view.addClass('more-toggle-collapsed').removeClass('more-toggle-expanded');
+        }
+        else {
+          target.slideDown();
+          view.addClass('more-toggle-expanded').removeClass('more-toggle-collapsed');
+        }
+      }
+
+      showHideToggleEl.bind('click', function() {
+        processClick(this);
+        return false;
+      });
+
+      processClick(showHideToggleEl);
+    }
+  }
   
 })(jQuery, Drupal, this, this.document);
