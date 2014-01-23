@@ -1,7 +1,7 @@
 name = Ajax facet filters
 description = Ajax facet filters.
 dependencies[] = facetapi
-dependencies[] = search_api_solr
+; dependencies[] = search_api_solr
 dependencies[] = views
 package = Search Toolkit
 core = 7.x
