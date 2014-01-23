@@ -2,4 +2,7 @@ name = Opendata Portal Common
 description = "Common features, hacks, custom fixes and kostils."
 package = "Gosbook"
 core = 7.x
-;dependencies[] = entity
+
+; dependencies[] = entity
+
+files[] = rulesui/ODCommonRulesUI_ef_node_config.inc

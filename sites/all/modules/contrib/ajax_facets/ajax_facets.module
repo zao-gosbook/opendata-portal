@@ -1,0 +1,278 @@
+<?php
+/**
+ * @file
+ *  Ajax facets implementation.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function ajax_facets_menu() {
+  $items = array();
+
+  $items['ajax/ajax_facets/refresh'] = array(
+    'title' => 'Callback to update facets content',
+    'page callback' => 'ajax_facets_refresh_facets_content',
+    'access arguments' => array('access content'),
+    'delivery callback' => 'ajax_facets_ajax_deliver',
+    'type' => MENU_CALLBACK,
+    'file' => 'ajax_facets.pages.inc',
+  );
+
+  return $items;
+}
+
+function ajax_facets_init() {
+  error_reporting(E_ALL);
+  ini_set('display_errors', 1);
+}
+
+/**
+ * Implements hook_facetapi_widgets().
+ */
+function ajax_facets_facetapi_widgets() {
+  return array(
+    // Custom widget to handle ajax-refreshed facets.
+    'facetapi_ajax_checkboxes' => array(
+      'handler' => array(
+        'label' => 'Ajax multiple checkboxes',
+        'class' => 'FacetapiAjaxWidgetCheckboxes',
+        'query types' => array('term'),
+      ),
+    ),
+    'facetapi_ajax_select' => array(
+      'handler' => array(
+        'label' => 'Ajax selectbox',
+        'class' => 'FacetapiAjaxWidgetSelect',
+        'query types' => array('term'),
+      ),
+    ),
+  );
+}
+
+/**
+ * Add required JS and handle single inclusion.
+ */
+function ajax_facets_add_ajax_js($facet) {
+  static $included = FALSE;
+  if (!$included) {
+    $included = TRUE;
+    $module_path = drupal_get_path('module', 'ajax_facets');
+    drupal_add_js($module_path . '/misc/ajax_facets.js');
+    drupal_add_css($module_path . '/misc/ajax_facets.css');
+    $search_path = $facet->getAdapter()->getSearchPath();
+    $filter_key = $facet->getAdapter()->getUrlProcessor()->getFilterKey();
+    // Note that we add in query only filter params and exclude pages and etc...
+    $query = (isset($_GET[$filter_key])) ? array($filter_key => $_GET[$filter_key]) : array();
+    $views = search_api_current_search();
+    $view_name = '';
+    $display_name = '';
+
+    if (!empty($views)) {
+      // Get display from settings.
+      $facet_settings = $facet->getSettings();
+      if (!empty($facet_settings->settings['facet_search_ids'])) {
+        $first_display_from_settings = reset($facet_settings->settings['facet_search_ids']);
+        list(, $view_name, $display_name) = explode(':', $first_display_from_settings);
+      }
+      // Default search.
+      if (empty($view_name) || empty($display_name)) {
+        $keys = array_keys($views);
+        foreach ($keys as $key) {
+          if (substr_count($key, 'search_api_views')) {
+            list(, $view_name, $display_name) = explode(':', $key);
+          }
+        }
+      }
+    }
+
+    $facet = $facet->getFacet();
+    $setting['facetapi'] = array(
+      'defaultQuery' => isset($_GET[$filter_key]) ? $_GET[$filter_key] : '',
+      'searchPath' => $search_path,
+      'index_id' => $facet['map options']['index id'],
+      'view_name' => $view_name,
+      'display_name' => $display_name,
+      'facet_field' => $facet['map options']['field']['key'],
+      'searchKeys' => isset($_GET['search_api_views_fulltext']) ? $_GET['search_api_views_fulltext'] : '',
+      'applyPath' => url($search_path, array('query' => $query)),
+    );
+    drupal_add_js($setting, 'setting');
+  }
+}
+
+/**
+ * Return Drupal formed url for reset current facet filter.
+ */
+function ajax_facets_facet_build_reset_path($facet, $adapter) {
+  $params = $adapter->getUrlProcessor()->fetchParams();
+  $filter_key = $adapter->getUrlProcessor()->getFilterKey();
+  $clean_params = array();
+  // Build query params except current facet filters.
+  foreach ($params[$filter_key] as $param) {
+    if (strpos($param, $facet['name']) !== 0) {
+      $clean_params[] = $param;
+    }
+  }
+  $url_params = array();
+  if (!empty($clean_params)) {
+    $url_params = array('query' => array($filter_key => $clean_params));
+  }
+
+  $unset_keys = array('searchPath', 'q', 'page', $filter_key);
+  // Remove default params from redirect.
+  foreach ($params as $key => $value) {
+    if (!in_array($key, $unset_keys)) {
+      $url_params['query'][$key] = $value;
+    }
+  }
+  return url((!empty($_GET['searchPath']) ? $_GET['searchPath'] : $adapter->getSearchPath()), $url_params);
+}
+
+/**
+ * Return Drupal formed url for apply current facets state.
+ */
+function ajax_facets_facet_build_apply_path($adapter) {
+  $params = $adapter->getUrlProcessor()->fetchParams();
+  $unset_keys = array('searchPath', 'q', 'page');
+  // Remove default params from redirect.
+  foreach ($unset_keys as $key) {
+    if (isset($params[$key])) {
+      unset($params[$key]);
+    }
+  }
+  // Remove empty filter key.
+  $filter_key = $adapter->getUrlProcessor()->getFilterKey();
+  if (isset($params[$filter_key]) && empty($params[$filter_key])) {
+    unset($params[$filter_key]);
+  }
+  $url_params = !empty($params) ? array('query' => $params) : array();
+  return url((!empty($_GET['searchPath']) ? $_GET['searchPath'] : $adapter->getSearchPath()), $url_params);
+}
+
+/**
+ * Delivery callback for Ajax results of facet filtering.
+ */
+function ajax_facets_ajax_deliver($page_callback_result) {
+  // Just print results in Json.
+  print drupal_json_output($page_callback_result);
+  // Perform end-of-request tasks.
+  ajax_footer();
+}
+
+
+/**
+ * Implementation of hook_views_ajax_data_alter()
+ */
+function ajax_facets_views_ajax_data_alter(&$commands, $view) {
+  // As long as we're on a search api index view
+  if (strpos($view->base_table, 'search_api_index') !== FALSE) {
+    // We can get the index ID from the view base table
+    $index_id = str_replace('search_api_index_', '', $view->base_table);
+    // Create the searcher name
+    $searcher = 'search_api@' . $index_id;
+    // Get our facet blocks
+    $blocks = ajax_facets_process_facet_blocks($searcher);
+    // Create commands to replace each block
+    foreach ($blocks['facet_blocks'] as $class => $content) {
+      $commands[] = ajax_command_replace('.' . $class, $content);
+    }
+    // Show all blocks
+    $commands[] = ajax_command_invoke('div.block-facetapi:not(:visible)', 'show');
+    // Hide empty blocks
+    foreach ($blocks['hide_blocks'] as $block_id) {
+      $commands[] = ajax_command_invoke('#' . $block_id, 'hide');
+    }
+    // Update the views ajax path with the facet query so that exposed filter
+    // page requests knows which facets are enabled
+    $facet_query = !empty($_GET['f']) ? $_GET['f'] : '';
+    if ($facet_query) {
+      $settings = array(
+        'views' => array(
+          'ajax_path' => url('views/ajax', array('query' => array('f' => $facet_query))),
+        ),
+      );
+      // We need to put this at the head of the commands so that it runs before
+      // the views commands. This is because ajax_render() in ajax.inc prepends
+      // it's own settings command to the commands array which will change
+      // views ajax_path back to views/ajax. If we don't fix this before views
+      // runs it's ajax commands, the views ajax event won't get the facets in
+      // the path and they'll be reset on exposed filter input.
+      array_unshift($commands, ajax_command_settings($settings, TRUE));
+    }
+  }
+}
+
+/**
+ * Generates an array of facet block data for a given searcher and realm
+ *
+ * @param  string $searcher
+ *         The machine name of the searcher.
+ *
+ * @param  string $realm_name
+ *         The machine name of the realm
+ *
+ * @return array
+ *         An array of facet block data
+ */
+function ajax_facets_process_facet_blocks($searcher, $realm_name = 'block') {
+
+  $map = facetapi_get_delta_map();
+  $facets_to_proceed = array();
+  $enabled_facets = facetapi_get_enabled_facets($searcher, $realm_name);
+  foreach ($enabled_facets as $facet) {
+    $facets_to_proceed[] = $facet['name'];
+  }
+
+  // Our return array
+  $blocks = array(
+    'facet_blocks' => array(),
+    'hide_blocks' => array(),
+    'reset_urls' => array(),
+    'active_items' => array(),
+  );
+
+  $group = $searcher . ':' . $realm_name;
+  $realm = facetapi_realm_load($realm_name);
+  // Process values once per searcher-realm group.
+  $adapter = facetapi_adapter_load($searcher);
+  $builds[$group] = ($adapter) ? $adapter->buildRealm($realm_name) : array();
+  foreach ($facets_to_proceed as $facet_name) {
+    $facet = $adapter->getFacet(array('name' => $facet_name));
+    $blocks['reset_urls'][$facet_name] = ajax_facets_facet_build_reset_path($facet, $adapter);
+    if (!empty($builds[$group][$facet_name])) {
+      $build = $facet->getBuild();
+      $blocks['active_items'][$facet_name] = array();
+      foreach ($build as $key => $value) {
+        if ($value['#active']) {
+          $blocks['active_items'][$facet_name][] = "$facet_name:$key";
+        }
+      }
+      if (!empty($blocks['active_items'][$facet_name])) {
+        sort($blocks['active_items'][$facet_name]);
+      }
+
+      // Skip currently checked facet - we will not refresh them.
+      $blocks['facet_blocks'][$builds[$group][$facet_name]['#attributes']['id']] = drupal_render($builds[$group][$facet_name]);
+    }
+    else {
+      $facet_name = urlencode($facet_name);
+      $delta = array_search("$searcher:$realm_name:$facet_name", $map);
+      $blocks['hide_blocks'][] = 'block-facetapi-' . strtolower($delta);
+    }
+
+    // Settings for update view.
+    $facet_settings = $facet->getSettings($realm);
+    $update_results[$facet_name] = 0;
+    $blocks['update_results'][$facet_name] = $facet_settings->settings['update_results'];
+  }
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function ajax_facets_form_facetapi_facet_display_form_alter(&$form, $form_state) {
+  drupal_add_js(drupal_get_path('module', 'ajax_facets') . '/misc/ajax_facets.admin.js');
+}

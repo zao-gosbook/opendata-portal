@@ -61,7 +61,7 @@
       });         
     }
   }  
-  
+
   Drupal.behaviors.QuickFacts = {
     attach: function (context, settings) {  
       /**/  if('.view-quick-facts .view-content') {

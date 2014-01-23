@@ -5,23 +5,23 @@
 
 function od_common_rules_action_info() {
   return array(
-//    'generate_password' => array(
-//      'label' => t('Generate password'),
-//      'parameter' => array(
-//        'length' => array(
-//          'type' => 'integer',
-//          'label' => t('Length'),
-//        ),
-//      ),
-//      'group' => t('Gosbook'),
-//      'base' => 'common_rules_actions_generate_pass',
-//      'provides' => array(
-//        'password_generated' => array(
-//          'type' => 'text',
-//          'label' => t('Generated password'),
-//        ),
-//      ),
-//    ),
+    'generate_password' => array(
+      'label' => t('Generate password'),
+      'parameter' => array(
+        'length' => array(
+          'type' => 'integer',
+          'label' => t('Length'),
+        ),
+      ),
+      'group' => t('Gosbook'),
+      'base' => 'common_rules_actions_generate_pass',
+      'provides' => array(
+        'password_generated' => array(
+          'type' => 'text',
+          'label' => t('Generated password'),
+        ),
+      ),
+    ),
 //    'set_users_password' => array(
 //      'label' => t('Set users password'),
 //      'parameter' => array(
@@ -49,7 +49,7 @@ function od_common_rules_action_info() {
 //      'base' => 'common_rules_actions_get_ulogin_data',
 //    ),
     'copy_entity_form_to_node' => array(
-      'label' => t('Copy entity form type to node'),
+      'label' => t('Copy entity form type to node (Deprecated)'),
       'parameter' => array(
         'ef' => array(
           'type' => 'entityform',
@@ -70,10 +70,34 @@ function od_common_rules_action_info() {
           'label' => t('Created node'),
           'save' => TRUE,
         ),
-//        'node_type_created' => array(
-//          'type' => 'boolean',
-//          'label' => t('Returns true if new node type has been created'),
-//        ),
+      ),
+      'group' => t('Gosbook'),
+      'base' => 'common_rules_actions_copy_entity_form_to_node_deprecated',
+    ),
+    'copy_entity_form_to_node_safe' => array(
+      'label' => t('Safely copy entity form type to node'),
+      'parameter' => array(
+        'ef' => array(
+          'type' => 'entityform',
+          'label' => t('Entity form type to copy'),
+        ),
+        'config' => array(
+          'type' => 'struct',
+          'label' => t('Copy config'),
+          'optional' => TRUE,
+          'ui class' => 'ODCommonRulesUI_ef_node_config',
+        ),
+        'save_node' => array(
+          'type' => 'boolean',
+          'label' => t('Save created node'),
+        ),
+      ),
+      'provides' => array(
+        'node_created' => array(
+          'type' => 'node',
+          'label' => t('Created node'),
+          'save' => TRUE,
+        ),
       ),
       'group' => t('Gosbook'),
       'base' => 'common_rules_actions_copy_entity_form_to_node',
@@ -119,54 +143,39 @@ function od_common_rules_actions_od_common_format_date($timestamp, $format_name)
   return array('date_formated' => format_date($timestamp, str_replace('date_format_', '', $format_name)));
 }
 
-function common_rules_actions_copy_entity_form_to_node($ef, $node_type, $save_node = FALSE) {
-  $node_types = node_type_get_types();
 
-  if (!isset($node_types[$node_type])) {
-    $fields = (object) array(
-      'type' => (string) $node_type,
-      'name' => 'Node type '. $node_type . ' created by rules action',
-      'base' => 'node_content',
-      'has_title' => FALSE,
-      'title_label' => 'title label',
-      'description' => 'This node type has been created by rules action',
-      'help' => '',
-      'custom' => TRUE,
-      'modified' => FALSE,
-      'locked' => FALSE,
-      'disabled' => FALSE,
-      'module' => 'common',
-    );
+/**
+ * Callback for "copy_entity_form_to_node" action.
+ * @param $ef
+ * @param $node_type
+ * @param bool $save_node
+ * @return array
+ * @deprecated
+ *  An old version without field create disabling support
+ */
+function common_rules_actions_copy_entity_form_to_node_deprecated($ef, $node_type, $save_node = FALSE) {
+  module_load_include('core.inc', 'od_common');
+  $node = common_copy_ef_to_node($ef, $node_type, array('save_node' => $save_node));
+  return array('node_created' => $node);
+}
 
-    node_type_save($fields);
-  }
+/**
+ * Callback for "copy_entity_form_to_node" action.
+ * @param $ef
+ * @param $node_type
+ * @param bool $save_node
+ * @return array
+ */
+function common_rules_actions_copy_entity_form_to_node($ef, $config, $save_node = FALSE) {
+  module_load_include('core.inc', 'od_common');
 
-  $wrapper = entity_metadata_wrapper('entityform', $ef);
-  $pi = $wrapper->getPropertyInfo();
+  $options = array(
+    'create_fields' => FALSE,
+    'save_node' => $save_node,
+    'field_mappings' => $config['field_mappings'],
+  );
 
-  $node = new stdClass();
-  $node->type = $node_type;
-  $node->title = 'Entity form submission copy from ' . date('c');
-  $node->uid = $GLOBALS['user']->uid;
-  node_object_prepare($node);
-  foreach ($pi as $property => $info) {
-    if (!empty($info['field']) && isset($ef->{$property})) {
-      if (!($instance = field_info_instance('node', $property, $node_type))) {
-        $instance = field_info_instance('entityform', $property, $ef->type);
-        $instance['entity_type'] = 'node';
-        $instance['bundle'] = $node_type;
-
-        field_create_instance($instance);
-      }
-
-      $node->{$property} = $ef->{$property};
-    }
-  }
-
-  if ($save_node) {
-    entity_save('node', $node);
-  }
-
+  $node = common_copy_ef_to_node($ef, $config['node_type'], $options);
   return array('node_created' => $node);
 }
 
