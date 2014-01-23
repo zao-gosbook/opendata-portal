@@ -119,6 +119,10 @@ function od_import_import_organization_opendata($org) {
   $list_args = array('list' => $opendata_site_url);
   $list = od_import_list($od, $list_args, $org_name);
 
+  if (empty($list)) {
+    return FALSE;
+  }
+
   $operations = array();
   // Meta object.
   foreach ($list as $meta) {
@@ -234,7 +238,6 @@ function od_import_meta($meta_args, $org, &$context) {
   set_time_limit(ini_get('max_execution_time'));
 
   $context['results']['data'][] = $meta;
-  dd($context);
   return;
 }
 
