@@ -496,8 +496,13 @@ class ARC2_Store extends ARC2_Class {
   
   /*  */
 
-  function getValueHash($val) {
-    return abs(crc32($val));
+  function getValueHash($val, $_32bit = false) {
+    $hash = crc32($val);
+	if ($_32bit && ($hash & 0x80000000)) {
+        $hash = sprintf("%u", $hash);
+	}
+    $hash = abs($hash);
+	return $hash;
   }
 
   function getTermID($val, $term = '') {
@@ -518,6 +523,11 @@ class ARC2_Store extends ARC2_Class {
     /* via hash */
     if (preg_match('/^(s2val|o2val)$/', $tbl) && $this->hasHashColumn($tbl)) {
       $sql = "SELECT id, val FROM " . $this->getTablePrefix() . $tbl . " WHERE val_hash = '" . $this->getValueHash($val) . "'";
+	  $rs = $this->queryDB($sql, $con);
+	  if (!$rs || !mysql_num_rows($rs)) {// try 32 bit version
+	    $sql = "SELECT id, val FROM " . $this->getTablePrefix() . $tbl . " WHERE val_hash = '" . $this->getValueHash($val, true) . "'";
+		$rs = $this->queryDB($sql, $con);
+	  }
       if (($rs = $this->queryDB($sql, $con)) && mysql_num_rows($rs)) {
         while ($row = mysql_fetch_array($rs)) {
           if ($row['val'] == $val) {
@@ -645,7 +655,9 @@ class ARC2_Store extends ARC2_Class {
     }
     $r = $r ? $r : preg_replace("/^(.*[\/\#])([^\/\#]+)$/", '\\2', str_replace('#self', '', $res));
     $r = str_replace('_', ' ', $r);
-    $r = preg_replace('/([a-z])([A-Z])/e', '"\\1 " . strtolower("\\2")', $r);
+    $r = preg_replace_callback('/([a-z])([A-Z])/', function($matches) {
+      return $matches[1] . ' ' . strtolower($matches[2]);
+    }, $r);
     $this->resource_labels[$res] = $r;
     return $r;
   }

@@ -57,3 +57,276 @@ function od_import_action_info() {
 
   return $items;
 }
+
+/**
+ * Action callback. Import opendata from organizations.
+ */
+function od_import_import_organizations_opendata($entities) {
+  foreach ($entities as $entity) {
+    od_import_import_organization_opendata($entity);
+  }
+}
+
+/**
+ * Parse opendata organization.
+ */
+function od_import_import_organization_opendata($org) {
+  // Set date format.
+  $format = 'Y-m-d H:i:s';
+
+  // Start timer.
+  $time_start = date($format);
+
+  // Get organization title.
+  $org_name = $org->title;
+
+  $od_library = libraries_load('od_api');
+  if (!$od_library['loaded']) {
+    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
+
+    $error = 'Внутренняя ошибка - библиотека "Opendata API" не установлена.';
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
+
+    drupal_set_message($message, 'warning');
+    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+    return FALSE;
+  }
+
+  // Get organization url.
+  if (empty($org->field_site_url[LANGUAGE_NONE][0])) {
+    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
+
+    $error = 'Ошибка организации - у организации отсутствует ссылка на сайт.';
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
+
+    drupal_set_message($message, 'warning');
+    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+    return FALSE;
+  }
+
+  // Define variables for opendata API library.
+  $vars = array();
+
+  // Get organization opendata site url.
+  if (!empty($org->field_opendata_portal_url[LANGUAGE_NONE][0]['url'])) {
+    $opendata_site_url = $org->field_opendata_portal_url[LANGUAGE_NONE][0]['url'];
+  }
+  else {
+    $opendata_site_url = $org->field_site_url[LANGUAGE_NONE][0]['url'];
+  }
+
+  // Get organization opendata page url.
+  if (!empty($org->field_opendata_page_url[LANGUAGE_NONE][0]['value'])) {
+    $vars['opendata_list_semantic_url'] = $org->field_opendata_page_url[LANGUAGE_NONE][0]['value'];
+  }
+
+  $od = new OdApi($vars);
+
+  $list_args = array('list' => $opendata_site_url);
+  $list = od_import_list($od, $list_args, $org_name);
+
+  if (empty($list)) {
+    return FALSE;
+  }
+
+  $operations = array();
+  // Meta object.
+  foreach ($list as $meta) {
+    $meta_args = $meta['#api'];
+    $operations[] = array('od_import_meta', array($meta_args, $org->nid, $time_start));
+  }
+
+  $batch = array(
+    'title' => t('Import meta'),
+    'operations' => $operations,
+    'finished' => 'od_import_batch_meta_finished',
+  );
+
+  batch_set($batch);
+  batch_process();
+
+  return TRUE;
+}
+
+function od_import_list($od, $list_args, $org_name) {
+  // Remove time limit execution script.
+  set_time_limit(0);
+
+  // List object.
+  $list_result = $od->getResult($list_args);
+  $errors = $od->getErrors();
+
+  if (!empty($errors)) {
+    $error = reset($errors);
+    $error = 'Ошибка открытых данных - ' . t($error['description']);
+  }
+
+  if (!empty($error)) {
+    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
+    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
+
+    drupal_set_message($message, 'warning');
+    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+  }
+
+  // Restore default time limit execution script.
+  set_time_limit(ini_get('max_execution_time'));
+
+  return $list_result['meta'];
+}
+
+function od_import_meta($meta_args, $org, $time_start, &$context) {
+  // Remove time limit execution script.
+  set_time_limit(0);
+
+  if (!isset($context['results']['data'])) {
+    $context['results']['data'] = array();
+  }
+
+  if (!isset($context['results']['org'])) {
+    $context['results']['org'] = $org;
+  }
+
+  if (!isset($context['results']['time_start'])) {
+    $context['results']['time_start'] = $time_start;
+  }
+
+  libraries_load('od_api');
+
+  $od = new OdApi();
+  $meta_result = $od->getResult($meta_args);
+
+  $meta = $meta_result;
+
+  if (empty($meta)) {
+    $context['results']['data'][] = $meta;
+    return;
+  }
+  unset($meta['#version']);
+  if (empty($meta['source'])) {
+    $context['results']['data'][] = $meta;
+    return;
+  }
+  $meta['data'] = $meta['source'];
+  unset($meta['source']);
+
+  // Publisher object.
+  $publisher_args = $meta['publisher']['#api'];
+  $publisher_result = $this->getResult($publisher_args);
+  $meta['publisher'] = $publisher_result;
+  unset($meta['publisher']['#version']);
+
+  // Source object.
+  $source_args = $meta['data']['#api'];
+  $source_result = $this->getResult($source_args);
+  $meta['data'] = $source_result ? $source_result['data'] : $source_result;
+  unset($source_result['data']['#version']);
+  if (empty($meta['data']) || !is_array($meta['data'])) {
+    $context['results']['data'][] = $meta;
+    return;
+  }
+
+  // Data object.
+  foreach ($meta['data'] as &$data) {
+    $data_args = $data['#api'];
+    $data_result = $this->getResult($data_args);
+    $data = $data_result;
+    unset($data['#version']);
+    if (empty($data)) {
+      $context['results']['data'][] = $meta;
+      return;
+    }
+
+    // Structure object.
+    $structure_args = $data['structure']['#api'];
+    $structure_result = $this->getResult($structure_args);
+    $data['structure'] = $structure_result;
+    unset($data['structure']['#version']);
+  }
+
+  // Restore default time limit execution script.
+  set_time_limit(ini_get('max_execution_time'));
+
+  $context['results']['data'][] = $meta;
+  return;
+}
+
+function od_import_batch_meta_finished($success, $results, $operations) {
+  _od_import_meta_from_data($results['data'], $results['org'], $results['time_start']);
+}
+
+function _od_import_meta_from_data($data, $org_nid, $time_start) {
+  // Get organization object.
+  $org = node_load($org_nid);
+
+  // Set date format.
+  $format = 'Y-m-d H:i:s';
+
+  $meta_added_count = 0;
+  $meta_updated_count = 0;
+  $meta_existed_count = 0;
+  $meta_failed_count = 0;
+
+  $dataset_list_loaded = array();
+  $dataset_list_failed = array();
+  foreach ($data as $meta) {
+    // Skip opendata meta with error.
+    if ($meta === FALSE) {
+      $meta_failed_count++;
+      $dataset_list_failed[] = $meta['title'];
+      continue;
+    }
+
+    $identifier = $meta['identifier'];
+    $dataset_node = od_import_load_dataset($identifier);
+
+    $meta_node = od_import_load_or_create_dataset($identifier, $meta, $org_nid, $dataset_node, $updated);
+
+    if (!$dataset_node) {
+      $meta_added_count++;
+      $dataset_list_loaded[] = l($meta_node->title, 'node/' . $meta_node->nid);
+    }
+    else {
+      if ($updated) {
+        $meta_updated_count++;
+      }
+      else {
+        $meta_existed_count++;
+      }
+    }
+  }
+
+  $dataset_list_loaded = implode('<br />', $dataset_list_loaded);
+  $dataset_list_failed = implode('<br />', $dataset_list_failed);
+
+  $time_finish = date($format);
+
+  $message = <<<'MESSAGE'
+  Обработан реестр наборов открытых данных организации %org_name.<br />
+  Время начало обработки: %time_start. Время завершения обработки: %time_finish.<br />
+  Количество новых загруженных наборов: %meta_added_count.<br />
+  Количество актуализированных наборов: %meta_updated_count.<br />
+  Количество ранее загруженных наборов: %meta_existed_count.<br />
+  Количество наборов содержащих ошибки: %meta_failed_count.<br />
+  Список загруженных наборов:<br />
+  !dataset_list_loaded.
+MESSAGE;
+
+    $args = array(
+      '%org_name' => $org->title,
+      '%time_start' => $time_start,
+      '%time_finish' => $time_finish,
+      '%meta_added_count' => $meta_added_count,
+      '%meta_updated_count' => $meta_updated_count,
+      '%meta_existed_count' => $meta_existed_count,
+      '%meta_failed_count' => $meta_failed_count,
+      '!dataset_list_loaded' => $dataset_list_loaded,
+      '!dataset_list_failed' => $dataset_list_failed,
+    );
+    $message = format_string($message, $args);
+
+    drupal_set_message($message);
+    watchdog('od_import', $message, array(), WATCHDOG_INFO);
+
+  return TRUE;
+}

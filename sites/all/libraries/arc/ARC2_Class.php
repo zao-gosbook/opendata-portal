@@ -75,7 +75,9 @@ class ARC2_Class {
 
   function deCamelCase($v, $uc_first = 0) {
     $r = str_replace('_', ' ', $v);
-    $r = preg_replace('/([a-z0-9])([A-Z])/e', '"\\1 " . strtolower("\\2")', $r);
+    $r = preg_replace_callback('/([a-z0-9])([A-Z])/', function($matches) {
+      return $matches[1] . ' ' . strtolower($matches[2]);
+    }, $r);
     return $uc_first ? ucfirst($r) : $r;
   }
 
@@ -92,7 +94,7 @@ class ARC2_Class {
     /* decode apostrophe + s */
     $r = str_replace(' apostrophes ', "'s ", $r);
     /* typical RDF non-info URI */
-    if (($loops < 1) && preg_match('/^(self|it|this|me)$/i', $r)) {
+    if (($loops < 1) && preg_match('/^(self|it|this|me|id)$/i', $r)) {
       return $this->extractTermLabel(preg_replace('/\#.+$/', '', $uri), $loops + 1);
     }
     /* trailing hash or slash */
