@@ -28,6 +28,10 @@ class od_entity_label_translate_class_taxonomy_term extends od_entity_label_tran
     }
   }
 
+  /**
+   * Triggers on: hook_entity_load()
+   * @fixme: Not a good variant of translation... Should be fixed with proper decision
+   */
   function on_entity_load() {
     if (arg(0) == 'admin') {
       return;
