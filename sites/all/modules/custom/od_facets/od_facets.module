@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ *  Ajax facets implementation.
+ */
+
+/**
+ * Implements hook_facetapi_widgets().
+ */
+function od_facets_facetapi_widgets() {
+  return array(
+    // Custom widget to handle ajax-refreshed facets.
+    'od_facetapi_ajax_links' => array(
+      'handler' => array(
+        'label' => 'Opendata Widget Checkboxes (AJAX tipa)',
+        'class' => 'FacetapiOdFacetsAjaxWidgetLinks',
+        'query types' => array('term'),
+      ),
+    ),
+  );
+}

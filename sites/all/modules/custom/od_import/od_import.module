@@ -71,6 +71,12 @@ function od_import_import_organizations_opendata($entities) {
  * Parse opendata organization.
  */
 function od_import_import_organization_opendata($org) {
+  // Set date format.
+  $format = 'Y-m-d H:i:s';
+
+  // Start timer.
+  $time_start = date($format);
+
   // Get organization title.
   $org_name = $org->title;
 
@@ -127,7 +133,7 @@ function od_import_import_organization_opendata($org) {
   // Meta object.
   foreach ($list as $meta) {
     $meta_args = $meta['#api'];
-    $operations[] = array('od_import_meta', array($meta_args, $org->nid));
+    $operations[] = array('od_import_meta', array($meta_args, $org->nid, $time_start));
   }
 
   $batch = array(
@@ -169,7 +175,7 @@ function od_import_list($od, $list_args, $org_name) {
   return $list_result['meta'];
 }
 
-function od_import_meta($meta_args, $org, &$context) {
+function od_import_meta($meta_args, $org, $time_start, &$context) {
   // Remove time limit execution script.
   set_time_limit(0);
 
@@ -179,6 +185,10 @@ function od_import_meta($meta_args, $org, &$context) {
 
   if (!isset($context['results']['org'])) {
     $context['results']['org'] = $org;
+  }
+
+  if (!isset($context['results']['time_start'])) {
+    $context['results']['time_start'] = $time_start;
   }
 
   libraries_load('od_api');
@@ -242,17 +252,16 @@ function od_import_meta($meta_args, $org, &$context) {
 }
 
 function od_import_batch_meta_finished($success, $results, $operations) {
-  _od_import_meta_from_data($results['data'], $results['org']);
+  _od_import_meta_from_data($results['data'], $results['org'], $results['time_start']);
 }
 
-function _od_import_meta_from_data($data, $org_nid) {
+function _od_import_meta_from_data($data, $org_nid, $time_start) {
   // Get organization object.
   $org = node_load($org_nid);
 
   // Set date format.
   $format = 'Y-m-d H:i:s';
 
-  $time_start = date($format);
   $meta_added_count = 0;
   $meta_updated_count = 0;
   $meta_existed_count = 0;
