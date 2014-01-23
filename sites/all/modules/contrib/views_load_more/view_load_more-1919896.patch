@@ -1,0 +1,41 @@
+diff --git a/views_load_more.js b/views_load_more.js
+index 15c03c4..de096cb 100644
+--- a/views_load_more.js
++++ b/views_load_more.js
+@@ -21,9 +21,10 @@
+     // $(response.data) as new HTML rather than a CSS selector. Also, if
+     // response.data contains top-level text nodes, they get lost with either
+     // $(response.data) or $('<div></div>').replaceWith(response.data).
++    //$('.view-groups').append(response.data); return;
+     var new_content_wrapped = $('<div></div>').html(response.data);
+-    var new_content = new_content_wrapped.contents();
+-
++    var new_content = new_content_wrapped.find('div>eq(0)');
++    
+     // For legacy reasons, the effects processing code assumes that new_content
+     // consists of a single top-level element. Also, it has not been
+     // sufficiently tested whether attachBehaviors() can be successfully called
+@@ -49,8 +50,8 @@
+     // jquery selector to replace the content with.
+     // Provide sensible defaults for unordered list, ordered list and table
+     // view styles.
+-    var content_query = targetList && !response.options.content ? '.view-content ' + targetList : response.options.content || '.view-content';
+-
++    var content_query = targetList && !response.options.content ? '.view-content:eq(0) ' + targetList : response.options.content || '.view-content:eq(0)';
++    var search_query = '.view-content:eq(0)';
+     // If we're using any effects. Hide the new content before adding it to the DOM.
+     if (effect.showEffect != 'show') {
+       new_content.find(content_query).children().hide();
+@@ -59,10 +60,10 @@
+     // Add the new content to the page.
+     wrapper.find('.pager a').remove();
+     wrapper.find('.pager').parent('.item-list').html(new_content.find('.pager'));
+-    wrapper.find(content_query)[method](new_content.find(content_query).children());
++    wrapper.find(search_query)[method](new_content.find(content_query).html());
+ 
+     // Re-class the loaded content.
+-    wrapper.find(content_query).children()
++    wrapper.find(search_query).children()
+       .removeClass('views-row-first views-row-last views-row-odd views-row-even')
+       .filter(':first')
+         .addClass('views-row-first')
