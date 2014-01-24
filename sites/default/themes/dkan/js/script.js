@@ -13,13 +13,12 @@
 (function ($, Drupal, window, document, undefined) {
 
   Drupal.behaviors.HintFormElemements = {
-    attach: function (context) {      
-      $('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text', context).once(function(){        
-        $('.pane-gb-search-pane .form-text', context).attr("placeholder", Drupal.t("Search for data"));
-        $('.pane-datasets-search-dataset-search .view-filters .form-text', context).attr("placeholder", Drupal.t("Search for data"));
-
-        $('input[placeholder], textarea[placeholder]').inputHints();
-      });    
+    attach: function (context) {
+      if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
+        $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
+        $('.pane-datasets-search-dataset-search .view-filters .form-text').attr("placeholder", Drupal.t("Search for data"));
+        //$('input[placeholder], textarea[placeholder]').inputHints();
+      }
     }
   } 
   
