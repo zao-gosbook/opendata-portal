@@ -96,6 +96,16 @@ audio:not([controls]) {
 }
 */
 
+@font-face {
+  font-family: 'GillSansRegular';
+  src: url('../fonts/gillsans.eot');
+  src: url('../fonts/gillsans.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/gillsans.woff') format('woff'),
+       url('../fonts/gillsans.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /**
  * 1. Set default font family to sans-serif.
  * 2. Prevent iOS text size adjust after orientation change, without disabling
