@@ -13,12 +13,14 @@ function od_publisher_permission() {
   return $perms;
 }
 
+/**
+ * Implements hook_node_access()
+ */
 function od_publisher_node_access($node, $op, $account) {
   //Check if passed user is not superadmin (uid=1) or user is not a publisher
   if (user_access('administer', $account) || !user_access('od_publisher_map_publisher', $account)) {
     return NODE_ACCESS_IGNORE; //Do not do anything
   }
-
 
   if ($node->type == 'dataset') {
     $node_wrapper = entity_metadata_wrapper('node', $node);
@@ -26,6 +28,9 @@ function od_publisher_node_access($node, $op, $account) {
     //Check if publisher's organization doesn't match the node's organizations
     if ($op != 'view' && ($organization = $node_wrapper->field_organization->value()) && !od_publisher_api_user_has_organization($organization->nid, $account)) {
       return NODE_ACCESS_DENY; //Deny the operation for non publishers
+    }
+    elseif ($organization && od_publisher_api_user_has_organization($organization->nid, $account)) {
+      return NODE_ACCESS_ALLOW;
     }
   }
 
