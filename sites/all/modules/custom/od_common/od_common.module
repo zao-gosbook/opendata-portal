@@ -113,18 +113,3 @@ function theme_od_common_date_combo($variables) {
   return $output;
 }
 
-/**
- *  Implements hook_preprocess_page()
- *  Изменяем название вкладки Edit для Набора данных.
- */
-
-function od_common_preprocess_page(&$vars) {
-  if ($vars['node']->type == 'dataset') {
-    foreach($vars['tabs']['#primary'] AS $index => $tab) {
-      if($tab['#link']['title'] == t('Edit')) {
-        $vars['tabs']['#primary'][$index]['#link']['title'] = t('Edit passport');
-      }
-    }
-  }
-}
-
