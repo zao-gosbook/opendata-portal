@@ -85,6 +85,7 @@ function filefield_source_remotefile_process($element, &$form_state, $form) {
  * A #filefield_value_callback function.
  */
 function filefield_source_remotefile_value($element, &$item) {
+
   if (isset($item['filefield_remotefile']['url']) && drupal_strlen($item['filefield_remotefile']['url']) > 0 && $item['filefield_remotefile']['url'] != REMOTE_FILE_SOURCE_HINT_TEXT) {    
     $value = $item['filefield_remotefile']['url'];
     if (!valid_url($value, TRUE)) {
