@@ -25,11 +25,12 @@ function od_publisher_node_access($node, $op, $account) {
   if ($node->type == 'dataset') {
     $node_wrapper = entity_metadata_wrapper('node', $node);
     $user_wrapper = entity_metadata_wrapper('user', $account);
+
     //Check if publisher's organization doesn't match the node's organizations
-    if ($op != 'view' && ($organization = $node_wrapper->field_organization->value()) && !od_publisher_api_user_has_organization($organization->nid, $account)) {
+    if ($op != 'view' && ($organization = $node_wrapper->field_organization->value()) && !od_publisher_api_user_is_curator_of($organization, $account)) {
       return NODE_ACCESS_DENY; //Deny the operation for non publishers
     }
-    elseif ($organization && od_publisher_api_user_has_organization($organization->nid, $account)) {
+    elseif ($organization && od_publisher_api_user_is_curator_of($organization, $account)) {
       return NODE_ACCESS_ALLOW;
     }
   }
@@ -47,11 +48,16 @@ function od_publisher_node_access($node, $op, $account) {
  * @todo: $nid should be $nids (array of nids)
  * @todo: support multi field values
  */
-function od_publisher_api_user_has_organization($nid, $account = NULL) {
+function od_publisher_api_user_is_curator_of($node_or_nid, $account = NULL) {
   $account = $account === NULL ? $GLOBALS['user'] : $account;
-  $user_wrapper = entity_metadata_wrapper('user', $account);
-  if ($organization = $user_wrapper->field_organization->value()) {
-    return $organization->nid == $nid;
+  $node_wrapper = entity_metadata_wrapper('node', $node_or_nid);
+
+  if (($curators = $node_wrapper->field_organization_curators->value())) {
+    foreach ($curators as $curator) {
+      if ($curator->uid == $account->uid) {
+        return TRUE; //The user is publisher of this organization
+      }
+    }
   }
 
   return FALSE;
