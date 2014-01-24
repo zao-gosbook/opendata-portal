@@ -1,0 +1,7 @@
+name = Rules developer comments
+description = Provides a Rules plugin which provides algorithms commenting.
+core = 7.x
+dependencies[] = rules_conditional
+package = Rules
+files[] = includes/rules_dev_comments.plugin.inc
+files[] = includes/rules_dev_comments.ui.inc
