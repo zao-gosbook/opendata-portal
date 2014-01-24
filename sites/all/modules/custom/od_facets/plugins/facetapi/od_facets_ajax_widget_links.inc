@@ -79,6 +79,17 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
     if ($have_active) {
       $this->jsSettings['resetPath'] = ajax_facets_facet_build_reset_path($this->facet->getFacet(), $this->facet->getAdapter());
     }
+
+    $this->addJsOnce();
     return $items;
+  }
+
+  protected function addJsOnce() {
+    static $added = FALSE;
+    if (!$added) {
+      drupal_add_js(drupal_get_path('module', 'od_facets'). '/js/widget_links.js');
+    }
+
+    return TRUE;
   }
 }
