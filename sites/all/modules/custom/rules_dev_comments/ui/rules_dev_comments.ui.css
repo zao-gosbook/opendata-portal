@@ -1,0 +1,14 @@
+.rules-dev-comments .rules-element-label,
+.rules-dev-comments .description {
+  font-style: italic;
+  color: #c63;
+}
+
+.rules-dev-comments .rules-element-label {
+ font-size: 1.1em;
+}
+
+.rules-dev-comments .rules-element-label:before {
+  content: '# ';
+  font-size: 1.1em;
+}

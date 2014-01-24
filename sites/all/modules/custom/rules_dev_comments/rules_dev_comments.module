@@ -1,0 +1,29 @@
+<?php
+/**
+ * @file
+ * Main module file.
+ */
+
+
+function rules_dev_comments_form_rules_ui_form_edit_rules_config_alter(&$form) {
+  $elements = &$form['elements'];
+  $comment_id = NULL;
+  foreach (element_children($elements) as $element) {
+    if (empty($comment_id)) {
+      // not inside any comment
+      if (isset($elements[$element]['label']['#is_comment'])) {
+        // comment element
+        $comment_id = $elements[$element]['element_id']['#default_value'];
+      } else {
+        // not a comment element - do nothing 
+      }
+    } else if ($elements[$comment_id]['#depth'] < $elements[$element]['#depth']) {
+      // inside a comment
+      if (!isset($elements[$element]['label']['#is_comment'])) {
+        $elements[$element]['label']['#attributes']['class'][] = 'rules-dev-comments';
+      }
+    } else {
+      $comment_id = NULL;
+    }
+  }
+}
