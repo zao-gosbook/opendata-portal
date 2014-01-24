@@ -31,13 +31,16 @@ function od_common_permission() {
 
 /**
  *  Implements hook_form_FORM_ID_alter()
- */
+ *  Изменяем вывод внешнего фильтра в картах.
+ * /
 function od_common_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
   if (isset($form['field_geolocation_distance']['googlemap'])) {
     unset($form['field_geolocation_distance']['googlemap']['address']['geocode']);
     $form['field_geolocation_distance']['googlemap']['help']['#markup']=t('Enter an address / location in the textfield');
   }
-}/**
+}
+
+/**
  * Implements hook_preprocess_THEMEHOOK()
  */
 function od_common_preprocess_date_combo(&$vars) {
@@ -109,3 +112,4 @@ function theme_od_common_date_combo($variables) {
 
   return $output;
 }
+
