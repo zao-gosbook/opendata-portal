@@ -1108,15 +1108,13 @@ div.horizontal-tabs .form-text {
     font-size: 38px;
     line-height: 38px;
   }
-  .view-filters {
+  form {
     float: right;
     clear: right;
+    position: relative;
     
     .description {
       display:none;
-    }
-    form {
-      position: relative;
     }
     .ajax-progress {
       position: absolute;
@@ -1138,6 +1136,9 @@ div.horizontal-tabs .form-text {
     .views-exposed-widget {
       padding: 0;
     }
+    .views-exposed-widgets {
+      margin: 0;
+    }
     .form-text {
       border: 10px solid #e5e5e5;
       padding: .7em 5em.7em .7em;
@@ -1147,7 +1148,7 @@ div.horizontal-tabs .form-text {
       margin: 0;
       text-transform: uppercase;
     }
-    .form-submit {
+    .views-submit-button .form-submit {
       position: absolute;
       margin-top: 0;
       right: 1px;
@@ -1165,13 +1166,24 @@ div.horizontal-tabs .form-text {
     }
   }
   .view-content {
-    clear: both;
+    clear: none;
     padding-top: 3.4em;
   }
   .view-empty {
     clear: both;
     margin-top: 20px;
   }
+}
+
+.pane-dataset {
+  clear: right;
+  float: right;
+  width: 320px;
+  margin-left: 25px;
+  position: relative;
+  z-index: 100;
+  background: #fff;
+  padding-top: 10px;
 }
 
 .region-facet {
@@ -1189,6 +1201,7 @@ div.horizontal-tabs .form-text {
     padding-bottom: 2.5em;
   }
   .view-dataset {
+    
     .views-row {
       list-style: none;
       margin: 0 0 1px 0;
@@ -1196,6 +1209,7 @@ div.horizontal-tabs .form-text {
       text-align: right;
       text-transform: uppercase;
       color: #3d9fed;
+      border: 0;
       
       a {
         color: #4c4c4c;
@@ -1325,12 +1339,20 @@ div.horizontal-tabs .form-text {
 .dataset-search-facets {
   float: right;
   
+  .view-datasets-search {
+    position: static;
+  }
+  
   .panels-flexible-region-inside {
     padding-left: 1%;
   }
   
   .node {
+    position: relative;
     
+    &.clearfix:after {
+      clear: none;
+    }
     &.node-teaser {
       border-right: 5px solid #bfbfbf;
       padding-right: 4%;
@@ -1409,6 +1431,10 @@ div.horizontal-tabs .form-text {
       border-right: 0;
       padding-right: 0;
       margin-bottom: 0;      
+      
+      &.clearfix:after {
+        clear: none;
+      }      
     }
     
     .views-field-title .field-content {
@@ -1486,6 +1512,59 @@ div.horizontal-tabs .form-text {
       text-transform: uppercase;
       margin-bottom: 5px;
       margin-top: 5px;
+    }
+  }
+}
+.pane-dataset {
+  
+  .pane-title {
+    color: #4c4c4c;
+    margin: 0;
+    line-height: 1em;
+    font-size: 1.9em;
+    padding-bottom: .4em;
+    padding-top: .2em;
+  }
+  .pane-block,
+  .view-dataset {
+    padding-bottom: 2.5em;
+  }
+  .view-dataset {
+    position: static;
+    
+    .views-row {
+      list-style: none;
+      margin: 0 0 1px 0;
+      padding: 0;
+      text-align: right;
+      text-transform: uppercase;
+      color: #3d9fed;
+      border: 0;
+      
+      .views-field-title {
+        
+        .field-content {
+          font-size: 1.1em;
+          line-height: 1.2em;
+          margin: 0;
+          
+          a {
+            color: #4c4c4c;
+            text-decoration: none;
+            position: relative;
+            display: block;
+            background: #e5e5e5;
+            font-size: 1.25em;
+            padding: 1em;
+            text-align: left;  
+            
+            &:hover {
+              background: #3d9fed;
+              color: #fff;             
+            } 
+          }          
+        } 
+      }
     }
   }
 }
@@ -3486,6 +3565,50 @@ div.fivestar-widget .star {
     }
   }
 }
+ 
+/**
+ * map
+ */ 
+.view-datasets-map {
+  
+  .views-exposed-widgets {
+    margin-bottom: 3.2em;
+  }
+  .views-exposed-widget {
+    float: none;
+  }
+  .views-widget-filter-field_organization_target_id {
+    
+  }
+  
+}
+
+/**
+ * pager
+ */
+.pager  {
+  font-size: 15px;
+  
+  li {
+    padding: 0 21px;
+    
+    &.pager-item,
+    &.pager-current {
+      padding: 0 18px;
+      font-weight: normal;
+      font-size: 18px;
+    }
+    
+    a {
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+ 
  
 /**
  * messages
