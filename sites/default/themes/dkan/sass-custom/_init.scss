@@ -79,6 +79,7 @@ $verdana:         Verdana, Tahoma, "DejaVu Sans", sans-serif;
 $tahoma:          Tahoma, Verdana, "DejaVu Sans", sans-serif;
 $helvetica:       Helvetica, Arial, "Nimbus Sans L", sans-serif;
 $arial:           Arial, Helvetica, "Nimbus Sans L", sans-serif;
+$gill:            'GillSansRegular', Arial, Helvetica;
 
 //$roboto:    "RobotoRegular", Arial;
 //$robotothin:    "RobotoThin", Arial;
@@ -91,7 +92,7 @@ $opensans:    "OpenSansCondensedBold", Arial;
 $courier:         "Courier New", "DejaVu Sans Mono", monospace, sans-serif;
 
 // Now create some variables for the font stacks we want to use on this site.
-$base-font-family: $arial; // The font family set on the html element.
+$base-font-family: $gill; //$arial;  The font family set on the html element.
 $font-body:        $verdana;
 $font-monospace:   $courier;
 

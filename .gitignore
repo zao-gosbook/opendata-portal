@@ -7,3 +7,7 @@ sites/*/private
 
 # Ignore PHPStorm project directory.
 .idea
+
+# Ignore compass styles cache and other trash
+sites/*/themes/*/.sass-cache
+sites/*/themes/*/css/*
