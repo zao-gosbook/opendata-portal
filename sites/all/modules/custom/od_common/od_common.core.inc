@@ -50,11 +50,18 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
   $wrapper = entity_metadata_wrapper('entityform', $ef);
   $pi = $wrapper->getPropertyInfo();
 
-  $node = new stdClass();
-  $node->type = $node_type;
-  $node->title = 'Entity form submission copy from ' . date('c');
-  $node->uid = $GLOBALS['user']->uid;
-  node_object_prepare($node);
+  //If node has been passed as parameter we won't create new node
+  if (!empty($options['node']) && is_object($options['node'])) {
+    $node = $options['node'];
+  }
+  else {
+    $node = new stdClass();
+    $node->type = $node_type;
+    $node->title = 'Entity form submission copy from ' . date('c');
+    $node->uid = $GLOBALS['user']->uid;
+    node_object_prepare($node);
+  }
+
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $node_pi = $node_wrapper->getPropertyInfo();
   foreach ($pi as $property => $info) {

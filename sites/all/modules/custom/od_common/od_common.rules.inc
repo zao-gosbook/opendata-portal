@@ -102,6 +102,27 @@ function od_common_rules_action_info() {
       'group' => t('Gosbook'),
       'base' => 'common_rules_actions_copy_entity_form_to_node',
     ),
+    'copy_entity_form_to_existing_node_safe' => array(
+      'label' => t('Safely copy entity form type to node'),
+      'parameter' => array(
+        'ef' => array(
+          'type' => 'entityform',
+          'label' => t('Entity form type to copy'),
+        ),
+        'node' => array(
+          'type' => 'node',
+          'label' => t('Node to copy to'),
+        ),
+        'config' => array(
+          'type' => 'struct',
+          'label' => t('Copy config'),
+          'optional' => TRUE,
+          'ui class' => 'ODCommonRulesUI_ef_node_config',
+        ),
+      ),
+      'group' => t('Gosbook'),
+      'base' => 'common_rules_actions_copy_entity_form_to_existing_node',
+    ),
     'od_common_format_date' => array(
       'label' => t('Format timestamp to appropriate format'),
       'parameter' => array(
@@ -178,6 +199,28 @@ function common_rules_actions_copy_entity_form_to_node($ef, $config, $save_node 
   $node = common_copy_ef_to_node($ef, $config['node_type'], $options);
   return array('node_created' => $node);
 }
+
+
+/**
+ * Callback for "copy_entity_form_to_node" action.
+ * @param $ef
+ * @param $node_type
+ * @param bool $save_node
+ * @return array
+ */
+function common_rules_actions_copy_entity_form_to_existing_node($ef, $node, $config) {
+  module_load_include('core.inc', 'od_common');
+
+  $options = array(
+    'create_fields' => FALSE,
+    'save_node' => FALSE,
+    'field_mappings' => $config['field_mappings'],
+    'node' => $node,
+  );
+
+  $node = common_copy_ef_to_node($ef, $config['node_type'], $options);
+}
+
 
 function common_rules_actions_generate_pass($length = 10) {
   $info = array();
