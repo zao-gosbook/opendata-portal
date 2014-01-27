@@ -3,6 +3,10 @@
  * @file
  */
 
+/* Load additional files */
+$__dirname = dirname(__FILE__);
+require_once $__dirname. '/od_common.pubdlcnt.inc'; //Public download count related things
+
 /**
  * Implements hook_module_implements_alter()
  */
@@ -17,13 +21,23 @@ function od_common_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
+ * Implementation of hook_ctools_plugin_directory() to let the system know
+ * where all our own plugins are.
+ */
+function od_common_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return 'plugins/content_types';
+  }
+}
+
+/**
  * Implements hook_permission()
  */
 function od_common_permission() {
   $perms = array();
 
   $perms['od_common localize access taxonomy_term'] = array(
-    'title' => t('Locilize taxonomy terms'),
+    'title' => t('Localize taxonomy terms'),
   );
 
   return $perms;
@@ -32,7 +46,7 @@ function od_common_permission() {
 /**
  *  Implements hook_form_FORM_ID_alter()
  *  Изменяем вывод внешнего фильтра в картах.
- * /
+ */
 function od_common_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
   if (isset($form['field_geolocation_distance']['googlemap'])) {
     unset($form['field_geolocation_distance']['googlemap']['address']['geocode']);
