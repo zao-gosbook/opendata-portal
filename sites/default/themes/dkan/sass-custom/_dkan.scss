@@ -941,29 +941,22 @@ div.horizontal-tabs .form-text {
     } 
   }
   .pane-user-picture {
-    float: left;
-    width: 36%;
     
     img {
       border: 10px solid #e5e5e5;
-      margin-right: 30px;
-      float: right;
+      margin-bottom: 2em;
     }
   }
   .pane-user-name-raw {
-    margin-left: 36%;
     color: #4d4d4d;
     font-size: 38px;
-    margin-top: -11px;
     line-height: 42px;
   }
   .pane-user-roles {
-    margin-left: 36%;
     color: #b5b5b5;
     font-size: 16px;
     line-height: 1em;
     text-transform: uppercase;
-    padding-bottom: 55px;
     
     h2 {
       font-size: 16px;
@@ -974,16 +967,16 @@ div.horizontal-tabs .form-text {
     }
   }
   .pane-superfish-2 {
-    margin-left: 36%;
+    margin-left: 7%;
+    margin-right: 7%;
   }
-  .pane-page-content {
-    margin-left: 36%;
-    padding-top: 45px;
+  .region-user-main-info {
+    width: 50%;
     font-size: 16px;
     line-height: 1.35em;
     color: #4d4d4d;
     
-    .field {
+    .panel-pane {
       padding-bottom: .7em;
       font-size: 18px;
       
@@ -991,9 +984,20 @@ div.horizontal-tabs .form-text {
         font-weight: normal;
       }
     }
-    h3,
+    .pane-user-name {
+      color: #4D4D4D;
+      font-size: 38px;
+      line-height: 42px;
+    }    
     h2 {
-      margin: 1em 0 .1em;
+      display: inline-block;
+      margin: 0 5px 0 0;
+      line-height: 1;
+      font-size: 18px;
+      text-transform: none;
+    }
+    h3 {
+      margin: 0 0 .45em;
       font-size: 30px;
       line-height: 1em;
     }
@@ -1005,6 +1009,13 @@ div.horizontal-tabs .form-text {
       dt, dd {
         display: inline-block;
         float: left;
+        padding: 0 0 .7em 0;
+      }
+      dt:after {
+        content: ':';
+      }
+      dd {
+        margin-left: 10px;
       }
       dt {
         clear: left;
@@ -1032,6 +1043,23 @@ div.horizontal-tabs .form-text {
           }
         }
       }
+    }      
+  }
+  .region-user-avatar {
+    width: 50%;
+     
+  }  
+  .pane-page-content {
+    margin-left: 7%;
+    margin-right: 7%;
+    padding-top: 0;
+    font-size: 15px;
+    
+    .panels-flexible-region {
+      width: 100%;
+    }
+    .views-row {
+      padding-bottom: 1em;
     }
   }
 }
@@ -1055,7 +1083,7 @@ div.horizontal-tabs .form-text {
 }
 .pane-search-api-sorts-search-sorts {
   float: right;
-  padding-bottom: 1.4em;
+  padding-bottom: 1.25em;
   
   * {
     float: left;
@@ -1106,12 +1134,15 @@ div.horizontal-tabs .form-text {
   .view-header {
     color: #4d4d4d;
     font-size: 38px;
-    line-height: 38px;
+    line-height: 36px;
+    position: relative;
+    top: -4px;    
   }
   form {
     float: right;
     clear: right;
     position: relative;
+    width: 100%;
     
     .description {
       display:none;
@@ -1135,16 +1166,17 @@ div.horizontal-tabs .form-text {
     }
     .views-exposed-widget {
       padding: 0;
+      float: none;
     }
     .views-exposed-widgets {
       margin: 0;
     }
     .form-text {
       border: 10px solid #e5e5e5;
-      padding: .7em 5em.7em .7em;
+      padding: .55em 5em .55em .7em;
       font-size: 1.2em;
-      @include box-sizing(padding-box);
-      width: 300px;
+      @include box-sizing(border-box);/**/
+      width: 100%;
       margin: 0;
       text-transform: uppercase;
     }
@@ -1154,7 +1186,7 @@ div.horizontal-tabs .form-text {
       right: 1px;
       width: 52px;
       height: 52px;
-      top: 4px;
+      top: 0;
       background: url("../images/ico-search-big.png") no-repeat scroll 0 0 / cover transparent;
       border: 0 none;
       overflow: hidden;
@@ -1167,7 +1199,11 @@ div.horizontal-tabs .form-text {
   }
   .view-content {
     clear: none;
-    padding-top: 3.4em;
+    padding-top: 7.4em;
+    
+    .view-content {
+      padding-top: 0;
+    }
   }
   .view-empty {
     clear: both;
@@ -1183,7 +1219,7 @@ div.horizontal-tabs .form-text {
   position: relative;
   z-index: 100;
   background: #fff;
-  padding-top: 10px;
+  padding-top: 20px;
 }
 
 .region-facet {
@@ -1553,8 +1589,9 @@ div.horizontal-tabs .form-text {
             text-decoration: none;
             position: relative;
             display: block;
-            background: #e5e5e5;
-            font-size: 1.25em;
+            background: #eee;
+            font-size: 1.15em;
+            line-height: 1.2em;
             padding: 1em;
             text-align: left;  
             
@@ -3677,6 +3714,13 @@ div.fivestar-widget .star {
 }
 .joyride-content-wrapper {
   padding-right: 23px;
+}
+
+/**
+ * UI
+ */
+.ui-widget {
+  font-family: $gill;
 }
 
 
