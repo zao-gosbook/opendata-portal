@@ -103,7 +103,7 @@ function od_common_rules_action_info() {
       'base' => 'common_rules_actions_copy_entity_form_to_node',
     ),
     'copy_entity_form_to_existing_node_safe' => array(
-      'label' => t('Safely copy entity form type to node'),
+      'label' => t('Safely copy entity form type to existing node'),
       'parameter' => array(
         'ef' => array(
           'type' => 'entityform',
