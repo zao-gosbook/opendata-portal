@@ -188,7 +188,7 @@ function od_common_field_formatter_info() {
 
   $info['od_common_file_dlcnt'] = array(
     'label' => t('Download counts of a file'),
-    'field types' => array('file'),
+    'field types' => array('file', 'recline_field'),
     'settings' => array(),
   );
 
