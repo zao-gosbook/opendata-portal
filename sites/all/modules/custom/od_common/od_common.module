@@ -114,18 +114,30 @@ function theme_od_common_date_combo($variables) {
 }
 
 /**
- *  Implements hook_preprocess_page() 
- *  Изменяем название вкладки Edit и View для Набора данных.
+ * Implements hook_menu_alter().
+ * Изменяем название вкладки Edit и View для Набора данных.
  */
-function od_common_preprocess_page(&$vars) {
-  if ($vars['node']->type == 'dataset') {
-    foreach($vars['tabs']['#primary'] AS $index => $tab) {
-      if ($tab['#link']['title'] == t('Edit')) {
-        $vars['tabs']['#primary'][$index]['#link']['title'] = t('Edit passport');
-      }
-      if ($tab['#link']['title'] == t('View')) {
-        $vars['tabs']['#primary'][$index]['#link']['title'] = t('Passport');
-      }
-    }
+function od_common_menu_alter(&$items) {
+  unset($items['node/%node/view']['title']);
+  $items['node/%node/view']['title callback'] = 'od_common_view_tab_title';
+  $items['node/%node/view']['title arguments'] = array(1);
+  
+  unset($items['node/%node/edit']['title']);
+  $items['node/%node/edit']['title callback'] = 'od_common_edit_tab_title';
+  $items['node/%node/edit']['title arguments'] = array(1);
+  
+}
+
+function od_common_view_tab_title($node) {
+  if ($node->type == 'dataset') {
+    return t('Passport');
   }
+  return t('View');
+}
+
+function od_common_edit_tab_title($node) {
+  if ($node->type == 'dataset') {
+    return t('Edit passport');
+  }
+  return t('Edit');
 }
