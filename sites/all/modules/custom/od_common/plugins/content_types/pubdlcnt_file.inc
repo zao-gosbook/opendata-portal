@@ -10,7 +10,7 @@ $plugin = array(
   'description' => t('Public download count of a file'),
   'category' => t('Opendata Common'),
   'edit form' => 'od_common_pubdlcnt_file_content_type_edit_form',
-  'required context' => new ctools_context_required(t('File'), 'entity:file'),
+  'required context' => new ctools_context_required(t('File'), 'file'),
   'render callback' => 'od_common_pubdlcnt_file_content_type_render',
   //'summary' => 'od_common_pubdlcnt_file_content_type_summary',
 );
