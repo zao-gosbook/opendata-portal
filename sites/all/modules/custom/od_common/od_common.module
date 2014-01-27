@@ -141,3 +141,32 @@ function od_common_edit_tab_title($node) {
   }
   return t('Edit');
 }
+
+/**
+ * Implementation of hook_menu().
+ */
+function od_common_menu() {
+  $items = array();
+  
+  $items['node/%node/actualize'] = array(
+    'title' => 'Actualize passport',
+    'page callback' => 'od_common_actualize_page_callback',
+    'page arguments' => array(1),
+    'access callback' => 'od_common_actualize_access_callback',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+  );
+  
+  return $items;
+}
+
+function od_common_actualize_page_callback($dataset) {
+  drupal_goto('actualize-dataset', array('query' => array('field_ef_dataset'=>$dataset->nid)));
+}
+
+function od_common_actualize_access_callback($dataset) {
+  global $user;
+  return user_access('od_publisher_map_publisher', $user) && $dataset->type == 'dataset';
+}
+
