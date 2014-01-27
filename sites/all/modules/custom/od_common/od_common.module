@@ -127,3 +127,60 @@ function theme_od_common_date_combo($variables) {
   return $output;
 }
 
+/**
+ * Implements hook_menu_alter().
+ * Изменяем название вкладки Edit и View для Набора данных.
+ */
+function od_common_menu_alter(&$items) {
+  unset($items['node/%node/view']['title']);
+  $items['node/%node/view']['title callback'] = 'od_common_view_tab_title';
+  $items['node/%node/view']['title arguments'] = array(1);
+  
+  unset($items['node/%node/edit']['title']);
+  $items['node/%node/edit']['title callback'] = 'od_common_edit_tab_title';
+  $items['node/%node/edit']['title arguments'] = array(1);
+  
+}
+
+function od_common_view_tab_title($node) {
+  if ($node->type == 'dataset') {
+    return t('Passport');
+  }
+  return t('View');
+}
+
+function od_common_edit_tab_title($node) {
+  if ($node->type == 'dataset') {
+    return t('Edit passport');
+  }
+  return t('Edit');
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function od_common_menu() {
+  $items = array();
+  
+  $items['node/%node/actualize'] = array(
+    'title' => 'Actualize passport',
+    'page callback' => 'od_common_actualize_page_callback',
+    'page arguments' => array(1),
+    'access callback' => 'od_common_actualize_access_callback',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+  );
+  
+  return $items;
+}
+
+function od_common_actualize_page_callback($dataset) {
+  drupal_goto('actualize-dataset', array('query' => array('field_ef_dataset'=>$dataset->nid)));
+}
+
+function od_common_actualize_access_callback($dataset) {
+  global $user;
+  return user_access('od_publisher_map_publisher', $user) && $dataset->type == 'dataset';
+}
+
