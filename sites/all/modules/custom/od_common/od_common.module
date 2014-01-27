@@ -180,7 +180,6 @@ function od_common_actualize_page_callback($dataset) {
 }
 
 function od_common_actualize_access_callback($dataset) {
-  global $user;
-  return user_access('od_publisher_map_publisher', $user) && $dataset->type == 'dataset';
+  return (od_publisher_node_access($dataset, 'edit', $GLOBALS['user']) == NODE_ACCESS_DENY ? FALSE : TRUE);
 }
 
