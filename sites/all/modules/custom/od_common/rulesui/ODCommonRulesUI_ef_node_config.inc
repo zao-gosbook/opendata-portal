@@ -107,6 +107,13 @@ class ODCommonRulesUI_ef_node_config extends RulesDataUI {
     $parameters = $element->pluginParameterInfo();
     return array($parameters[$name]['type'], $parameters[$name]);
   }
+
+  public static function render($value) {
+    //@todo: Implement this in right way
+    return array(
+      'content' => array('#markup' => t('@todo: Implement this')),
+    );
+  }
 }
 
 function _od_common_ef_node_config_ajax_callback($form, $form_state) {
