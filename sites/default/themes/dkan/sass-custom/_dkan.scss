@@ -600,7 +600,7 @@ div.horizontal-tabs .form-text {
       @include transition(all 0.5s ease);
       
       img {
-        filter: url(filter.svg#grayscale);
+        filter: url(../images/filter.svg#grayscale);
         filter: grayscale(100%);
         -webkit-filter: grayscale(100%);
         -moz-filter: grayscale(100%);
