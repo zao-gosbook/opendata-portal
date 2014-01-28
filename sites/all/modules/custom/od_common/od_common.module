@@ -6,6 +6,7 @@
 /* Load additional files */
 $__dirname = dirname(__FILE__);
 require_once $__dirname. '/od_common.pubdlcnt.inc'; //Public download count related things
+require_once $__dirname. '/od_common.entity_form_alters.inc'; //Entityforms' alters
 
 /**
  * Implements hook_module_implements_alter()
@@ -52,6 +53,10 @@ function od_common_form_views_exposed_form_alter(&$form, &$form_state, $form_id)
     unset($form['field_geolocation_distance']['googlemap']['address']['geocode']);
     $form['field_geolocation_distance']['googlemap']['help']['#markup']=t('Enter an address / location in the textfield');
   }
+}
+
+function od_common_form_alter($form, &$form_state, $form_id) {
+
 }
 
 /**
@@ -180,7 +185,7 @@ function od_common_actualize_page_callback($dataset) {
 }
 
 function od_common_actualize_access_callback($dataset) {
-  return (od_publisher_node_access($dataset, 'edit', $GLOBALS['user']) == NODE_ACCESS_DENY ? FALSE : TRUE);
+  return (od_publisher_node_access($dataset, 'edit', $GLOBALS['user']) == NODE_ACCESS_ALLOW);
 }
 
 function od_common_field_formatter_info() {
