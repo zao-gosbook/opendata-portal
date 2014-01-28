@@ -180,7 +180,7 @@ function od_common_actualize_page_callback($dataset) {
 }
 
 function od_common_actualize_access_callback($dataset) {
-  return (od_publisher_node_access($dataset, 'edit', $GLOBALS['user']) == NODE_ACCESS_DENY ? FALSE : TRUE);
+  return (od_publisher_node_access($dataset, 'edit', $GLOBALS['user']) != NODE_ACCESS_DENY ? TRUE : FALSE);
 }
 
 function od_common_field_formatter_info() {
