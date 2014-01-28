@@ -22,8 +22,15 @@ function od_rubric_menu_block_view($delta = '') {
 
   if (arg(0) == 'taxonomy' && arg(1) == 'term' && ($tid = arg(2)) && is_numeric($tid) && ($term = taxonomy_term_load($tid))) {
     $tw = entity_metadata_wrapper('taxonomy_term', $term);
-    $output = '';
-
+  }
+  elseif (arg(0) == 'node' && ($nid = arg(1)) && is_numeric($nid) && ($node = node_load($nid)) && $node->type == 'competition') {
+    $node_wrapper = entity_metadata_wrapper('node', $node);
+    $term = $node_wrapper->field_competition_rubric->value();
+    $tw = entity_metadata_wrapper('taxonomy_term', $term);
+  }
+  
+  if(isset($tw)) { 
+    $output = ''; 
     try {
       //Check if we have image for this term
       if ($image = $tw->field_rubric_image->value()) {
@@ -43,7 +50,8 @@ function od_rubric_menu_block_view($delta = '') {
     $output .= '<li class="menu-item">';
     $output .= '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . $term->tid; //@fixme: l()|url() + options['query']...
     $output .= '" rel="nofollow">' . t('Data') . '</a>' . '</li>';
-    $output .= '<li class="menu-item">' . l(t('Contests'), 'taxonomy/term/'. $term->tid. '/competition') . '</li>';
+    $output .= '<li class="menu-item">' . l(t('Contests'), 'taxonomy/term/'. $term->tid. '/competition',  array('attributes' => array('class' => array(isset($node_wrapper)?'active':'item')))) . '</li>';
+
     // menu link "application"
     $query = new EntityFieldQuery;
     $result = $query->entityCondition('entity_type', 'node')
