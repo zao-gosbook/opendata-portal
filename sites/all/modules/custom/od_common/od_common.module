@@ -198,10 +198,12 @@ function od_common_module($module) {
     //module_load_include($module. '.inc', 'od_common');
     $filepath = drupal_get_path('module', 'od_common'). '/submodules/'. $module. '.inc';
     $cache[$cache_key] = file_exists($filepath);
+    //If file not exists
     if (!$cache[$cache_key]) {
       throw new Exception("od_common module named \"{$module}\" was not found in \"{$filepath}\"");
     }
 
+    //Now we know that file exists, so include it
     require_once $filepath;
   }
 
