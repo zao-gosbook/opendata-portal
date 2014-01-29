@@ -9,7 +9,7 @@ dependencies[] = pubdlcnt
 dependencies[] = od_publisher
 
 ; Script with new ajax command
-scripts[] = js/commands/od_common.ajax_command_setval.js
+; scripts[] = js/commands/od_common.ajax_command_setval.js
 
 ; Files to autoload classes
 files[] = rulesui/ODCommonRulesUI_ef_node_config.inc
