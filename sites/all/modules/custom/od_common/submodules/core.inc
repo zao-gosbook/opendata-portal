@@ -96,3 +96,66 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
 
   return $node;
 }
+
+/**
+ * Returns a taxonomy term definition for passed extension of null otherwise.
+ * @param string $extenstion
+ * @return null|object
+ */
+function od_common_file_get_extension_term($extension = NULL) {
+  $cache = &drupal_static(__FUNCTION__, array());
+  $cache_key = 'default';
+  $container = &$cache[$cache_key];
+  if (!isset($container)) {
+    $voc = taxonomy_vocabulary_machine_name_load('format');
+    foreach (taxonomy_get_tree($voc->vid) as $term) {
+      $container['by_ext'][$term->name] = $term;
+      //$container['by_tid'][$term->tid] = $term;
+    }
+  }
+
+  $ret = NULL;
+  if ($extension !== NULL && isset($container['by_ext'][$extension])) {
+    $ret = $container['by_ext'][$extension];
+  }
+  elseif ($extension === NULL) {
+    $ret = $container['by_ext'];
+  }
+
+  return $ret;
+}
+
+/**
+ * Manages data in static variable (something like drupal_static() but much cooler)
+ * @param null $name
+ * @param null $value
+ * @param bool $delete
+ * @return null
+ */
+function &od_common_static_storage($name = NULL, $value = NULL, $delete = FALSE) {
+  static $storage = array();
+
+  $ret = NULL;
+  if ($name !== NULL && $value === NULL && isset($storage[$name])) {
+    if ($delete) {
+      $ret = $storage[$name];
+      unset($storage[$name]);
+    }
+    else {
+      $ret = &$storage[$name];
+    }
+  }
+  elseif ($name !== NULL && $value !== NULL) {
+    $storage[$name] = $value;
+    $ret = &$storage[$name];
+  }
+  elseif ($name === NULL && $value !== NULL) {
+    $storage = $value;
+    $ret = &$storage;
+  }
+  elseif ($name === NULL) {
+    $ret = &$storage;
+  }
+
+  return $ret;
+}

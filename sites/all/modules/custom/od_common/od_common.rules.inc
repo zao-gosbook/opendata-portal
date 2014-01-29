@@ -175,7 +175,7 @@ function od_common_rules_actions_od_common_format_date($timestamp, $format_name)
  *  An old version without field create disabling support
  */
 function common_rules_actions_copy_entity_form_to_node_deprecated($ef, $node_type, $save_node = FALSE) {
-  module_load_include('core.inc', 'od_common');
+  od_common_module('core');
   $node = common_copy_ef_to_node($ef, $node_type, array('save_node' => $save_node));
   return array('node_created' => $node);
 }
@@ -188,7 +188,7 @@ function common_rules_actions_copy_entity_form_to_node_deprecated($ef, $node_typ
  * @return array
  */
 function common_rules_actions_copy_entity_form_to_node($ef, $config, $save_node = FALSE) {
-  module_load_include('core.inc', 'od_common');
+  od_common_module('core');
 
   $options = array(
     'create_fields' => FALSE,
@@ -209,7 +209,7 @@ function common_rules_actions_copy_entity_form_to_node($ef, $config, $save_node 
  * @return array
  */
 function common_rules_actions_copy_entity_form_to_existing_node($ef, $node, $config) {
-  module_load_include('core.inc', 'od_common');
+  od_common_module('core');
 
   $options = array(
     'create_fields' => FALSE,
