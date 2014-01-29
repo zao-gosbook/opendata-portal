@@ -1,0 +1,441 @@
+<?php
+
+/**
+ * @file
+ * Implements Draggable Captcha for use with the CAPTCHA module
+ */
+
+define('DRAGGABLE_CAPTCHA_PATH', drupal_get_path('module', 'draggable_captcha'));
+
+/**
+ * Implements hook_menu().
+ */
+function draggable_captcha_menu() {
+  $items = array();
+  // Callback for ajax verify.
+  $items['draggable-captcha/%/verify'] = array(
+    'page callback' => 'draggable_captcha_verify',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['draggable-captcha-mini/%/verify'] = array(
+    'page callback' => 'draggable_captcha_verify',
+    'page arguments' => array(1, 'mini'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  // Callback for generating target image.
+  $items['draggable-captcha/target-img'] = array(
+    'page callback' => 'draggable_captcha_target_img',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['draggable-captcha-mini/target-img'] = array(
+    'page callback' => 'draggable_captcha_target_img',
+    'page arguments' => array('mini'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  // Callback for ajax refresh.
+  $items['draggable-captcha/%/refresh'] = array(
+    'page callback' => 'draggable_captcha_generate_refresh',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items['draggable-captcha-mini/%/refresh'] = array(
+    'page callback' => 'draggable_captcha_generate_refresh',
+    'page arguments' => array(1,'mini'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_menu_site_status_alter(&$menu_site_status, $path).
+ */
+function draggable_captcha_menu_site_status_alter(&$menu_site_status, $path) {
+  // Skip maintenance mode.
+  if ($path == 'draggable-captcha/target-img' || $path == 'draggable-captcha-mini/target-img') {
+    $menu_site_status = MENU_SITE_ONLINE;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function draggable_captcha_theme() {
+  return array(
+    'draggable_captcha' => array(
+      'variables' => array(),
+      'template' => 'draggable-captcha',
+    ),
+    'draggable_captcha_mini' => array(
+      'variables' => array(),
+      'template' => 'draggable-captcha-mini',
+    ),
+  );
+}
+
+/**
+ * Implements hook_captcha().
+ */
+function draggable_captcha_captcha($op, $captcha_type = '', $captcha_sid = NULL) {
+  switch ($op) {
+    case 'list':
+      return array('Draggable Captcha', 'Draggable Captcha Mini');
+    case 'generate':
+      if ($captcha_type == 'Draggable Captcha') {
+        return draggable_captcha_generate_form($captcha_sid);
+      }
+      if ($captcha_type == 'Draggable Captcha Mini') {
+        return draggable_captcha_generate_form($captcha_sid, 'mini');
+      }
+      break;
+  }
+}
+
+/**
+ * Form builder.
+ */
+function draggable_captcha_generate_form($captcha_sid, $type = '') {
+
+  global $base_url;
+  $captcha = array();
+  $captcha_codes = _draggable_captcha_setup($type);
+  $image_buttons = _draggable_captcha_image_buttons($type);
+
+  // For ajax refresh link.
+  drupal_add_library('system', 'drupal.ajax');
+
+  if ($type) {
+    $markup = theme('draggable_captcha_'.$type, array('image_buttons' => $image_buttons, 'captcha_codes' => $captcha_codes, 'captcha_sid' => $captcha_sid));
+    $css = array(DRAGGABLE_CAPTCHA_PATH . '/css/styles-' . $type . '.css');
+    $js = DRAGGABLE_CAPTCHA_PATH . '/js/draggable_captcha_' . $type . '.js';
+    drupal_add_js(array('draggable_captcha_'.$type => array('captcha_sid' => $captcha_sid)), 'setting');
+  } else {
+    $markup = theme('draggable_captcha', array('image_buttons' => $image_buttons, 'captcha_codes' => $captcha_codes, 'captcha_sid' => $captcha_sid));
+    $css = array(DRAGGABLE_CAPTCHA_PATH . '/css/draggable-styles.css');
+    $js = DRAGGABLE_CAPTCHA_PATH . '/js/draggable_captcha.js';
+    drupal_add_js(array('draggable_captcha' => array('captcha_sid' => $captcha_sid)), 'setting');
+  }
+  $captcha['form']['captca_image'] = array(
+    '#type' => 'markup',
+    '#markup' => $markup,
+    '#attached' => array(
+      'css' => $css,
+      'js' => array(
+        $base_url . '/misc/ui/jquery.ui.core.min.js',
+        $base_url . '/misc/ui/jquery.ui.widget.min.js',
+        $base_url . '/misc/ui/jquery.ui.mouse.min.js',
+        $base_url . '/misc/ui/jquery.ui.draggable.min.js',
+        $base_url . '/misc/ui/jquery.ui.droppable.min.js',
+        $js,
+      ),
+    ),
+  );
+  $captcha['form']['captcha_response'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array('class' => array('captchaAnswer element-invisible')),
+    '#default_value' => '',
+    '#required' => TRUE,
+  );
+
+  if ($type) {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes_'.$type;
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer_'.$type;
+  } else {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes';
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer';
+  }
+  // This value is recorded in the captcha_sessions table.
+  $captcha['solution'] = 'draggable_' . $_SESSION[$DraggableCaptchaCodes][$_SESSION[$DraggableCaptchaAnswer]];
+  $captcha['captcha_validate'] = 'draggable_captcha_custom_validation';
+  
+  return $captcha;
+}
+
+/**
+ * Helper function for captcha validation.
+ */
+function draggable_captcha_custom_validation($solution, $response, $element, $form_state) {
+  if (empty($response)) {
+    drupal_set_message(t('Captcha must be finished, try click or drag any shape.'), 'error'); //@TODO switch to other captcha if can't do this.
+    return ;
+  }
+
+  return $response == $solution;
+}
+
+/**
+ * Helper function for ajax refresh.
+ */
+function draggable_captcha_generate_refresh($captcha_sid, $type = '') {
+
+  global $base_url;
+  $captcha = array();
+  
+  // $type is 'ajax' by default
+  if ($type == 'ajax') {
+    $type = '';
+  }
+
+  if ($type == 'mini') {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes_'.$type;
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer_'.$type;
+  } else {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes';
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer';
+  }
+  
+  // Re-setup captcha.
+  $captcha_codes = _draggable_captcha_setup($type);
+  module_load_include('inc', 'captcha', 'captcha');
+  $solution = 'draggable_' . $_SESSION[$DraggableCaptchaCodes][$_SESSION[$DraggableCaptchaAnswer]];
+  _captcha_update_captcha_session($captcha_sid, $solution);
+  
+  $image_buttons = _draggable_captcha_image_buttons($type);
+  
+  if ($type) {
+    $markup = theme('draggable_captcha_'.$type, array('image_buttons' => $image_buttons, 'captcha_codes' => $captcha_codes, 'captcha_sid' => $captcha_sid));
+    $css = array(DRAGGABLE_CAPTCHA_PATH . '/css/styles-' . $type . '.css');
+    $js = DRAGGABLE_CAPTCHA_PATH . '/js/draggable_captcha_' . $type . '.js';
+    $captcha_wrapper = '#draggable-captcha-'.$type;
+  } else {
+    $markup = theme('draggable_captcha', array('image_buttons' => $image_buttons, 'captcha_codes' => $captcha_codes, 'captcha_sid' => $captcha_sid));
+    $css = array(DRAGGABLE_CAPTCHA_PATH . '/css/draggable-styles.css');
+    $js = DRAGGABLE_CAPTCHA_PATH . '/js/draggable_captcha.js';
+    $captcha_wrapper = '#draggable-captcha';
+  }
+  $captcha['form']['captca_image'] = array(
+    '#type' => 'markup',
+    '#markup' => $markup,
+    '#attached' => array(
+      'css' => $css,
+      'js' => array(
+        $base_url . '/misc/ui/jquery.ui.core.min.js',
+        $base_url . '/misc/ui/jquery.ui.widget.min.js',
+        $base_url . '/misc/ui/jquery.ui.mouse.min.js',
+        $base_url . '/misc/ui/jquery.ui.draggable.min.js',
+        $base_url . '/misc/ui/jquery.ui.droppable.min.js',
+        $js,
+      ),
+    ),
+  );
+  
+  $commands = array();
+  $commands[] = ajax_command_replace($captcha_wrapper, drupal_render($captcha));
+  $page = array('#type' => 'ajax', '#commands' => $commands);
+  ajax_deliver($page);
+}
+
+/**
+ * Helper function for generating the Draggable Captcha.
+ */
+function _draggable_captcha_setup($type = '') {
+  $captcha = array();
+  $image_buttons = _draggable_captcha_image_buttons($type);
+
+  $key_salt = drupal_get_hash_salt();
+  $captcha_codes = array();
+  foreach ($image_buttons as $key => $value) {
+    $captcha_codes[$key] = drupal_hmac_base64(mt_rand(00000000, 99999999), $key_salt);
+  }
+
+  $random_captcha = array_rand($image_buttons);
+
+  if ($type) {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes_'.$type;
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer_'.$type;
+  } else {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes';
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer';
+  }
+  $_SESSION[$DraggableCaptchaAnswer] = $random_captcha;
+  $_SESSION[$DraggableCaptchaCodes] = $captcha_codes;
+
+  return $captcha_codes;
+}
+
+
+/**
+ * Helper function for verifying the Draggable Captcha.
+ */
+function draggable_captcha_verify($captcha_sid, $type = '') {
+  $request_vars = isset($_REQUEST) ? $_REQUEST : array();
+
+  if (empty($request_vars['action'])) {
+    $request_vars['action'] = 'none';
+  }
+  
+  if ($type) {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes_'.$type;
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer_'.$type;
+  } else {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes';
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer';
+  }
+
+  switch ($request_vars['action']) {
+    case 'verify':
+      if (!in_array(drupal_substr($request_vars['captcha'], 10), array_values($_SESSION[$DraggableCaptchaCodes]))) {
+        _draggable_captcha_log_error($captcha_sid, $request_vars['action']);
+        return drupal_json_output(array('status' => 'error'));
+      }
+
+      if (drupal_substr($request_vars['captcha'], 10) == $_SESSION[$DraggableCaptchaCodes][$_SESSION[$DraggableCaptchaAnswer]]) {
+        _draggable_captcha_log_error($captcha_sid, $request_vars['action']);
+        return drupal_json_output(array('status' => 'success'));
+      }
+      else {
+        $_SESSION[$DraggableCaptchaCodes] = NULL;
+        $_SESSION[$DraggableCaptchaAnswer] = NULL;
+
+        return drupal_json_output(array('status' => 'error'));
+      }
+      break;
+  }
+
+  return drupal_json_output(array('status' => 'error'));
+}
+
+function _draggable_captcha_log_error($captcha_sid, $action) {
+  // Wrong answer.
+  db_update('captcha_sessions')
+    ->condition('csid', $captcha_sid)
+    ->expression('attempts', 'attempts + 1')
+    ->execute();
+  // Update wrong response counter.
+  variable_set('captcha_wrong_response_counter', variable_get('captcha_wrong_response_counter', 0) + 1);
+  // Log to watchdog if needed.
+  if (variable_get('captcha_log_wrong_responses', FALSE)) {
+    watchdog('CAPTCHA',
+             'Draggable Captcha ajax verify failed on action "%action"',
+             array('%action' => $action),
+             WATCHDOG_NOTICE);
+  }
+}
+
+/**
+ * Helper function for build draggable image buttons.
+ */
+function _draggable_captcha_image_buttons($type = '') {
+  $image_buttons = array(
+    'heart' => array(
+      'on'	=> array('top' => '0','left' => '-3px'),
+      'off'	=> array('top' => '0','left' => '-66px'),
+      'target' => array('top' => 0,'left' => 66),
+    ),
+    'bwm' => array(
+      'on'	=> array('top' => '-56px','left' => '-3px'),
+      'off'	=> array('top' => '-56px','left' => '-66px'),
+      'target' => array('top' => 56,'left' => 66),
+    ),
+    'star' => array(
+      'on'	=> array('top' => '-120px','left' => '-3px'),
+      'off'	=> array('top' => '-120px','left' => '-66px'),
+      'target' => array('top' => 120,'left' => 66),
+    ),
+    'diamond' => array(
+      'on'	=> array('top' => '-185px','left' => '-3px'),
+      'off'	=> array('top' => '-185px','left' => '-66px'),
+      'target' => array('top' => 185,'left' => 66),
+    ),
+  );
+
+  if ($type == 'mini') {
+    $image_buttons = array(
+    'heart' => array(
+      'on'  => array('top' => '1px','left' => '-1px'),
+      'off' => array('top' => '1px','left' => '-37px'),
+      'target' => array('top' => 0,'left' => 37),
+    ),
+    'bwm' => array(
+      'on'  => array('top' => '-34px','left' => '-1px'),
+      'off' => array('top' => '-34px','left' => '-37px'),
+      'target' => array('top' => 34,'left' => 37),
+    ),
+    'star' => array(
+      'on'  => array('top' => '-69px','left' => '-1px'),
+      'off' => array('top' => '-69px','left' => '-37px'),
+      'target' => array('top' => 69,'left' => 37),
+    ),
+    'diamond' => array(
+      'on'  => array('top' => '-106px','left' => '-1px'),
+      'off' => array('top' => '-106px','left' => '-37px'),
+      'target' => array('top' => 106,'left' => 37),
+    ),
+    );
+  }
+  
+  return _draggable_captcha_shuffle_assoc($image_buttons);
+}
+
+/**
+ * Helper function for array shuffle.
+ */
+function _draggable_captcha_shuffle_assoc($list) {
+  if (!is_array($list)) {
+    return $list;
+  }
+
+  $keys = array_keys($list);
+  shuffle($keys);
+  $random = array();
+  foreach ($keys as $key) {
+    $random[$key] = $list[$key];
+  }
+
+  return $random;
+}
+
+/**
+ * Helper function for generating the Draggable Captcha target image.
+ *
+ * Target image should be generated by php, to avoid js hacking on browser.
+ */
+function draggable_captcha_target_img($type = '') {
+  if ($type == 'mini') {
+    $imgname = realpath(DRAGGABLE_CAPTCHA_PATH) . "/css/images/bwm-captcha-mini.png";
+    $image_buttons = _draggable_captcha_image_buttons($type);
+    $target_img_size = array('width' => 33,'height' => 32);
+  } else {
+    $imgname = realpath(DRAGGABLE_CAPTCHA_PATH) . "/css/images/bwm-captcha.png";
+    $image_buttons = _draggable_captcha_image_buttons($type);
+    $target_img_size = array('width' => 55,'height' => 56);
+  }
+  
+  if ($type) {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes_'.$type;
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer_'.$type;
+  } else {
+    $DraggableCaptchaCodes = 'DraggableCaptchaCodes';
+    $DraggableCaptchaAnswer = 'DraggableCaptchaAnswer';
+  }
+  
+  $im = @imagecreatefrompng($imgname);
+  if (!$im) {
+    watchdog('CAPTCHA', 'Generation of Draggable Captcha target image failed -- source image error!', array(), WATCHDOG_ERROR);
+    drupal_exit();
+  }
+
+  $key = isset($_SESSION[$DraggableCaptchaAnswer]) ? $_SESSION[$DraggableCaptchaAnswer] : FALSE;
+  if (!$key) {
+    watchdog('CAPTCHA', 'Generation of Draggable Captcha target image failed -- key error!.', array(), WATCHDOG_ERROR);
+    drupal_exit();
+  }
+
+  $destp = imagecreate($target_img_size['width'], $target_img_size['height']);
+  imagecopyresampled($destp, $im, 0, 0,
+                     $image_buttons[$key]['target']['top'], $image_buttons[$key]['target']['left'],
+                     $target_img_size['width'], $target_img_size['height'],
+                     $target_img_size['width'], $target_img_size['height']);
+  $im = $destp;
+
+  drupal_add_http_header('Content-Type', 'image/png');
+  imagepng($im);
+  imagedestroy($im);
+}
