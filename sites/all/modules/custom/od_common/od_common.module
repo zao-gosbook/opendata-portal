@@ -167,7 +167,6 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
   $element = array();
   switch ($display['type']) {
     case 'od_common_file_dlcnt':
-      od_common_module('pubdlcnt');
       foreach ($items as $delta => $item) {
         $count = (integer) od_common_pubdlcnt_count((object)$item);
         $build = array(
