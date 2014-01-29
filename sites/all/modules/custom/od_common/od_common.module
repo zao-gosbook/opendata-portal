@@ -186,6 +186,7 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
 }
 
 /**
+ * Loads module from submodules directory
  * @param $module
  * @return mixed
  * @throws Exception
