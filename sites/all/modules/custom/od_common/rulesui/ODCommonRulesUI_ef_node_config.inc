@@ -83,29 +83,11 @@ class ODCommonRulesUI_ef_node_config extends RulesDataUI {
       }
     }
 
-    $main_form['submit'] = array(
-      '#type' => 'button',
-      '#value' => 'Ajax test',
-    );
-
-    $main_form['submit']['#ajax'] = $ajax_info + array('event' => 'click');
-
     return array('config' => $main_form);
   }
 
   public static function getDefaultMode() {
     return 'selection';
-  }
-
-  /**
-   * Returns the data type and parameter information for the given arguments.
-   *
-   * This helper may be used by options list callbacks operation at data-type
-   * level, see RulesDataInputOptionsListInterface.
-   */
-  public static function getTypeInfo(RulesPlugin $element, $name) {
-    $parameters = $element->pluginParameterInfo();
-    return array($parameters[$name]['type'], $parameters[$name]);
   }
 
   public static function render($value) {
