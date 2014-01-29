@@ -1,0 +1,61 @@
+img {
+  behavior: url(iepngfix.htc);
+}
+.instructions {
+  color: #ffffff;
+  padding: 5px 10px;
+  width: 430px;
+}
+.captchaWrapper-mini {
+  background: url("images/bwm-captcha-mini.png") 0 -117px no-repeat;
+  height: 66px;
+  position: relative;
+  width: 255px;
+}
+.captchaWrapper-mini a.captchaRefresh:link,
+.captchaWrapper-mini a.captchaRefresh:visited,
+.captchaWrapper-mini a.captchaRefresh:active {
+  background: url('images/bwm-captcha-mini.png') -153px -97px no-repeat;
+  display: block;
+  height: 11px;
+  left: 10px;
+  position: absolute;
+  top: 0;
+  width: 55px;
+}
+.captchaWrapper-mini a.captchaRefresh:hover {
+  background: url('images/bwm-captcha-mini.png') -153px -107px no-repeat;
+  display: block;
+  position: absolute;
+  top: 0;
+}
+.captchaWrapper-mini .targetWrapper {
+  left: 169px;
+  position: absolute;
+  top: 12px;
+}
+.captchaWrapper-mini .captchaFail {
+  background: url('images/bwm-captcha-mini.png') 0 -70px no-repeat;
+  height: 48px;
+  width: 77px;
+}
+.captchaWrapper-mini .captchaSuccess {
+  background: url('images/bwm-captcha-mini.png') -76px -70px no-repeat;
+  height: 48px;
+  width: 77px;
+}
+.captchaWrapper-mini .target {
+  background: url('images/bwm-captcha-mini.png');
+  height: 32px;
+  margin: 8px 0 0 22px;
+  width: 33px;
+}
+.captchaWrapper-mini .draggable {
+  background: url('images/bwm-captcha-mini.png');
+  cursor: move;
+  height: 32px;
+  position: absolute;
+  top: 20px;
+  width: 33px;
+  z-index: 10000;
+}
