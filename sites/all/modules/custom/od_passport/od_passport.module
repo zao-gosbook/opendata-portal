@@ -1,0 +1,12 @@
+<?php
+
+/** 
+ * Implements hook_ctools_plugin_directory -
+ * This lets ctools know to scan my module for a content_type plugin file
+ * Detailed docks in ctools/ctools.api.php 
+ */ 
+function od_passport_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return 'plugins/content_types';
+  }
+}
