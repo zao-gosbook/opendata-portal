@@ -43,6 +43,30 @@ function od_common_permission() {
   return $perms;
 }
 
+
+/**
+ * Implements hook_library()
+ */
+function od_common_library() {
+  $libraries = array();
+
+  $path = drupal_get_path('module', 'od_common');
+  $libraries['jquery.tiptip'] = array(
+    'title' => 'jQuery TipTip',
+    'website' => 'http://code.drewwilson.com/entry/tiptip-jquery-plugin',
+    'version' => '1.3',
+    'js' => array(
+      "{$path}/libraries/jquery/tiptip/jquery.tooltip.min.js"  => array(),
+    ),
+    'css' => array(
+      "{$path}/libraries/jquery/tiptip/jquery.tooltip.css"  => array(),
+    ),
+  );
+
+  return $libraries;
+
+}
+
 /**
  * Implements hook_form_alter()
  */
@@ -136,8 +160,19 @@ function od_common_menu() {
     'weight' => 10,
     'file' => 'od_common.actualize_pasport.page.inc',
   );
+
+  $items['sparql_page'] = array(
+    'title' => '',
+    'page callback' => 'sparql_page_callback',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   
   return $items;
+}
+
+function sparql_page_callback() {
+  $arc = new ARC2_StoreEndpoint();
 }
 
 function od_common_actualize_access_callback($node) {
