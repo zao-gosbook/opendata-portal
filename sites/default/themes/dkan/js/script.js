@@ -92,6 +92,11 @@
     }
   }
 
+  /**
+   * Кнопка ПОКАЗАТЬ/СКРЫТЬ элементы на главной странице.
+   * Показывает только 9 элементов, остальные скрывает. Их можно развернуть по кнопке
+   * @type {{attach: Function}}
+   */
   Drupal.behaviors.showHideElementsFront = {
     attach: function(context, settings) {
       var showHideToggleEl = $(context).find('.view:not(.processed-showHideElementsFront) div.show-hide-toggle-wrapper>span>a');
@@ -102,19 +107,22 @@
       function processClick(element) {
         var $this = $(element);
 
-        var target = viewContent.find('.views-row').slice(9);
-        $this.parent().parent().find('span').hide();
-        //Hide
-        if (!view.hasClass('more-toggle-collapsed')) {
-          target.slideUp();
-          view.addClass('more-toggle-collapsed').removeClass('more-toggle-expanded');
-          $this.parent().parent().find('.state-show').show();
-        }
-        //Show
-        else {
-          target.slideDown();
-          view.addClass('more-toggle-expanded').removeClass('more-toggle-collapsed');
-          $this.parent().parent().find('.state-hide').show();
+        var target = viewContent.find('.views-row').slice(9); //Все элементы, начиная с девятого
+        $this.parent().parent().find('span').hide(); //Скрываем саму кнопку показать/скрыть
+        //Если элементов всего было 9 -- то нам больше и делать нечего
+        if (target.length > 0) {
+          //Hide
+          if (!view.hasClass('more-toggle-collapsed')) {
+            target.slideUp();
+            view.addClass('more-toggle-collapsed').removeClass('more-toggle-expanded');
+            $this.parent().parent().find('.state-show').show();
+          }
+          //Show
+          else {
+            target.slideDown();
+            view.addClass('more-toggle-expanded').removeClass('more-toggle-collapsed');
+            $this.parent().parent().find('.state-hide').show();
+          }
         }
       }
 
