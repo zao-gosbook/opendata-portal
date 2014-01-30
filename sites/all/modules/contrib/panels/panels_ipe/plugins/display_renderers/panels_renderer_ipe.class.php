@@ -70,12 +70,9 @@ class panels_renderer_ipe extends panels_renderer_editor {
 
     ctools_add_css('panels_dnd', 'panels');
     ctools_add_css('panels_admin', 'panels');
+    ctools_add_js('panels_ipe', 'panels_ipe');
     ctools_add_css('panels_ipe', 'panels_ipe');
 
-    // Add the JavaScript for the IPE. This must go as early as possible so
-    // that its behaviors run first, allowing it to clone parts of the DOM
-    // before other behaviors have been applied to them.
-    drupal_add_js(drupal_get_path('module', 'panels_ipe') . '/js/panels_ipe.js', array('group' => JS_LIBRARY, 'weight' => -1000));
     drupal_add_js(array('PanelsIPECacheKeys' => array($this->clean_key)), 'setting');
 
     drupal_add_library('system', 'ui.draggable');
@@ -137,28 +134,15 @@ class panels_renderer_ipe extends panels_renderer_editor {
     return "<div id=\"panels-ipe-paneid-{$pane->pid}\" class=\"panels-ipe-portlet-wrapper panels-ipe-portlet-marker\">" . $output . "</div>";
   }
 
-  function prepare_panes($panes) {
-    // Set to admin mode just for this to ensure all panes are represented.
-    $this->admin = TRUE;
-    $panes = parent::prepare_panes($panes);
-    $this->admin = FALSE;
-  }
-
   function render_pane_content(&$pane) {
-    if (!empty($pane->shown) && panels_pane_access($pane, $this->display)) {
-      $content = parent::render_pane_content($pane);
-    }
+    $content = parent::render_pane_content($pane);
     // Ensure that empty panes have some content.
     if (empty($content) || empty($content->content)) {
-      if (empty($content)) {
-        $content = new stdClass();
-      }
-
       // Get the administrative title.
       $content_type = ctools_get_content_type($pane->type);
       $title = ctools_content_admin_title($content_type, $pane->subtype, $pane->configuration, $this->display->context);
 
-      $content->content = t('Placeholder for empty or inaccessible "@title"', array('@title' => html_entity_decode($title, ENT_QUOTES)));
+      $content->content = t('Placeholder for empty "@title"', array('@title' => $title));
       // Add these to prevent notices.
       $content->type = 'panels_ipe';
       $content->subtype = 'panels_ipe';
@@ -243,7 +227,6 @@ class panels_renderer_ipe extends panels_renderer_editor {
     $_POST['ajax_html_ids'] = array();
 
     $form_state = array(
-      'renderer' => $this,
       'display' => &$this->display,
       'content_types' => $this->cache->content_types,
       'rerender' => FALSE,
@@ -261,7 +244,7 @@ class panels_renderer_ipe extends panels_renderer_editor {
         'command' => 'initIPE',
         'key' => $this->clean_key,
         'data' => drupal_render($output),
-        'lockPath' => url($this->get_url('unlock_ipe')),
+        'lockPath' => $this->get_url('unlock_ipe'),
       );
       return;
     }
@@ -332,7 +315,7 @@ class panels_renderer_ipe extends panels_renderer_editor {
     $this->commands[] = array(
       'command' => 'IPEsetLockState',
       'key' => $this->clean_key,
-      'lockPath' => url($this->get_url('unlock_ipe')),
+      'lockPath' => $this->get_url('unlock_ipe'),
     );
   }
 
@@ -361,7 +344,7 @@ class panels_renderer_ipe extends panels_renderer_editor {
       if (!empty($form_state['clicked_button']['#save-display'])) {
         // Saved. Save the cache.
         panels_edit_cache_save($this->cache);
-        $this->display->skip_cache = TRUE;
+        $this->display->skip_cache;
 
         // Since the layout changed, we have to update these things in the
         // renderer in order to get the right settings.
@@ -408,16 +391,8 @@ class panels_renderer_ipe extends panels_renderer_editor {
       $pane = $this->display->content[$pid];
     }
 
-    $this->commands[] = array(
-      'command' => 'insertNewPane',
-      'regionId' => $pane->panel,
-      'renderedPane' => $this->render_pane($pane),
-    );
+    $this->commands[] = ajax_command_prepend("#panels-ipe-regionid-{$pane->panel} div.panels-ipe-sort-container", $this->render_pane($pane));
     $this->commands[] = ajax_command_changed("#panels-ipe-display-{$this->clean_key}");
-    $this->commands[] = array(
-      'command' => 'addNewPane',
-      'key' => $this->clean_key,
-    );
   }
 }
 
@@ -455,14 +430,12 @@ function panels_ipe_edit_control_form($form, &$form_state) {
     '#type' => 'submit',
     '#value' => t('Save'),
     '#id' => 'panels-ipe-save',
-    '#attributes' => array('class' => array('panels-ipe-save')),
     '#submit' => array('panels_edit_display_form_submit'),
     '#save-display' => TRUE,
   );
   $form['buttons']['cancel'] = array(
     '#type' => 'submit',
     '#id' => 'panels-ipe-cancel',
-    '#attributes' => array('class' => array('panels-ipe-cancel')),
     '#value' => t('Cancel'),
   );
   return $form;

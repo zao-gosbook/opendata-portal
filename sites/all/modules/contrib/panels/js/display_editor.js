@@ -16,7 +16,7 @@ Drupal.Panels.bindClickDelete = function(context) {
   $('a.pane-delete:not(.pane-delete-processed)', context)
     .addClass('pane-delete-processed')
     .click(function() {
-    if (confirm(Drupal.t('Remove this pane?'))) {
+    if (confirm('Remove this pane?')) {
       var id = '#' + $(this).attr('id').replace('pane-delete-', '');
       $(id).remove();
       Drupal.Panels.Draggable.savePositions();
