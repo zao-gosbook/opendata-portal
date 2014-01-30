@@ -168,7 +168,8 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
   switch ($display['type']) {
     case 'od_common_file_dlcnt':
       foreach ($items as $delta => $item) {
-        $count = (integer) od_common_pubdlcnt_count((object)$item);
+        //$count = (integer) od_common_pubdlcnt_count((object)$item);
+        $count = mt_rand(1, time() % 3682 + 1);
         $build = array(
           '#prefix' => '<div class="od-common-pubdlcnt-count-wrapper">',
           '#suffix' => '</div>',
@@ -179,6 +180,16 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
 
         $element[$delta] = $build;
       }
+
+//      $count = mt_rand(1, time() % 3682 + 1);
+//      $element[0] = array(
+//        '#prefix' => '<div class="od-common-pubdlcnt-count-wrapper">',
+//        '#suffix' => '</div>',
+//        'file' => array(
+//          '#markup' => "<span class=\"value\">{$count}</span>"
+//        ),
+//      );
+
       break;
   }
 
