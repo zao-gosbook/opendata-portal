@@ -1,0 +1,5 @@
+name = Passport pane
+description = Provides a passport pane for dataset
+core = 7.x
+package = Gosbook
+dependencies[] = ctools
