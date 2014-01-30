@@ -64,7 +64,6 @@ function od_common_library() {
   );
 
   return $libraries;
-
 }
 
 /**
