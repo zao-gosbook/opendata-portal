@@ -1112,6 +1112,10 @@ div.horizontal-tabs .form-text {
     li {
       padding-right: 7px;
       list-style: none;
+      
+      &.first {
+        display: none;
+      }
     }
     a {
       font-size: 1.25em;
@@ -1146,13 +1150,14 @@ div.horizontal-tabs .form-text {
     font-size: 38px;
     line-height: 36px;
     position: relative;
-    top: -4px;    
+    top: 17px;    
   }
   form {
     float: right;
     clear: right;
     position: relative;
     width: 100%;
+    z-index: 10;
     
     .description {
       display:none;
@@ -1209,7 +1214,7 @@ div.horizontal-tabs .form-text {
   }
   .view-content {
     clear: none;
-    padding-top: 7.4em;
+    padding-top: 4.4em;
     
     .view-content {
       padding-top: 0;
@@ -1227,7 +1232,7 @@ div.horizontal-tabs .form-text {
   width: 320px;
   margin-left: 25px;
   position: relative;
-  z-index: 100;
+  z-index: 9;
   background: #fff;
   padding-top: 20px;
 }
@@ -3900,5 +3905,6 @@ div.fivestar-widget .star {
     border: 1px solid #0C87E8;
     background: #fff;
     @include border-radius(100%);
+    font-family: $arial;
   }
 }
