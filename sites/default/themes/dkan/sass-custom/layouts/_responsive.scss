@@ -152,6 +152,27 @@ $zen-auto-include-item-base: false;
   }
   
   /* mobile screen */
+  
+  /* element form */
+  label, div.legend {
+    font-size: 1.3em;
+  }
+  .form-item {
+    margin: 1.1em 0;
+  }
+  .form-text, 
+  .form-textarea, 
+  .form-select {
+    padding: .4em;
+    font-size: 1.25em;
+    width: 100%;
+    margin-right: 0;
+  }  
+  .form-submit {
+    padding: 0.95em 1.0em;
+    font-size: 13px;
+  }
+  
   .region-header {
     
     #logo {
@@ -174,16 +195,45 @@ $zen-auto-include-item-base: false;
       .sf-clone-parent {
         display: none;
       }
+      > ul > li ul {
+        width: 21em !important;
+      }
     }
     .pane-system-user-menu {
       position: absolute;
       top: 47px;
       right: 10px;
+      padding: 0;
       
-      > ul li a[href$="/user/login"] {
-        text-indent: -10000px;
+      > ul li a {
+        text-indent: -10000px;  
         overflow: hidden;
-        padding-left: 34px;
+        background-color: #FFFFFF;
+        background-image: url("../images/ico-set-ui.png");
+        background-repeat: no-repeat;
+        background-position: 0 -1000px;
+        border: 1px solid #4E4118;
+        @include border-radius(50%);
+        height: 30px;
+        padding: 0;
+        width: 30px;
+        margin-right: 7px;
+      }
+      > ul li a[href$="/user/login"] {
+        background: #fff url("../images/ico-set-ui.png") no-repeat -539px -353px;
+        padding-left: 0;
+      }
+      > ul li a[href$="/user"] {
+        background-position: -387px -353px;
+      }
+      > ul li a[href$="/messages"] {
+        background-position: -349px -48px;
+      }
+      > ul li a[href$="/user/logout"] {
+        background-position: -119px -10px;
+      }
+      > ul li a[href$="/user/register"] {
+        background-position: -387px -314px;
       }
     } 
     
@@ -208,6 +258,45 @@ $zen-auto-include-item-base: false;
   .page-taxonomy-term .region-header {
     @include background-size(cover);
   }
+  
+  
+  /* heading */
+  .pane-page-title h1 {
+    margin: .2em 0 .3em;
+    font-size: 17px;
+  }
+  h3 {
+    font-size: 20px;
+    line-height: 1.2641em;
+  } 
+  
+
+  /* tabs */
+  .tabs-primary, .tabs-secondary {
+    padding: 0;
+    clear: both;
+    margin-top: 0;
+  }  
+  .tabs-primary li a {
+    font-size: 11px;
+  }
+  .tabs-primary li {
+    width: 100%;
+  }
+  .is-active.tabs-primary__tab {
+    width: 97%;
+  }
+  .tabs-primary li a.is-active {
+    border: 0;
+  }
+  
+  /* page user */
+  .page-user .pane-page-content {
+    margin-left: 3%;
+    margin-right: 3%;
+  }
+  
+  
   .region-orange .pane-dataset-datasets-total-count,
   .region-orange .pane-dataset-datasets-total-count-for-guest  {
     h2 {
@@ -420,9 +509,10 @@ $zen-auto-include-item-base: false;
     }
     .category-menu {
       margin: 0;
-      padding: 1px 0 0 2em;
+      padding: 1px 0 0 0;
       float: none;
       text-align: center;
+      clear: both;
       
       li {
         float: none;
@@ -445,7 +535,11 @@ $zen-auto-include-item-base: false;
         }
       }
     }
-  } 
+  }
+  .page-taxonomy-term .view-rubric-nodes .views-row {
+    width: 100%;
+    font-size: 9px;
+  }
 }
 
 /**

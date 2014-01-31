@@ -99,8 +99,8 @@ div.horizontal-tabs .form-text {
 .form-select {
   padding-top: 0.85em;
   padding-bottom: 0.85em;
-  height: 48px;
-  line-height: 44px;
+  height: 58px;
+  line-height: 47px;
 }
 .form-required {
   color: #0c87e8;
@@ -152,6 +152,11 @@ div.horizontal-tabs .form-text {
     margin-right: 0;
   }
 }
+.node-resource-form {
+  .vertical-tabs {
+    display: none;
+  }
+}
 
 .node-unpublished {
   background: #f2f2f2;
@@ -160,6 +165,9 @@ div.horizontal-tabs .form-text {
 .front .region-header {
   @include background-size(cover);
   overflow: hidden;
+}
+.panels-flexible-row.region-header  {
+  padding: 2% 1.5% 1% 1.5%;
 }
 .region-header {
   /*height: 660px;*/
@@ -462,6 +470,7 @@ div.horizontal-tabs .form-text {
 }
 .region-header-facts {
   position: relative;
+  z-index: 10;
   
   .ctools-collapsible-container .ctools-collapsible-handle.pane-title {
     display: none;
@@ -951,6 +960,7 @@ div.horizontal-tabs .form-text {
     color: #4d4d4d;
     font-size: 38px;
     line-height: 42px;
+    padding-bottom: 6px;
   }
   .pane-user-roles {
     color: #b5b5b5;
@@ -2870,6 +2880,20 @@ div.fivestar-widget .star {
       background: url("../images/arr-down.png") no-repeat 100% 50%;      
     }
   }
+  .od-common-pubdlcnt-count-wrapper {
+    margin-right: 20px;
+    color: #777777;
+    font-size: 18px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    top: 2px;
+    padding-right: 24px;
+    height: 60px;
+    line-height: 60px;
+    background: url("../images/ico-downloads.png") no-repeat 100% 50%;      
+  }
   .pane-node-field-vote {
     float: right;
     
@@ -2894,7 +2918,7 @@ div.fivestar-widget .star {
   }
   .pane-node-total-count {
     float: right;
-    padding-left: 63px;
+    padding-left: 71px;
     margin-right: 20px;
     background: url("../images/ico-view.png") no-repeat 0 50%;
     line-height: 35px;
@@ -3419,8 +3443,48 @@ div.fivestar-widget .star {
   }
 }
 /* node-type-competition  */
+/**
+ * competition
+ */  
 .node-type-competition {
-  background: #fff;
+  background-color: #e5e5e5;
+  
+  .pane-page-title {
+    text-align: center;
+    position: relative;
+    padding: 20px 0;
+    clear: both;
+    
+    &:before {
+      position: absolute;
+      z-index: 1;
+      content: '';
+      width: 100%;
+      border-top: 1px solid #a5a5a5;
+      left: 0;
+      top: 50%;
+    }
+    h1 {
+      margin: 0;
+      padding: 0 30px;
+      display: inline-block;
+      background-color: #e5e5e5;
+      color: #0c87e8;
+      font-size: 36px;
+      line-height: 36px;
+      position: relative;
+      z-index: 2;      
+    }
+  }
+  a.btn {
+    float: right;
+    padding: .4em 1em;
+    color: #fff;
+    text-decoration: none;
+    background-color: #0c87e8;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
 }
 #pane-competition {
   .panel-pane {
@@ -3429,16 +3493,73 @@ div.fivestar-widget .star {
     
     .field-label {
       text-transform: uppercase;
-      padding-bottom: 4px;
+      padding-bottom: 8px;
+      font-weight: normal;
     }
+  }
+  .details-1,  
+  .details-2,  
+  .details-3  {
+    text-transform: uppercase;
+    color: #666666;
+    
+    .field-label {
+      color: #ffa200;
+    }
+    a {
+      text-decoration: none;
+    }
+    .field-items {
+      line-height: 25px;
+    }
+  }
+  .details-1 {
+    width: 100%;
+    
+    .panel-pane {
+      width: 33.33%;
+      float: left;
+    }
+  }
+  .details-2 {
+    float: left;
+    width: 66.66%;
+    
+    .panel-pane {
+      float: left;
+      width: 50%;
+    }
+  }
+  .details-3 {
+    float: left;
+    width: 33.33%;
+    padding-bottom: 10px;
+    
+    .panel-pane {
+      padding-bottom: 8px;
+    }
+    .field-label {
+      padding-bottom: 0;
+    }
+    .panels-flexible-region-inside {
+      padding-left: 0;
+    }
+    .field-items {
+      line-height: 1.1em;
+    }
+  }
+  
+  .comp-content {
+    border-top: 1px solid #a5a5a5;
+    padding-top: 30px;
   }
   .pane-node-field-competition-photo {
     padding-bottom: 0;
     
     img {
       float: left;
-      width: 15%;
-      margin-right: 20px;
+      max-width: 55%;
+      margin-right: 25px;
       margin-bottom: 20px;
     }
   }
@@ -3451,8 +3572,16 @@ div.fivestar-widget .star {
   }
   .pane-node-field-competition-phone {
     .field-item {
-      font-size: 20px;
-      color: #777;
+
+    }
+  }
+  .pane-node-field-competition-description {
+    font-size: 18px;
+    line-height: 1.5em;
+    color: #666;
+    
+    p {
+      margin: 0 0 20px;
     }
   }
 }
@@ -3602,6 +3731,7 @@ div.fivestar-widget .star {
     }
   }
 }
+  
  
 /**
  * map
