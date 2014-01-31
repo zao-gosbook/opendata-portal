@@ -1,0 +1,119 @@
+<?php
+
+/**
+ * @file
+ * Allows to skip main H1 header from the page
+ * if an alternative header is set in panes.
+ */
+
+/**
+ * Implements hook_preprocess_overlay().
+ */
+function panels_alternative_header_preprocess_overlay(&$variables) {
+  panels_alternative_header_preprocess_page($variables);
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function panels_alternative_header_preprocess_page(&$variables) {
+  if (panels_alternative_header_title_removed()) {
+    $variables['title'] = '';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function panels_alternative_header_form_panelizer_edit_content_form_alter(&$form, &$form_state, $form_id) {
+  panels_alternative_header_add_settings($form, $form_state);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function panels_alternative_header_form_ctools_export_ui_edit_item_wizard_form_alter(&$form, &$form_state, $form_id) {
+  panels_alternative_header_add_settings($form, $form_state);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function panels_alternative_header_form_panels_panel_context_edit_content_alter(&$form, &$form_state, $form_id) {
+  panels_alternative_header_add_settings($form, $form_state);
+}
+
+/**
+ * Adds form element to configure header removing.
+ */
+function panels_alternative_header_add_settings(&$form, &$form_state) {
+  if (!isset($form['display_title']['hide_title'])) {
+    return;
+  }
+
+  $display = &$form_state['display'];
+  $value = 0;
+  if (!empty($display->panel_settings['remove_main_header'])) {
+    $value = 1;
+  }
+
+  $form['display_title']['remove_main_header'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Remove main page header'),
+    '#description' => t('Check this if alternative header tag (H1 element) is put on this page, e.g. in node title pane.'),
+    '#weight' => 0,
+    '#default_value' => $value,
+  );
+  if (isset($form['buttons']['submit'])) {
+    $form['buttons']['submit']['#submit'][] = 'panels_alternative_header_add_settings_submit';
+  }
+  else {
+    $form['#submit'][] = 'panels_alternative_header_add_settings_submit';
+  }
+}
+
+/**
+ * Additional submit handler.
+ *
+ * Stores header removing flag in display settings.
+ */
+function panels_alternative_header_add_settings_submit($form, &$form_state) {
+  if (isset($form_state['values']['display_title']['remove_main_header'])) {
+    $display = &$form_state['display'];
+    if (empty($form_state['values']['display_title']['remove_main_header'])) {
+      unset($display->panel_settings['remove_main_header']);
+    }
+    else {
+      $display->panel_settings['remove_main_header'] = 1;
+    }
+  }
+}
+
+/**
+ * Implements hook_panels_pre_render().
+ */
+function panels_alternative_header_panels_pre_render($display, $renderer) {
+  if (!empty($display->panel_settings['remove_main_header'])) {
+    panels_alternative_header_title_removed(TRUE);
+  }
+}
+
+/**
+ * Implements hook_panelizer_pre_render_alter().
+ */
+function panels_alternative_header_panelizer_pre_render_alter($panelizer, $display, $entity) {
+  if (!empty($display->panel_settings['remove_main_header'])) {
+    panels_alternative_header_title_removed(TRUE);
+  }
+}
+
+/**
+ * Keeps header removing flag during page rendering.
+ */
+function panels_alternative_header_title_removed($set = NULL) {
+  static $value = FALSE;
+  if (!empty($set)) {
+    $value = TRUE;
+  }
+  return $value;
+}

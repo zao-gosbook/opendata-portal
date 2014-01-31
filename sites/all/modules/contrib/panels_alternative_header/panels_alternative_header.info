@@ -1,0 +1,12 @@
+name = Panels Alternative Header
+description = Allows to skip main H1 header from the page if an alternative header is set in panes.
+core = 7.x
+package = Panels
+dependencies[] = panels
+
+; Information added by Drupal.org packaging script on 2014-01-14
+version = "7.x-1.1"
+core = "7.x"
+project = "panels_alternative_header"
+datestamp = "1389743905"
+
