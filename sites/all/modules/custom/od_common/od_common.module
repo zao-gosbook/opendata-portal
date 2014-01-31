@@ -56,14 +56,34 @@ function od_common_library() {
     'website' => 'http://code.drewwilson.com/entry/tiptip-jquery-plugin',
     'version' => '1.3',
     'js' => array(
-      "{$path}/libraries/jquery/tiptip/jquery.tooltip.min.js"  => array(),
+      "{$path}/libraries/jquery/tiptip/jquery.tipTip.minified.js"  => array(),
     ),
     'css' => array(
-      "{$path}/libraries/jquery/tiptip/jquery.tooltip.css"  => array(),
+      "{$path}/libraries/jquery/tiptip/tipTip.css"  => array(),
+    ),
+  );
+
+  $libraries['jquery.tooltip'] = array(
+    'title' => 'jQuery Tooltip',
+    //'website' => 'http://code.drewwilson.com/entry/tiptip-jquery-plugin',
+    //'version' => '1.3',
+    'js' => array(
+      "{$path}/libraries/jquery/jquery-tooltip/jquery.tooltip.min.js"  => array(),
+    ),
+    'css' => array(
+      "{$path}/libraries/jquery/jquery-tooltip/jquery.tooltip.css"  => array(),
     ),
   );
 
   return $libraries;
+}
+
+/**
+ * Implements hook_entity_property_info_alter()
+ */
+function od_common_entity_property_info_alter(&$info) {
+  $info['node']['properties']['title_phantom'] = $info['node']['properties']['title'];
+  $info['node']['properties']['title_phantom']['label'] = t('Title phantom');
 }
 
 /**
