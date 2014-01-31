@@ -82,7 +82,7 @@ function od_common_library() {
  * Implements hook_entity_property_info_alter()
  */
 function od_common_entity_property_info_alter(&$info) {
-  $info['node']['properties']['title_phantom'] = array(
+  $info['node']['properties']['clone_title'] = array(
     'label' => t('Title clone'),
     'type' => 'text',
     'description' => t('Title clone field. Gets title property'),
