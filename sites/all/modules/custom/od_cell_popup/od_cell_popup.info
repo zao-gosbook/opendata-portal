@@ -1,0 +1,7 @@
+name = Opendata dataset cell popup
+description = "Opendata dataset grid view cell operations"
+package = "Gosbook"
+core = 7.x
+dependencies[] = node
+dependencies[] = od_common
+depencencies[] = modal_entityform

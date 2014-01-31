@@ -1,0 +1,20 @@
+<?php
+/*
+ * @file
+ */
+
+/**
+ * Implements hook_preprocess_html()
+ */
+function od_cell_popup_preprocess_html(&$vars) {
+  if (
+    arg(0) == 'node'
+      &&
+    ($nid = arg(1)) && is_numeric($nid)
+      &&
+    ($node = node_load($nid)) && $node->type == 'resource'
+  ) {
+    drupal_add_library('od_common', 'jquery.tiptip');
+    drupal_add_js(drupal_get_path('module', 'od_cell_popup'). '/js/popup.js');
+  }
+}
