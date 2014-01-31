@@ -88,6 +88,7 @@ function od_common_entity_property_info_alter(&$info) {
     'description' => t('Title clone field. Gets title property'),
     'getter callback' => 'od_common_entity_property_verbatim_get',
     'real property' => 'title',
+    'computed' => TRUE,
   );
 }
 
