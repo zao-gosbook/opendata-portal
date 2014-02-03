@@ -100,13 +100,14 @@ class i18n_string_object {
       if (isset($string['format'])) {
         $this->format = $string['format'];
       }
+      if (isset($string['title'])) {
+        $this->title = $string['title'];
+      }
     }
     else {
       $this->string = $string;
     }
-    if (isset($string['title'])) {
-      $this->title = $string['title'];
-    }
+
     return $this;
   }
   /**
@@ -400,8 +401,13 @@ class i18n_string_textgroup_default {
   /**
    * Filter array of strings
    *
-   * @param $filter
+   * @param array $string_list
+   *   Array of strings to be filtered.
+   * @param array $filter
    *   Array of name value conditions.
+   *
+   * @return array
+   *   Strings from $string_list that match the filter conditions.
    */
   protected static function string_filter($string_list, $filter) {
     // Remove 'language' and '*' conditions.

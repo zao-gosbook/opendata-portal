@@ -54,7 +54,7 @@ function i18n_node_block_view_system_help_alter(&$block) {
   $arg = drupal_help_arg(arg(NULL));
   if ($arg[0] == 'node' && $arg[1] == 'add' && $arg[2]) {
     if (($type = node_type_get_type(str_replace('-', '_', $arg[2]))) && !empty($type->help)) {
-      $help = i18n_node_translate_type($type, 'help');
+      $help = i18n_node_translate_type($type, 'help', NULL, array('sanitize' => FALSE));
       if ($help !== $type->help) {
         $block['content'] = str_replace(filter_xss_admin($type->help), filter_xss_admin($help), $block['content']);
       }
@@ -64,7 +64,7 @@ function i18n_node_block_view_system_help_alter(&$block) {
     $node = menu_get_object();
     if ($node && isset($node->type)) {
       $type = node_type_get_type($node->type);
-      $help = i18n_node_translate_type($type, 'help');
+      $help = i18n_node_translate_type($type, 'help', NULL, array('sanitize' => FALSE));
       if ($help !== $type->help) {
         $block['content'] = str_replace(filter_xss_admin($type->help), filter_xss_admin($help), $block['content']);
       }
@@ -442,7 +442,7 @@ function i18n_node_form_node_form_alter(&$form, $form_state) {
    *
    * @see http://drupal.org/node/765860
   */
-  
+
   // Replace core's node submit callback with our own,
   // in order to translate the node type name.
   $key = array_search('node_form_submit', $form['actions']['submit']['#submit']);
@@ -464,8 +464,7 @@ function i18n_node_form_submit($form, &$form_state) {
   $insert = empty($node->nid);
   node_save($node);
   $node_link = l(t('view'), 'node/' . $node->nid);
-  $type = node_type_get_type($node->type);
-  $type_name = i18n_node_translate_type($type);
+  $type_name = i18n_node_type_name($node->type);
 
   $watchdog_args = array('@type' => $node->type, '%title' => $node->title);
   $t_args = array('@type' => $type_name, '%title' => $node->title);
@@ -481,7 +480,7 @@ function i18n_node_form_submit($form, &$form_state) {
   if ($node->nid) {
     $form_state['values']['nid'] = $node->nid;
     $form_state['nid'] = $node->nid;
-    $form_state['redirect'] = 'node/' . $node->nid;
+    $form_state['redirect'] = node_access('view', $node) ? 'node/' . $node->nid : '<front>';
   }
   else {
     // In the unlikely case something went wrong on save, the node will be
@@ -516,12 +515,11 @@ function _i18n_node_form_node_form_alter($form, &$form_state) {
     $form['body_field']['body']['#title'] = i18n_node_translate_type($node->type, 'body', $form['body_field']['body']['#title']);
   }
   // Translate page title for node/add/% and node/%/edit pages.
-  $types = node_type_get_types();
   if (empty($node->nid) && strpos($_GET['q'], 'node/add/' . str_replace('_', '-', $node->type)) === 0) {
-    drupal_set_title(t('Create @name', array('@name' => i18n_node_translate_type($types[$node->type], 'name'))), PASS_THROUGH);
+    drupal_set_title(t('Create @name', array('@name' => i18n_node_type_name($node->type))), PASS_THROUGH);
   }
   elseif (!empty($node->nid) && $_GET['q'] == 'node/' . $node->nid . '/edit') {
-    drupal_set_title(t('<em>Edit @type</em> @title', array('@type' => i18n_node_translate_type($types[$node->type], 'name'), '@title' => $node->title)), PASS_THROUGH);
+    drupal_set_title(t('<em>Edit @type</em> @title', array('@type' => i18n_node_type_name($node->type), '@title' => $node->title)), PASS_THROUGH);
   }
   return $form;
 }
@@ -553,10 +551,16 @@ function i18n_node_translate_type($type, $property = 'name', $source = NULL, $op
 }
 
 /**
- * Translate node type name (unfiltered)
+ * Get translated node type name (unfiltered)
+ *
+ * @param string $type
+ *   Node type.
+ * @param string $name
+ *   Optional node type name.
  */
-function i18n_node_type_name($type, $name) {
-  return i18n_string_translate(array('node', 'type', $type, 'name'), $name);
+function i18n_node_type_name($type, $name = NULL) {
+  $name = isset($name) ? $name : node_type_get_name($type);
+  return i18n_string_translate(array('node', 'type', $type, 'name'), $name, array('sanitize' => FALSE));
 }
 
 /**

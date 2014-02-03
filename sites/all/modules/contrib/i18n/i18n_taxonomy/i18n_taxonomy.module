@@ -452,17 +452,6 @@ function i18n_taxonomy_translate_path($path, $path_prefix = 'taxonomy/term/') {
     return $links;
   }
 }
-/**
- * Implements hook_theme().
- */
-function i18n_taxonomy_theme() {
-  return array(
-    'i18n_taxonomy_term_page' => array(
-      'arguments' => array('tids' => array(), 'result' => NULL),
-      'file' => 'i18n_taxonomy.pages.inc',
-    ),
-  );
-}
 
 /**
  * Get localized term name unfiltered.
