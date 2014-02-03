@@ -15,7 +15,7 @@ class od_entity_label_translate_class_user extends od_entity_label_translate_abs
    */
   function on_entity_load() {
     //Don't alter on admin pages
-    if (arg(0) == 'admin') {
+    if (arg(0) == 'admin' || arg(2) =='edit') {
       return;
     }
 
