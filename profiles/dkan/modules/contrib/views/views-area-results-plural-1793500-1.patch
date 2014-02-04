@@ -1,0 +1,80 @@
+From e6ca8d14e9c7dd38d3b540a8672127a913effed4 Mon Sep 17 00:00:00 2001
+From: Darren Oh <darren@oh.name>
+Date: Mon, 24 Sep 2012 12:00:17 -0400
+Subject: [PATCH] Issue #1793500 by Darren Oh: Added plural format to views_handler_area_result.
+
+---
+ handlers/views_handler_area_result.inc |   42 +++++++++++++++++++++++++++++++-
+ 1 files changed, 41 insertions(+), 1 deletions(-)
+
+diff --git a/handlers/views_handler_area_result.inc b/handlers/views_handler_area_result.inc
+index 86b1849..c3d0c75 100644
+--- a/handlers/views_handler_area_result.inc
++++ b/handlers/views_handler_area_result.inc
+@@ -19,6 +19,12 @@ class views_handler_area_result extends views_handler_area {
+       'default' => 'Displaying @start - @end of @total',
+       'translatable' => TRUE,
+     );
++    $options['format_plural'] = array('default' => FALSE, 'bool' => TRUE);
++    $options['format_plural_count'] = array('default' => '@total');
++    $options['format_plural_plural'] = array(
++      'default' => '',
++      'translatable' => TRUE,
++    );
+ 
+     return $options;
+   }
+@@ -45,6 +51,37 @@ class views_handler_area_result extends views_handler_area {
+       '#default_value' => $this->options['content'],
+       '#description' => t('You may use HTML code in this field. The following tokens are supported:') . $list,
+     );
++    $form['format_plural'] = array(
++      '#type' => 'checkbox',
++      '#title' => t('Format plural'),
++      '#description' => t('If checked, special handling will be used for plurality.'),
++      '#default_value' => $this->options['format_plural'],
++    );
++    $form['format_plural_count'] = array(
++      '#type' => 'select',
++      '#title' => t('Count token'),
++      '#description' => t('Token used to select plural format.'),
++      '#default_value' => $this->options['format_plural_count'],
++      '#options' => drupal_map_assoc(array(
++        '@start',
++        '@end',
++        '@total',
++        '@name',
++        '@per_page',
++        '@current_page',
++        '@current_record_count',
++        '@page_count'
++      )),
++      '#dependency' => array('edit-options-format-plural' => array(TRUE)),
++    );
++    $form['format_plural_plural'] = array(
++      '#title' => t('Plural form'),
++      '#type' => 'textarea',
++      '#rows' => 3,
++      '#default_value' => $this->options['format_plural_plural'],
++      '#description' => t('Text to use for the plural form.'),
++      '#dependency' => array('edit-options-format-plural' => array(TRUE)),
++    );
+   }
+ 
+ 
+@@ -87,8 +124,11 @@ class views_handler_area_result extends views_handler_area {
+     foreach ($items as $item) {
+       $replacements["@$item"] = ${$item};
+     }
++    if (!empty($this->options['format_plural']) && $replacements[$this->options['format_plural_count']] != 1) {
++      $format = $this->options['format_plural_plural'];
++    }
+     // Send the output.
+-    if (!empty($total)) {
++    if (!empty($total) || !empty($this->options['empty']) && !empty($this->view->build_info['count_query'])) {
+       $output .= filter_xss_admin(str_replace(array_keys($replacements), array_values($replacements), $format));
+     }
+     return $output;
+-- 
+1.7.3.5
+
