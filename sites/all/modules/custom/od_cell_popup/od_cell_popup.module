@@ -20,3 +20,14 @@ function od_cell_popup_preprocess_html(&$vars) {
 
   theme('entityform_edit_form', array());
 }
+
+function od_cell_popup_field_widget_form_alter(&$element, &$form_state, $context) {
+  $prepopulate_fields = array(
+    'field_ds_report_row' => TRUE,
+    'field_ds_report_col' => TRUE,
+  );
+
+  if (isset($element['#field_name']) && isset($prepopulate_fields[$element['#field_name']])) {
+    $element['value']['#value'] = $_GET[$element['#field_name']];
+  }
+}
