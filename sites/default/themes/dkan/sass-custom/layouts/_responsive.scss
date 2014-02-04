@@ -155,7 +155,8 @@ $zen-auto-include-item-base: false;
   
   /* element form */
   label, div.legend {
-    font-size: 1.3em;
+    font-size: 1.1em;
+    line-height: 2.1em;
   }
   .form-item {
     margin: 1.1em 0;
@@ -163,7 +164,7 @@ $zen-auto-include-item-base: false;
   .form-text, 
   .form-textarea, 
   .form-select {
-    padding: .4em;
+    padding: .66em;
     font-size: 1.25em;
     width: 100%;
     margin-right: 0;
@@ -171,6 +172,10 @@ $zen-auto-include-item-base: false;
   .form-submit {
     padding: 0.95em 1.0em;
     font-size: 13px;
+  }
+  .form-select {
+    height: 39px;
+    line-height: 39px;  
   }
   
   .region-header {
@@ -261,8 +266,12 @@ $zen-auto-include-item-base: false;
   
   
   /* heading */
+  .pane-page-title {
+    padding-left: 24px;
+    padding-right: 10px;
+  }
   .pane-page-title h1 {
-    margin: .2em 0 .3em;
+    margin: .2em 0 .6em;
     font-size: 17px;
   }
   h3 {
@@ -284,7 +293,8 @@ $zen-auto-include-item-base: false;
     width: 100%;
   }
   .is-active.tabs-primary__tab {
-    width: 97%;
+    margin: 0;
+    border: 0;
   }
   .tabs-primary li a.is-active {
     border: 0;
@@ -484,7 +494,7 @@ $zen-auto-include-item-base: false;
       font-size: 22px;
       height: 1.9em;
       line-height: 2.05em;
-      padding: 0 3% 0 7%;
+      padding: 0 3% 0 24px;
       
       &:after {
         right: auto;
@@ -500,7 +510,7 @@ $zen-auto-include-item-base: false;
         text-decoration: none;
       }
       img {
-        width: 72px;
+        height: 40px;
       }
       span {
         position: relative;
@@ -539,6 +549,14 @@ $zen-auto-include-item-base: false;
   .page-taxonomy-term .view-rubric-nodes .views-row {
     width: 100%;
     font-size: 9px;
+  }
+  
+  /* import data */
+  .view-opendata-import td {
+    padding: 10px;
+  }
+  table td.views-field-title a {
+    font-size: 1em;
   }
 }
 
@@ -619,11 +637,41 @@ $zen-auto-include-item-base: false;
     .pane-system-user-menu {
       padding-top: 15px;
       margin-top: -73px;
-    }  
-    .pane-system-main-menu ul li a,
-    .pane-system-user-menu > ul li a  {
-      font-size: .9em;
-    }    
+      
+      > ul li a {
+        text-indent: -10000px;  
+        overflow: hidden;
+        background-color: #FFFFFF;
+        background-image: url("../images/ico-set-ui.png");
+        background-repeat: no-repeat;
+        background-position: 0 -1000px;
+        border: 1px solid #4E4118;
+        @include border-radius(50%);
+        height: 30px;
+        padding: 0;
+        width: 30px;
+        margin-right: 7px;
+      }
+      > ul li a[href$="/user/login"] {
+        background: #fff url("../images/ico-set-ui.png") no-repeat -539px -353px;
+        padding-left: 0;
+      }
+      > ul li a[href$="/user"] {
+        background-position: -387px -353px;
+      }
+      > ul li a[href$="/messages"] {
+        background-position: -349px -48px;
+      }
+      > ul li a[href$="/user/logout"] {
+        background-position: -119px -10px;
+      }
+      > ul li a[href$="/user/register"] {
+        background-position: -387px -314px;
+      }
+      > ul li.last a {
+        margin-right: 0;
+      }
+    }     
   }
   .region-orange .pane-dataset-datasets-total-count,
   .region-orange .pane-dataset-datasets-total-count-for-guest  {
