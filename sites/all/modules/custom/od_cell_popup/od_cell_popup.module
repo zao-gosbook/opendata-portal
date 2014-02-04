@@ -17,4 +17,6 @@ function od_cell_popup_preprocess_html(&$vars) {
     drupal_add_library('od_common', 'jquery.tiptip');
     drupal_add_js(drupal_get_path('module', 'od_cell_popup'). '/js/popup.js');
   }
+
+  theme('entityform_edit_form', array());
 }
