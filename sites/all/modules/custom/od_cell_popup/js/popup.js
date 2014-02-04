@@ -24,7 +24,7 @@
 
           var rowNum = $this.parent().attr('row');
 
-          var re = new RegExp('r([0-9]+)$', 'i')
+          var re = new RegExp(' ?r([0-9]+) ?', 'i')
           var colNum = re.exec($this.attr('class'))[1];
 
           cells.trigger('blur');
@@ -42,7 +42,8 @@
             $input.tipTip({
               activation: 'click',
               content: getTipContent(rowNum, colNum),
-              keepAlive: true
+              keepAlive: true,
+              defaultPosition: 'top'
             });
 
             $span
