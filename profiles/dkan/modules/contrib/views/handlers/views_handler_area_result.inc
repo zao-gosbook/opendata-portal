@@ -19,6 +19,12 @@ class views_handler_area_result extends views_handler_area {
       'default' => 'Displaying @start - @end of @total',
       'translatable' => TRUE,
     );
+    $options['format_plural'] = array('default' => FALSE, 'bool' => TRUE);
+    $options['format_plural_count'] = array('default' => '@total');
+    $options['format_plural_plural'] = array(
+      'default' => '',
+      'translatable' => TRUE,
+    );
 
     return $options;
   }
@@ -44,6 +50,37 @@ class views_handler_area_result extends views_handler_area {
       '#rows' => 3,
       '#default_value' => $this->options['content'],
       '#description' => t('You may use HTML code in this field. The following tokens are supported:') . $list,
+    );
+    $form['format_plural'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Format plural'),
+      '#description' => t('If checked, special handling will be used for plurality.'),
+      '#default_value' => $this->options['format_plural'],
+    );
+    $form['format_plural_count'] = array(
+      '#type' => 'select',
+      '#title' => t('Count token'),
+      '#description' => t('Token used to select plural format.'),
+      '#default_value' => $this->options['format_plural_count'],
+      '#options' => drupal_map_assoc(array(
+        '@start',
+        '@end',
+        '@total',
+        '@name',
+        '@per_page',
+        '@current_page',
+        '@current_record_count',
+        '@page_count'
+      )),
+      '#dependency' => array('edit-options-format-plural' => array(TRUE)),
+    );
+    $form['format_plural_plural'] = array(
+      '#title' => t('Plural form'),
+      '#type' => 'textarea',
+      '#rows' => 3,
+      '#default_value' => $this->options['format_plural_plural'],
+      '#description' => t('Text to use for the plural form.'),
+      '#dependency' => array('edit-options-format-plural' => array(TRUE)),
     );
   }
 
@@ -87,8 +124,11 @@ class views_handler_area_result extends views_handler_area {
     foreach ($items as $item) {
       $replacements["@$item"] = ${$item};
     }
+    if (!empty($this->options['format_plural']) && $replacements[$this->options['format_plural_count']] != 1) {
+      $format = $this->options['format_plural_plural'];
+    }
     // Send the output.
-    if (!empty($total)) {
+    if (!empty($total) || !empty($this->options['empty']) && !empty($this->view->build_info['count_query'])) {
       $output .= filter_xss_admin(str_replace(array_keys($replacements), array_values($replacements), $format));
     }
     return $output;
