@@ -58,23 +58,20 @@ class EntityformTypeMetadataController extends EntityDefaultMetadataController {
   public function entityPropertyInfo() {
     $info = parent::entityPropertyInfo();
     $properties = &$info[$this->type]['properties'];
-    $text_defaults = entity_get_controller('entityform_type')->get_default_text_values();
-    foreach (array_keys($text_defaults) as $text_prop) {
-      $properties[$text_prop] = array(
-        'label' => $text_prop,
+    $properties['notification_text'] = array(
+        'label' => t("Notification Text"),
+        'description' => t("Custom text to display in notifications."),
         'getter callback' => 'entityformtype_metadata_get_properties',
-        'setter callback' => 'entityformtype_metadata_set_properties',
         'type' => 'text',
-        // Flag to be translated in entityform_i18n
-        'entityform_i18n' => TRUE,
-      );
-      // Testing if this will allow property to be transalted
-      // @todo remove flag all formatted properties
-      if (in_array($text_prop,array('submission_text','instruction_pre'))) {
-        $properties[$text_prop]['format'] = 'format';
-      }
-    }
-
+        'computed' => TRUE,
+    );
+    $properties['notify_emails'] = array(
+        'label' => t("Notification Emails"),
+        'description' => t("Emails to notify"),
+        'getter callback' => 'entityformtype_metadata_get_properties',
+        'type' => 'text',
+        'computed' => TRUE,
+    );
     return $info;
   }
 }

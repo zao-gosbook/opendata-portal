@@ -111,6 +111,7 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       _od_common_map_views_form_views_exposed_form_alter($form, $form_state);
       break;
   }
+  if ($form['#entity_type'] == 'entityform') $form['actions']['submit']['#value']=t($form['actions']['submit']['#value']);
 }
 
 /**

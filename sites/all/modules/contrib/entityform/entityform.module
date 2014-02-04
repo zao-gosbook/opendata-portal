@@ -1338,6 +1338,7 @@ class EntityformTypeController extends EntityAPIControllerExportable {
    */
   public function get_default_text_values() {
     return array(
+      'instruction_pre' => '',
       'submit_confirm_msg' => 'Your submission has been saved.',
       'submission_page_title' => 'Thank You.',
       'draft_button_text' => 'Save Draft',
