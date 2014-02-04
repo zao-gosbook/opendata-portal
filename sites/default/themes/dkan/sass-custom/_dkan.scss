@@ -230,6 +230,12 @@ div.horizontal-tabs .form-text {
       text-transform: uppercase;
     }
   }
+  .header__site-slogan {
+    margin: -7px 0 0 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #0c87e8;
+  }
   .pane-system-main-menu {
     float: left;
     padding-bottom: 20px;
@@ -289,7 +295,7 @@ div.horizontal-tabs .form-text {
           top: 4.3em;
           left: 0;
           white-space: nowrap;
-          width: 40em !important;
+          width: 50em !important;
           
           li {
             float: left;
@@ -493,12 +499,17 @@ div.horizontal-tabs .form-text {
     }
   }
 }
+
 .region-orange {
   /*padding: 0 7%;*/
   background: #ffa200;
   padding-bottom: 0;
   margin-bottom: 0;
   width: 100%;
+  
+  &.panels-flexible-row {
+    padding-bottom: 0;
+  }
   
   .panels-flexible-region {
     width: 100%;
@@ -542,6 +553,7 @@ div.horizontal-tabs .form-text {
     }
   }
 }
+
 .sf-accordion-toggle {
   span {
     display: inline-block;
@@ -1949,6 +1961,7 @@ div.horizontal-tabs .form-text {
         font-size: 18px;     
         padding: 0 1.25em;
         text-decoration: none;
+        margin-right: 1px;
         
         &.active,
         &:hover {
@@ -3409,6 +3422,7 @@ div.fivestar-widget .star {
     border-right: 5px solid #bfbfbf;
     padding-right: 4%;
     margin-bottom: 4.5em;
+    @include clearfix;
     
     .field-type-image {
       img {
@@ -3422,6 +3436,51 @@ div.fivestar-widget .star {
         line-height: 1.1em;
       }
     }
+    .field-name-field-date-created {
+      color: #B5B5B5;
+      float: left;
+      font-size: 1.25em;       
+    }
+    .field-name-field-rubric {
+      float: right;
+      font-size: 1.25em;
+      padding-left: 20px;
+    } 
+    .field-name-field-comments-count {
+      background: url("../images/ico-comments.png") no-repeat scroll 0 50% transparent;
+      color: #FF8A00;
+      float: right;
+      font-size: 1.25em;
+      padding-left: 25px;
+      
+      a em {
+          font-style: normal;
+      }      
+    }  
+    h2 {
+      font-size: 1.4em;
+      line-height: 1.5em;
+      margin: 0;
+      padding: 0 0 1.1em;
+      text-transform: uppercase;
+      
+      a {
+        text-decoration: none;
+      }
+    }    
+    .field-name-field-teaser,
+    .field-type-text-with-summary    {
+      color: #666666;
+      font-size: 1.4em;
+      height: 3.75em;
+      line-height: 1.25em;
+      margin: 0 0 1.3em;
+      overflow: hidden;
+      
+      p {
+        margin-top: 0;
+      }
+    }    
     .field-type-datetime {
       font-size: 16px;
       color: #b5b5b5;
@@ -3447,6 +3506,15 @@ div.fivestar-widget .star {
     }
   }
 }
+.section-library {
+  .pane-datasets-search-dataset-search .view-content {
+    padding-top: 5.4em;
+  }
+  .pane-datasets-search-dataset-search .view-header {
+    top: 0;
+  }  
+}
+
 /* node-type-competition  */
 /**
  * competition
@@ -3736,7 +3804,33 @@ div.fivestar-widget .star {
     }
   }
 }
-  
+
+/**
+ * activity
+ */  
+.page-node-activity {
+  background-color: #fff;
+} 
+.view-datasets-revisions {
+  .views-row {
+    @include clearfix;
+    font-size: 16px;
+    color: #666;
+    text-transform: uppercase;
+    line-height: 1.5em;
+    padding-bottom: 1.35em;
+    
+    a {
+      text-decoration: none;
+    }
+    em {
+      font-style: normal;
+    }
+  }
+  .views-label-timestamp {
+    color: #ffa200;
+  }  
+}
  
 /**
  * map
