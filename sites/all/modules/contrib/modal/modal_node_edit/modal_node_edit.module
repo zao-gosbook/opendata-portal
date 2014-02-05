@@ -1,0 +1,165 @@
+<?php
+
+/**
+ * @file
+ * Allows node editing in modal window.
+ *
+ * Reference:
+ * http://drupal.stackexchange.com/questions/21053/how-to-load-a-node-edit-form-using-ctools-modal-in-drupal-7
+ *
+ * @example
+ * Load link with l() function to create:
+ * <a href="/modal/node/NID/edit/nojs" class="ctools-use-modal">Edit and reload the page</a>
+ * or
+ * <a href="/modal/node/NID/edit/nojs/0" class="ctools-use-modal">Edit without page reloading</a>.
+ *
+ * Ensure page loading above link has the following functions called:
+ * ctools_include('modal');
+ * ctools_modal_add_js();
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function modal_node_edit_menu() {
+  $items = array();
+
+  foreach (node_type_get_types() as $type) {
+    $type_url_str = str_replace('_', '-', $type->type);
+    $items['modal/node/add/' . $type_url_str . '/%ctools_js'] = array(
+      'title' => 'Create ' . $type->name . ' node',
+      'title callback' => 'check_plain',
+      'page callback' => 'modal_node_edit_page_add',
+      'page arguments' => array($type->type, 4),
+      'access callback' => TRUE,
+      'delivery callback' => 'ajax_deliver',
+      'type' => MENU_CALLBACK,
+    );
+  }
+
+  $items['modal/node/%node/edit/%ctools_js'] = array(
+    'title' => 'Edit node',
+    'page callback' => 'modal_node_edit_page_edit',
+    'page arguments' => array(2, 4),
+    'access callback' => TRUE,
+    'delivery callback' => 'ajax_deliver',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Page callback - modal: add node.
+ */
+function modal_node_edit_page_add($type, $js, $force_page_reload = TRUE) {
+  // Fall back if $js is not set.
+  if (!$js) {
+    drupal_goto('node/add/' . str_replace('_', '-', $type));
+    return;
+  }
+
+  $types = node_type_get_types();
+
+  if (!isset($types[$type])) {
+    drupal_goto('node/add/' . str_replace('_', '-', $type));
+    return;
+  }
+
+  $type_name = $types[$type]->name;
+
+  ctools_include('modal');
+  ctools_include('ajax');
+
+  if (!node_access('create', $type)) {
+    $commands = array(ctools_modal_command_display(t('Access denied'), t('You are not authorized to access this page.')));
+    drupal_alter('modal_node_edit_page_add_access_denied', $commands, $type, $type_name);
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
+
+  // Get node form defaults.
+  global $user;
+
+  $node = (object) array(
+    'uid' => $user->uid,
+    'name' => (isset($user->name) ? $user->name : ''),
+    'type' => $type,
+    'language' => LANGUAGE_NONE
+  );
+
+  $title = t('Create @name', array('@name' => $type_name));
+  drupal_alter('modal_node_add_title', $title, $type, $type_name);
+
+  return modal_node_edit_node_form($node, $title, $force_page_reload);
+}
+
+/**
+ * Page callback - modal: edit node.
+ */
+function modal_node_edit_page_edit($node, $js, $force_page_reload = TRUE) {
+  // Fall back if $js is not set.
+  if (!$js) {
+    drupal_goto('node/' . $node->nid . '/edit');
+    return;
+  }
+
+  ctools_include('modal');
+  ctools_include('ajax');
+
+  if (!node_access('update', $node)) {
+    $commands = array(ctools_modal_command_display(t('Access denied'), t('You are not authorized to access this page.')));
+    drupal_alter('modal_node_edit_page_edit_access_denied', $commands, $node);
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
+
+  $type_name = node_type_get_name($node);
+  $title = t('<em>Edit @type</em> @title', array('@type' => $type_name, '@title' => $node->title));
+  drupal_alter('modal_node_edit_title', $title, $node);
+
+  return modal_node_edit_node_form($node, $title, $force_page_reload);
+}
+
+/**
+ * Builds the Modal Form.
+ *
+ * @param object $node
+ *   The node object in edit case. In add case, it's only a pseudo node object.
+ * @param string $title
+ *   The modal popup title.
+ * @param boolean $force_page_reload
+ *   Indicates if page should be reloaded after form submission.
+ */
+function modal_node_edit_node_form($node, $title, $force_page_reload = FALSE) {
+  ctools_include('node.pages', 'node', '');
+
+  if (isset($_GET['destination'])) {
+    unset($_GET['destination']);
+  }
+
+  $form_state = array(
+    'title' => $title,
+    'ajax'  => TRUE,
+    'modal_edit'  => TRUE, // This property can be used in hook_form_alter() to separate modal and full-page forms.
+    'build_info' => array(
+      'args'  => array($node),
+    ),
+  );
+
+  $extra_commands = array();
+
+  drupal_alter('modal_node_edit', $extra_commands, $node);
+  $commands = array_merge(ctools_modal_form_wrapper($node->type . '_node_form', $form_state), $extra_commands);
+
+  if (!empty($form_state['executed']) && empty($form_state['rebuild'])) {
+      // overwrite commands.
+      $commands = array();
+
+      ctools_add_js('ajax-responder');
+      $commands[] = ctools_modal_command_dismiss();
+      if ($force_page_reload) {
+        $commands[] = ctools_ajax_command_reload();
+      }
+  }
+
+  return array('#type' => 'ajax', '#commands' => $commands);
+}

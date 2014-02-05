@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * Options list callback defining drupal_message types.
+ */
+function modal_messages_message_types() {
+  return array(
+    'modal-status' => t('Status'),
+    'modal-warning' => t('Warning'),
+    'modal-error' => t('Error'),
+  );
+}
+
+function modal_messages_get_as_ajax_commands($reload_on_close = FALSE) {
+  _modal_messages_initialize();
+
+  $commands = array();
+
+  $output = _modal_messages_get_output();
+  if (empty($output)) {
+    return $commands;
+  }
+
+  $commands[] = array(
+    'command' => 'modal_messages_show',
+    'title' => '',
+    'output' => $output,
+    'style' => check_plain(variable_get('modal_messages_style', 'modal-messages')),
+    'reload' => intval($reload_on_close),
+  );
+
+  return $commands;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function modal_messages_preprocess_page($variables) {
+  $output = _modal_messages_get_output();
+  if (empty($output)) {
+    return;
+  }
+  _modal_messages_initialize();
+  $style = check_plain(variable_get('modal_messages_style', 'modal-messages'));
+  $output = str_replace(array("\r", "\n", "'"), array(" ", " ", "\'"), $output);
+  drupal_add_js("jQuery(document).ready(function () { Drupal.modal_messages_show('', '{$output}', '{$style}'); });", 'inline');
+}
+
+function _modal_messages_initialize() {
+  ctools_include('modal');
+  ctools_include('ajax');
+  ctools_modal_add_js();
+  drupal_add_js(drupal_get_path('module', 'modal_messages') . '/modal_messages.js');
+
+  $modal_messages_style = array(
+    'modal-messages' => array(
+      'modalSize' => array(
+        'type' => 'fixed',
+        'width' => 300,
+        'height' => 100,
+      ),
+      'modalOptions' => array(
+        'opacity' => 0.3,
+        'background-color' => '#000000',
+      ),
+      'closeText' => t('Close'),
+      'loadingText' => '',
+      'animation' => 'fadeIn',
+      'animationSpeed' => 'fast',
+      'modalTheme' => 'ModalMesssagesPopup',
+    ),
+  );
+
+  drupal_add_js($modal_messages_style, 'setting');
+}
+
+function _modal_messages_get_output() {
+  $output = '';
+  $messages_by_type = array();
+  foreach (array_keys(modal_messages_message_types()) as $message_type) {
+    $messages = drupal_get_messages($message_type);
+    if (!empty($messages)) {
+      $messages_by_type[$message_type] = $messages[$message_type];
+    }
+  }
+  if (!empty($messages_by_type)) {
+    foreach ($messages_by_type as $type => $messages) {
+      $output .= "<div class=\"messages $type\">\n";
+      if (count($messages) > 1) {
+        $output .= " <ul>\n";
+        foreach ($messages as $message) {
+          $output .= '  <li>' . $message . "</li>\n";
+        }
+        $output .= " </ul>\n";
+      }
+      else {
+        $output .= $messages[0];
+      }
+      $output .= "</div>\n";
+    }
+  }
+  return $output;
+}

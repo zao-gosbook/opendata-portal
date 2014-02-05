@@ -1,0 +1,12 @@
+name = Modal messages
+description = Shows Drupal messages of special types in the modal window.
+core = 7.x
+dependencies[] = ctools
+
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "modal_messages"
+datestamp = "1380587524"
+
