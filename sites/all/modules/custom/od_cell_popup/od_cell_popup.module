@@ -28,6 +28,14 @@ function od_cell_popup_field_widget_form_alter(&$element, &$form_state, $context
   );
 
   if (isset($element['#field_name']) && isset($prepopulate_fields[$element['#field_name']])) {
-    $element['value']['#value'] = $_GET[$element['#field_name']];
+    $element['value']['#value_callback'] = 'od_cell_popup_prepopulate_field_from_uri';
   }
+}
+
+function od_cell_popup_prepopulate_field_from_uri($element, $input, $form_state) {
+  if (isset($_GET[$element['#field_name']])) {
+    return $_GET[$element['#field_name']];
+  }
+
+  return $input;
 }

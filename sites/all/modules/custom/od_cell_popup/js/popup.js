@@ -83,7 +83,7 @@
       }
 
       function getTipContent(rowNum, colNum) {
-        var href = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'eform/submit/dataset-error-report?field_ds_report_row‎='+ rowNum +'&field_ds_report_col‎='+ colNum;
+        var href = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'eform/submit/dataset-error-report?field_ds_report_row='+ rowNum +'&field_ds_report_col='+ colNum;
         var content = '\
         <div class="od-common-popup-cell-actions-wrapper">\
           <div class="tip-tip-actions-wrapper">\
