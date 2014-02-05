@@ -45,7 +45,7 @@
               keepAlive: true,
               defaultPosition: 'top',
               afterTipInit: function(content) {
-                Drupal.behaviors.ZZCToolsModal.attach(content);
+                //Drupal.behaviors.ZZCToolsModal.attach(content);
               }
             });
 
