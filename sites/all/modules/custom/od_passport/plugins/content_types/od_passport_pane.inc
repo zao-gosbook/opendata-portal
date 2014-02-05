@@ -65,7 +65,25 @@ function od_passport_pane_content_type_render($subtype, $conf, $args, $contexts)
     }
   }
   $url_datasets_string = implode('<br />', $url_datasets);
-  $rows['dataset_urls'] = array(t('Dataset URLs'),  $url_datasets_string ? $url_datasets_string : t('No info'));
+  $rows['dataset_urls'] = array(t('Dataset URL'),  $url_datasets_string ? $url_datasets_string : t('No info'));
+  $rows['field_format'] = array(t('Dataset format'),  $resource->field_format->value() ? $resource->field_format->value()->name : t('No info'));
+  
+  //Описание структуры набора данных
+  $url_datasets_structure = array();
+  
+  if ($field_link_structure_file = $resource->field_link_structure_file->value()) {  
+      $url_datasets_structure[] = $field_link_structure_file['uri'];
+    }
+  
+  if ($field_upload_structure = $resource->field_upload_structure) {
+    $field_upload_structure = $field_upload_structure->value();
+    if (isset($field_upload_structure['uri'])) {
+      $url_datasets_structure[] = file_create_url($field_upload_structure['uri']);
+    }
+  }  
+
+  $url_datasets_structure_string = implode('<br />', $url_datasets_structure);
+  $rows['dataset_urls_structure'] = array(t('Hyperlink (URL) on the dataset structure'),  $url_datasets_structure_string ? $url_datasets_structure_string : t('No info'));
   
   $rows['field_date_first_time_publ'] = array(t('Date of first publication'), date("d.m.Y", $node_wrapper->field_date_first_time_publ->value()));
   $rows['field_date_last_change'] = array(t('Date of last update'), $node_wrapper->field_date_last_change->value() ? date("d.m.Y", $node_wrapper->field_date_last_change->value()) : t('No info'));
