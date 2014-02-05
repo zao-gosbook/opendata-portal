@@ -43,7 +43,10 @@
               activation: 'click',
               content: getTipContent(rowNum, colNum),
               keepAlive: true,
-              defaultPosition: 'top'
+              defaultPosition: 'top',
+              afterTipInit: function(content) {
+                Drupal.behaviors.ZZCToolsModal.attach(content);
+              }
             });
 
             $span
@@ -83,11 +86,12 @@
       }
 
       function getTipContent(rowNum, colNum) {
-        var href = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'eform/submit/dataset-error-report?field_ds_report_row='+ rowNum +'&field_ds_report_col='+ colNum;
+        //var href = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'eform/submit/dataset-error-report?field_ds_report_row='+ rowNum +'&field_ds_report_col='+ colNum;
+        var href = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'modal/entityform/dataset-error-report/nojs/0?field_ds_report_row='+ rowNum +'&field_ds_report_col='+ colNum;
         var content = '\
         <div class="od-common-popup-cell-actions-wrapper">\
           <div class="tip-tip-actions-wrapper">\
-          <span class="action-error-report"><a href="'+ href +'" target="_new">'+ Drupal.t('Send an error report') +'</a></span>\
+          <span class="action-error-report"><a href="'+ href +'" target="_new" class="ctools-use-modal">'+ Drupal.t('Send an error report') +'</a></span>\
           </div>\
         </div>\
         ';
