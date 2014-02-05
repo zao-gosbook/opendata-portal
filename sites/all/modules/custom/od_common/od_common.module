@@ -56,7 +56,7 @@ function od_common_library() {
     'website' => 'http://code.drewwilson.com/entry/tiptip-jquery-plugin',
     'version' => '1.3',
     'js' => array(
-      "{$path}/libraries/jquery/tiptip/jquery.tipTip.minified.js"  => array(),
+      "{$path}/libraries/jquery/tiptip/jquery.tipTip.js"  => array(),
     ),
     'css' => array(
       "{$path}/libraries/jquery/tiptip/tipTip.css"  => array(),
