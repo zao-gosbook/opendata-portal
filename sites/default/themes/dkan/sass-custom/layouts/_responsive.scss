@@ -278,6 +278,12 @@ $zen-auto-include-item-base: false;
     font-size: 20px;
     line-height: 1.2641em;
   } 
+  h2 {
+    font-size: 17px;
+    line-height: 1em;
+    margin-top: .5em;
+    margin-bottom: .5em;
+  }  
   
 
   /* tabs */
@@ -299,6 +305,41 @@ $zen-auto-include-item-base: false;
   .tabs-primary li a.is-active {
     border: 0;
   }
+  
+  /* statistics */
+  .pane-piwik-dateselect-form .form-submit {
+    margin-top: 10px;
+    float: right;
+  }
+  
+  /**
+   * developer info
+   */
+  .dev-info {
+    p {
+      font-size: 14px;
+    }
+    .table-wrapper {
+      margin: 0 -10px;
+    }
+    table {
+      border-spacing: 10px;
+      
+      td {
+        
+        a {
+          padding: 0 10px 10px;   
+        }
+        img {
+          margin: 0 auto 5px;
+        }
+        span {
+          font-size: 16px;
+          line-height: 16px;
+        }
+      }
+    }
+  }  
   
   /* page user */
   .page-user .pane-page-content {

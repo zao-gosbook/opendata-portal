@@ -375,6 +375,79 @@ div.horizontal-tabs .form-text {
     }    
   }
 }
+/**
+ * menu help
+ */
+.feedback-block {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  z-index: 200;
+  margin-top: -110px;
+  
+  ul {
+    margin: 0;
+    padding: 0;
+  
+    li {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 22px;
+    
+      a {
+        display: block;
+        width: 51px;
+        height: 55px;
+        line-height: 16px;
+        vertical-align: middle;
+        background: #fff url("../images/front-menu-help.png") no-repeat 0 -1000px;
+        font-size: 12px;
+        text-decoration: none;
+        @include transition(padding 0.3s ease);
+        text-transform: uppercase;
+        overflow: hidden;
+        text-indent: -1000px;
+        
+        &.question {
+          background-position: 0 0;
+          padding-top: 12px;
+          height: 43px;  
+          
+          &:hover {
+            background-position: -50px -55px;
+          }
+        }
+        &.idea {
+          background-position: 0 -110px;
+          padding-top: 12px;
+          height: 43px;          
+          
+          &:hover {
+            background-position: -50px -165px;
+          }          
+        }
+        &.discuss {
+          background-position: 0 -220px;
+          padding-top: 20px;
+          height: 35px;            
+          
+          &:hover {
+            background-position: -50px -275px;
+          }           
+        }
+        &:hover {
+          width: 77px;
+          padding-right: 20px;    
+          padding-left: 55px;    
+          text-indent: 0;
+          background-color: #0c87e8;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
 .view-quick-facts {
   padding-top: 115px;
   padding-bottom: 24%;
@@ -879,6 +952,9 @@ div.horizontal-tabs .form-text {
         padding: .4em 1em;
         border-color: #ccc;
       }
+      &.is-active {
+        margin: 0;
+      }
       /**/&[href$="pubdlcnt"],
       &[href$="hybridauth"] {
         display: none;
@@ -1106,6 +1182,8 @@ div.horizontal-tabs .form-text {
 .pane-search-api-sorts-search-sorts {
   float: right;
   padding-bottom: 1.25em;
+  position: relative;
+  z-index: 100;
   
   * {
     float: left;
@@ -1155,6 +1233,10 @@ div.horizontal-tabs .form-text {
       */
     }
   }
+}
+/* library */
+.page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.first {
+  display: block;
 }
 .pane-datasets-search-dataset-search {
   .view-header {
@@ -1226,7 +1308,7 @@ div.horizontal-tabs .form-text {
   }
   .view-content {
     clear: none;
-    padding-top: 4.4em;
+    padding-top: 6.4em;
     
     .view-content {
       padding-top: 0;
@@ -3508,10 +3590,10 @@ div.fivestar-widget .star {
 }
 .section-library {
   .pane-datasets-search-dataset-search .view-content {
-    padding-top: 5.4em;
+    padding-top: 6.4em;
   }
   .pane-datasets-search-dataset-search .view-header {
-    top: 0;
+    top: -7px;
   }  
 }
 
@@ -3846,7 +3928,127 @@ div.fivestar-widget .star {
   .views-widget-filter-field_organization_target_id {
     
   }
-  
+  .geolocation-address .form-type-textfield {
+    width: 90%;
+    
+    .form-text {
+      width: 100%;
+    }
+  }
+  .field-widget-geolocation-googlemap {
+    overflow: visible;
+  }
+  .geolocation-address {
+    float: left;
+    width: 65%;
+  }
+  .geolocation-help {
+    margin: 40px 0 0 65%; 
+    padding: 15px;
+    position: relative;
+    font-size: 16px;
+    background: #fff;
+    
+    &:before {
+      position: absolute;
+      content: '';
+      top: 14px;
+      left: -28px;
+      border: 14px solid #fff;
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+    }
+    .geolocation-address-geocode, 
+    .geolocation-remove span,
+    .geolocation-client-location {
+      background-color: #96BC44;
+      display: block;
+      font-size: 0.85em;
+      margin: 10px auto 0;
+      padding: 1.25em;
+      text-align: center;
+      text-transform: uppercase;
+      width: 160px;
+    }
+  }
+  .geolocation-remove span {
+    background-color: #CC0000;
+    display: inline-block;
+    font-size: 1.1em;
+    padding: 1.25em 2em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .geolocation-lat-item-value,
+  .geolocation-lat-item-value  {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #CCCCCC;
+    color: #4D4D4D;
+    display: inline-block;
+    font-size: 1.25em;
+    margin-right: 20px;
+    margin-top: 5px;
+    padding: 1.6em;
+    width: 70%;
+  }  
+  .form-item-field-geolocation-distance-search-distance {
+    .form-text {
+      width: 10%;
+    }
+  }
+}
+
+/**
+ * feedback
+ */
+.entitytype-feedback-form .form-actions {
+  margin-top: 0;
+} 
+
+/**
+ * developer info
+ */
+.dev-info {
+  p {
+    margin: 0 0 1.1em;
+    line-height: 1.3;
+    text-indent: 20px;
+    font-size: 17px;
+  }
+  .dev-info-intro {
+    padding: 20px 20px 10px;
+    background: #fff;
+  }
+  .table-wrapper {
+    margin: 0 -30px;
+  }
+  table {
+    border-spacing: 30px;
+    border-collapse: separate;
+    
+    td {
+      background: #fff;
+      width: 50%;
+      
+      a {
+        display: block;
+        text-align: center;
+        padding: 0 15px 15px;
+        color: #676767;
+        text-decoration: none;        
+      }
+      img {
+        display: block;
+        margin: 0 auto 10px;
+      }
+      span {
+        font-size: 26px;
+        line-height: 24px;
+        text-transform: uppercase;
+      }
+    }
+  }
 }
 
 /**
@@ -3877,10 +4079,18 @@ div.fivestar-widget .star {
  
  
 /**
+ * draggable-captcha
+ */
+#draggable-captcha {
+  margin-bottom: 3em;
+} 
+ 
+/**
  * messages
  */
 .messages {
   font-size: 16px;
+  background-color: #fff;
 } 
 
 /**
