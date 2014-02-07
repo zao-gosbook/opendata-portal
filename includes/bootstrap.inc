@@ -1775,17 +1775,17 @@ function watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NO
  */
 function drupal_set_message($message = NULL, $type = 'status', $repeat = TRUE) {
   if ($message) {
-    if (variable_get('od_common_trace_message_calls', FALSE)) {
-      $trace = debug_backtrace(~DEBUG_BACKTRACE_PROVIDE_OBJECT);
-      dpm(array_slice($trace, 0, 3), 'drupal_set_message() call');
-    }
-
     if (!isset($_SESSION['messages'][$type])) {
       $_SESSION['messages'][$type] = array();
     }
 
     if ($repeat || !in_array($message, $_SESSION['messages'][$type])) {
       $_SESSION['messages'][$type][] = $message;
+
+      if (variable_get('od_common_trace_message_calls', FALSE)) {
+        $trace = debug_backtrace(~DEBUG_BACKTRACE_PROVIDE_OBJECT);
+        dpm(array_slice($trace, 0, 3), 'drupal_set_message() call');
+      }
     }
 
     // Mark this page as being uncacheable.
