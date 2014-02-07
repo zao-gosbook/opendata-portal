@@ -24,7 +24,7 @@
   
   Drupal.behaviors.TaxonomyColumns = {
     attach: function (context) {      
-      $('.section-rubriki .view-rubric-nodes .view-content', context).once('massontry', function() {
+      $('.section-rubriki .view-rubric-nodes .view-content, .section-rubrics .view-rubric-nodes .view-content', context).once('massontry', function() {
         var massontry = $(this);
         $('<div class="view-header"></div>').prependTo(massontry);
         var container = document.querySelector('.view-rubric-nodes .view-content');

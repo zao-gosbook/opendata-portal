@@ -177,7 +177,12 @@ $zen-auto-include-item-base: false;
     height: 39px;
     line-height: 39px;  
   }
-  
+  .entityform .form-textarea-wrapper {
+    width: 100%;
+  }
+  .entityform {
+    padding-top: 0;
+  }
   .region-header {
     
     #logo {
@@ -339,7 +344,57 @@ $zen-auto-include-item-base: false;
         }
       }
     }
-  }  
+  }
+
+  /**
+   * competitions
+   */
+  .link-add {
+    padding-bottom: 19px;
+    padding-top: 5px;
+  }
+  .view-competitions-for-rubrics {
+    .views-exposed-form .views-exposed-widget {
+      
+      label {
+        padding-top: 9px;
+      }
+      .form-select {
+        width: 70%;
+      }
+    }
+    .views-row {
+      border-right: 0;
+      padding-right: 0;
+      margin-bottom: 2em;
+      padding-bottom: 2em;
+      border-bottom: 1px solid #bfbfbf;
+      
+      .field-type-image img {
+        margin: 0 20px 0 0;
+        width: 30%;
+      }
+      .field {
+        font-size: 14px;
+        line-height: 18px;
+      }
+
+      .field-name-field-competition-place {
+        font-size: 16px;
+      }
+      .field-name-title h2 {
+        text-transform: uppercase;
+        font-size: 20px;
+        line-height: 1.1em;
+        display: block;
+        margin: 0;
+        
+        a {
+          text-decoration: none;
+        }
+      }
+    }
+  }
   
   /* page user */
   .page-user .pane-page-content {
