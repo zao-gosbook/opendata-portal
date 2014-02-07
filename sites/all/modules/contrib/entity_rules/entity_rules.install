@@ -136,7 +136,7 @@ function entity_rules_update_7102(&$sandbox) {
  * Implements hook_uninstall().
  */
 function entity_rules_uninstall() {
-  $vars = array('entity_rules_settings','entity_rules_types','entity_rules_types');
+  $vars = array('entity_rules_settings', 'entity_rules_types', 'entity_rules_types');
   foreach ($vars as $var) {
     variable_del($var);
   }

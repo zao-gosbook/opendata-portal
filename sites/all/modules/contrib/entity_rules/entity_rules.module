@@ -90,7 +90,8 @@ function entity_rules_menu() {
       'type' => MENU_LOCAL_TASK,
     );
     $items["$rule_path/add"] = array(
-      'title' => t('Add a @op rule', array('@op' => $rule_type['label'])),
+      'title' => 'Add a @op rule',
+      'title arguments' => array('@op' => $rule_type['label']),
       'description' => "Adds an additional {$rule_type['label']} rule configuration.",
       'page callback' => 'drupal_get_form',
       'page arguments' => array("entity_rules_add_rule_form", $rule_path),
@@ -140,12 +141,10 @@ function entity_rules_menu() {
              * would be replaced with the bundle name string.
              */
             $bundle_arg = $bundle_info['admin']['bundle argument'];
-            $bundle_pos = (string) $bundle_arg;
           }
           else {
             // Otherwise, this path is for a single bundle. Things are much simpler!
             $bundle_arg = $bundle_name;
-            $bundle_pos = '0';
           }
           // This is the position of the %field_ui_menu placeholder in the
           // items below.
@@ -176,7 +175,8 @@ function entity_rules_menu() {
 
 
             $items["$path/entity-rules/$op"] = array(
-                'title' => t('@op Rules', array('@op' => $rule_type['label'])),
+                'title' => '@op Rules',
+                'title arguments' => array('@op' => $rule_type['label']),
                 'page callback' => 'entity_rules_type_op_rules',
                 'page arguments' => array($op, $entity_type, $bundle_arg),
                 'type' => $menu_type,
@@ -187,7 +187,8 @@ function entity_rules_menu() {
             // Have to make sure we don't go over MENU_MAX_PARTS(9)
             $rule_position = (int) $rule_type_position + 1;
             $items["$path/entity-rules-remove/$op/%"] = array(
-                'title' => t('@op Rules', array('@op' => $rule_type['label'])),
+                'title' => '@op Rules',
+                'title arguments' => array('@op' => $rule_type['label']),
                 'page callback' => 'entity_rules_type_op_rules_remove',
                 'page arguments' => array(
                   $op,
@@ -214,30 +215,30 @@ function entity_rules_menu() {
                 $entity_type,
                 $bundle_name
               );
-              
-              $items["admin/config/workflow/entity-rules-triggers/$entity_type/$bundle_name/$op"] = $other_menu_item;
+
+              $items["admin/config/workflow/entity-rules-triggers/$entity_type-$bundle_name/$op"] = $other_menu_item;
               $other_menu_item = $items["$path/entity-rules-remove/$op/%"];
               $other_menu_item['page arguments'] = array(
                 $op,
                 $entity_type,
                 $bundle_name,
-                7
+                6
               );
-              $items["admin/config/workflow/entity-rules-remove-triggers/$entity_type/$bundle_name/$op"] = $other_menu_item;
+              $items["admin/config/workflow/entity-rules-remove-triggers/$entity_type-$bundle_name/$op"] = $other_menu_item;
             }
           }
 
           if ($permissions != 'none') {
             // If permission are set then make separate menu
             $other_menu_item = $items["$path/entity-rules"];
-            $other_menu_item['type'] = MENU_CALLBACK;
-            $other_menu_item['title'] = t('Entity Rules') . ' - ' . $entity_info['label'] . ' - ' . $bundle_info['label'];
+            $other_menu_item['type'] = MENU_NORMAL_ITEM;
+            $other_menu_item['title'] = $entity_info['label'] . ' - ' . $bundle_info['label'];
             $other_menu_item['page arguments'] = array(
               'create',
               $entity_type,
               $bundle_name
             );
-            $items["admin/config/workflow/entity-rules-triggers/$entity_type/$bundle_name"] = $other_menu_item;
+            $items["admin/config/workflow/entity-rules-triggers/$entity_type-$bundle_name"] = $other_menu_item;
           }
 
         }
@@ -418,7 +419,7 @@ function entity_rules_entity_rules_event_info() {
         'label' => t('Validation'),
         'needs_form' => TRUE,
         'component_types' => array('rule', 'rule set', 'and', 'or'),
-        'conditional vars' => array(
+        'vars' => array(
           array(
             'type' => 'boolean',
             'label' => 'Entity Validates',
@@ -435,7 +436,7 @@ function entity_rules_entity_rules_event_info() {
         'label' => t('Form Access'),
         'needs_form' => TRUE,
         'component_types' => array('rule', 'rule set', 'and', 'or'),
-        'conditional vars' => array(
+        'vars' => array(
           array(
             'type' => 'boolean',
             'label' => 'Entity Form Access',
@@ -456,6 +457,7 @@ function entity_rules_entity_rules_event_info() {
  */
 function entity_rules_clear_type_settings() {
   _entity_rules_get_type_settings(NULL, TRUE);
+  variable_set('menu_rebuild_needed', TRUE);
 }
 
 /**
@@ -575,7 +577,6 @@ function _entity_rules_get_form_entity_type_settings($form_state) {
 function entity_rules_form_alter(&$form, &$form_state, $form_id) {
 
   if (!empty($form['#entity_type']) && !empty($form['#bundle'])) {
-    //$entity_type = $form['#entity_type'];
     $bundle_name = $form['#bundle'];
     $entity_type = NULL;
     if ($form_settings = _entity_rules_get_form_entity_type_settings($form_state)) {
@@ -660,7 +661,6 @@ function entity_rules_build_form_entity($form, $form_state, $entity_type, $bundl
  * @return boolean
  */
 function _entity_rules_all_pass($rule_returns) {
-  $pass = FALSE;
   if (empty($rule_returns)) {
     // No Returns so pass
     return TRUE;
@@ -743,7 +743,6 @@ function _entity_rules_add_rules_component_alter(&$form, $op, $is_conditional) {
       'weight' => 0,
     );
     $var_items = array_merge($default_var_items, _entity_rules_get_var_items($op, $is_conditional));
-    $entity_types = entity_get_info();
     $item_keys = array();
     // Loop through all the variables to alter the row on the form.
     foreach ($var_items as $var_num => $var_item) {
@@ -862,58 +861,13 @@ function entity_rules_form_entity_rules_form_clone_rules_config_alter(&$form, $f
 function _entity_rules_get_var_items($op, $is_conditional) {
   $var_items = array();
   $events = module_invoke_all('entity_rules_event_info');
-  if (!empty($events[$op]['vars'])) {
-    $var_items += $events[$op]['vars'];
-  }
+
   if ($is_conditional && !empty($events[$op]['conditional vars'])) {
     $var_items += $events[$op]['conditional vars'];
   }
-  return $var_items;
-  switch ($op) {
-    case 'create':
-    case 'update':
-    case 'delete':
-      $var_items[] = array(
-        'type' => 'boolean',
-        'label' => 'Continue Rules',
-        'name' => 'continue',
-        'usage' => '11',
-        // Parameter var. Why is this not defined as constant in Rules
-        'weight' => 1,
-        'description' => t('If set to FALSE no rules after the current will be invoked.'),
-        'entity_rules_settings' => array('default_value' => TRUE),
-      );
-      break;
-    case 'validation':
-      if (!$is_conditional) {
-        $var_items[] = array(
-          'type' => 'boolean',
-          'label' => 'Entity Validates',
-          'name' => 'entity_is_validate',
-          'usage' => '11',
-          // Parameter var. Why is this not defined as constant in Rules
-          'weight' => 1,
-          'description' => t('If set to FALSE the entity fails validation.'),
-          'entity_rules_settings' => array('default_value' => TRUE),
-        );
-      }
-      break;
-    case 'form_access':
-      if (!$is_conditional) {
-        $var_items[] = array(
-          'type' => 'boolean',
-          'label' => 'Entity Form Access',
-          'name' => 'entity_form_acccess',
-          'usage' => '11',
-          // Parameter var. Why is this not defined as constant in Rules
-          'weight' => 1,
-          'description' => t('If set to FALSE then form will not be shown to the user.'),
-          'entity_rules_settings' => array('default_value' => TRUE),
-        );
-      }
-      break;
+  elseif (!$is_conditional && !empty($events[$op]['vars'])) {
+      $var_items += $events[$op]['vars'];
   }
-
   return $var_items;
 }
 
@@ -971,7 +925,7 @@ function _entity_rules_invoke_rules($entity, $entity_type, $op) {
   $ids = entity_extract_ids($entity_type, $entity);
   $bundle = array_pop($ids);
   $rule_settings = entity_rules_load_settings_for_op($entity_type, $bundle, $op, TRUE);
-  foreach ($rule_settings as $id => $invoke_settings) {
+  foreach ($rule_settings as $invoke_settings) {
     // Only invoke if Rules exists.
     // rules_invoke_component will always return false if the Rule doesn't exist.
     $rule_name = $invoke_settings->loaded_rules_config->name;
