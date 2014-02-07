@@ -49,6 +49,10 @@ function od_cell_popup_field_widget_form_alter(&$element, &$form_state, $context
     if ($vc !== NULL) {
        $vc['#value_callback'] = 'od_cell_popup_prepopulate_field_from_uri';
     }
+
+    if (empty($_GET['fields_debug'])) {
+      $element['#access'] = FALSE;
+    }
   }
 }
 
