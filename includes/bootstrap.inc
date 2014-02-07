@@ -1775,6 +1775,10 @@ function watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NO
  */
 function drupal_set_message($message = NULL, $type = 'status', $repeat = TRUE) {
   if ($message) {
+    if (variable_get('od_common_trace_message_calls', FALSE)) {
+      dpm(debug_backtrace(~DEBUG_BACKTRACE_PROVIDE_OBJECT), 'drupal_set_message() call');
+    }
+
     if (!isset($_SESSION['messages'][$type])) {
       $_SESSION['messages'][$type] = array();
     }
