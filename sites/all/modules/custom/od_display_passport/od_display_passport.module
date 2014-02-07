@@ -10,13 +10,12 @@ function od_display_passport_menu() {
 }
 
 function od_display_passport_view($nid) {
-  $data = NULL;
-  if (!empty($nid) && is_numeric($nid)) {
-    $view = views_get_view('dataset');
-    $view->set_display('passport_dataset');
-    $view->set_arguments(array($nid));
-    $view->execute();
-    $data = filter_xss($view->render(), array('a', 'p', 'span', 'table', 'thead', 'tbody', 'th', 'tr', 'td'));
-  }
-  print '<pre>' . check_plain($data) . '</pre>';
+  module_load_include('inc', 'od_passport', 'plugins/content_types/od_passport_pane');
+  $data = drupal_render(od_passport_render($nid)->content);
+  print "<form>
+    <p><b>Скопируйте html-код паспорта:</b></p>
+    <p><textarea rows='100' cols='120
+    ' name='text' value='$data'></textarea></p>
+  </form>";
 }
+
