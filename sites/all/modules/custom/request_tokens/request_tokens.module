@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * Implements hook_token_info().
+ */
+function request_tokens_token_info() {
+  $info = array();
+
+  $info['tokens']['site']['request-arg'] = array(
+    'name' => t('Arguments'),
+    'description' => t("The specific argument of the current page or referer (e.g. 'site:request-arg:1' on the page 'node/1' returns '1')."),
+  );
+
+  $info['tokens']['site']['referer-arg'] = array(
+    'name' => t('Arguments'),
+    'description' => t("The specific argument of the page referer (e.g. 'site:referer-arg:1' on the page addressed from 'node/1' returns '1')."),
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function request_tokens_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $replacements = array();
+  $sanitize = !empty($options['sanitize']);
+
+  if ($type == 'site') {
+    $arg_tokens = token_find_with_prefix($tokens, 'request-arg');
+    if (count($arg_tokens) > 0) {
+      $is_get = in_array($_SERVER['REQUEST_METHOD'], array('GET', 'HEAD'));
+      foreach ($arg_tokens as $name => $original) {
+        if (is_numeric($name) && ($arg = request_tokens_get_request_part($name, $is_get)) && isset($arg)) {
+          $replacements[$original] = $sanitize ? check_plain($arg) : $arg;
+        }
+      }
+    }
+    $referer_tokens = token_find_with_prefix($tokens, 'referer-arg');
+    if (count($referer_tokens) > 0) {
+      foreach ($referer_tokens as $name => $original) {
+        if (is_numeric($name) && ($arg = request_tokens_get_request_part($name, FALSE)) && isset($arg)) {
+          $replacements[$original] = $sanitize ? check_plain($arg) : $arg;
+        }
+      }
+    }
+  }
+
+  return $replacements;
+}
+
+function request_tokens_get_request_part($arg, $is_get) {
+  static $referer_parts;
+
+  if ($is_get) {
+    return arg($arg);
+  }
+
+  if (!isset($referer_parts)) {
+    $path = $_SERVER['HTTP_REFERER'];
+    if ($path === '') {
+      return array();
+    }
+    $parts = parse_url($path);
+    if ($parts === FALSE) {
+      return array();
+    }
+    $path = '';
+    if (isset($parts['path'])) {
+      $path = $parts['path'];
+      $base_path_len = strlen(rtrim(dirname($_SERVER['SCRIPT_NAME']), '\/'));
+      $path = substr($path, $base_path_len + 1);
+      if ($path == basename($_SERVER['PHP_SELF'])) {
+        $path = '';
+      }
+    }
+    if (isset($parts['query'])) {
+      if (substr($parts['query'], 0, 2) === 'q=') {
+        $path = substr($parts['query'], 2);
+        if (($pos = strpos($path, '&')) !== FALSE) {
+          $path = substr($path, 0, $pos);
+        }
+      }
+    }
+    if (($path === '') || ($path === '/')) {
+      $path = variable_get('site_frontpage', 'node');
+    }
+    $path = drupal_get_normal_path($path);
+    $referer_parts = explode('/', $path);
+  }
+  return isset($referer_parts[$arg]) ? $referer_parts[$arg] : NULL;
+}

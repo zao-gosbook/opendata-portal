@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Allows taxonomy term viewing in modal window.
+ *
+ * @example
+ * Load link with l() function to create:
+ * <a href="/modal/taxonomy/term/TID/nojs" class="ctools-use-modal">View</a>.
+ *
+ * Ensure page loading above link has the following functions called:
+ * ctools_include('modal');
+ * ctools_modal_add_js();
+ */
+
+/**
+ * Implement hook_menu().
+ */
+function modal_term_view_menu() {
+  $items['modal/taxonomy/term/%taxonomy_term/%ctools_js'] = array(
+    'title' => 'View taxonomy term',
+    'page callback' => 'modal_term_view_page',
+    'page arguments' => array(3, 4),
+    'access callback' => TRUE,
+    'delivery callback' => 'ajax_deliver',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Page callback - modal: view taxonomy term.
+ */
+function modal_term_view_page($term, $js) {
+  // Fall back if $js is not set.
+  if (!$js) {
+    drupal_goto('taxonomy/term/' . $term->tid, array('query' => drupal_get_query_parameters()));
+    return;
+  }
+
+  ctools_include('modal');
+  ctools_include('ajax');
+
+  if (!user_access('access content')) {
+    $commands = array(ctools_modal_command_display(t('Access denied'), t('You are not authorized to access this page.')));
+    $commands[] = ajax_command_invoke('#modalContent', 'addClass', array('modal-term-' . $term->vocabulary_machine_name));
+    drupal_alter('modal_term_view_access_denied', $commands, $term);
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
+
+  $title = check_plain($term->name);
+  drupal_alter('modal_term_view_title', $title, $term);
+
+  $view_mode = 'full';
+  drupal_alter('modal_term_view_mode', $view_mode, $term);
+  $term_view = taxonomy_term_view($term, $view_mode);
+
+  $commands = array();
+  $commands[] = ajax_command_invoke('#modalContent', 'addClass', array('modal-term-' . $term->vocabulary_machine_name));
+  drupal_alter('modal_term_view', $commands, $term_view, $term);
+  array_unshift($commands, ctools_modal_command_display($title, $term_view));
+
+  return array('#type' => 'ajax', '#commands' => $commands);
+}

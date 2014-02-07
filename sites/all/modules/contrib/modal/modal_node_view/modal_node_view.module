@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Allows node viewing in modal window.
+ *
+ * @example
+ * Load link with l() function to create:
+ * <a href="/modal/node/NID/nojs" class="ctools-use-modal">View</a>.
+ *
+ * Ensure page loading above link has the following functions called:
+ * ctools_include('modal');
+ * ctools_modal_add_js();
+ */
+
+/**
+ * Implement hook_menu().
+ */
+function modal_node_view_menu() {
+  $items['modal/node/%node/%ctools_js'] = array(
+    'title' => 'View node',
+    'page callback' => 'modal_node_view_page',
+    'page arguments' => array(2, 3),
+    'access callback' => TRUE,
+    'delivery callback' => 'ajax_deliver',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Page callback - modal: view node.
+ */
+function modal_node_view_page($node, $js) {
+  // Fall back if $js is not set.
+  if (!$js) {
+    drupal_goto('node/' . $node->nid, array('query' => drupal_get_query_parameters()));
+    return;
+  }
+
+  ctools_include('modal');
+  ctools_include('ajax');
+
+  if (!node_access('view', $node)) {
+    $commands = array(ctools_modal_command_display(t('Access denied'), t('You are not authorized to access this page.')));
+    $commands[] = ajax_command_invoke('#modalContent', 'addClass', array('modal-node-' . $node->type));
+    drupal_alter('modal_node_view_access_denied', $commands, $node);
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
+
+  $title = check_plain($node->title);
+  drupal_alter('modal_node_view_title', $title, $node);
+
+  $view_mode = 'full';
+  drupal_alter('modal_node_view_mode', $view_mode, $node);
+  $node_view = node_view($node, $view_mode);
+
+  $commands = array();
+  $commands[] = ajax_command_invoke('#modalContent', 'addClass', array('modal-node-' . $node->type));
+  drupal_alter('modal_node_view', $commands, $node_view, $node);
+  array_unshift($commands, ctools_modal_command_display($title, $node_view));
+
+  return array('#type' => 'ajax', '#commands' => $commands);
+}

@@ -1,0 +1,12 @@
+name = Modal node view
+description = Shows node in a modal window when special link is clicked.
+package = Modal
+core = 7.x
+dependencies[] = modal
+
+; Information added by Drupal.org packaging script on 2013-12-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "modal"
+datestamp = "1387453105"
+

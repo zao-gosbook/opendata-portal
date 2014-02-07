@@ -212,7 +212,7 @@ function entityform_form_wrapper($entityform, $mode = 'submit', $form_context = 
   $make_form = TRUE;
   $entityform_type = entityform_type_load($entityform->type);
   if ($form_context == 'page') {
-    drupal_set_title($entityform_type->label);
+    drupal_set_title($entityform_type->getTranslation('label'));
   }
   if (!empty($entityform->is_new)) {
     $draft = FALSE;
@@ -261,7 +261,8 @@ function entityform_form_wrapper($entityform, $mode = 'submit', $form_context = 
   if (!empty($entityform_type->data['instruction_pre'])) {
     $output['intro'] = array(
       '#type' => 'markup',
-      '#markup' => "<div class='pre-intructions' >" . _entityform_format_text($entityform_type->data['instruction_pre'], array('entityform_type' => $entityform_type)) . "</div>",
+      '#type' => 'markup',
+      '#markup' => "<div class='pre-intructions' >" . $entityform_type->get_prop('instruction_pre') . "</div>",
       '#weight' => -100,
     );
   }

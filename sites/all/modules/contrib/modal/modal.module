@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function modal_init() {
+  // Include the CTools tools that we need.
+  ctools_include('ajax');
+  ctools_include('modal');
+
+  // Add CTools javascript to the page.
+  ctools_modal_add_js();
+}

@@ -1,0 +1,156 @@
+diff --git a/entityform.admin.inc b/entityform.admin.inc
+index 53c669e..fc6cd15 100644
+--- a/entityform.admin.inc
++++ b/entityform.admin.inc
+@@ -212,7 +212,7 @@ function entityform_form_wrapper($entityform, $mode = 'submit', $form_context =
+   $make_form = TRUE;
+   $entityform_type = entityform_type_load($entityform->type);
+   if ($form_context == 'page') {
+-    drupal_set_title($entityform_type->label);
++    drupal_set_title($entityform_type->getTranslation('label'));
+   }
+   if (!empty($entityform->is_new)) {
+     $draft = FALSE;
+@@ -261,7 +261,8 @@ function entityform_form_wrapper($entityform, $mode = 'submit', $form_context =
+   if (!empty($entityform_type->data['instruction_pre'])) {
+     $output['intro'] = array(
+       '#type' => 'markup',
+-      '#markup' => "<div class='pre-intructions' >" . _entityform_format_text($entityform_type->data['instruction_pre'], array('entityform_type' => $entityform_type)) . "</div>",
++      '#type' => 'markup',
++      '#markup' => "<div class='pre-intructions' >" . $entityform_type->get_prop('instruction_pre') . "</div>",
+       '#weight' => -100,
+     );
+   }
+diff --git a/entityform.info.inc b/entityform.info.inc
+index 1f7267d..47812ee 100644
+--- a/entityform.info.inc
++++ b/entityform.info.inc
+@@ -60,20 +60,23 @@ class EntityformTypeMetadataController extends EntityDefaultMetadataController {
+   public function entityPropertyInfo() {
+     $info = parent::entityPropertyInfo();
+     $properties = &$info[$this->type]['properties'];
+-    $properties['notification_text'] = array(
+-        'label' => t("Notification Text"),
+-        'description' => t("Custom text to display in notifications."),
++    $text_defaults = entity_get_controller('entityform_type')->get_default_text_values();
++    foreach (array_keys($text_defaults) as $text_prop) {
++      $properties[$text_prop] = array(
++        'label' => $text_prop,
+         'getter callback' => 'entityformtype_metadata_get_properties',
++        'setter callback' => 'entityformtype_metadata_set_properties',
+         'type' => 'text',
+-        'computed' => TRUE,
+-    );
+-    $properties['notify_emails'] = array(
+-        'label' => t("Notification Emails"),
+-        'description' => t("Emails to notify"),
+-        'getter callback' => 'entityformtype_metadata_get_properties',
+-        'type' => 'text',
+-        'computed' => TRUE,
+-    );
++        // Flag to be translated in entityform_i18n
++        'entityform_i18n' => TRUE,
++      );
++      // Testing if this will allow property to be transalted
++      // @todo remove flag all formatted properties
++      if (in_array($text_prop,array('submission_text','instruction_pre'))) {
++        $properties[$text_prop]['format'] = 'format';
++      }
++    }
++
+     return $info;
+   }
+ }
+diff --git a/entityform.module b/entityform.module
+index 4a38c63..8f5d511 100644
+--- a/entityform.module
++++ b/entityform.module
+@@ -1338,6 +1338,7 @@ class EntityformTypeController extends EntityAPIControllerExportable {
+    */
+   public function get_default_text_values() {
+     return array(
++      'instruction_pre' => '',
+       'submit_confirm_msg' => 'Your submission has been saved.',
+       'submission_page_title' => 'Thank You.',
+       'draft_button_text' => 'Save Draft',
+@@ -1781,4 +1782,4 @@ function entityform_entityform_update($entityform) {
+       _entity_rules_invoke_rules($entityform, 'entityform', 'entityform_submission');
+     }
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/entityform_i18n/entityform_i18n.info b/entityform_i18n/entityform_i18n.info
+new file mode 100644
+index 0000000..164e285
+--- /dev/null
++++ b/entityform_i18n/entityform_i18n.info
+@@ -0,0 +1,6 @@
++name = Entityform translation
++description = Translate entityform types.
++dependencies[] = entityform
++dependencies[] = i18n_string
++package = Multilingual - Internationalization
++core = 7.x
+\ No newline at end of file
+diff --git a/entityform_i18n/entityform_i18n.module b/entityform_i18n/entityform_i18n.module
+new file mode 100644
+index 0000000..2e3437a
+--- /dev/null
++++ b/entityform_i18n/entityform_i18n.module
+@@ -0,0 +1,55 @@
++<?php
++
++/**
++ * @file
++ * Profile2 i18n integration module via entity API i18n support.
++ *
++ * @see EntityDefaultI18nController
++ */
++
++/**
++ * Implements hook_entity_info_alter().
++ */
++function entityform_i18n_entity_info_alter(&$info) {
++  // Enable i18n support via the entity API.
++  $info['entityform_type']['i18n controller class'] = 'EntityDefaultI18nStringController';
++}
++
++/**
++ * Implements hook_entity_property_info_alter().
++ */
++function entityform_i18n_entity_property_info_alter(&$info) {
++  // Mark some properties as translatable, but also denote that translation
++  // works with i18n_string.
++  foreach ($info['entityform_type']['properties'] as $prop_name => $value) {
++    if ('label' == $prop_name || !empty($info['entityform_type']['properties'][$prop_name]['entityform_i18n'])) {
++      $info['entityform_type']['properties'][$prop_name]['translatable'] = TRUE;
++      $info['entityform_type']['properties'][$prop_name]['i18n string'] = TRUE;
++    }
++  }
++}
++
++/**
++ * Implements hook_entityform_type_insert().
++ */
++function entityform_i18n_entityform_type_insert($entityform_type) {
++  i18n_string_object_update('entityform_type', $entityform_type);
++}
++
++/**
++ * Implements hook_entityform_type_update().
++ */
++function entityform_i18n_entityform_type_update($entityform_type) {
++  // Account for name changes.
++  if ($entityform_type->original->type != $entityform_type->type) {
++    i18n_string_update_context("entityform:entityform_type:{$entityform_type->original->type}:*", "entityform:entityform_type:{$entityform_type->type}:*");
++  }
++  i18n_string_object_update('entityform_type', $entityform_type);
++}
++
++/**
++ * Implements hook_entityform_type_delete().
++ */
++function entityform_i18n_entityform_type_delete($entityform_type) {
++  i18n_string_object_remove('entityform_type', $entityform_type);
++}

@@ -1781,6 +1781,13 @@ function drupal_set_message($message = NULL, $type = 'status', $repeat = TRUE) {
 
     if ($repeat || !in_array($message, $_SESSION['messages'][$type])) {
       $_SESSION['messages'][$type][] = $message;
+
+      if (($old_val = variable_get('od_common_trace_message_calls', FALSE)) != FALSE) {
+        $trace = debug_backtrace(~DEBUG_BACKTRACE_PROVIDE_OBJECT);
+        $GLOBALS['conf']['od_common_trace_message_calls'] = FALSE;
+        dpm(array_slice($trace, 0, is_numeric($old_val) ? $old_val : 3), 'drupal_set_message() call');
+        $GLOBALS['conf']['od_common_trace_message_calls'] = $old_val;
+      }
     }
 
     // Mark this page as being uncacheable.

@@ -56,7 +56,7 @@ function od_common_library() {
     'website' => 'http://code.drewwilson.com/entry/tiptip-jquery-plugin',
     'version' => '1.3',
     'js' => array(
-      "{$path}/libraries/jquery/tiptip/jquery.tipTip.minified.js"  => array(),
+      "{$path}/libraries/jquery/tiptip/jquery.tipTip.js"  => array(),
     ),
     'css' => array(
       "{$path}/libraries/jquery/tiptip/tipTip.css"  => array(),
@@ -102,7 +102,8 @@ function od_common_entity_property_verbatim_get($data, array $options, $name, $t
  */
 function od_common_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id) {
-    case 'od_preprocess_wizard_entityform_edit_form':
+    case 'dataset_actualization_entityform_edit_form': //Актуализация паспорта
+    case 'od_preprocess_wizard_entityform_edit_form': //Форма создания набора данных
       od_common_module('od_preprocess_wizard_entityform_edit_alter');
       _od_common_form_od_preprocess_wizard_entityform_edit_form_alter($form, $form_state);
       break;
@@ -110,6 +111,11 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       od_common_module('map_views_alter');
       _od_common_map_views_form_views_exposed_form_alter($form, $form_state);
       break;
+  }
+
+  //Translate submit button
+  if (isset($form['entity_type']) && $form['#entity_type'] == 'entityform') {
+    $form['actions']['submit']['#value'] = t($form['actions']['submit']['#value']);
   }
 }
 
@@ -246,6 +252,32 @@ function od_common_field_formatter_info() {
   return $info;
 }
 
+/**
+ * Implements hook_field_widget_form_alter()
+ */
+function od_common_field_widget_form_alter(&$element, &$form_state, $context) {
+  if (isset($element[0]['#field_name']) && $element[0]['#field_name'] == 'field_link_remote_file') {
+    $validators = array('od_common_file_widget_clean_filename' => array());
+    foreach ($element[0]['#upload_validators'] as $validator => $info) {
+      $validators[$validator] = $info;
+    }
+
+    $element[0]['#upload_validators'] = $validators;
+  }
+
+
+}
+
+function od_common_file_widget_clean_filename(stdClass $file) {
+  $a = 1;
+
+  if (isset($file->fid)) {
+    $file->filename = preg_replace('/\?.*$/i', '', $file->filename);
+  }
+
+  return array();
+}
+
 function od_common_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
   switch ($display['type']) {
@@ -263,15 +295,6 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
 
         $element[$delta] = $build;
       }
-
-//      $count = mt_rand(1, time() % 3682 + 1);
-//      $element[0] = array(
-//        '#prefix' => '<div class="od-common-pubdlcnt-count-wrapper">',
-//        '#suffix' => '</div>',
-//        'file' => array(
-//          '#markup' => "<span class=\"value\">{$count}</span>"
-//        ),
-//      );
 
       break;
   }
