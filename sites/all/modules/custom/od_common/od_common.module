@@ -114,7 +114,7 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
   }
 
   //Translate submit button
-  if ($form['#entity_type'] == 'entityform') {
+  if (isset($form['entity_type']) && $form['#entity_type'] == 'entityform') {
     $form['actions']['submit']['#value'] = t($form['actions']['submit']['#value']);
   }
 }
