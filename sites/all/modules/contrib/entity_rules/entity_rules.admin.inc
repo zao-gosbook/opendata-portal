@@ -108,7 +108,7 @@ function entity_rules_type_op_rules($op, $entity_type, $bundle) {
 function entity_rules_bundle_rules_form($form, &$form_state, $entity_type, $bundle, $op) {
   $rule_settings = entity_rules_load_settings_for_op($entity_type, $bundle, $op, TRUE);
   $show_tokens = FALSE;
-  $component_types = _entity_rules_get_component_types_for_op($op);
+
   if (empty($rule_settings)) {
     $form['empty'] = array(
       '#type' => 'markup',
@@ -135,7 +135,6 @@ function entity_rules_bundle_rules_form($form, &$form_state, $entity_type, $bund
     $current_path .= '/create';
   }
   $form['settings']['#tree'] = TRUE;
-  $rules = rules_config_load_multiple(array_keys($rule_settings));
   $weight = 0;
   foreach ($rule_settings as $id => $rule_setting) {
     $rule = $rule_setting->loaded_rules_config;
@@ -357,12 +356,16 @@ function entity_rules_type_op_rules_remove($op, $entity_type, $bundle, $id) {
  */
 function theme_entity_rules_bundle_rules_form($variables) {
   $form = $variables['form'];
+  if (empty($form['settings'])) {
+    // If there are Rule settings then we don't need the table
+    return drupal_render_children($form);
+  }
   $have_false_msg = $have_args = FALSE;
 
 
   // Initialize the variable which will store our table rows.
   $rows = array();
-  $output = '';
+
   // Iterate over each element in our $form[$setting_var_name] array.
   foreach (element_children($form['settings']) as $id) {
     if (isset($form['settings'][$id]['false_msg'])) {
@@ -467,7 +470,7 @@ function entity_rules_entity_type_list() {
 
         $rows[] = array(
           $bundle_info['label'],
-          l(t('Administer Rules'), "admin/config/workflow/entity-rules-triggers/$entity_type/$bundle_name/create"),
+          l(t('Administer Rules'), "admin/config/workflow/entity-rules-triggers/$entity_type-$bundle_name"),
         );
       }
       $output .= "<h2>{$info['label']}</h2>";
