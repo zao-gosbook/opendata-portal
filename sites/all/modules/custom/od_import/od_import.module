@@ -212,13 +212,13 @@ function od_import_meta($meta_args, $org, $time_start, &$context) {
 
   // Publisher object.
   $publisher_args = $meta['publisher']['#api'];
-  $publisher_result = $this->getResult($publisher_args);
+  $publisher_result = $od->getResult($publisher_args);
   $meta['publisher'] = $publisher_result;
   unset($meta['publisher']['#version']);
 
   // Source object.
   $source_args = $meta['data']['#api'];
-  $source_result = $this->getResult($source_args);
+  $source_result = $od->getResult($source_args);
   $meta['data'] = $source_result ? $source_result['data'] : $source_result;
   unset($source_result['data']['#version']);
   if (empty($meta['data']) || !is_array($meta['data'])) {
@@ -229,7 +229,7 @@ function od_import_meta($meta_args, $org, $time_start, &$context) {
   // Data object.
   foreach ($meta['data'] as &$data) {
     $data_args = $data['#api'];
-    $data_result = $this->getResult($data_args);
+    $data_result = $od->getResult($data_args);
     $data = $data_result;
     unset($data['#version']);
     if (empty($data)) {
@@ -239,7 +239,7 @@ function od_import_meta($meta_args, $org, $time_start, &$context) {
 
     // Structure object.
     $structure_args = $data['structure']['#api'];
-    $structure_result = $this->getResult($structure_args);
+    $structure_result = $od->getResult($structure_args);
     $data['structure'] = $structure_result;
     unset($data['structure']['#version']);
   }

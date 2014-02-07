@@ -11,3 +11,6 @@ sites/*/private
 # Ignore compass styles cache and other trash
 sites/*/themes/*/.sass-cache
 sites/*/themes/*/css/*
+
+# Ignore httpd password file.
+.htpasswd
