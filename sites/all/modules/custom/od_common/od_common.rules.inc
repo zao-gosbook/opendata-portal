@@ -22,32 +22,32 @@ function od_common_rules_action_info() {
         ),
       ),
     ),
-//    'set_users_password' => array(
-//      'label' => t('Set users password'),
-//      'parameter' => array(
-//        'account' => array(
-//          'type' => 'user',
-//          'label' => t('User'),
-//        ),
-//        'password' => array(
-//          'type' => 'text',
-//          'label' => t('Password'),
-//        ),
-//      ),
-//      'group' => t('User'),
-//      'base' => 'common_rules_actions_set_user_password',
-//    ),
-//    'get_ulogin_data' => array(
-//      'label' => t('Get uLogin data'),
-//      'provides' => array(
-//        'ulogin_data' => array(
-//          'type' => 'ulogin_data',
-//          'label' => t('uLogin data'),
-//        ),
-//      ),
-//      'group' => t('uLogin'),
-//      'base' => 'common_rules_actions_get_ulogin_data',
-//    ),
+    'set_users_password' => array(
+      'label' => t('Set users password'),
+      'parameter' => array(
+        'account' => array(
+          'type' => 'user',
+          'label' => t('User'),
+        ),
+        'password' => array(
+          'type' => 'text',
+          'label' => t('Password'),
+        ),
+      ),
+      'group' => t('User'),
+      'base' => 'common_rules_actions_set_user_password',
+    ),
+    'get_ulogin_data' => array(
+      'label' => t('Get uLogin data'),
+      'provides' => array(
+        'ulogin_data' => array(
+          'type' => 'ulogin_data',
+          'label' => t('uLogin data'),
+        ),
+      ),
+      'group' => t('uLogin'),
+      'base' => 'common_rules_actions_get_ulogin_data',
+    ),
     'copy_entity_form_to_node' => array(
       'label' => t('Copy entity form type to node (Deprecated)'),
       'parameter' => array(
