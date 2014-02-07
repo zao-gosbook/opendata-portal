@@ -702,7 +702,6 @@ div.horizontal-tabs .form-text {
         -moz-filter: grayscale(100%);
         -ms-filter: grayscale(100%);
         -o-filter: grayscale(100%);/**/
-        
       }
       
       &:hover {
@@ -1246,13 +1245,14 @@ div.horizontal-tabs .form-text {
     font-size: 38px;
     line-height: 36px;
     position: relative;
-    top: 17px;    
+    padding-top: 40px;   
   }
   form {
     float: right;
     clear: right;
     position: relative;
-    width: 100%;
+    width: 320px;
+    margin-left: 20px;
     z-index: 10;
     
     .description {
@@ -1310,7 +1310,7 @@ div.horizontal-tabs .form-text {
   }
   .view-content {
     clear: none;
-    padding-top: 6.4em;
+    padding-top: 1.4em;
     
     .view-content {
       padding-top: 0;
@@ -3651,6 +3651,11 @@ div.fivestar-widget .star {
   }
   .pane-datasets-search-dataset-search .view-header {
     top: -7px;
+    padding-top: 0;
+  }  
+  .pane-datasets-search-dataset-search form {
+    margin-left: 0;
+    width: 100%;
   }  
 }
 
@@ -4141,9 +4146,10 @@ div.fivestar-widget .star {
 .dev-info {
   p {
     margin: 0 0 1.1em;
-    line-height: 1.3;
     text-indent: 20px;
-    font-size: 17px;
+    color: #666666;
+    font-size: 1.3em;
+    line-height: 1.55em;
   }
   .dev-info-intro {
     padding: 20px 20px 10px;
@@ -4165,16 +4171,35 @@ div.fivestar-widget .star {
         text-align: center;
         padding: 0 15px 15px;
         color: #676767;
-        text-decoration: none;        
+        text-decoration: none;
       }
       img {
         display: block;
         margin: 0 auto 10px;
+        filter: url(../images/filter.svg#grayscale);
+        filter: grayscale(100%);
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
+        -o-filter: grayscale(100%);/**/
       }
       span {
         font-size: 26px;
         line-height: 24px;
         text-transform: uppercase;
+        @include transition(all 0.4s ease);
+      }
+      a:hover {
+        img {
+          filter: none;
+          -webkit-filter: none;
+          -moz-filter: none;
+          -ms-filter: none;
+          -o-filter: none;/**/         
+        }
+        span {
+          color: #0C87E8;
+        }
       }
     }
   }
