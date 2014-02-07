@@ -97,10 +97,12 @@ div.horizontal-tabs .form-text {
   margin: 0;
 }
 .form-select {
-  padding-top: 0.85em;
+  /*padding-top: 0.85em;
   padding-bottom: 0.85em;
   height: 58px;
-  line-height: 47px;
+  line-height: 47px;*/
+  padding-top: 1.1em;
+  padding-bottom: 1.1em;  
 }
 .form-required {
   color: #0c87e8;
@@ -1887,17 +1889,35 @@ div.horizontal-tabs .form-text {
   }  
 }
 .page-blog {
-  background: #fff;
 
-  .node-blog {
-    border-right: 5px solid #BFBFBF;
-    margin-bottom: 4.5em;
-    padding-right: 4%;
+  .node-blog {    
+    margin-bottom: 4.5em !important;
+    display: table;
+    width: 100%;
     
+    &.ds-3col > .group-left,
+    &.ds-3col > .group-middle,
+    &.ds-3col > .group-right {
+      float: none;
+      display: table-cell;
+      vertical-align: top;
+    }
+    &.ds-3col > .group-left {
+      width: 120px;
+    }
+    &.ds-3col > .group-middle {
+      padding: 0 20px 0 0;
+      width: auto;
+    }
+    &.ds-3col > .group-right {
+      width: 150px;
+      border-left: 5px solid #BFBFBF;
+      text-align: center;
+    }  
     h2 {
       font-size: 2em;
-      line-height: 1.1em;
-      margin: 0 0 0.15em;      
+      line-height: 1.3em;
+      margin: 0.15em 0;      
       
       a {
         color: #3D9FED;
@@ -1908,29 +1928,58 @@ div.horizontal-tabs .form-text {
       color: #666666;
       font-size: 1.3em;
       line-height: 1.55em;
-      padding-bottom: 20px;
+      padding-bottom: 15px;
+      
+      p {
+        margin: 0;
+      }
     }
-    .field-name-field-date-created{
-      color: #B5B5B5;
+    .field-name-field-date-created,
+    .field-name-author    {
+      color: #666;
+      font-size: 1.25em;
+      text-transform: uppercase;
+      
+      .field-label {
+        color: #b5b5b5;
+        font-weight: normal;
+      }
+    }
+    .field-name-ds-user-picture img {
+      border: 3px solid #dcdcdc;
+      background: #fff;
+    }
+    .field-name-field-date-created {
       float: left;
-      font-size: 1.25em;
-      width: 50%;
+      padding-right: 10px;      
     }
-    .field-name-field-comments-count {
-      background: url("../images/ico-comments.png") no-repeat scroll 0 50% transparent;
-      color: #FF8A00;
-      float: right;
-      font-size: 1.25em;
-      padding-left: 25px;
+    .field-name-node-link {
+      a {
+        font-size: 1.25em;
+        text-transform: uppercase;    
+        text-decoration: none;
+      }
+    }
+    .field-name-field-rubric {
+      font-size: 1.35em;
+      text-transform: uppercase;          
+    }
+    /*.field-name-field-comments-count {
+      background: url("../images/ico-view.png") no-repeat scroll 50% 0 transparent;
+      color: #777777;
+      font-size: 18px;
+      padding-top: 45px;
+      text-transform: uppercase;
+      text-align: center;
       
       a {
-        color: #FF8A00;
+        color: #777;
         text-decoration: none;
       }
       em {
           font-style: normal;
       }      
-    }
+    }*/
     .links {
       margin: 0;
       padding-top: 10px;
@@ -1939,11 +1988,18 @@ div.horizontal-tabs .form-text {
       display: block;
       
       li {
+        display: none;
         
-      }
-      a {
-        display: inline-block;
-        font-size: 14px;
+        &.statistics_counter {
+          display: block;
+          background: url("../images/ico-view.png") no-repeat scroll 50% 0 transparent;
+          color: #777777;
+          font-size: 16px;
+          padding-top: 45px;
+          padding-right: 0;
+          text-transform: uppercase;
+          text-align: center;          
+        }
       }
     }
     .node-readmore {
@@ -2435,6 +2491,7 @@ div.horizontal-tabs .form-text {
   font-size: 1.05em;
   background: #0c87e8;
   text-transform: uppercase;
+  text-decoration: none;
 }  
 html.js input.form-autocomplete {
   background: #fff url("../images/form-autocomplete.png") no-repeat 100% 50%;
@@ -3995,6 +4052,78 @@ div.fivestar-widget .star {
   .form-item-field-geolocation-distance-search-distance {
     .form-text {
       width: 10%;
+    }
+  }
+}
+
+/**
+ * competitions
+ */
+.link-add {
+  padding-bottom: 40px;
+  padding-top: 20px;
+}
+.view-competitions-for-rubrics {
+  .view-filters {
+    @include clearfix;
+    padding-bottom: 20px;
+  }
+  .views-exposed-form .views-exposed-widget {
+    float: none;
+    
+    label {
+      float: left;
+      padding-right: 20px;
+      padding-top: 12px;
+    }
+    .form-select {
+      float: left;
+      width: 30%;
+    }
+  }
+  .views-row {
+    border-right: 5px solid #bfbfbf;
+    padding-right: 4%;
+    margin-bottom: 4.5em;
+    @include clearfix;
+    
+    .field-type-image img {
+      float: left;
+      margin: 0 30px 0 0;
+    }
+    .field {
+      font-size: 16px;
+      line-height: 25px;
+      text-transform: uppercase;
+      color: #666;
+      
+      div {
+        display: inline;
+        float: none;
+      }
+      .field-label {
+        font-weight: normal;
+        color: #b5b5b5;  
+      } 
+      &.clearfix:after {
+        clear: none;
+      }
+    }
+
+    .field-name-field-competition-place {
+      font-size: 18px;
+      text-transform: none;
+    }
+    .field-name-title h2 {
+      text-transform: uppercase;
+      font-size: 24px;
+      line-height: 1.1em;
+      display: block;
+      margin: 0;
+      
+      a {
+        text-decoration: none;
+      }
     }
   }
 }
