@@ -19,6 +19,9 @@ function od_cell_popup_preprocess_html(&$vars) {
   }
 }
 
+/**
+ * Implements hook_field_widget_form_alter()
+ */
 function od_cell_popup_field_widget_form_alter(&$element, &$form_state, $context) {
   $prepopulate_fields = array(
     'field_ds_report_row' => TRUE,
