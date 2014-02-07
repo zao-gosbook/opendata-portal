@@ -90,7 +90,7 @@
         var href = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'modal/entityform/dataset-error-report/nojs/0?field_ds_report_row='
           + rowNum
           + '&field_ds_report_col='+ colNum
-          + '&field_ef_dataset_resources=' + settings.od_cell_popup_popup.popup.nid;
+          + '&field_ef_dataset_resources=' + Drupal.settings.od_cell_popup.popup.nid.od_cell_popup_popup.popup.nid;
 
         var content = '\
         <div class="od-common-popup-cell-actions-wrapper">\
