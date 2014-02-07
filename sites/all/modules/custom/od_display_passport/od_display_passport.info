@@ -1,4 +1,0 @@
-name = od_display_passport
-description = Get passport fro view
-core = 7.x
-dependencies[] = views
