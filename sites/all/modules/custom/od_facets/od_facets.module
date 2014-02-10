@@ -19,3 +19,30 @@ function od_facets_facetapi_widgets() {
     ),
   );
 }
+
+/**
+ * Implements hook_menu().
+ */
+function od_facets_menu() {
+  $items = array();
+
+  $items['od_test'] = array(
+    'title' => 'Callback to update facets content',
+    'page callback' => 'od_facets_ajax_facets_refresh_facets_content',
+    'access arguments' => TRUE,
+    'delivery callback' => 'ajax_deliver',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+function od_facets_ajax_facets_refresh_facets_content() {
+  return array(
+    '#commands' => array(
+      ajax_command_alert('1'),
+    ),
+    '#type' => 'ajax',
+  );
+}
