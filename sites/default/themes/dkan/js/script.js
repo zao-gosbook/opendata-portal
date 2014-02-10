@@ -134,5 +134,15 @@
       processClick(showHideToggleEl);
     }
   }
+
+  /**
+   * Force all links on dataset search page open in new window
+   * @fixme ugly warkaround should be replaced with less ugly one
+   */
+  Drupal.behaviors.openTitleIntNewWindow = {
+    attach: function (context, settings) {
+      $('body.section-dataset .view-content .field-name-title a').attr('target', '_new');
+    }
+  }
   
 })(jQuery, Drupal, this, this.document);
