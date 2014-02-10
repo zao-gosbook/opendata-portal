@@ -1,8 +1,0 @@
-name = Entityform to node
-description = "Completely copies all entityform's fields to node"
-package = "Entityforms"
-core = 7.x
-dependencies[] = rules
-dependencies[] = entityform
-
-files[] = include/EntityFormToNodeRulesUIConfig.inc
