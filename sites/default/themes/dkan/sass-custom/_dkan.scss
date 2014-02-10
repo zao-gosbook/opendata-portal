@@ -2762,7 +2762,9 @@ div.fivestar-widget .star a {
   background-image: url("../images/star.png");
 }
 div.fivestar-widget .star {
+  height: 16px;
   margin-right: 3px;
+  width: 16px;  
 }
 
 /**
@@ -3411,7 +3413,7 @@ div.fivestar-widget .star {
  * app
  */
 .node-type-app {
-  background: #fff;
+  /*background: #fff;*/
 }
 .node-app.view-mode-full  {
   .field {
@@ -3430,6 +3432,120 @@ div.fivestar-widget .star {
     }
   }
 }
+.app-info {
+  @include clearfix; 
+  padding-bottom: 40px;
+  width: 100%;
+  
+  .panel-pane {
+    float: left;
+    color: #666;
+    font-size: 15px;
+    text-transform: uppercase;
+    line-height: 1.5em;
+  }
+  .field-label {
+    font-weight: normal;
+    color: #FFA200;  
+  }
+  &.row-1 {
+    padding-bottom: 40px;
+  }  
+  &.row-2 {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #a5a5a5;
+  }
+  h2 {
+    margin: 0;
+    font-weight: normal;
+    color: #FFA200;  
+    line-height: 1.5;
+    font-size: 15px;
+  }
+  .pane-node-field-fivestar,
+  .pane-node-field-app-url-organization {
+    width: 22%;
+  }
+  .pane-node-field-rubric,
+  .pane-node-field-app-phone,
+  .pane-node-field-app-mail  {
+    float: none;
+    
+    margin: 0 50% 0 22%;
+  }
+  .pane-node-field-app-phone,
+  .pane-node-field-app-mail {
+    
+    div {
+      display: inline;
+    }
+  }
+  .pane-node-field-app-url-datasets,
+  .pane-node-field-tags {
+    width: 50%;
+    float: right;
+  }
+}
+.pane-node-field-app-image img {
+  float: left;
+  margin: 0 40px 0 0;
+}
+.region-app-image {
+  float: none;
+  width: auto;
+}
+.region-app-body {
+  float: none;
+  width: auto;
+  display: table;
+  
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 18px;
+    line-height: 25px;
+  }
+  .regon-app-title {
+    float: left;
+    
+    h3 {
+      margin: 0;
+      font-weight: normal;
+      color: #FFA200;  
+      line-height: 39px;
+      font-size: 15px;
+    }
+  }
+  .pane-entity-field {
+    float: right;
+    padding-left: 6px;
+    
+    a {
+      display: block;
+      width: 127px;
+      height: 40px;
+      text-indent: -10000px;
+      @include border-radius(3px);
+      overflow: hidden;
+    }
+    &.pane-node-field-app-url-google-play a {
+      background: url("../images/app-googleplay.png") no-repeat 0 0;
+      width: 112px;
+    }
+    &.pane-node-field-app-url-windows-phone a {
+      background: url("../images/app-windows.png") no-repeat 0 0;
+    }
+    &.pane-node-field-app-url-apple-store a {
+      background: url("../images/app-apple.png") no-repeat 0 0;
+      width: 136px;
+    }
+  }
+  .pane-node-body {
+    float: none;
+    padding: 0 0 15px;
+  }
+}  
 
 /**
  * doc
