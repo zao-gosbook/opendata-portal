@@ -144,6 +144,7 @@
       $('body.section-dataset .view-content .field-name-title a').bind('click', function () {
         var win = window.open($(this).attr('href'));
         win.focus();
+        return false;
       });
     }
   }
