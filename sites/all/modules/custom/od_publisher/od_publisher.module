@@ -26,15 +26,23 @@ function od_publisher_node_access($node, $op, $account) {
     $node_wrapper = entity_metadata_wrapper('node', $node);
     $user_wrapper = entity_metadata_wrapper('user', $account);
 
-    //Check if publisher's organization doesn't match the node's organizations
-    if ($op != 'view' && ($organization = $node_wrapper->field_organization->value()) && !od_publisher_api_user_is_curator_of($organization, $account)) {
-      return NODE_ACCESS_DENY; //Deny the operation for non publishers
-    }
-    elseif ($organization && od_publisher_api_user_is_curator_of($organization, $account)) {
-      return NODE_ACCESS_ALLOW;
+    // Get the organization if exists.
+    if ($organization = $node_wrapper->field_organization->value()) {
+      // Determine if the user is publisher of this organization.
+      $is_publisher = od_publisher_api_user_is_curator_of($organization, $account);
+
+      // Publisher has full access.
+      if ($is_publisher) {
+        return NODE_ACCESS_ALLOW;
+      }
+      // Otherwise deny only if want to edit.
+      elseif ($op != 'view') {
+        return NODE_ACCESS_DENY;
+      }
     }
   }
 
+  // Go through other access rules.
   return NODE_ACCESS_IGNORE;
 }
 

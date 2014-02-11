@@ -1,0 +1,13 @@
+name = File Field Rules
+description = Provides rules actions for file fields.
+core = 7.x
+package = Rules
+dependencies[] = file
+dependencies[] = rules
+
+; Information added by Drupal.org packaging script on 2014-01-27
+version = "7.x-1.0"
+core = "7.x"
+project = "file_rules"
+datestamp = "1390834711"
+
