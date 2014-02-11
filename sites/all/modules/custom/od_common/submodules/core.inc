@@ -63,7 +63,6 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
   }
 
   $node_wrapper = entity_metadata_wrapper('node', $node);
-  $node_pi = $node_wrapper->getPropertyInfo();
   foreach ($pi as $property => $info) {
     if (!empty($info['field'])) {
       $node_property = $property;
@@ -84,13 +83,13 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
 
       //And finally if field's instance exists and we have filled property
       if ((!isset($options['field_mappings']) || $field_is_mapped) && $instance && isset($ef->{$property})) {
-        /*// @fixme: Very ugly warkaround, should be fixed.
+        // @fixme: Very ugly warkaround, should be fixed.
         $langcode = $GLOBALS['user']->language;
         $node->{$property} = array(
           $langcode => reset($ef->{$property}),
-        );*/
+        );
 
-        $node->{$node_property} = $ef->{$property}; //we copy it
+        //$node->{$node_property} = $ef->{$property}; //we copy it
       }
     }
   }
@@ -98,7 +97,12 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
   //And save node immediately if needed
   if ($save_node) {
     //$node->revision = 0;
-    entity_save('node', $node);
+    try {
+      entity_save('node', $node);
+    }
+    catch (Exception $e) {
+      watchdog_exception('od_common', $e);
+    }
   }
 
   return $node;
