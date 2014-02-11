@@ -191,7 +191,7 @@ function common_rules_actions_copy_entity_form_to_node($ef, $config, $save_node 
   od_common_module('core');
 
   $options = array(
-    'create_fields' => TRUE,
+    'create_fields' => FALSE,
     'save_node' => $save_node,
     'field_mappings' => $config['field_mappings'],
   );
