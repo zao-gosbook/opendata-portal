@@ -98,6 +98,11 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
   if ($save_node) {
     //$node->revision = 0;
     try {
+      // @fixme:
+      if ($node->type == 'resource' && isset($node->field_organization)) {
+        unset($node->field_organization);
+      }
+
       entity_save('node', $node);
     }
     catch (Exception $e) {
