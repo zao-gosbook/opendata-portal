@@ -99,8 +99,24 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
     //$node->revision = 0;
     try {
       // @fixme:
-      if ($node->type == 'resource' && isset($node->field_organization)) {
-        unset($node->field_organization);
+      if ($node->type == 'resource' && empty($node->field_organization)) {
+        $node->field_organization = array(
+          'ru' => array(
+            array(
+              'target_id' => 36,
+            ),
+          ),
+          'en' => array(
+            array(
+              'target_id' => 36,
+            ),
+          ),
+          'und' => array(
+            array(
+              'target_id' => 36,
+            ),
+          ),
+        );
       }
 
       entity_save('node', $node);
