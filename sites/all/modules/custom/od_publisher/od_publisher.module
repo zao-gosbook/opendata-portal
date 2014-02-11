@@ -22,6 +22,10 @@ function od_publisher_node_access($node, $op, $account) {
     return NODE_ACCESS_IGNORE; //Do not do anything
   }
 
+  if (!is_object($node) && $node == 'dataset') {
+    return NODE_ACCESS_ALLOW;
+  }
+
   if ($node->type == 'dataset') {
     $node_wrapper = entity_metadata_wrapper('node', $node);
     $user_wrapper = entity_metadata_wrapper('user', $account);
