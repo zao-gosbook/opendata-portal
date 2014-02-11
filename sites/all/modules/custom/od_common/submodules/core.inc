@@ -91,6 +91,7 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
 
   //And save node immediately if needed
   if ($save_node) {
+    $node->revision = 0;
     entity_save('node', $node);
   }
 
