@@ -73,7 +73,7 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
 
       //If we need to create the field in case if it doesn't exist
       $instance = NULL; //Set it to null just to be sure that we don't have an old value from previous cycle
-      if (!($instance = field_info_instance('node', $node_property, $node_type)) && $options['create_fields']) {
+      if ($field_is_mapped && !($instance = field_info_instance('node', $node_property, $node_type)) && $options['create_fields']) {
         $instance = field_info_instance('entityform', $node_property, $ef->type);
         $instance['entity_type'] = 'node';
         $instance['bundle'] = $node_type;
