@@ -83,8 +83,15 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
       }
 
       //And finally if field's instance exists and we have filled property
-      if ((!isset($options['field_mappings']) || $field_is_mapped) && $instance && isset($ef->{$property})) {
-        $node->{$node_property} = $ef->{$property}; //we copy it
+      if ((!isset($options['field_mappings']) || $field_is_mapped) && $instance && !empty($ef->{$property})) {
+        // @fixme: Very ugly warkaround, should be fixed.
+        $item = reset($ef->{$property});
+        $node->{$property} = array();
+        foreach (array(LANGUAGE_NONE, 'en', 'ru') as $langcode) {
+          $node->{$property}[$langcode] = $item;
+        }
+
+        // $node->{$node_property} = $ef->{$property}; //we copy it
       }
     }
   }
