@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * Implements hook_js_alter().
+ */
+function od_recline_js_alter(&$items) {
+  $recline_js = 'profiles/dkan/modules/contrib/recline/recline.app.js';
+  if (isset($items[$recline_js])) {
+    $items[$recline_js]['data'] = drupal_get_path('module', 'od_recline') . '/od_recline.app.js';
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function od_recline_theme_registry_alter(&$items) {
+  $items['recline_default_formatter']['function'] = 'theme_od_recline_default_formatter';
+}
+
+/**
+ * Returns HTML for an recline field formatter.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - item: Associative array of recline field.
+ *
+ * @return string
+ *   Html string.
+ */
+function theme_od_recline_default_formatter($variables) {
+  $file = $variables['item'];
+
+  $url = file_create_url($file['uri']);
+
+  // Set options as per anchor format described at
+  // http://microformats.org/wiki/file-format-examples
+  $options = array(
+    'attributes' => array(
+      'type' => $file['filemime'] . '; length=' . $file['filesize'],
+    ),
+  );
+
+  // Use the description as the link text if available.
+  if (!empty($file['description'])) {
+    $options['attributes']['title'] = check_plain($file['filename']);
+  }
+  $dkan = $table = FALSE;
+  // See if datastore is loaded, if so, prepare recline to view from it.
+  if (module_exists('dkan_datastore_api') && module_exists('feeds_flatstore_processor') && function_exists('dkan_datastore_api_get_feeds_source')) {
+    $source_id = dkan_datastore_api_get_feeds_source($variables['item']['entity']->nid);
+    if ($table = feeds_flatstore_processor_table_name($source_id, $variables['item']['entity']->nid)) {
+      if (db_table_exists($table)) {
+        $dkan = $table;
+      }
+    }
+  }
+  if (isset($variables['item']['grid'])) {
+    if ($variables['item']['grid'] || $variables['item']['graph'] || $variables['item']['map']) {
+      $file_path = file_create_url($variables['item']['uri']);
+      $uuid = isset($variables['item']['entity']->uuid) ? $variables['item']['entity']->uuid : FALSE;
+      $settings['recline'] = array(
+        'file' => $file_path,
+        'grid' => (int) $variables['item']['grid'],
+        'graph' => (int) $variables['item']['graph'],
+        'map' => (int) $variables['item']['map'],
+        'uuid' => $uuid,
+        'fileType' => $variables['item']['filemime'],
+        'dkan' => $dkan,
+      );
+    }
+    if ($variables['item']['grid'] && $variables['item']['filemime'] === 'text/csv') {
+      $field_encoding = $variables['item']['entity']->field_encoding;
+      $field_encoding_value = $field_encoding['und'][0]['value'];
+      $field_csv_delimiter = $variables['item']['entity']->field_encoding;
+      if (!empty($field_encoding) && $field_encoding_value === 'utf-8' && !empty($field_csv_delimiter)) {
+        $csv_delimiter = $variables['item']['entity']->field_csv_delimiter['und'][0]['value'];
+        $settings['recline']['csvDelimiter'] = $csv_delimiter;
+      }
+      else {
+        unset($settings);
+      }
+    }
+  }
+  else {
+    $file_path = file_create_url($variables['item']['uri']);
+    $uuid = isset($variables['item']['entity']->uuid) ? $variables['item']['entity']->uuid : FALSE;
+    $settings['recline'] = array(
+      'file' => $file_path,
+      'uuid' => $uuid,
+      'grid' => 1,
+      'graph' => 1,
+      'map' => 1,
+      'fileType' => $variables['item']['filemime'],
+      'dkan' => $dkan,
+    );
+  }
+
+  if (!empty($settings)) {
+    drupal_add_library('system', 'ui.sortable');
+    $recline = libraries_load('recline');
+    $module_path = drupal_get_path('module', 'recline');
+    drupal_add_js($module_path . '/backend.ckan_get.js');
+    drupal_add_js($module_path . '/recline.app.js');
+    drupal_add_css($module_path . '/recline.css');
+    drupal_add_js($settings, 'setting');
+  }
+  if (!empty($recline)) {
+    // Necessary to fix https://github.com/mapbox/mapbox.js/issues/339
+    $leaflet_imgs = $recline['library path'] . '/vendor/leaflet/0.4.4/images';
+    drupal_add_js('L.Icon.Default.imagePath = "/' . $leaflet_imgs . '"', 'inline');
+  }
+
+  $file = l(t('Download'), $url, $options);
+  return '<div class="download">' . $file . '</div><span class="data-explorer"></span>';
+}

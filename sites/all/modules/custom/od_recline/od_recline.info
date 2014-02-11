@@ -1,0 +1,5 @@
+name = Opendata recline field
+description = Override some origin recline functionality.
+core = 7.x
+
+dependencies[] = recline

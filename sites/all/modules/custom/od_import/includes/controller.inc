@@ -250,9 +250,16 @@ function od_import_source_set_data(&$source_node, $meta, $data) {
   $source_node->{OD_IMPORT_FIELD_RESOURCE_DATA} = array();
   if ($file) {
     $file->display = 1;
-    $file->grid = 1;
-    $file->graph = 1;
-    $file->map = 1;
+
+    switch ($file->filemime) {
+      case 'text/csv':
+        $file->grid = 1;
+        $delimiter = od_import_detect_delimiter($file->uri);
+        $source_node->{OD_IMPORT_FIELD_RESOURCE_CSV_DELIMITER}[LANGUAGE_NONE][0]['value'] = $delimiter;
+        $source_node->{OD_IMPORT_FIELD_RESOURCE_ENCODING}[LANGUAGE_NONE][0]['value'] = 'utf-8';
+        break;
+    }
+
     $source_node->{OD_IMPORT_FIELD_RESOURCE_DATA}[LANGUAGE_NONE][0] = (array) $file;
   }
 }
@@ -314,6 +321,16 @@ function od_import_load_or_create_subject_by_name($name) {
 }
 
 function od_import_load_or_create_file($uri, $origin_uri) {
+  $file = od_import_load_file($uri);
+
+  if (empty($file)) {
+    $file = od_import_create_file($uri, $origin_uri);
+  }
+
+  return $file;
+}
+
+function od_import_load_file($uri) {
   if (!file_valid_uri($uri)) {
     return FALSE;
   }
@@ -322,34 +339,26 @@ function od_import_load_or_create_file($uri, $origin_uri) {
   $files = od_import_get_file_by_uri($uri);
   $file = !empty($files) ? reset($files) : FALSE;
 
-  if (empty($file)) {
-    file_prepare_directory(drupal_dirname($uri), FILE_CREATE_DIRECTORY);
+  return $file;
+}
 
-    $file_content = od_import_get_url_content($origin_uri);
-    $file = file_save_data($file_content, $uri);
-
-    $file->uid = OD_IMPORT_USER_ID;
-    file_save($file);
+function od_import_create_file($uri, $origin_uri) {
+  if (!file_valid_uri($uri)) {
+    return FALSE;
   }
+
+  file_prepare_directory(drupal_dirname($uri), FILE_CREATE_DIRECTORY);
+
+  $file_content = od_import_get_url_content($origin_uri);
+  $file = file_save_data($file_content, $uri);
+
+  $file->uid = OD_IMPORT_USER_ID;
+  file_save($file);
 
   return $file;
 }
 
 function od_import_get_url_content($url, $encoding = NULL) {
-  $content = od_file_preprocess_parse_csv($url);
-  $rows = reset($content); // @todo Why single array?
-  $output = '';
-  foreach ($rows as $row) {
-    $output .= implode(',', $row) . "\n";
-  }
-
-  return $output;
-
-  // Set default encoding from Windows-1251.
-  if (empty($encoding)) {
-    $encoding = 'Windows-1251';
-  }
-
   $curl = curl_init();
   curl_setopt($curl, CURLOPT_URL, $url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -358,19 +367,26 @@ function od_import_get_url_content($url, $encoding = NULL) {
 
   $content = curl_exec($curl);
 
-  // Detect UTF-8.
-  $is_utf8 = preg_match('//u', $content);
-  if (!$is_utf8) {
-    if ($encoding) {
-      $content = iconv($encoding, 'UTF-8', $content);
+  // Try to check on UTF-8 if encoding not defined.
+  if (!$encoding) {
+    // Detect UTF-8.
+    $is_utf8 = preg_match('//u', $content);
+    // Trying to encode from "Windows-1251" as most popular encoding in Russia if UTF-8 not detected.
+    if (!$is_utf8) {
+      $encoding = 'Windows-1251';
     }
   }
 
-  $result = curl_getinfo($curl, CURLINFO_HTTP_CODE) < 400;
+  // Encode if encoding is defined.
+  if ($encoding) {
+    $content = iconv($encoding, 'UTF-8', $content);
+  }
+
+  $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
   curl_close($curl);
 
-  return $result ? $content : FALSE;
+  return $http_code < 400 ? $content : FALSE;
 }
 
 function od_import_build_file_uri($type, $meta, $data) {
@@ -452,4 +468,45 @@ function od_import_get_source_revisions($nid) {
     $revisions[$vid] = node_load($nid, $vid);
   }
   return $revisions;
+}
+
+function od_import_detect_delimiter($data, $end_of_line = PHP_EOL, $enclosure = '"') {
+  if (file_valid_uri($data)) {
+    $data = file_get_contents($data);
+  }
+
+  if ($data === FALSE) {
+    return FALSE;
+  }
+
+  $delimiters = array();
+  $available_delimiters = array(',', ';');
+
+  $data = explode($end_of_line, $data);
+
+  foreach ($available_delimiters as $available_delimiter) {
+    $cols_count = array();
+    foreach ($data as $row) {
+      if (empty($row)) {
+        continue;
+      }
+
+      $cols_count[] = count(str_getcsv($row, $available_delimiter, $enclosure));
+    }
+
+    $count_values = array_count_values($cols_count);
+    arsort($count_values);
+    $popular_key = key($count_values);
+    $max_key = max(array_keys($count_values));
+
+    if ($popular_key === $max_key) {
+      $delimiters[$popular_key] = $available_delimiter;
+    }
+  }
+
+  krsort($delimiters);
+
+  $delimiter = !empty($delimiters) ? reset($delimiters) : FALSE;
+
+  return $delimiter;
 }
