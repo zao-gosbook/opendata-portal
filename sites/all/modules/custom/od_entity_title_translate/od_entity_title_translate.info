@@ -4,6 +4,10 @@ package = "Gosbook"
 core = 7.x
 dependencies[] = entity
 
+; Adapters
 files[] = include/translators/od_entity_label_translate_class_taxonomy_term.inc
 files[] = include/translators/od_entity_label_translate_class_entityform.inc
 files[] = include/translators/od_entity_label_translate_class_user.inc
+
+; Ctools' plugins
+files[] = plugins/entityreference/selection/od_entity_title_translate_base.inc
