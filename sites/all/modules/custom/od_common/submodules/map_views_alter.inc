@@ -12,5 +12,7 @@ function _od_common_map_views_form_views_exposed_form_alter(&$form, &$form_state
     unset($form['field_geolocation_distance']['googlemap']['address']['geocode']);
     $form['field_geolocation_distance']['googlemap']['help']['#markup']=t('Enter an address / location in the textfield');
     $form['field_geolocation_distance']['googlemap']['remove']['#markup'] = t('Clear');
+    $form['field_geolocation_distance']['googlemap']['#weight']=2;
+    $form['field_geolocation_distance']['search_distance']['#weight']=1;
   }
 }
