@@ -207,7 +207,14 @@ class ODStoreEndPoint extends ARC2_StoreEndpoint {
     if (!isset($this->is_dump) || !$this->is_dump) {
       $this->setHeader('content-length', 'Content-Length: ' . strlen($this->getResult()));
       foreach ($this->headers as $k => $v) {
-        header($v);
+        $header = $k;
+        $value = $v;
+        if (($ruins = explode(':', $v)) && count($ruins) > 1) {
+          $header = $ruins[0];
+          $value = $ruins[1];
+        }
+
+        drupal_add_http_header($header, $value);
       }
     }
   }
@@ -250,9 +257,64 @@ class ODStoreEndPoint extends ARC2_StoreEndpoint {
     }
   }
 
+  /*  */
+
+  function handleEmptyRequest($force = 0) {
+    /* service description */
+    $formats = array(
+      'rdfxml' => 'RDFXML', 'rdf+xml' => 'RDFXML', 'html' => 'HTML'
+    );
+    if (!$force && $this->getResultFormat($formats, 'html') != 'HTML') {
+      $this->handleServiceDescriptionRequest();
+    }
+    else {
+      //$this->setHeader('content-type', 'Content-type: text/html; charset=utf-8');
+      $this->result = $this->getHTMLDocBody();
+    }
+  }
+
+  function getHTMLDocBody() {
+    return '
+    	<div>
+        <h1>' . $this->getHTMLDocHeading() . '</h1>
+        <div class="intro">
+          <p>
+            <a href="?">This interface</a> implements
+            <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL</a> and
+            <a href="https://github.com/semsol/arc2/wiki/SPARQL%2B">SPARQL+</a> via <a href="http://www.w3.org/TR/rdf-sparql-protocol/#query-bindings-http">HTTP Bindings</a>.
+          </p>
+          <p>
+            Enabled operations: ' . join(', ', $this->getFeatures()) . '
+          </p>
+          <p>
+            Max. number of results : ' . $this->v('endpoint_max_limit', '<em>unrestricted</em>', $this->a) . '
+          </p>
+        </div>
+        ' . $this->getHTMLDocForm() .'
+        ' . ($this->p('show_inline') ? $this->query_result : '') . '
+    	</div>
+    ';
+  }
+
   function go($auto_setup = 0) {
     //$this->sendHeaders();
     $this->handleRequest($auto_setup);
-    return $this->getResult();
+    $result = $this->getResult();
+
+    if ($this->p('query') && !$this->p('show_inline')) {
+      $this->setHeader('Content-Description',  'File Transfer');
+      $this->setHeader('Content-Disposition', 'attachment; filename=' . 'data.' . $this->p('output'));
+      $this->setHeader('Content-Transfer-Encoding', 'binary');
+      $this->setHeader('Expires', 0);
+      $this->setHeader('Cache-Control',  'must-revalidate');
+      $this->setHeader('Pragma', 'public');
+      $this->setHeader('Content-Length', strlen($result));
+      $this->sendHeaders();
+      echo $result;
+      exit;
+    }
+    else {
+      return $result;
+    }
   }
 }
