@@ -257,11 +257,13 @@ function _passport_table_rows($nid) {
   $rows['field_frequency'] = array(t('Frequency of updating'), $data);
   
   //Содержание последнего изменения
-  $value = $node_wrapper->field_content_last_change->value();
-  $data = array(
-    'data' => isset($value) ? $value : t('No info'),
-  );
-  $rows['field_content_last_change'] = array(t('Content of the latter changes'), $data);
+  if ($resource->value()) {
+    $value = $resource->field_provenance->value();
+    $data = array(
+      'data' => isset($value) ? $value : t('No info'),
+    );
+    $rows['field_content_last_change'] = array(t('Content of the latter changes'), $data);
+  }
   
   //Ключевые слова
   $keywords = array();
@@ -347,20 +349,22 @@ function _passport_structured_description($nid) {
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
   $resource_revisions = node_revision_list($resource->value());
+  $first_revision = end($resource_revisions); //Самая первая версия набора
   $url_datasets_revisions = array();
   if ($resource->value()) {
       foreach ($resource_revisions as $key => $revision) {
       $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
       $revision_date = date("Ymd\THi", $revision->timestamp);
+      //dpm($revision_date, 'revision date');
       $revision_date_iso = date("Y-m-d", $revision->timestamp);
       //Информация о последнем изменении в паспорте
-      if ($node_wrapper->field_content_last_change->value()) {
-        $revision_provenence = $node_wrapper->field_content_last_change->value();
+      if ($revision_object->field_provenance->value()) {
+        $revision_provenence = $revision_object->field_provenance->value();
       } else {
         $revision_provenence = t('No info');
       }
-      
-      if($revision->vid == $resource->vid->value()) {
+      //если это первая версия набора, то записываем значения из полей паспорта
+      if ($first_revision->vid == $revision->vid) {
         $revision_date = date("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
         $revision_date_iso = date("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
         $revision_provenence = t('Date of first publication');
