@@ -196,59 +196,63 @@ function od_rdf_store_remove_file_from_storage($file) {
 }
 
 function od_rdf_store_init_class() {
-  ARC2::inc('StoreEndpoint');
-  class ODStoreEndPoint extends ARC2_StoreEndpoint {
-    function sendHeaders() {
-      if (!isset($this->is_dump) || !$this->is_dump) {
-        $this->setHeader('content-length', 'Content-Length: ' . strlen($this->getResult()));
-        foreach ($this->headers as $k => $v) {
-          header($v);
-        }
+
+
+}
+
+require_once 'sites/all/libraries/arc/ARC2.php';
+ARC2::inc('StoreEndpoint');
+class ODStoreEndPoint extends ARC2_StoreEndpoint {
+  function sendHeaders() {
+    if (!isset($this->is_dump) || !$this->is_dump) {
+      $this->setHeader('content-length', 'Content-Length: ' . strlen($this->getResult()));
+      foreach ($this->headers as $k => $v) {
+        header($v);
       }
     }
+  }
 
-    function getResult() {
-      return $this->result;
+  function getResult() {
+    return $this->result;
+  }
+
+  /*  */
+
+  function handleRequest($auto_setup = 0) {
+    if (!$this->isSetUp()) {
+      if ($auto_setup) {
+        $this->setUp();
+        return $this->handleRequest(0);
+      }
+      else {
+        $this->setHeader('http', 'HTTP/1.1 400 Bad Request');
+        $this->setHeader('content-type', 'Content-type: text/plain; charset=utf-8');
+        $this->result = 'Missing configuration or the endpoint store was not set up yet.';
+      }
     }
-
-    /*  */
-
-    function handleRequest($auto_setup = 0) {
-      if (!$this->isSetUp()) {
-        if ($auto_setup) {
-          $this->setUp();
-          return $this->handleRequest(0);
-        }
-        else {
-          $this->setHeader('http', 'HTTP/1.1 400 Bad Request');
-          $this->setHeader('content-type', 'Content-type: text/plain; charset=utf-8');
-          $this->result = 'Missing configuration or the endpoint store was not set up yet.';
-        }
-      }
-      elseif (($img = $this->p('img'))) {
-        $this->handleImgRequest($img);
-      }
-      elseif (($q = $this->p('query'))) {
-        $this->checkProcesses();
-        $this->handleQueryRequest($q);
-        if ($this->p('show_inline')) {
-          $this->query_result = '
+    elseif (($img = $this->p('img'))) {
+      $this->handleImgRequest($img);
+    }
+    elseif (($q = $this->p('query'))) {
+      $this->checkProcesses();
+      $this->handleQueryRequest($q);
+      if ($this->p('show_inline')) {
+        $this->query_result = '
           <div class="results">
             ' . ($this->p('output') != 'htmltab' ? '<pre>' . htmlspecialchars($this->getResult()) . '</pre>' : $this->getResult()) . '
           </div>
         ';
-          $this->handleEmptyRequest(1);
-        }
-      }
-      else {
-        $this->handleEmptyRequest();
+        $this->handleEmptyRequest(1);
       }
     }
+    else {
+      $this->handleEmptyRequest();
+    }
+  }
 
-    function go($auto_setup = 0) {
-      $this->sendHeaders();
-      $this->handleRequest($auto_setup);
-      return $this->getResult();
-    }
+  function go($auto_setup = 0) {
+    //$this->sendHeaders();
+    $this->handleRequest($auto_setup);
+    return $this->getResult();
   }
 }
