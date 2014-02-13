@@ -14,13 +14,76 @@ function od_rdf_store_menu() {
     'page callback' => 'od_rdf_store_sparql_endpoint',
     'access arguments' => array('access content'),
   );
+
+  $items['sparql_query'] = array(
+    'title' => 'SPARQL endpoint',
+    'page callback' => 'od_rdf_store_sparql_endpoint',
+    'access arguments' => array('access content'),
+  );
+
   return $items;
 }
 
 function od_rdf_store_sparql_endpoint() {
+
+  $form = array();
+
   // Instantiate the ARC2 SPARQL endpoint.
-  $ep = sparql_get_store('site_endpoint', SPARQL_ENDPOINT);
-  $ep->go();
+  $ep = od_rdf_store_sparql_get_store('site_endpoint', SPARQL_ENDPOINT);
+  $form['page_content']['#markup'] = $ep->go();
+
+
+  return render($form);
+}
+
+/**
+ * @param $name
+ * @param string $type
+ * @return ARC2_StoreEndpoint
+ */
+function od_rdf_store_sparql_get_store($name, $type = 'store') {
+  $db = $GLOBALS['databases']['default']['default'];
+  $name = "sparql_store_$name";
+
+  $config = array(
+    /* db */
+    'db_host' => $db['host'],
+    'db_name' => $db['database'],
+    'db_user' => $db['username'],
+    'db_pwd' => $db['password'],
+    /* store */
+    'store_name' => $name,
+
+    /* endpoint */
+    'endpoint_features' => array(
+      'select', 'construct', 'ask', 'describe',
+      'load', 'insert', 'delete',
+      'dump' /* dump is a special command for streaming SPOG export */
+    ),
+    'endpoint_timeout' => 60, /* not implemented in ARC2 preview */
+    'endpoint_read_key' => '', /* optional */
+    'endpoint_write_key' => 'somekey', /* optional */
+    'endpoint_max_limit' => 500, /* optional */
+  );
+
+  /* instantiation */
+  if ($type == SPARQL_ENDPOINT) {
+    $store = ARC2::getStoreEndpoint($config);
+
+    od_rdf_store_init_class();
+    ARC2::inc('StoreEndpoint');
+    $cls = 'ODStoreEndPoint';
+    $caller = new stdClass();
+
+    return new $cls($config, $caller);
+  }
+  else {
+    $store = ARC2::getStore($config);
+  }
+  if (!$store->isSetUp()) {
+    $store->setUp();
+  }
+  return $store;
 }
 
 
@@ -128,6 +191,64 @@ function od_rdf_store_remove_file_from_storage($file) {
         watchdog('od_rdf_store', 'File %file removed from RDF-storage. %triples triples removed.', array('%file' => $uri, '%triples' => $result['result']['t_count']));
         drupal_set_message(t('File %file removed from RDF-storage. %triples triples removed.', array('%file' => $uri, '%triples' => $result['result']['t_count'])));
       }
+    }
+  }
+}
+
+function od_rdf_store_init_class() {
+  ARC2::inc('StoreEndpoint');
+  class ODStoreEndPoint extends ARC2_StoreEndpoint {
+    function sendHeaders() {
+      if (!isset($this->is_dump) || !$this->is_dump) {
+        $this->setHeader('content-length', 'Content-Length: ' . strlen($this->getResult()));
+        foreach ($this->headers as $k => $v) {
+          header($v);
+        }
+      }
+    }
+
+    function getResult() {
+      return $this->result;
+    }
+
+    /*  */
+
+    function handleRequest($auto_setup = 0) {
+      if (!$this->isSetUp()) {
+        if ($auto_setup) {
+          $this->setUp();
+          return $this->handleRequest(0);
+        }
+        else {
+          $this->setHeader('http', 'HTTP/1.1 400 Bad Request');
+          $this->setHeader('content-type', 'Content-type: text/plain; charset=utf-8');
+          $this->result = 'Missing configuration or the endpoint store was not set up yet.';
+        }
+      }
+      elseif (($img = $this->p('img'))) {
+        $this->handleImgRequest($img);
+      }
+      elseif (($q = $this->p('query'))) {
+        $this->checkProcesses();
+        $this->handleQueryRequest($q);
+        if ($this->p('show_inline')) {
+          $this->query_result = '
+          <div class="results">
+            ' . ($this->p('output') != 'htmltab' ? '<pre>' . htmlspecialchars($this->getResult()) . '</pre>' : $this->getResult()) . '
+          </div>
+        ';
+          $this->handleEmptyRequest(1);
+        }
+      }
+      else {
+        $this->handleEmptyRequest();
+      }
+    }
+
+    function go($auto_setup = 0) {
+      $this->sendHeaders();
+      $this->handleRequest($auto_setup);
+      return $this->getResult();
     }
   }
 }
