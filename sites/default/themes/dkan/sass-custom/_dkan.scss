@@ -292,7 +292,12 @@ div.horizontal-tabs .form-text {
             color: #4e4118;            
           }
         }
-         ul {
+        &.last > ul {
+          width: 27em !important;
+          left: auto;
+          right: 0;
+        }        
+        ul {
           position: absolute;
           top: 4.3em;
           left: 0;
@@ -1739,7 +1744,7 @@ div.horizontal-tabs .form-text {
   }
 }
 
-.node-type-blog,
+/*.node-type-blog,*/
 .node-type-idea,
 .node-type-news {
   background: #fff; 
@@ -1816,7 +1821,7 @@ div.horizontal-tabs .form-text {
   
   .field-name-author {
     display: inline-block;    
-    color: #ccc;
+    color: #666;
     font-size: 1.3em;
     line-height: 1.55em;
     padding-bottom: 20px;    
@@ -1828,7 +1833,7 @@ div.horizontal-tabs .form-text {
   }
   .field-name-post-date {
     display: inline-block;    
-    color: #ccc;
+    color: #666;
     font-size: 1.3em;
     line-height: 1.55em;
     padding-bottom: 20px;    
@@ -4100,6 +4105,25 @@ div.fivestar-widget .star {
   .views-label-timestamp {
     color: #ffa200;
   }  
+}
+ 
+/**
+ * node type blog
+ */ 
+.node-type-blog {
+  .field-name-body {
+    margin: 20px 0 0;
+    padding: 20px;
+    background: #fff;
+    
+    h6 {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 1.5;
+      margin: 0 0 20px;
+      color: #FFA200;
+    }
+  }
 }
  
 /**
