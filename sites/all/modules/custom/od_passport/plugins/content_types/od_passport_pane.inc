@@ -401,7 +401,7 @@ function _passport_structured_description($nid) {
           $url_datasets_revisions[$key]['structure'] = file_create_url($field_upload_structure['uri']);
         }
       } 
-      isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = t('No info');
+      isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = NULL;
     }
   }
   return _passport_markup_structured_description($url_datasets_revisions);
@@ -415,28 +415,31 @@ function _passport_markup_structured_description($dataset_data) {
     $uri = $rev_value['uri'];
     $provenance = $rev_value['field_content_last_change'];
     $structure = $rev_value['structure'];
+    $structure_url = $structure ? "<div rel='dc:conformsTo' resource='#structure-$date'></div>" : '';
     //Структура наборов
-    $divs_versions[] = array('div' => array(
+    $divs_versions[$rev_id] = array('div' => array(
       '#type' => 'markup',
       '#markup' => "<div rel='dc:hasPart' resource='#data-$date'>
                       <div typeof='foaf:Document' about='#data-$date'>
                         <div property='dc:source' content='$uri'></div>
                         <div property='dc:created' content='$date_iso'></div>
                         <div property='dc:provenance' content='$provenance'></div>
-                        <div rel='dc:conformsTo' resource='#structure-$date'></div>
+                        $structure_url
                       </div>
                   </div>",
       ),            
     );
     //Структура файлов структуры 
-    $divs_structures[] = array('div' => array(
-    '#type' => 'markup',
-    '#markup' => "<div typeof='foaf:Document' about='#structure-$date'>
-                    <div property='dc:source' content='$structure'></div>
-                    <div property='dc:created' content='$date_iso'></div>
-                 </div>",
-     ),
-   );
+    if ($structure) {
+      $divs_structures[$rev_id] = array('div' => array(
+      '#type' => 'markup',
+      '#markup' => "<div typeof='foaf:Document' about='#structure-$date'>
+                      <div property='dc:source' content='$structure'></div>
+                      <div property='dc:created' content='$date_iso'></div>
+                   </div>",
+       ),
+     );
+    } 
   }
  $divs = array ('div_versions' => $divs_versions, 'div_structures' => $divs_structures);
  return $divs;
