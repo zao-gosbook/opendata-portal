@@ -33,14 +33,18 @@ function od_passport_html_pane_content_type_edit_form_submit($form, &$form_state
  * See ctools_plugin_examples for more advanced info
  */
 function od_passport_html_pane_content_type_render($subtype, $conf, $args, $contexts) {
-  $data = drupal_render(od_passport_render(arg(1))->content);
-  $html = "<form>
-            <p><b>Скопируйте html-код паспорта:</b></p>
-            <p><textarea rows='30' cols='100' name='text' value='$data'></textarea></p>
-           </form>";
+  require_once dirname(__FILE__) . '/od_passport_pane.inc';
+  $html = drupal_render(od_passport_render($args[0])->content);           
+  $form['html_code'] = array(
+    '#title' => t('Html code'),
+    '#type' => 'textarea',
+    '#value' => isset($html) ? $html : t('No info'),
+    '#rows' => 40,
+  );
+  
   $block = new stdClass();
   $block->title = t('Dataset passport');
-  $block->content = $html;
+  $block->content = $form;
   
   return $block;
 }
