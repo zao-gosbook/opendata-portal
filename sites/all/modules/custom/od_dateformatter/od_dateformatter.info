@@ -1,0 +1,5 @@
+name = Date formatter
+description = Date formatter for Competition date field
+package = Gosbook
+core = 7.x
+
