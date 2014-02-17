@@ -1477,3 +1477,20 @@ $zen-auto-include-item-base: false;
     }       
   } 
 }
+
+/**
+ * addaptive facts
+ */
+@media all and (max-width: 2400px) and (min-width: 1400px) {
+  .pane-rubrics-rubrics-front .views-row:nth-child(3n+1) {
+    clear: none;
+  }  
+  .pane-rubrics-rubrics-front .views-row:nth-child(5n+1) {
+    clear: both;
+  }
+  .pane-rubrics-rubrics-front .views-row {
+    float: left;
+    text-align: center;
+    width: 20%;
+  }
+}

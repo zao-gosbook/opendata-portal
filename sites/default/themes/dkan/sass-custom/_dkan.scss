@@ -1744,9 +1744,8 @@ div.horizontal-tabs .form-text {
   }
 }
 
-/*.node-type-blog,*/
-.node-type-idea,
-.node-type-news {
+/*.node-type-blog,.node-type-news*/
+.node-type-idea {
   background: #fff; 
 }
 .node-idea.view-mode-full {
@@ -1801,21 +1800,37 @@ div.horizontal-tabs .form-text {
 }
 .node-news.view-mode-full {
   .field-name-post-date {
-    color: #ccc;
+    color: #666;
     font-size: 1.3em;
     line-height: 1.55em;
-    padding-bottom: 20px;      
+    padding-bottom: 10px;      
   }
   .field-name-body {
     color: #666666;
     font-size: 1.3em;
     line-height: 1.55em;
-    padding-bottom: 20px;    
+    padding-bottom: 50px;    
     
     p {
       margin: 0 0 20px;
     }
   }  
+  .field-name-field-url-source {
+    font-size: 1.3em;
+    line-height: 1.55em;
+    padding: 0 20px;
+    text-transform: uppercase;
+    position: relative;
+    top: -45px;
+    
+    .field-label {
+      font-weight: normal;
+      color: #FFA200;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
 }
 .node-blog.view-mode-full {
   
@@ -2593,7 +2608,7 @@ html.js input.form-autocomplete {
   }  
   td,
   th {
-    padding: .8em;
+    padding: 0.8em;
     text-align: left;
   }  
 }
@@ -4108,9 +4123,10 @@ div.fivestar-widget .star {
 }
  
 /**
- * node type blog
+ * node type blog, news
  */ 
-.node-type-blog {
+.node-type-blog,
+.node-type-news {
   .field-name-body {
     margin: 20px 0 0;
     padding: 20px;
