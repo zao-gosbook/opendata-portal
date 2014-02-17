@@ -83,7 +83,7 @@ function od_import_import_organization_opendata($org) {
 
   // Get organization opendata page url.
   if (!empty($org->field_opendata_page_url[LANGUAGE_NONE][0]['value'])) {
-    $vars['opendata_list_semantic_url'] = $org->field_opendata_page_url[LANGUAGE_NONE][0]['value'];
+    $vars['semantic_list_url'] = $org->field_opendata_page_url[LANGUAGE_NONE][0]['value'];
   }
 
   $od = new OdApi($vars);
