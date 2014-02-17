@@ -12,7 +12,7 @@ class OdApiList23 extends OdApiListDefault {
     $this::processArg($list_arg);
 
     // Define main page url.
-    $this->od_api->main_page_url = $list_arg;
+    $this->od_api->main_url = $list_arg;
 
     // Fix args.
     $this->args[OdApiObject::OBJECT_TYPE_IS_LIST] = $list_arg;
@@ -31,11 +31,11 @@ class OdApiList23 extends OdApiListDefault {
     $urls = array();
 
     // Define opendata page url.
-    $this->url = $this->od_api->main_page_url . 'opendata';
-    $this->od_api->opendata_page_url = $this->url;
+    $this->url = $this->od_api->main_url . 'opendata';
+    $this->od_api->list_url = $this->url;
 
     // Visual representation.
-    $urls['semantic'] = isset($this->od_api->vars['opendata_list_semantic_url']) ? ($this->od_api->main_page_url . $this->od_api->vars['opendata_list_semantic_url']) : $this->url;
+    $urls['semantic'] = isset($this->od_api->vars['semantic_list_url']) ? ($this->od_api->main_url . $this->od_api->vars['semantic_list_url']) : $this->url;
 
     // File url template.
     $file_url = $this->url . '/opendatalist.!extension';
@@ -51,11 +51,14 @@ class OdApiList23 extends OdApiListDefault {
 
   public function validateObject() {
     // Check main page url.
-    $site_main_page_exists = $this->checkUrl($this->od_api->main_page_url);
+    $site_main_page_exists = $this->checkUrl($this->od_api->main_url);
     $this->setValidator($this::SITE_MAIN_PAGE_EXISTS, $site_main_page_exists);
 
     // Check opendata page url.
     $site_opendata_page_exists = $this->checkUrl($this->url);
+    if (!$site_opendata_page_exists) {
+      $site_opendata_page_exists = $this->checkUrl($this->url . '/');
+    }
     $this->setValidator($this::SITE_OPENDATA_PAGE_EXISTS, $site_opendata_page_exists);
 
     return $this->checkErrorExists();

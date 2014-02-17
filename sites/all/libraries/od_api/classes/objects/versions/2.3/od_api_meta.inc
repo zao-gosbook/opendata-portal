@@ -36,7 +36,7 @@ class OdApiMeta23 extends OdApiMetaDefault {
     // Get meta arg.
     $meta_arg = $this->args[OdApiObject::OBJECT_TYPE_IS_META];
 
-    $this->url = $this->od_api->opendata_page_url . '/' . $meta_arg;
+    $this->url = $this->od_api->list_url . '/' . $meta_arg;
 
     // Visual representation.
     $urls['semantic'] = $this->url;
@@ -56,6 +56,9 @@ class OdApiMeta23 extends OdApiMetaDefault {
   public function validateObject() {
     // Check opendata meta page url.
     $site_opendata_meta_page_exists = $this->checkUrl($this->url);
+    if (!$site_opendata_meta_page_exists) {
+      $site_opendata_meta_page_exists = $this->checkUrl($this->url . '/');
+    }
     $this->setValidator($this::SITE_OPENDATA_META_PAGE_EXISTS, $site_opendata_meta_page_exists);
 
     return $this->checkErrorExists();
