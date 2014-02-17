@@ -49,7 +49,7 @@ function od_file_process_stream_wrappers_mod_get_external_url_alter(&$sandbox, S
   }
 
   $path = str_replace('\\', '/', $wrapper->getTarget());
-  return $GLOBALS['base_url'] . '/od_download/files/' . drupal_encode_path($path);
+  $sandbox['result'] = $GLOBALS['base_url'] . '/od_download/files/' . drupal_encode_path($path);
 }
 
 /**
