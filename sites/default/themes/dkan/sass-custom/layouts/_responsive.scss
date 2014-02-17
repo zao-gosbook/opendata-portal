@@ -753,7 +753,150 @@ $zen-auto-include-item-base: false;
       }
     }
   }   
+  /**
+   * map
+   */ 
+  .view-datasets-map {
+    
+    .views-exposed-widgets {
+      margin-bottom: 2.2em;
+    }
+    .views-widget-filter-field_organization_target_id {
+      label {
+        float: none;
+        width: auto;
+      }
+      .views-widget {
+        margin-left: 0;
+      }
+    }
+    .geolocation-address .form-type-textfield {
+      float: none;
+      
+      .form-text {
+        width: 100%;
+      }
+    }
+    .field-widget-geolocation-googlemap {
+      
+      label {
+        width: auto;
+        float: none;
+      }
+      .form-item-field-geolocation-distance-googlemap-address-field {
+        margin-left: 0;
+        float: none;
+      }
+    }
+    .geolocation-lat-item,
+    .geolocation-lng-item {
+      overflow: visible;
+      clear: left;
+      float: left;
+      width: 250px;
+      
+      label {
+        width: 91px;
+        float: left;
+        padding-top: 6px;
+      }
+      span {
+        float: left;
+        color: #0c87e8;
+        font-size: 2em;
+        font-weight: normal;
+        line-height: 1.5em;
+        padding-top: 0px;
+        text-transform: uppercase;
+        width: 107px;
+      }
+    }  
+    .geolocation-address {
+
+    }
+    .geolocation-help {
+      margin: 0 0 0 0; 
+      font-size: 12px;
+      
+      .geolocation-address-geocode, 
+      .geolocation-remove span {
+        background-color: #96BC44;
+        display: block;
+        font-size: 0.85em;
+        margin: 10px auto 0;
+        padding: 1.25em;
+        text-align: center;
+        text-transform: uppercase;
+        width: 160px;
+      }
+      .geolocation-client-location {
+        background-position: 8px 50%;
+        display: block;
+        font-size: 0.95em;
+        padding: 1.05em 0 1.05em 3.7em;
+        width: 146px;
+      }
+    }
+    .geolocation-remove span {
+      padding: 0.9em 1.0em;
+      font-size: 13px;
+    }
+    .chzn-container {
+      width: 100% !important;
+    }
+    .form-item-field-geolocation-distance-search-distance {
+      padding-bottom: 8px;
+      
+      label {
+        float: left;
+        padding-top: 6px;
+        padding-right: 10px;
+      }
+      .form-text {
+        width: 77px;
+      }
+    }
+    .geolocation-remove {
+      
+    }
+    .views-submit-button {
+      float: right;
+      padding: 0 5px 0 0;
+      
+      .form-submit {
+        margin: 0;
+      }
+    }
+    .view-based-map {
+      border: 3px solid #fff;
+    }
+  }
   
+  /**
+   * Organization
+   */
+  .view-organizations {
+    .view-filters {
+      label {
+        width: 40%;
+        padding-right: 0;
+      }
+      .views-widget  {
+        width: 60%;
+      }
+      .views-exposed-widget {
+        padding-right: 0;
+        width: 100%;
+      }
+      .form-submit {
+        float: right;
+      }
+    } 
+    td, th {
+      padding: .4em;
+      font-size: 13px;
+    }
+  }
 }
 
 /**
@@ -1333,4 +1476,21 @@ $zen-auto-include-item-base: false;
       width: 573px;
     }       
   } 
+}
+
+/**
+ * addaptive facts
+ */
+@media all and (max-width: 2400px) and (min-width: 1400px) {
+  .pane-rubrics-rubrics-front .views-row:nth-child(3n+1) {
+    clear: none;
+  }  
+  .pane-rubrics-rubrics-front .views-row:nth-child(5n+1) {
+    clear: both;
+  }
+  .pane-rubrics-rubrics-front .views-row {
+    float: left;
+    text-align: center;
+    width: 20%;
+  }
 }
