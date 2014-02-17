@@ -1,0 +1,55 @@
+<?php 
+/**
+ * @file
+ * adds a formatter for date fields
+ *
+ */
+
+/**
+ * Implements hook_field_formatter_info() 
+ */
+function od_dateformatter_field_formatter_info() {
+  return array(
+    'competition_date_formatter' => array(
+      'label' => t('Competition date'),
+      'field types' => array('date', 'datestamp', 'datetime'),
+    ),
+  ); 
+}
+
+
+/**
+ * Implements hook_field_formatter_view() 
+ */
+function od_dateformatter_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $settings = $display['settings'];
+  $formatter = $display['type'];
+  switch ($formatter) {
+    case 'competition_date_formatter':
+      $date = new DateTime();
+      $current_date = $date->getTimestamp();
+      foreach ($items as $delta => $item) {
+        $date_item = date_formatter_process('format_interval', $entity_type, $entity, $field, $instance, $langcode, $item, $display);
+        $date1_unix = strtotime($date_item['value']['formatted_iso']);
+        if (empty($item['value2']) || $item['value'] == $item['value2']) {
+          $date2_unix = $date1_unix + 7200;  // Если неустановлена дата окончания конкурса, то прибавляем 2 часа.
+        } else {
+          $date2_unix = strtotime($date_item['value2']['formatted_iso']);
+        }
+        if($date1_unix >= $current_date) {
+          $string = "<span class='not-started'>" . t('to start in ') . $date_item['value']['interval'] . "</span>";
+          $element[$delta] = array('#markup' => $string);
+        } elseif ($date1_unix < $current_date && $date2_unix >= $current_date) {
+          $string = "<span class='started'>" . t('The competition is held at the moment') . "</span>";
+          $element[$delta] = array('#markup' => $string);
+        } else {
+          $string = "<span class='finished'>" .  t('The competition was held') . "</span>";
+          $element[$delta] = array('#markup' => $string); 
+        }
+      }
+      break;
+  }
+
+  return $element;
+}

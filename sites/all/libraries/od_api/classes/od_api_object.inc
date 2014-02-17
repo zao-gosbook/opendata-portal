@@ -365,9 +365,9 @@ abstract class OdApiObject {
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_HEADER, 1);
-    curl_setopt($curl, CURLOPT_NOBODY, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_FRESH_CONNECT, 1);
+    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 
     $result = curl_exec($curl) && curl_getinfo($curl, CURLINFO_HTTP_CODE) < 400;
 
