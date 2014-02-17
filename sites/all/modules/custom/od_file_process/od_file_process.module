@@ -39,10 +39,17 @@ function od_file_process_file_download($uri) {
 }
 
 /**
- * Implements hook_stream_wrappers().
+ * Implements hook_stream_wrappers_mod_get_external_url_alter()
  */
-function od_file_process_stream_wrappers_alter(&$wrappers) {
-  $wrappers['public']['class'] = 'ODDownloadPublicStreamWrapper';
+function od_file_process_stream_wrappers_mod_get_external_url_alter(&$sandbox, StreamWrappersModInterface $wrapper) {
+  $pathinfo = pathinfo($wrapper->getUri());
+
+  if ($pathinfo['dirname'] != "public://temp_converting_service") {
+    return;
+  }
+
+  $path = str_replace('\\', '/', $wrapper->getTarget());
+  return $GLOBALS['base_url'] . '/od_download/files/' . drupal_encode_path($path);
 }
 
 /**
