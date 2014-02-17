@@ -12,7 +12,7 @@ interface StreamWrappersModInterface extends DrupalStreamWrapperInterface {
 }
 
 abstract class StreamWrapperModAbstract extends DrupalPublicStreamWrapper implements StreamWrappersModInterface {
-  protected static $context = array();
+  protected static $_context = array();
 
   public function getTarget($uri = NULL) {
     return parent::getTarget($uri);
@@ -43,11 +43,11 @@ abstract class StreamWrapperModAbstract extends DrupalPublicStreamWrapper implem
    * @param null $value
    * @param null $remove
    */
-  public static function &context($param = NULL, $value = NULL, $remove = NULL) {
-    $context_rw = &static::$context;
+  public static function &context($param = NULL, $value = NULL, $remove = FALSE) {
+    $context_rw = &static::$_context;
     $context = NULL;
     if ($remove) {
-      $context = static::$context;
+      $context = static::$_context;
       if ($param !== NULL && isset($context_rw[$param])) {
         unset($context_rw[$param]);
       }

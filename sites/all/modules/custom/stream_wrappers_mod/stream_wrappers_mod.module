@@ -10,3 +10,11 @@
 function stream_wrappers_mod_stream_wrappers_alter(&$wrappers) {
   $wrappers['public']['class'] = 'StreamWrappersMod_DrupalPublicStreamWrapper';
 }
+
+/**
+ *
+ */
+function &stream_wrappers_mod_context($param = NULL, $value = NULL, $remove = FALSE) {
+  $reference = &StreamWrappersMod_DrupalPublicStreamWrapper::context($param, $value, $remove);
+  return $reference;
+}
