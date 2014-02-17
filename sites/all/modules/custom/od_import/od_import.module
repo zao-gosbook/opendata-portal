@@ -48,25 +48,18 @@ function od_import_import_organization_opendata($org) {
 
   $od_library = libraries_load('od_api');
   if (!$od_library['loaded']) {
-    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
-
     $error = 'Внутренняя ошибка - библиотека "Opendata API" не установлена.';
-    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
-
-    drupal_set_message($message, 'warning');
-    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+    od_import_set_watchdog($org_name, $error);
     return FALSE;
   }
 
   // Get organization url.
   if (empty($org->field_site_url[LANGUAGE_NONE][0])) {
-    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
-
     $error = 'Ошибка организации - у организации отсутствует ссылка на сайт.';
-    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
-
-    drupal_set_message($message, 'warning');
-    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+    $vars = array(
+      'organization_id' => $org->nid,
+    );
+    od_import_set_watchdog($org_name, $error, $vars);
     return FALSE;
   }
 
@@ -128,11 +121,7 @@ function od_import_list($od, $list_args, $org_name) {
   }
 
   if (!empty($error)) {
-    $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
-    $message = format_string($message, array('%org_name' => $org_name, '%error' => $error));
-
-    drupal_set_message($message, 'warning');
-    watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+    od_import_set_watchdog($org_name, $error);
   }
 
   // Restore default time limit execution script.
@@ -296,4 +285,11 @@ MESSAGE;
     watchdog('od_import', $message, array(), WATCHDOG_INFO);
 
   return TRUE;
+}
+
+/**
+ * @param array $log_entry
+ */
+function od_import_watchdog(array $log_entry) {
+  $vars = $log_entry['variables'];
 }

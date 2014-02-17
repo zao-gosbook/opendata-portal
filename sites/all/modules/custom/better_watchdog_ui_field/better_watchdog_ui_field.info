@@ -1,0 +1,6 @@
+name = Better Watchdog UI Field
+description = Make fieldable watchdog entity.
+core = 7.x
+
+dependencies[] = better_watchdog_ui
+dependencies[] = better_watchdog_ui_entity

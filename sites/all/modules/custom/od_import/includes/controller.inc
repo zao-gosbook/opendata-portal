@@ -510,3 +510,21 @@ function od_import_detect_delimiter($data, $end_of_line = PHP_EOL, $enclosure = 
 
   return $delimiter;
 }
+
+function od_import_set_watchdog($error, stdClass $organization = NULL, stdClass $dataset = NULL) {
+  $message = 'Ошибка обработки реестра наборов открытых данных организации %org_name: %error.';
+  $message = format_string($message, array('%error' => $error));
+
+  $vars = array();
+
+  if (!empty($organization) && is_object($organization)) {
+    $vars['organization_id'] = $organization->nid;
+  }
+
+  if (!empty($dataset)) {
+    $vars[''];
+  }
+
+  drupal_set_message($message, 'warning');
+  watchdog('od_import', $message, array(), WATCHDOG_WARNING);
+}

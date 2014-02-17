@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function better_watchdog_ui_field_entity_info_alter(&$items) {
+  $items['better_watchdog_ui_watchdog']['fieldable'] = TRUE;
+  $items['better_watchdog_ui_watchdog']['bundles']['better_watchdog_ui_watchdog']['admin'] = array(
+    'path' => 'admin/reports/dblog/better-watchdog-ui-watchdog',
+    'real path' => 'admin/reports/dblog/better-watchdog-ui-watchdog',
+  );
+}
