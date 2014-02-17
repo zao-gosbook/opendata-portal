@@ -78,14 +78,14 @@ function od_passport_render($nid) {
         'about' => '#data',
         'class' => 'dataset-files',
       ),
-      'sub_divs' => array($structure['div_versions']),
+      'sub_divs' => isset($structure) ? array($structure['div_versions']) : NULL,
     ),
     'passport_structures' => array(
       '#type' => 'container',
       '#attributes' => array(
         'class' => 'structure-files',
       ),
-      'sub_divs' => array($structure['div_structures']),
+      'sub_divs' => isset($structure) ? array($structure['div_structures']) : NULL,
     ),
   );
   return $block;
@@ -403,16 +403,19 @@ function _passport_structured_description($nid) {
       } 
       isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = NULL;
     }
+    return _passport_markup_structured_description($url_datasets_revisions);
   }
-  return _passport_markup_structured_description($url_datasets_revisions);
+  return NULL;
 }
 
 function _passport_markup_structured_description($dataset_data) {
   $divs_versions = array();
+  $divs_structures = array();
   foreach ($dataset_data as $rev_id => $rev_value) {
     $date = $rev_value['date'];
     $date_iso = $rev_value['date_iso'];
-    $uri = $rev_value['uri'];
+    $uri = t('No info');
+    if (isset($rev_value['uri'])) $uri = $rev_value['uri'];
     $provenance = $rev_value['field_content_last_change'];
     $structure = $rev_value['structure'];
     $structure_url = $structure ? "<div rel='dc:conformsTo' resource='#structure-$date'></div>" : '';
