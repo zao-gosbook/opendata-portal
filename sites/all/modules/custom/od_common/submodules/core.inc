@@ -63,7 +63,6 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
   }
 
   $node_wrapper = entity_metadata_wrapper('node', $node);
-  $node_pi = $node_wrapper->getPropertyInfo();
   foreach ($pi as $property => $info) {
     if (!empty($info['field'])) {
       $node_property = $property;
@@ -74,7 +73,7 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
 
       //If we need to create the field in case if it doesn't exist
       $instance = NULL; //Set it to null just to be sure that we don't have an old value from previous cycle
-      if (!($instance = field_info_instance('node', $node_property, $node_type)) && $options['create_fields']) {
+      if ($field_is_mapped && !($instance = field_info_instance('node', $node_property, $node_type)) && $options['create_fields']) {
         $instance = field_info_instance('entityform', $node_property, $ef->type);
         $instance['entity_type'] = 'node';
         $instance['bundle'] = $node_type;
@@ -84,14 +83,47 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
 
       //And finally if field's instance exists and we have filled property
       if ((!isset($options['field_mappings']) || $field_is_mapped) && $instance && isset($ef->{$property})) {
-        $node->{$node_property} = $ef->{$property}; //we copy it
+        // @fixme: Very ugly warkaround, should be fixed.
+        $item = reset($ef->{$property});
+        foreach (array('en', 'ru', LANGUAGE_NONE) as $lancode) {
+          $node->{$property}[$lancode] = $item;
+        }
+
+        //$node->{$node_property} = $ef->{$property}; //we copy it
       }
     }
   }
 
   //And save node immediately if needed
   if ($save_node) {
-    entity_save('node', $node);
+    //$node->revision = 0;
+    try {
+      // @fixme:
+      if ($node->type == 'resource' && empty($node->field_organization)) {
+        $node->field_organization = array(
+          'ru' => array(
+            array(
+              'target_id' => 36,
+            ),
+          ),
+          'en' => array(
+            array(
+              'target_id' => 36,
+            ),
+          ),
+          'und' => array(
+            array(
+              'target_id' => 36,
+            ),
+          ),
+        );
+      }
+
+      entity_save('node', $node);
+    }
+    catch (Exception $e) {
+      watchdog_exception('od_common', $e);
+    }
   }
 
   return $node;

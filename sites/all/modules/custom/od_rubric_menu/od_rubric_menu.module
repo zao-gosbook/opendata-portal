@@ -23,7 +23,7 @@ function od_rubric_menu_block_view($delta = '') {
   if (arg(0) == 'taxonomy' && arg(1) == 'term' && ($tid = arg(2)) && is_numeric($tid) && ($term = taxonomy_term_load($tid))) {
     $tw = entity_metadata_wrapper('taxonomy_term', $term);
   }
-  elseif (arg(0) == 'node' && ($nid = arg(1)) && is_numeric($nid) && ($node = node_load($nid)) && $node->type == 'competition') {
+  elseif (arg(0) == 'node' && ($nid = arg(1)) && is_numeric($nid) && ($node = node_load($nid)) && $node->type == 'competition' && !empty($node->field_competition_rubric)) {
     $node_wrapper = entity_metadata_wrapper('node', $node);
     $term = $node_wrapper->field_competition_rubric->value();
     $tw = entity_metadata_wrapper('taxonomy_term', $term);

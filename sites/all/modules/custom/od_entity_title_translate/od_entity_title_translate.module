@@ -102,6 +102,15 @@ function od_entity_title_translate_get_current_language($entity, $type) {
 }
 
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function od_entity_title_translate_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'entityreference') {
+    return "plugins/{$module}/{$plugin}";
+  }
+}
+
+/**
  * Class od_entity_label_translate_factory
  */
 class od_entity_label_translate_factory {

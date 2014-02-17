@@ -78,14 +78,14 @@ function od_passport_render($nid) {
         'about' => '#data',
         'class' => 'dataset-files',
       ),
-      'sub_divs' => array($structure['div_versions']),
+      'sub_divs' => isset($structure) ? array($structure['div_versions']) : NULL,
     ),
     'passport_structures' => array(
       '#type' => 'container',
       '#attributes' => array(
         'class' => 'structure-files',
       ),
-      'sub_divs' => array($structure['div_structures']),
+      'sub_divs' => isset($structure) ? array($structure['div_structures']) : NULL,
     ),
   );
   return $block;
@@ -167,50 +167,52 @@ function _passport_table_rows($nid) {
   $url_datasets = array();
 
   // формируем массив ссылок из трех полей. По логике должно быть заполнено только одно из них.
-  if ($field_link_remote_file = $resource->field_link_remote_file->value()) {
-  $url_datasets[] = $field_link_remote_file['uri'];
-  }
-  
-  if ($field_link_api = $resource->field_link_api->value()) {  
-  $url_datasets[] = $field_link_api['uri'];
-  }
-  
-  if ($field_link_upload = $resource->field_upload) {
-    if (isset($field_link_upload->value()->uri)) {
-      $url_datasets[] = file_create_url($field_link_upload->value()->uri);
+  if ($resource->value()) {
+    if ($field_link_remote_file = $resource->field_link_remote_file->value()) {
+    $url_datasets[] = $field_link_remote_file['uri'];
     }
-  }
-  foreach ($url_datasets as $key => $url) {
-    $url_datasets[$key] = "<a href='$url'>$url</a>";
-  }
-  $data = array(
-    'data' => implode('<br />', $url_datasets)
+    
+    if ($field_link_api = $resource->field_link_api->value()) {  
+    $url_datasets[] = $field_link_api['uri'];
+    }
+    
+    if ($field_link_upload = $resource->field_upload) {
+      if (isset($field_link_upload->value()->uri)) {
+        $url_datasets[] = file_create_url($field_link_upload->value()->uri);
+      }
+    }
+    foreach ($url_datasets as $key => $url) {
+      $url_datasets[$key] = "<a href='$url'>$url</a>";
+    }
+    $data = array(
+      'data' => implode('<br />', $url_datasets)
+      );
+    $rows['dataset_urls'] = array(t('Dataset URL'), !empty($data['data']) ? $data : t('No info'));
+    
+    //Формат данных
+    $value = $resource->field_format->value()->name;
+    $data = array(
+      'data' => isset($value) ? $value : t('No info'),
+      'property' => 'dc:format',
+      'content' => isset($value) ? $value : t('No info'),
     );
-  $rows['dataset_urls'] = array(t('Dataset URL'), !empty($data['data']) ? $data : t('No info'));
-  
-  //Формат данных
-  $value = $resource->field_format->value()->name;
-  $data = array(
-    'data' => isset($value) ? $value : t('No info'),
-    'property' => 'dc:format',
-    'content' => isset($value) ? $value : t('No info'),
-  );
-  $rows['field_format'] = array(t('Dataset format'), $data);
+    $rows['field_format'] = array(t('Dataset format'), $data);
   
   
-  //Описание структуры набора данных
-  $url_datasets_structure = array();
-  
-  if ($field_link_structure_file = $resource->field_link_structure_file->value()) {  
-      $url_datasets_structure[] = $field_link_structure_file['uri'];
-    }
-  
-  if ($field_upload_structure = $resource->field_upload_structure) {
-    $field_upload_structure = $field_upload_structure->value();
-    if (isset($field_upload_structure['uri'])) {
-      $url_datasets_structure[] = file_create_url($field_upload_structure['uri']);
-    }
-  }  
+    //Описание структуры набора данных
+    $url_datasets_structure = array();
+    
+    if ($field_link_structure_file = $resource->field_link_structure_file->value()) {  
+        $url_datasets_structure[] = $field_link_structure_file['uri'];
+      }
+    
+    if ($field_upload_structure = $resource->field_upload_structure) {
+      $field_upload_structure = $field_upload_structure->value();
+      if (isset($field_upload_structure['uri'])) {
+        $url_datasets_structure[] = file_create_url($field_upload_structure['uri']);
+      }
+    } 
+  } 
   
   foreach ($url_datasets_structure as $key => $url) {
     $url_datasets_structure[$key] = "<a href='$url'>$url</a>";
@@ -255,11 +257,13 @@ function _passport_table_rows($nid) {
   $rows['field_frequency'] = array(t('Frequency of updating'), $data);
   
   //Содержание последнего изменения
-  $value = $node_wrapper->field_content_last_change->value();
-  $data = array(
-    'data' => isset($value) ? $value : t('No info'),
-  );
-  $rows['field_content_last_change'] = array(t('Content of the latter changes'), $data);
+  if ($resource->value()) {
+    $value = $resource->field_provenance->value();
+    $data = array(
+      'data' => isset($value) ? $value : t('No info'),
+    );
+    $rows['field_content_last_change'] = array(t('Content of the latter changes'), $data);
+  }
   
   //Ключевые слова
   $keywords = array();
@@ -278,63 +282,64 @@ function _passport_table_rows($nid) {
   
   //Гиперссылки (URL) на версии набора данных (Link file + Link API + Upload)
   //Гиперссылки (URL) на версии структуры набора данных (field_link_structure_file + field_upload_structure) 
-  $resource_revisions = node_revision_list($resource->value());
-  $url_datasets_revisions = array();
-  $url_datasets_structure_revisions = array();
-  foreach ($resource_revisions as $revision) {
-    $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
-    if($revision->vid <> $resource->vid->value()) {
-      if ($field_link_remote_file = $revision_object->field_link_remote_file->value()) {
-        $url_datasets_revisions[] = $field_link_remote_file['uri'];
-      }
-    
-      if ($field_link_api = $revision_object->field_link_api->value()) {  
-        $url_datasets_revisions[] = $field_link_api['uri'];
-      }
-    
-      if ($field_link_upload = $revision_object->field_upload) {
-        if (isset($field_link_upload->value()->uri)) {
-         $url_datasets_revisions[] = file_create_url($field_link_upload->value()->uri);
+  if ($resource->value()) {
+    $resource_revisions = node_revision_list($resource->value());
+    $url_datasets_revisions = array();
+    $url_datasets_structure_revisions = array();
+    foreach ($resource_revisions as $revision) {
+      $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
+      if($revision->vid <> $resource->vid->value()) {
+        if ($field_link_remote_file = $revision_object->field_link_remote_file->value()) {
+          $url_datasets_revisions[] = $field_link_remote_file['uri'];
         }
-      }
+      
+        if ($field_link_api = $revision_object->field_link_api->value()) {  
+          $url_datasets_revisions[] = $field_link_api['uri'];
+        }
+      
+        if ($field_link_upload = $revision_object->field_upload) {
+          if (isset($field_link_upload->value()->uri)) {
+           $url_datasets_revisions[] = file_create_url($field_link_upload->value()->uri);
+          }
+        }
 
-      if ($field_link_structure_file = $revision_object->field_link_structure_file->value()) {  
-        $url_datasets_structure_revisions[] = $field_link_structure_file['uri'];
-      }
-    
-      if ($field_upload_structure = $revision_object->field_upload_structure) {
-        $field_upload_structure = $field_upload_structure->value();
-        if (isset($field_upload_structure['uri'])) {
-         $url_datasets_structure_revisions[] = file_create_url($field_upload_structure['uri']);
+        if ($field_link_structure_file = $revision_object->field_link_structure_file->value()) {  
+          $url_datasets_structure_revisions[] = $field_link_structure_file['uri'];
         }
+      
+        if ($field_upload_structure = $revision_object->field_upload_structure) {
+          $field_upload_structure = $field_upload_structure->value();
+          if (isset($field_upload_structure['uri'])) {
+           $url_datasets_structure_revisions[] = file_create_url($field_upload_structure['uri']);
+          }
+        }  
       }  
-    }  
-  }
-  
-  $url_datasets_revisions= array_unique($url_datasets_revisions);
-  $url_datasets_structure_revisions = array_unique($url_datasets_structure_revisions);
-  //Гиперссылки (URL) на версии набора данных
-  foreach ($url_datasets_revisions as $key=>$url) {
-    $url_datasets_revisions[$key] = "<li><a href='$url'>$url</a></li>";
-  }
-  $url_datasets_string_revisions = implode('', $url_datasets_revisions);
-  $url_datasets_string_revisions_list = "<ul>$url_datasets_string_revisions</ul>";
-  $data = array(
-    'data' => !empty($url_datasets_string_revisions) ? $url_datasets_string_revisions_list : t('No info'),
-  );
-  $rows['dataset_urls_revisions'] = array(t('Hyperlink (URL) on the dataset versions'),  $data);
-  
-  //Гиперссылки (URL) на версии структуры набора данных	
-  foreach ($url_datasets_structure_revisions as $key=>$url) {
-    $url_datasets_structure_revisions[$key] = "<li><a href='$url'>$url</a></li>";
-  }  
-  $url_datasets_structure_string_revisions = implode('<br />', $url_datasets_structure_revisions);
-  $url_datasets_structure_string_revisions_list = "<ul>$url_datasets_structure_string_revisions</ul>";
-  $data = array(
-    'data' => !empty($url_datasets_structure_string_revisions) ? $url_datasets_structure_string_revisions_list : t('No info'),
-  );
-  $rows['dataset_urls_structure_revisions'] = array(t('Hyperlink (URL) on the dataset structure versions'), $data);
+    }
     
+    $url_datasets_revisions= array_unique($url_datasets_revisions);
+    $url_datasets_structure_revisions = array_unique($url_datasets_structure_revisions);
+    //Гиперссылки (URL) на версии набора данных
+    foreach ($url_datasets_revisions as $key=>$url) {
+      $url_datasets_revisions[$key] = "<li><a href='$url'>$url</a></li>";
+    }
+    $url_datasets_string_revisions = implode('', $url_datasets_revisions);
+    $url_datasets_string_revisions_list = "<ul>$url_datasets_string_revisions</ul>";
+    $data = array(
+      'data' => !empty($url_datasets_string_revisions) ? $url_datasets_string_revisions_list : t('No info'),
+    );
+    $rows['dataset_urls_revisions'] = array(t('Hyperlink (URL) on the dataset versions'),  $data);
+    
+    //Гиперссылки (URL) на версии структуры набора данных	
+    foreach ($url_datasets_structure_revisions as $key=>$url) {
+      $url_datasets_structure_revisions[$key] = "<li><a href='$url'>$url</a></li>";
+    }  
+    $url_datasets_structure_string_revisions = implode('<br />', $url_datasets_structure_revisions);
+    $url_datasets_structure_string_revisions_list = "<ul>$url_datasets_structure_string_revisions</ul>";
+    $data = array(
+      'data' => !empty($url_datasets_structure_string_revisions) ? $url_datasets_structure_string_revisions_list : t('No info'),
+    );
+    $rows['dataset_urls_structure_revisions'] = array(t('Hyperlink (URL) on the dataset structure versions'), $data);
+  }  
   return $rows;
 }
 
@@ -344,96 +349,106 @@ function _passport_structured_description($nid) {
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
   $resource_revisions = node_revision_list($resource->value());
+  $first_revision = end($resource_revisions); //Самая первая версия набора
   $url_datasets_revisions = array();
-  $url_datasets_structure_revisions = array();
-  foreach ($resource_revisions as $key => $revision) {
-    $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
-    $revision_date = date("Ymd\THi", $revision->timestamp);
-    $revision_date_iso = date("Y-m-d", $revision->timestamp);
-    //Информация о последнем изменении в паспорте
-    if ($node_wrapper->field_content_last_change->value()) {
-      $revision_provenence = $node_wrapper->field_content_last_change->value();
-    } else {
-      $revision_provenence = t('No info');
-    }
-    
-    if($revision->vid == $resource->vid->value()) {
-      $revision_date = date("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
-      $revision_date_iso = date("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
-      $revision_provenence = t('Date of first publication');
-    }
-    
-    //ссылки на файлы наборов
-    if ($field_link_remote_file = $revision_object->field_link_remote_file->value()) {
-      $url_datasets_revisions[$key]['uri'] = $field_link_remote_file['uri'];
-    }
-  
-    if ($field_link_api = $revision_object->field_link_api->value()) {  
-      $url_datasets_revisions[$key]['uri'] = $field_link_api['uri'];
-    }
-  
-    if ($field_link_upload = $revision_object->field_upload) {
-      if (isset($field_link_upload->value()->uri)) {
-        $url_datasets_revisions[$key]['uri'] = file_create_url($field_link_upload->value()->uri);
+  if ($resource->value()) {
+      foreach ($resource_revisions as $key => $revision) {
+      $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
+      $revision_date = date("Ymd\THi", $revision->timestamp);
+      //dpm($revision_date, 'revision date');
+      $revision_date_iso = date("Y-m-d", $revision->timestamp);
+      //Информация о последнем изменении в паспорте
+      if ($revision_object->field_provenance->value()) {
+        $revision_provenence = $revision_object->field_provenance->value();
+      } else {
+        $revision_provenence = t('No info');
       }
-    }
-    
-    //ссылки на структуру наборов
-    if ($field_link_structure_file = $revision_object->field_link_structure_file->value()) {  
-      $url_datasets_revisions[$key]['structure'] = $field_link_structure_file['uri'];
-    }
-  
-    if ($field_upload_structure = $revision_object->field_upload_structure) {
-      $field_upload_structure = $field_upload_structure->value();
-      if (isset($field_upload_structure['uri'])) {
-        $url_datasets_revisions[$key]['structure'] = file_create_url($field_upload_structure['uri']);
+      //если это первая версия набора, то записываем значения из полей паспорта
+      if ($first_revision->vid == $revision->vid) {
+        $revision_date = date("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
+        $revision_date_iso = date("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
+        $revision_provenence = t('Date of first publication');
       }
-    } 
-    isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = t('No info');
+       
+      $url_datasets_revisions[$key]['date'] = $revision_date; 
+      $url_datasets_revisions[$key]['date_iso'] = $revision_date_iso; 
+      $url_datasets_revisions[$key]['field_content_last_change'] = $revision_provenence;  
+      
+      
+      //ссылки на файлы наборов
+      if ($field_link_remote_file = $revision_object->field_link_remote_file->value()) {
+        $url_datasets_revisions[$key]['uri'] = $field_link_remote_file['uri'];
+      }
     
-    $url_datasets_revisions[$key]['date'] = $revision_date; 
-    $url_datasets_revisions[$key]['date_iso'] = $revision_date_iso; 
-    $url_datasets_revisions[$key]['field_content_last_change'] = $revision_provenence;  
+      if ($field_link_api = $revision_object->field_link_api->value()) {  
+        $url_datasets_revisions[$key]['uri'] = $field_link_api['uri'];
+      }
+    
+      if ($field_link_upload = $revision_object->field_upload) {
+        if (isset($field_link_upload->value()->uri)) {
+          $url_datasets_revisions[$key]['uri'] = file_create_url($field_link_upload->value()->uri);
+        }
+      }
+      
+      //ссылки на структуру наборов
+      if ($field_link_structure_file = $revision_object->field_link_structure_file->value()) {  
+        $url_datasets_revisions[$key]['structure'] = $field_link_structure_file['uri'];
+      }
+    
+      if ($field_upload_structure = $revision_object->field_upload_structure) {
+        $field_upload_structure = $field_upload_structure->value();
+        if (isset($field_upload_structure['uri'])) {
+          $url_datasets_revisions[$key]['structure'] = file_create_url($field_upload_structure['uri']);
+        }
+      } 
+      isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = NULL;
+    }
+    return _passport_markup_structured_description($url_datasets_revisions);
   }
-  return _passport_markup_structured_description($url_datasets_revisions);
+  return NULL;
 }
 
 function _passport_markup_structured_description($dataset_data) {
   $divs_versions = array();
+  $divs_structures = array();
   foreach ($dataset_data as $rev_id => $rev_value) {
     $date = $rev_value['date'];
     $date_iso = $rev_value['date_iso'];
-    $uri = $rev_value['uri'];
+    $uri = t('No info');
+    if (isset($rev_value['uri'])) $uri = $rev_value['uri'];
     $provenance = $rev_value['field_content_last_change'];
     $structure = $rev_value['structure'];
+    $structure_url = $structure ? "<div rel='dc:conformsTo' resource='#structure-$date'></div>" : '';
     //Структура наборов
-    $divs_versions[] = array('div' => array(
+    $divs_versions[$rev_id] = array('div' => array(
       '#type' => 'markup',
       '#markup' => "<div rel='dc:hasPart' resource='#data-$date'>
                       <div typeof='foaf:Document' about='#data-$date'>
                         <div property='dc:source' content='$uri'></div>
                         <div property='dc:created' content='$date_iso'></div>
                         <div property='dc:provenance' content='$provenance'></div>
-                        <div rel='dc:conformsTo' resource='#structure-$date'></div>
+                        $structure_url
                       </div>
                   </div>",
       ),            
     );
     //Структура файлов структуры 
-    $divs_structures[] = array('div' => array(
-    '#type' => 'markup',
-    '#markup' => "<div typeof='foaf:Document' about='#structure-$date'>
-                    <div property='dc:source' content='$structure'></div>
-                    <div property='dc:created' content='$date_iso'></div>
-                 </div>",
-     ),
-   );
+    if ($structure) {
+      $divs_structures[$rev_id] = array('div' => array(
+      '#type' => 'markup',
+      '#markup' => "<div typeof='foaf:Document' about='#structure-$date'>
+                      <div property='dc:source' content='$structure'></div>
+                      <div property='dc:created' content='$date_iso'></div>
+                   </div>",
+       ),
+     );
+    } 
   }
  $divs = array ('div_versions' => $divs_versions, 'div_structures' => $divs_structures);
  return $divs;
 }
 
-//определяем префикс url
+//определяем префикс языка
 function _current_prefix() {
   global $language;
   return $language->language;
