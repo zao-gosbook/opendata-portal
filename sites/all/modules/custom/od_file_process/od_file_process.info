@@ -2,5 +2,4 @@ name = Opendata file process
 description = Process file, uploaded by opendata wizard
 core = 7.x
 dependencies[] = od_file_preprocess
-
-files[] = include/stream_wrappers/ODDownloadPublicStreamWrapper.inc
+dependencies[] = stream_wrappers_mod

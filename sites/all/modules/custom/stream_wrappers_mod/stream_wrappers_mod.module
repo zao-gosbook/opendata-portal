@@ -1,0 +1,12 @@
+<?php
+// $id:
+
+/**
+ * @file
+ */
+/**
+ * Implements hook_stream_wrappers().
+ */
+function stream_wrappers_mod_stream_wrappers_alter(&$wrappers) {
+  $wrappers['public']['class'] = 'StreamWrappersMod_DrupalPublicStreamWrapper';
+}
