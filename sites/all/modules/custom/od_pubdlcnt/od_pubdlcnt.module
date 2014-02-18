@@ -84,3 +84,15 @@ function od_pubdlcnt_file_load_by_uri($uri) {
 function od_pubdlcnt_fid_by_uri($uri) {
   return db_query('SELECT fid FROM {file_managed} WHERE uri=:uri', array('uri' => $uri))->fetchField();
 }
+
+/**
+ * Gets count of file downloads.
+ * @param $fid_or_file
+ * @return integer
+ */
+function od_pubdlcnt_download_count($fid_or_file) {
+  $fid = is_numeric($fid_or_file) ? $fid_or_file : $fid_or_file->fid;
+  $count = db_query('SELECT `count` FROM {od_pubdlcnt} WHERE :fid', array(':fid' => $fid))->fetchField();
+
+  return $count ? $count : 0;
+}

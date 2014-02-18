@@ -225,10 +225,6 @@ function od_common_menu() {
   return $items;
 }
 
-function sparql_page_callback() {
-  $arc = new ARC2_StoreEndpoint();
-}
-
 function od_common_actualize_access_callback($node) {
   if (!(is_object($node) && isset($node->type) && $node->type == 'dataset')) {
     return FALSE;
@@ -243,11 +239,13 @@ function od_common_actualize_access_callback($node) {
 function od_common_field_formatter_info() {
   $info = array();
 
-  $info['od_common_file_dlcnt'] = array(
-    'label' => t('Download counts of a file'),
-    'field types' => array('file', 'recline_field'),
-    'settings' => array(),
-  );
+  if (module_exists('od_pubdlcnt')) {
+    $info['od_common_file_dlcnt'] = array(
+      'label' => t('Download counts of a file'),
+      'field types' => array('file', 'recline_field'),
+      'settings' => array(),
+    );
+  }
 
   return $info;
 }
@@ -268,23 +266,13 @@ function od_common_field_widget_form_alter(&$element, &$form_state, $context) {
 
 }
 
-function od_common_file_widget_clean_filename(stdClass $file) {
-  $a = 1;
-
-  if (isset($file->fid)) {
-    $file->filename = preg_replace('/\?.*$/i', '', $file->filename);
-  }
-
-  return array();
-}
-
 function od_common_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
   switch ($display['type']) {
     case 'od_common_file_dlcnt':
       foreach ($items as $delta => $item) {
-        //$count = (integer) od_common_pubdlcnt_count((object)$item);
-        $count = mt_rand(1, time() % 3682 + 1);
+        $count = (integer) od_pubdlcnt_download_count((object) $item);
+        //$count = mt_rand(1, time() % 3682 + 1);
         $build = array(
           '#prefix' => '<div class="od-common-pubdlcnt-count-wrapper">',
           '#suffix' => '</div>',
