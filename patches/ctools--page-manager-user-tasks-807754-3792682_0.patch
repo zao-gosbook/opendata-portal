@@ -1,0 +1,507 @@
+diff --git a/page_manager/plugins/tasks/user_login.inc b/page_manager/plugins/tasks/user_login.inc
+new file mode 100644
+index 0000000..b7060fe
+--- /dev/null
++++ b/page_manager/plugins/tasks/user_login.inc
+@@ -0,0 +1,86 @@
++<?php
++
++/*
++ * @file
++ * 
++ * Plugin to allow page manager to take over the user login page.
++ *
++ */
++
++function page_manager_user_login_page_manager_tasks() {
++  return array(
++    'task type' => 'page',
++    'title' => t('User Login Page'),
++    'admin title' => t('User Login Page'),
++    'admin description' => t('When enabled, this overrides the default Drupal behavior for the user login page at <em>/user/login</em>.'),
++    'admin path' => 'user/login',
++    // Menu hooks so that we can alter the user/login menu entry to point to us.
++    'hook menu alter' => 'page_manager_user_user_login_menu_alter',
++    'handler type' => 'context',
++    // Allow this to be enabled or disabled:
++    'disabled' => variable_get('page_manager_user_user_login_disabled', TRUE),
++    'enable callback' => 'page_manager_user_user_login_enable',
++  );
++}
++
++function page_manager_user_user_login_menu_alter(&$items, $task) {
++  if (variable_get('page_manager_user_user_login_disabled', TRUE)) {
++    return;
++  }
++
++  //Since user/login is by default a local task, we need to do a little probing to find the callback.
++  $is_default = ($items['user/login']['type'] == MENU_DEFAULT_LOCAL_TASK &&  $items['user/login']['access callback'] == 'user_is_anonymous');
++  
++  // Override the menu item to point to our own function.
++  if ($is_default || variable_get('page_manager_override_anyway', FALSE)) {
++    $items['user/login']['page callback'] = 'page_manager_user_user_login';
++    $items['user/login']['file path'] = $task['path'];
++    $items['user/login']['file'] = $task['file'];
++  }
++  else {
++    variable_set('page_manager_user_user_login_disabled', TRUE);
++    if (!empty($GLOBALS['page_manager_user_enabling_user_login'])) {
++      drupal_set_message(t('Page manager module is unable to enable this page because some other module already has overridden with %callback.', array('%callback' => $callback)), 'warning');
++    }
++    return;
++  }
++}
++
++function page_manager_user_user_login() {
++  // Load my task plugin
++  $task = page_manager_get_task('user_login');
++
++  ctools_include('context');
++  ctools_include('context-task-handler');
++  $output = ctools_context_handler_render($task, '', array(), array());
++  
++  if ($output !== FALSE) {
++    return $output;
++  }
++
++  
++  module_load_include('inc', 'user', 'user.pages');
++  $function = 'user_page';
++  foreach (module_implements('page_manager_override') as $module) {
++    $call = $module . '_page_manager_override';
++    if (($rc = $call('user_login')) && function_exists($rc)) {
++      $function = $rc;
++      break;
++    }
++  }
++
++  // Otherwise, fall back.
++  return $function();
++}
++
++/**
++ * Callback to enable/disable the page from the UI.
++ */
++function page_manager_user_user_login_enable($cache, $status) {
++  variable_set('page_manager_user_user_login_disabled', $status);
++  // Set a global flag so that the menu routine knows it needs
++  // to set a message if enabling cannot be done.
++  if (!$status) {
++    $GLOBALS['page_manager_user_enabling_user_login'] = TRUE;
++  }
++}
+diff --git a/page_manager/plugins/tasks/user_password.inc b/page_manager/plugins/tasks/user_password.inc
+new file mode 100644
+index 0000000..8ea93bc
+--- /dev/null
++++ b/page_manager/plugins/tasks/user_password.inc
+@@ -0,0 +1,99 @@
++<?php
++
++/*
++ * @file
++ * 
++ * Plugin to allow page manager to take over the user login page.
++ *
++ */
++function page_manager_user_password_page_manager_tasks() {
++  return array(
++    // This is a 'page' task and will fall under the page admin UI
++    'task type' => 'page',
++    'title' => t('User Password Page'),
++    'admin title' => t('User Password Page'),
++    'admin description' => t('When enabled, this overrides the default Drupal behavior for the user password page at <em>/user</em>.'),
++    'admin path' => 'user/password',
++    // Menu hooks so that we can alter the node/%node menu entry to point to us.
++    'hook menu alter' => 'page_manager_user_user_password_menu_alter',
++    // This is task uses 'context' handlers and must implement these to give the
++    // handler data it needs.
++    'handler type' => 'context',
++    // Allow this to be enabled or disabled:
++    'disabled' => variable_get('page_manager_user_user_password_disabled', TRUE),
++    'enable callback' => 'page_manager_user_user_password_enable',
++  );
++}
++
++function page_manager_user_user_password_menu_alter(&$items, $task) {
++  if (variable_get('page_manager_user_user_password_disabled', TRUE)) {
++    return;
++  }
++  
++  //Since user/password is by default a local task, we need to do a little probing to find the callback.
++  $is_default = ($items['user/password']['page callback'] == 'drupal_get_form' &&  $items['user/password']['page arguments'] == array('user_pass'));
++  
++  // Override the menu item to point to our own function.
++  if ($is_default || variable_get('page_manager_override_anyway', FALSE)) {
++    $items['user/password']['page callback'] = 'page_manager_user_user_password';
++    unset($items['user/password']['page arguments']);
++    $items['user/password']['file path'] = $task['path'];
++    $items['user/password']['file'] = $task['file'];
++  }
++  else {
++    variable_set('page_manager_user_user_password_disabled', TRUE);
++    if (!empty($GLOBALS['page_manager_user_enabling_user_password'])) {
++      drupal_set_message(t('Page manager module is unable to enable this page because some other module already has overridden with %callback.', array('%callback' => $callback)), 'warning');
++    }
++    return;
++  }
++
++}
++
++function page_manager_user_user_password() {
++   // If we aren't admin but already logged on, go to the user page instead.
++  global $user;
++  $admin = user_access('administer users');
++  if (!$admin && $user->uid) {
++    drupal_goto('user/'. $user->uid);
++  }
++  // Load my task plugin
++  $task = page_manager_get_task('user_password');
++
++  ctools_include('context');
++  ctools_include('context-task-handler');
++  $output = ctools_context_handler_render($task, '', array(), array());
++
++  if ($output !== FALSE) {
++    return $output;
++  }
++
++  module_load_include('inc', 'user', 'user.pages'); 
++  $function = NULL;
++  foreach (module_implements('page_manager_override') as $module) {
++    $call = $module . '_page_manager_override';
++    if (($rc = $call('user_password')) && function_exists($rc)) {
++      $function = $rc;
++      break;
++    }
++  }
++  
++  if($function) {
++    return $function();
++  }
++
++  // Otherwise, fall back.
++  return drupal_get_form('user_pass');
++}
++
++/**
++ * Callback to enable/disable the page from the UI.
++ */
++function page_manager_user_user_password_enable($cache, $status) {
++  variable_set('page_manager_user_user_password_disabled', $status);
++  // Set a global flag so that the menu routine knows it needs
++  // to set a message if enabling cannot be done.
++  if (!$status) {
++    $GLOBALS['page_manager_user_enabling_user_password'] = TRUE;
++  }
++}
+diff --git a/page_manager/plugins/tasks/user_register.inc b/page_manager/plugins/tasks/user_register.inc
+new file mode 100644
+index 0000000..d1c83ca
+--- /dev/null
++++ b/page_manager/plugins/tasks/user_register.inc
+@@ -0,0 +1,96 @@
++<?php
++
++/*
++ * @file
++ * 
++ * Plugin to allow page manager to take over the user register page.
++ *
++ */
++
++function page_manager_user_register_page_manager_tasks() {
++  return array(
++    'task type' => 'page',
++    'title' => t('User Register Page'),
++    'admin title' => t('User Register Page'),
++    'admin description' => t('When enabled, this overrides the default Drupal behavior for the user login page at <em>/user/register</em>.'),
++    'admin path' => 'user/register',
++    // Menu hooks so that we can alter the user/register menu entry to point to us.
++    'hook menu alter' => 'page_manager_user_user_register_menu_alter',
++    'handler type' => 'context',
++    // Allow this to be enabled or disabled:
++    'disabled' => variable_get('page_manager_user_user_register_disabled', TRUE),
++    'enable callback' => 'page_manager_user_user_register_enable',
++  );
++}
++
++function page_manager_user_user_register_menu_alter(&$items, $task) {
++  if (variable_get('page_manager_user_user_register_disabled', TRUE)) {
++    return;
++  }
++  
++  //Since user/register is by default a local task, we need to do a little probing to find the callback.
++  $is_default = ($items['user/register']['page callback'] == 'drupal_get_form' &&  $items['user/register']['page arguments'] == array('user_register_form'));
++  // Override the menu item to point to our own function.
++  if ($is_default || variable_get('page_manager_override_anyway', FALSE)) {
++    $items['user/register']['page callback'] = 'page_manager_user_user_register';
++    unset($items['user/register']['page arguments']);
++    $items['user/register']['file path'] = $task['path'];
++    $items['user/register']['file'] = $task['file'];
++  }
++  else {
++    variable_set('page_manager_user_user_register_disabled', TRUE);
++    if (!empty($GLOBALS['page_manager_user_enabling_user_register'])) {
++      drupal_set_message(t('Page manager module is unable to enable this page because some other module already has overridden with %callback.', array('%callback' => $callback)), 'warning');
++    }
++    return;
++  }
++}
++
++
++function page_manager_user_user_register() {
++  // If we aren't admin but already logged on, go to the user page instead.
++  global $user;
++  $admin = user_access('administer users');
++  if (!$admin && $user->uid) {
++    drupal_goto('user/'. $user->uid);
++  }
++  // Load my task plugin
++  $task = page_manager_get_task('user_register');
++
++  ctools_include('context');
++  ctools_include('context-task-handler');
++  $output = ctools_context_handler_render($task, '', array(), array());
++
++  if ($output !== FALSE) {
++    return $output;
++  }
++
++  module_load_include('inc', 'user', 'user.pages'); 
++  $function = NULL;
++  foreach (module_implements('page_manager_override') as $module) {
++    $call = $module . '_page_manager_override';
++    if (($rc = $call('user_register')) && function_exists($rc)) {
++      $function = $rc;
++      break;
++    }
++  }
++  
++  if($function) {
++    return $function();
++  }
++
++  // Otherwise, fall back.
++  return drupal_get_form('user_register_form');
++}
++
++/**
++ * Callback to enable/disable the page from the UI.
++ */
++function page_manager_user_user_register_enable($cache, $status) {
++  variable_set('page_manager_user_user_register_disabled', $status);
++  // Set a global flag so that the menu routine knows it needs
++  // to set a message if enabling cannot be done.
++  if (!$status) {
++    $GLOBALS['page_manager_user_enabling_user_register'] = TRUE;
++  }
++}
+\ No newline at end of file
+diff --git a/page_manager/plugins/tasks/users.inc b/page_manager/plugins/tasks/users.inc
+new file mode 100644
+index 0000000..fc03999
+--- /dev/null
++++ b/page_manager/plugins/tasks/users.inc
+@@ -0,0 +1,87 @@
++<?php
++
++/*
++ * @file
++ * 
++ * Plugin to allow page manager to take over the user login page.
++ *
++ */
++function page_manager_users_page_manager_tasks() {
++  return array(
++    // This is a 'page' task and will fall under the page admin UI
++    'task type' => 'page',
++    'title' => t('User Page'),
++    'admin title' => t('User Page'),
++    'admin description' => t('When enabled, this overrides the default Drupal behavior for the user page at <em>/user</em>.'),
++    'admin path' => 'user',
++    // Menu hooks so that we can alter the node/%node menu entry to point to us.
++    'hook menu alter' => 'page_manager_user_users_menu_alter',
++    // This is task uses 'context' handlers and must implement these to give the
++    // handler data it needs.
++    'handler type' => 'context',
++    // Allow this to be enabled or disabled:
++    'disabled' => variable_get('page_manager_user_users_disabled', TRUE),
++    'enable callback' => 'page_manager_user_users_enable',
++  );
++}
++
++function page_manager_user_users_menu_alter(&$items, $task) {
++  if (variable_get('page_manager_user_users_disabled', TRUE)) {
++    return;
++  }
++  
++  //Since user is by default a menu item, we need to do a little probing to find the callback.
++  $is_default = ($items['user']['page callback'] == 'user_page' &&  $items['user']['menu_name'] == 'user-menu');
++  
++  // Override the menu item to point to our own function.
++  if ($is_default || variable_get('page_manager_override_anyway', FALSE)) {
++    $items['user']['page callback'] = 'page_manager_user_users';
++    $items['user']['file path'] = $task['path'];
++    $items['user']['file'] = $task['file'];
++  }
++  else {
++    variable_set('page_manager_user_users_disabled', TRUE);
++    if (!empty($GLOBALS['page_manager_user_enabling_users'])) {
++      drupal_set_message(t('Page manager module is unable to enable this page because some other module already has overridden with %callback.', array('%callback' => $callback)), 'warning');
++    }
++    return;
++  }
++
++}
++
++function page_manager_user_users() {
++  // Load my task plugin
++  $task = page_manager_get_task('user_login');
++
++  ctools_include('context');
++  ctools_include('context-task-handler');
++  $output = ctools_context_handler_render($task, '', array(), array());
++  if ($output !== FALSE) {
++     return $output;
++  }
++
++  module_load_include('inc', 'user', 'user.pages');
++  $function = 'user_page';
++  foreach (module_implements('page_manager_override') as $module) {
++    $call = $module . '_page_manager_override';
++    if (($rc = $call('user_login')) && function_exists($rc)) {
++      $function = $rc;
++      break;
++    }
++  }
++
++  // Otherwise, fall back.
++  return $function();
++}
++
++/**
++ * Callback to enable/disable the page from the UI.
++ */
++function page_manager_user_users_enable($cache, $status) {
++  variable_set('page_manager_user_users_disabled', $status);
++  // Set a global flag so that the menu routine knows it needs
++  // to set a message if enabling cannot be done.
++  if (!$status) {
++    $GLOBALS['page_manager_user_enabling_users'] = TRUE;
++  }
++}
+diff --git a/plugins/content_types/user/user_login_form.inc b/plugins/content_types/user/user_login_form.inc
+new file mode 100755
+index 0000000..aabfba8
+--- /dev/null
++++ b/plugins/content_types/user/user_login_form.inc
+@@ -0,0 +1,32 @@
++<?php
++
++/**
++ * @file
++ * Plugin to handle the login form content type.
++ */
++
++$plugin = array(
++  'single' => TRUE,
++  'title' => t('User Login Form'),
++  'icon' => 'icon_user.png',
++  'description' => t('The user login form.'),
++  'render callback' => 'ctools_user_login_form_content_type_render',
++  'category' => t('Forms'),
++);
++
++/**
++ * Outputs the login form.
++ */
++function ctools_user_login_form_content_type_render($subtype, $conf, $panel_args) {
++  module_load_include('inc', 'user', 'user.pages');
++  
++  $block = new stdClass();
++  $block->content = t('User Login');
++  $block->content = drupal_get_form('user_login');
++  return $block;
++}
++
++function ctools_user_login_form_content_type_edit_form($form, &$form_state) {
++  // provide a blank form so we have a place to have context setting.
++  return $form;
++}
+diff --git a/plugins/content_types/user/user_password_form.inc b/plugins/content_types/user/user_password_form.inc
+new file mode 100755
+index 0000000..687b6fb
+--- /dev/null
++++ b/plugins/content_types/user/user_password_form.inc
+@@ -0,0 +1,32 @@
++<?php
++
++/**
++ * @file
++ * Plugin to handle the user password form content type.
++ */
++
++$plugin = array(
++  'single' => TRUE,
++  'title' => t('User Password Form'),
++  'icon' => 'icon_user.png',
++  'description' => t('The user password recovery form.'),
++  'render callback' => 'ctools_user_password_form_content_type_render',
++  'category' => t('Forms'),
++);
++
++/**
++ * Outputs the user password form.
++ */
++function ctools_user_password_form_content_type_render($subtype, $conf, $panel_args) {
++  module_load_include('inc', 'user', 'user.pages');
++  
++  $block = new stdClass();
++  $block->content = t('User Password');
++  $block->content = drupal_get_form('user_pass');
++  return $block;
++}
++
++function ctools_user_password_form_content_type_edit_form($form, &$form_state) {
++  // provide a blank form so we have a place to have context setting.
++  return $form;
++}
+diff --git a/plugins/content_types/user/user_register_form.inc b/plugins/content_types/user/user_register_form.inc
+new file mode 100755
+index 0000000..93d496f
+--- /dev/null
++++ b/plugins/content_types/user/user_register_form.inc
+@@ -0,0 +1,32 @@
++<?php
++
++/**
++ * @file
++ * Plugin to handle the user registration form.
++ */
++
++$plugin = array(
++  'single' => TRUE,
++  'title' => t('User Register Form'),
++  'icon' => 'icon_user.png',
++  'description' => t('The new user registration form.'),
++  'render callback' => 'ctools_user_register_form_content_type_render',
++  'category' => t('Forms'),
++);
++
++/**
++ * Outputs the user registration form.
++ */
++function ctools_user_register_form_content_type_render($subtype, $conf, $panel_args) {
++  module_load_include('inc', 'user', 'user.pages');
++  
++  $block = new stdClass();
++  $block->content = t('User Register');
++  $block->content = drupal_get_form('user_register_form');
++  return $block;
++}
++
++function ctools_user_register_form_content_type_edit_form($form, &$form_state) {
++  // provide a blank form so we have a place to have context setting.
++  return $form;
++}
