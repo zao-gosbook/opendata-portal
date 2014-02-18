@@ -27,24 +27,20 @@
  *         and includes necessary drupal files
  */
 
-$current_dir = getcwd();
+
 
 if (isset($_GET['fid'])) {
+  require_once dirname(__FILE__). '/include/controller.inc';
+  $controller = new ODPubdlCntController(intval($_GET['fid']));
+  if (!$controller->isValid()) {
+    $controller->badUrl();
+  }
 
+  $controller->handleRedirect();
+  $controller->updateDownloadCounts();
 }
 
-if (isset($_GET['goto'])) {
-  header('Location: '. $_GET['goto']);
-  exit;
-}
-
-// 503 otherwise
-header("HTTP/1.0 503 Forbidden");
-header("HTTP/1.1 503 Forbidden");
-header("Status: 503 Forbidden");
-
-exit;
-
+$controller->badUrl();
 // we need to change the current directory to the (drupal-root) directory
 // in order to include some necessary files.
 if (file_exists('../../../../includes/bootstrap.inc')) {

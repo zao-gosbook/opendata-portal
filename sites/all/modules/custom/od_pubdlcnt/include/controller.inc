@@ -159,4 +159,25 @@ class ODPubdlCntController {
 
     return \DrupalHelpersNS\DrupalHelpers::findDrupalRoot();
   }
+
+  function badUrl() {
+    header("HTTP/1.0 503 Forbidden");
+    header("HTTP/1.1 503 Forbidden");
+    header("Status: 503 Forbidden");
+
+    exit;
+  }
+
+  function isValid() {
+    return TRUE; //@fixme: Implement this
+  }
+
+  function handleRedirect() {
+    if (isset($_GET['goto'])) {
+      header('Location: '. $_GET['goto']);
+    }
+    else {
+      $this->badUrl();
+    }
+  }
 }
