@@ -346,3 +346,14 @@ function od_common_page_delivery_callback_alter(&$callback) {
     _od_common_page_delivery_callback_alter($callback);
   }
 }
+
+/**
+ * Implements hook_init()
+ * redirects anonymous user from /user to /user/login
+ **/
+
+function od_common_init() {
+  if (user_is_anonymous() && !drupal_match_path($_GET['q'], 'user/login') && drupal_match_path($_GET['q'], 'user')) {
+    drupal_goto('user/login');
+  }
+}
