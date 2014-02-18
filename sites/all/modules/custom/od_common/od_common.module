@@ -111,8 +111,20 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       od_common_module('map_views_alter');
       _od_common_map_views_form_views_exposed_form_alter($form, $form_state);
       break;
+    case 'user_register_form':
+      od_common_module('od_user_register_alter');
+      _od_common_form_user_register_form_alter($form, $form_state);
+      break;
+    case 'user_login':
+      od_common_module('od_user_login_alter');
+      _od_common_form_user_login_alter($form, $form_state);
+      break;
+    case 'user_pass':
+      od_common_module('od_user_reset_pass_alter');
+      _od_common_form_user_pass_alter($form, $form_state);
+      break;
   }
-
+  
   //Translate submit button
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
     $form['actions']['submit']['#value'] = t($form['actions']['submit']['#value']);
