@@ -9,121 +9,115 @@
  * Implements hook_schema().
  */
 function od_pubdlcnt_schema() {
+  $schema = array();
+
+  $schema['od_pubdlcnt_url'] = array(
+    'description' => 'TODO: пожалуйста, опишите эту таблицу!',
+    'fields' => array(
+      'url_key' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '16',
+        'not null' => TRUE,
+      ),
+      'scheme' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '16',
+        'not null' => FALSE,
+      ),
+      'port' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '8',
+        'not null' => FALSE,
+      ),
+      'host' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '32',
+        'not null' => FALSE,
+      ),
+      'path' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'query' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'fragment' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('url_key'),
+  );
+
   $schema['od_pubdlcnt'] = array(
+    'description' => 'TODO: пожалуйста, опишите эту таблицу!',
     'fields' => array(
       'fid' => array(
         'description' => 'file ID (unique number)',
-        'type' => 'serial', // start from 1
+        'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => TRUE
+        'not null' => TRUE,
       ),
       'nid' => array(
         'description' => 'node ID of which the file exists',
         'type' => 'int',
-        'unsigned' => FALSE,
-        'not null' => TRUE
-      ),
-      'name' => array(
-        'description' => 'file name',
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => TRUE,
-        'default' => ''
-      ),
-      'url' => array(
-        'description' => 'URL of the file',
-        'type' => 'varchar',
-        'length' => 255,
-        'not null' => TRUE,
-        'default' => ''
+        'not null' => FALSE,
       ),
       'utime' => array(
         'description' => 'dowload date in unix timestamp',
         'type' => 'int',
-        'not null' => TRUE
+        'not null' => TRUE,
       ),
       'count' => array(
         'description' => 'total download count',
         'type' => 'int',
-        'unsigned' => FALSE,
         'not null' => TRUE,
-        'default' => 0
+        'default' => 0,
       ),
     ),
     'primary key' => array('fid'),
   );
 
   $schema['od_pubdlcnt_history'] = array(
+    'description' => 'TODO: пожалуйста, опишите эту таблицу!',
     'fields' => array(
       'id' => array(
         'description' => 'record ID (unique number)',
-        'type' => 'serial', // start from 1
-        'unsigned' => FALSE,
-        'not null' => TRUE
+        'type' => 'serial',
+        'not null' => TRUE,
       ),
       'fid' => array(
         'description' => 'file ID',
         'type' => 'int',
         'unsigned' => TRUE,
-        'not null' => TRUE
+        'not null' => TRUE,
+      ),
+      'url_key' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '16',
+        'not null' => FALSE,
       ),
       'utime' => array(
         'description' => 'dowload date in unix timestamp',
         'type' => 'int',
-        'not null' => TRUE
-      ),
-      'count' => array(
-        'description' => 'total download count',
-        'type' => 'int',
-        'unsigned' => FALSE,
         'not null' => TRUE,
-        'default' => 0
       ),
     ),
     'primary key' => array('id'),
   );
 
-  $schema['od_pubdlcnt_ip'] = array(
-    'fields' => array(
-      'id' => array(
-        'description' => 'record ID (unique number)',
-        'type' => 'serial', // start from 1
-        'unsigned' => FALSE,
-        'not null' => TRUE
-      ),
-      'fid' => array(
-        'description' => 'file ID',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => TRUE
-      ),
-      'ip' => array(
-        'description' => 'remote host IP address',
-        'type' => 'varchar',
-        'length' => 20,
-        'not null' => FALSE,
-        'default' => ''
-      ),
-      'utime' => array(
-        'description' => 'download date in Unix timestamp',
-        'type' => 'int',
-        'unsigned' => FALSE,
-        'not null' => TRUE,
-        'default' => 0
-      ),
-    ),
-	'primary key' => array('id'),
-  );
-
   return $schema;
-}
-
-/**
- * Implements hook_uninstall().
- */
-function pubdlcnt_uninstall() {
-  // Remove tables.
-  db_query("DELETE FROM {variable} WHERE name LIKE 'pubdlcnt%'");
-  cache_clear_all('variables', 'cache');
 }
 

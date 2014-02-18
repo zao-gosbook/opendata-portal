@@ -13,6 +13,10 @@ function od_pubdlcnt_stream_wrappers_mod_get_external_url_alter(&$sandbox, Strea
   // And to provide a recursion protection
   $alter = FALSE;
   $original_url = $wrapper->getExternalUrl(); // Get original external url
+  /*if (($parsed = parse_url($original_url)) && isset($parsed['scheme']) && isset($parsed['host']) && isset($parsed['path'])) {
+    $original_url = $parsed['path'];
+  }*/
+
   $env_path = drupal_get_path('module', 'od_pubdlcnt');
 
   $sandbox['result'] = $GLOBALS['base_url'] . '/' . url("{$env_path}/download.php", array(

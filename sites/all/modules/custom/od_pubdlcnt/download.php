@@ -29,18 +29,26 @@
 
 
 
-if (isset($_GET['fid'])) {
+if (isset($_GET['fid']) && isset($_GET['goto'])) {
   require_once dirname(__FILE__). '/include/controller.inc';
-  $controller = new ODPubdlCntController(intval($_GET['fid']));
+  $controller = new ODPubdlCntController(intval($_GET['fid']), $_GET['goto']);
   if (!$controller->isValid()) {
     $controller->badUrl();
   }
 
   $controller->handleRedirect();
-  $controller->updateDownloadCounts();
+  try {
+    $controller->updateDownloadCounts();
+  }
+  catch (Exception $e) {
+    //@todo: Log error, send email or something... And watchdog is great too.
+  }
+
+  $controller->endRequest();
 }
 
 $controller->badUrl();
+$controller->endRequest();
 // we need to change the current directory to the (drupal-root) directory
 // in order to include some necessary files.
 if (file_exists('../../../../includes/bootstrap.inc')) {

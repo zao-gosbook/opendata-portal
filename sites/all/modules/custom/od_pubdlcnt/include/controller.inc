@@ -6,7 +6,12 @@ class ODPubdlCntController {
   const EXPIRE_POSITION = 3; //Position cache
   const EXPIRE_VISITOR = 4; //Visits cache
 
+  protected $_history_table = 'od_pubdlcnt_history';
+  protected $_counter_table = 'od_pubdlcnt';
+  protected $_urls_table = 'od_pubdlcnt_url';
+
   protected $fid = NULL;
+  protected $url = NULL;
   protected $dbh = NULL;
   public $cache; //CacheController
   protected $rebuild = FALSE;
@@ -32,8 +37,9 @@ class ODPubdlCntController {
   }
 
 
-  function __construct($fid) {
+  function __construct($fid, $url) {
     $this->fid = $fid;
+    $this->url = $url;
   }
 
 //  public static function initCache($sid = 0) {
@@ -45,6 +51,10 @@ class ODPubdlCntController {
 
   function fid() {
     return $this->fid;
+  }
+
+  function url() {
+    return $this->url;
   }
 
   public static function flushCaches() {
@@ -69,6 +79,7 @@ class ODPubdlCntController {
 
       $db = $dbInfo['default']['default'];
       $this->dbh = new PDO("mysql:host={$db['host']};dbname={$db['database']}", $db['username'], $db['password']);
+      $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     return $this->dbh;
@@ -83,75 +94,110 @@ class ODPubdlCntController {
 //    return TRUE;
 //  }
 
-  function updateDownloadCounts() {
+  function createUrl() {
+    static $created  = FALSE;
+    if (!$created) {
+      $created = TRUE;
+
+      // Url fields from parse_url with default values
+      $url_fields = array(
+        'scheme' => NULL,
+        'port' => '80',
+        'host' => NULL,
+        'path' => NULL,
+        'query' => NULL,
+        'fragment' => NULL,
+      );
+
+      $values = array(
+        ':url_key' => $this->urlKey(),
+      );
+
+      $fields = array(
+        ':url_key' => '`url_key`',
+      );
+
+      if ($parsed = parse_url($this->url())) {
+        foreach ($url_fields as $field => $default_value) {
+          $escaped = '`' . $field . '`';
+          $placeholder = ':'. $field;
+          $values[$placeholder] = isset($parsed[$field]) ? $parsed[$field] : $default_value;
+          $fields[$field] = $escaped;
+        }
+      }
+
+      $sql = "INSERT IGNORE INTO `{$this->_urls_table}` \n(". implode(', ', $fields). ") \n VALUES \n (" . implode(', ', array_keys($values)) . ")";
+      $this->db()->prepare($sql)->execute($values);
+    }
+
+    return $this->urlKey();
+  }
+
+  function urlKey() {
+    static $key = NULL;
+    if ($key === NULL) {
+      $key = substr(md5($this->url()), 0, 16);
+    }
+
+    return $key;
+  }
+
+  function addHistoryRecord() {
     $dbh = $this->db();
-    $key = $this->getUniqueKey();
-    $cache_cid = 'widget:visitors:'. $key;
 
-    $visitors = $this->cache->get($cache_cid, $this->getExpire(static::EXPIRE_VISITOR), $this->needsRebuild());
-    $log[] = 'Counting started. Key is '. $key;
-    if (!isset($visitors->data)) {
-      $visit = $this->getVisit();
+    $sql = "
+    INSERT INTO
+      `{$this->_history_table}`
+    (
+      `fid`,
+      `utime`,
+      `url_key`
+    )
+    VALUES (
+      :fid,
+      :utime,
+      :url_key
+    )
+    ";
 
-      if (!$visit) {
-        $log[] = 'This user hasn\'t visited us yet';
-        //print $key;
-        $extra = array(
-          'server' => $_SERVER,
-          'key_raw' => $this->getUniqueKey(FALSE),
-        );
+    $st = $dbh->prepare($sql);
+    $st->bindValue(':fid', $this->fid, PDO::PARAM_INT);
+    $st->bindValue(':utime', time(), PDO::PARAM_INT);
+    $st->bindValue(':url_key', $this->createUrl());
 
-        $sql = '
-      	INSERT INTO
-      		rating_visits
-      	(
-      		ukey,
-      		sid,
-      		ip,
-      		visit_date,
-      		expire_time,
-      		extra,
-      		valid
-      	)
-      	VALUES
-      	(
-      		:ukey,
-      		:sid,
-      		:ip,
-      		:visit_date,
-      		:expire_time,
-      		:extra,
-      		:valid
-      	)
-      ';
+    return $st->execute();
+  }
 
-        $query = $dbh->prepare($sql);
-        $query->bindValue(':ukey', $key, PDO::PARAM_STR);
-        $query->bindValue(':sid', $this->sid, PDO::PARAM_INT);
-        $query->bindValue(':ip', NULL, PDO::PARAM_STR);
-        $query->bindValue(':visit_date', date('c', time()), PDO::PARAM_STR);
-        $query->bindValue(':expire_time', strtotime('tomorrow') - time(), PDO::PARAM_STR);
-        $query->bindValue(':extra', NULL, PDO::PARAM_STR);
-        $query->bindValue(':valid', 1, PDO::PARAM_INT);
+  function updateDownloadCounts() {
+    $this->addHistoryRecord();
+    $dbh = $this->db();
 
-        if ($query->execute()) {
-          $log[] = 'Visitor info added to the database';
-        }
-        else {
-          $log[] = 'Error: Visitor info added to the database.';
-          $log['pdo_errors'][] = $query->errorInfo();
-        }
-      }
-      else {
-        $log[] = 'This user is familiar already';
-      }
+    $sql = "
+    INSERT INTO
+      `{$this->_counter_table}`
+    (
+      `fid`,
+      `nid`,
+      `utime`,
+      `count`
+    )
+    VALUES (
+      :fid,
+      :nid,
+      :utime,
+      1
+    )
+    ON DUPLICATE KEY UPDATE
+      `nid`=:nid, `utime`=:utime, `count`=`count`+1
+    ";
 
-      $visitors->data = TRUE;
-      $this->cache->save($visitors);
-    }
-    else {
-      $log[] = 'I wont count cause it already counted';
-    }
+    $st = $dbh->prepare($sql);
+    $st->bindValue(':fid', $this->fid(), PDO::PARAM_INT);
+    $st->bindValue(':nid', NULL, PDO::PARAM_INT);
+    $st->bindValue(':url', $_GET['goto'], PDO::PARAM_STR);
+    $st->bindValue(':utime', time(), PDO::PARAM_INT);
+
+    return $st->execute();
   }
 
   function getDrupalRoot() {
@@ -164,8 +210,6 @@ class ODPubdlCntController {
     header("HTTP/1.0 503 Forbidden");
     header("HTTP/1.1 503 Forbidden");
     header("Status: 503 Forbidden");
-
-    exit;
   }
 
   function isValid() {
@@ -173,11 +217,16 @@ class ODPubdlCntController {
   }
 
   function handleRedirect() {
-    if (isset($_GET['goto'])) {
-      header('Location: '. $_GET['goto']);
+    if ($this->url()) {
+      header('Location: '. $this->url());
     }
     else {
       $this->badUrl();
+      $this->endRequest();
     }
+  }
+
+  function endRequest() {
+    exit;
   }
 }
