@@ -618,6 +618,15 @@ div.horizontal-tabs .form-text {
       
       span {
         font-size: 60px;
+        
+        a {
+          text-decoration: none;
+          color: #fff;
+          
+          &:hover {
+            text-decoration: underline;
+          }
+        }
       }
       
       &:before {
@@ -660,12 +669,13 @@ div.horizontal-tabs .form-text {
   }  
   .view-content {
     margin: 0 -15px;
+    text-align: center;
   }
   .view-footer {
     clear: both;
   }
   .show-hide-toggle-wrapper {
-    padding: 10px;
+    padding: 20px;
     text-transform: uppercase;
     text-align: center;
     
@@ -686,8 +696,8 @@ div.horizontal-tabs .form-text {
     }
   }
   .views-row {
-    float: left;
-    width: 33.33%;
+    display: inline-block;
+    width: 33.03%;
     text-align: center;
     
     &:nth-child(3n+1) {
@@ -849,7 +859,7 @@ div.horizontal-tabs .form-text {
         padding: 0 20px;
         color: #666;
         height: 29px;
-        line-height: 29px;
+        line-height: 26px;
         background: #fff;
         font-size: 18px;
         display: block;
@@ -1216,13 +1226,16 @@ div.horizontal-tabs .form-text {
     a {
       font-size: 1.25em;
       line-height: 1.35em;
-      color: #000;
       text-decoration: none;
       text-transform: uppercase;
+      color: #000;
     }
     .search-api-sort-active {
-      border-bottom: 1px dotted #000;
+      border-bottom: 1px dotted #3D9FED;
       
+      a {
+        color: #3D9FED;
+      }
       img {
         width: 11px;
         height: 11px;
@@ -1240,7 +1253,14 @@ div.horizontal-tabs .form-text {
     }
   }
 }
+
 /* library */
+.section-library {
+  
+  .region-orange {
+    display: block;
+  }
+}
 .page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.first {
   display: block;
 }
@@ -4467,6 +4487,9 @@ div.fivestar-widget .star {
 /**
  * guide
  */
+#joyride-tips-content {
+  display: none;
+} 
 .joyride-tip-guide {
   z-index: 1001;
   
