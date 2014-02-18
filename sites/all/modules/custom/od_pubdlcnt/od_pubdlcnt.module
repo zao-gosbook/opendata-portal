@@ -92,7 +92,7 @@ function od_pubdlcnt_fid_by_uri($uri) {
  */
 function od_pubdlcnt_download_count($fid_or_file) {
   $fid = is_numeric($fid_or_file) ? $fid_or_file : $fid_or_file->fid;
-  $count = db_query('SELECT `count` FROM {od_pubdlcnt} WHERE :fid', array(':fid' => $fid))->fetchField();
+  $count = db_query('SELECT `count` FROM {od_pubdlcnt} WHERE fid=:fid', array(':fid' => $fid))->fetchField();
 
   return $count ? $count : 0;
 }
