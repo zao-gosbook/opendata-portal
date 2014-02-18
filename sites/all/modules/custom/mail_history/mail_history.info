@@ -1,0 +1,8 @@
+name = mail_history
+description = "Store all mail"
+package = Gosbook
+core = "7.x"
+version="7.x-0.1"
+
+files[] = include/mail_history.mailhistory.inc
+files[] = include/mail_history.MailHistorySaverMailSystem.inc
