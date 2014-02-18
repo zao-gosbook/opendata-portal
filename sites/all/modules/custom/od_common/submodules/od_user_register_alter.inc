@@ -16,7 +16,7 @@ function _od_common_form_user_register_form_alter(&$form, &$form_state) {
   $form['field_user_middle_name']['und'][0]['value']['#title'] ='';
   $form['field_user_middle_name']['und'][0]['value']['#attributes'] = array('placeholder' => t('Patronymic'));
   $form['custom_text'] = array(
-    '#markup' => '<p>Already have an account? Return to <a href="/user">login</a>.</p>',
+    '#markup' => t('<p>Already have an account? Return to <a href="/user/login">login</a>.</p>'),
     '#weight' => 5000,
   );
 }

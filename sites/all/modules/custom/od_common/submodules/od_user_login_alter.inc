@@ -12,7 +12,7 @@ function _od_common_form_user_login_alter(&$form, &$form_state) {
   unset($form['pass']['#title']);
   $form['pass']['#attributes'] = array('placeholder' => t('Password'));
   $form['custom_text'] = array(
-    '#markup' => '<p>If you have not registered, return to <a href="/user/register">register</a>.</p>',
+    '#markup' => t('<p>If you have not registered, return to <a href="/user/register">register</a>.</p>'),
     '#weight' => 5000,
   );
 }
