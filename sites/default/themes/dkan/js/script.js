@@ -107,7 +107,7 @@
       function processClick(element) {
         var $this = $(element);
 
-        var target = viewContent.find('.views-row').slice(9); //Все элементы, начиная с девятого
+        var target = viewContent.find('.views-row').slice(10); //Все элементы, начиная с девятого
         $this.parent().parent().find('span').hide(); //Скрываем саму кнопку показать/скрыть
         //Если элементов всего было 9 -- то нам больше и делать нечего
         if (target.length > 0) {
