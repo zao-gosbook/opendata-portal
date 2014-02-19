@@ -34,7 +34,15 @@ function od_passport_pane_content_type_edit_form_submit($form, &$form_state) {
  */
 function od_passport_pane_content_type_render($subtype, $conf, $args, $contexts) {
   $nid = $args[0];
-  return od_passport_render($nid);
+  try {
+    $rendered = od_passport_render($nid);
+  }
+  catch (Exception $e) {
+    $rendered = NULL;
+    watchdog_exception('od_passport', $e);
+  }
+
+  return $rendered;
 }
 
 function od_passport_render($nid) {
