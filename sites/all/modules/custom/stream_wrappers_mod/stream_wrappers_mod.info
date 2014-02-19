@@ -1,0 +1,6 @@
+name = StreamWrapper Modification
+description = StreamWrappers Modification
+core = 7.x
+
+; StreamWrapper mods
+files[] = include/stream_wrappers/StreamWrappersMod_DrupalPublicStreamWrapper.inc

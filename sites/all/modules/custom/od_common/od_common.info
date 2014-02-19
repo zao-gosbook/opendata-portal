@@ -5,7 +5,7 @@ core = 7.x
 
 ; dependencies[] = entity
 
-dependencies[] = pubdlcnt
+dependencies[] = od_pubdlcnt
 dependencies[] = od_publisher
 
 ; Script with new ajax command

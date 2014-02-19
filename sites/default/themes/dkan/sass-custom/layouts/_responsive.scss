@@ -555,7 +555,7 @@ $zen-auto-include-item-base: false;
       padding: 0 0;
     } 
     .views-row {
-      width: 50%;
+      width: 49.5%;
       
     &:nth-child(3n+1) {
       clear: none;
@@ -1476,4 +1476,38 @@ $zen-auto-include-item-base: false;
       width: 573px;
     }       
   } 
+}
+
+
+/**
+ * addaptive rubrics
+ */
+@media all and (max-width: 1399px) and (min-width: 850px) {
+  .pane-rubrics-rubrics-front .views-row {
+    text-align: center;
+    width: 24.5%;
+  }
+  .pane-rubrics-rubrics-front .views-row .taxonomy-term h2 a   {
+    font-size: 20px;
+    padding-top: 52%;
+  }
+  .pane-rubrics-rubrics-front .views-row .taxonomy-term .content img {
+    margin-bottom: 16px;
+  }  
+}
+
+@media all and (max-width: 2400px) and (min-width: 1400px) {
+  .pane-rubrics-rubrics-front .views-row:nth-child(3n+1) {
+    clear: none;
+  }  
+  .pane-rubrics-rubrics-front .views-row:nth-child(5n+1) {
+    clear: both;
+  }
+  .pane-rubrics-rubrics-front .views-row {
+    text-align: center;
+    width: 19.8%;
+  }
+  .pane-rubrics-rubrics-front .views-row .taxonomy-term h2 a   {
+    padding-top: 60%;
+  }
 }
