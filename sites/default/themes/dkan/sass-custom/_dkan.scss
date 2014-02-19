@@ -2599,6 +2599,42 @@ html.js input.form-autocomplete {
 }
 
 /**
+ * page-user-login
+ */
+.page-user-login,
+.page-user-register,
+.page-user-password {
+  background: #E5E5E5;
+  
+  .region-content {
+    background: #E5E5E5;
+  }
+  
+  #user-login,
+  #user-register-form,
+  #user-pass {
+    text-align: center;
+    background: #fff;
+    padding: 4% 10%;
+    margin: 0 20%;
+    overflow: hidden;
+    
+    .form-text {
+      width: 100%;
+    }
+    h3 {
+      line-height: 1.2;
+    }
+    .hybridauth-widget-wrapper {
+      padding: 5px 0;
+      margin: 25px 0 0;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+}
+
+/**
  * view-organizations
  */
 .page-organizations {
