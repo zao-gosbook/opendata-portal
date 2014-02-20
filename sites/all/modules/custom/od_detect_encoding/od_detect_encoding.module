@@ -3,8 +3,8 @@
  * @file
  */
 
-function od_detect_encoding_guest_string() {
-
+function od_detect_encoding_guess_string() {
+  return od_detect_encoding_get_detector()->guessEncoding('Tratatatata!');
 }
 
 /**
@@ -15,7 +15,6 @@ function od_detect_encoding_get_detector() {
   if ($instance === NULL) {
     $adapter = new ODDetectEncodingAdapter_Enca();
     $instance = new ODDetectEncoding($adapter);
-    $instance->check();
   }
 
   return $instance;

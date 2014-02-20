@@ -1,5 +1,5 @@
-name = Opendata dataset cell popup
-description = "Opendata dataset grid view cell operations"
+name = Opendata encoding detector
+description = "Guesses encoding of a file or a string"
 package = "Gosbook"
 core = 7.x
 
