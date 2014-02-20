@@ -86,10 +86,11 @@ function od_file_process_rules_action_info() {
  * Rule action
  */
 function od_file_process_rule_callback($file_2process, $node_2attach, $field_2attach_data, $field_2attach_structure, $recline_additional_info = array()) {
-
+  od_file_process_prepare_playground();
   $file = file_load($file_2process['fid']);
 
-  if (in_array($file->filemime, od_file_preprocess_table_mimes()) && !empty($file_2process['file_data'])) {
+  $file_2process['file_data']['convert_to'] = 'csv';
+  if (in_array($file->filemime, od_file_preprocess_table_mimes())) { //} && !empty($file_2process['file_data'])) {
     if (isset($file_2process['file_data']['convert_to'])) {
 
       $path = drupal_realpath($file->uri);

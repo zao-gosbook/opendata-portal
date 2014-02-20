@@ -215,9 +215,10 @@ function od_file_preprocess_widget_validate($element, &$form_state, $form) {
 
 /**
  *  Parse file structure into $form_state-liked array
+ * @todo Cache php_excel loaded things to prevent parsing it again
  */
 function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
-
+  od_file_process_prepare_playground();
   if (!is_object($file)) return NULL;
   $path = drupal_realpath($file->uri);
 
