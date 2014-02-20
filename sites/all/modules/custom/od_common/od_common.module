@@ -18,6 +18,11 @@ function od_common_module_implements_alter(&$implementations, $hook) {
   elseif ($hook == 'i18n_object_info' && isset($implementations['i18n_taxonomy'])) {
     unset($implementations['i18n_taxonomy']);
   }
+  elseif ($hook == 'form_alter' && isset($implementations['privatemsg'])) {
+    $saved_alter = $implementations['od_common'];
+    unset($implementations['od_common']);
+    $implementations['od_common'] = $saved_alter;
+  }
 }
 
 /**
@@ -123,8 +128,11 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       od_common_module('od_user_reset_pass_alter');
       _od_common_form_user_pass_alter($form, $form_state);
       break;
+    case 'user_profile_form':
+      od_common_module('od_user_profile_form_alter');
+      _od_common_form_user_profile_form_alter($form, $form_state);
+      break;
   }
-  
   //Translate submit button
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
     $form['actions']['submit']['#value'] = t($form['actions']['submit']['#value']);
