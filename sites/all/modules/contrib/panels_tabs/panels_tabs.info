@@ -4,9 +4,9 @@ core = 7.x
 package = Panels
 dependencies[] = panels
 
-; Information added by  packaging script on 2013-11-08
+; Information added by Drupal.org packaging script on 2014-02-20
 version = "7.x-2.x-dev"
 core = "7.x"
 project = "panels_tabs"
-datestamp = "1383915505"
+datestamp = "1392858540"
 
