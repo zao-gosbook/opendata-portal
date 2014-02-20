@@ -238,6 +238,7 @@
           Drupal.settings.views = response.settings.views;
         }
         Drupal.attachBehaviors();
+
         if (show_tip) {
           Drupal.ajax_facets.showTooltip($, response, current_id);
         }
