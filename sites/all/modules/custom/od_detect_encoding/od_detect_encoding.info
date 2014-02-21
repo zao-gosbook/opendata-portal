@@ -1,0 +1,9 @@
+name = Opendata encoding detector
+description = "Guesses encoding of a file or a string"
+package = "Gosbook"
+core = 7.x
+
+
+; Autoloader classes
+files[] = include/ODDetectEncoding.inc
+files[] = include/adapters/ODDetectEncodingAdapter_Enca.inc

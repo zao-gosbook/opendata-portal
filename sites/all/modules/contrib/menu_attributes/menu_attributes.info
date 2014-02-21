@@ -1,0 +1,14 @@
+name = Menu attributes
+description = "Allows administrators to specify custom attributes for menu items."
+dependencies[] = menu
+core = 7.x
+configure = admin/structure/menu/settings
+
+files[] = menu_attributes.test
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-1.0-rc2+5-dev"
+core = "7.x"
+project = "menu_attributes"
+datestamp = "1380586774"
+

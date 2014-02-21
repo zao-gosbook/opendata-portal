@@ -5,7 +5,7 @@
  * Definition of the 'Tabs' panel style.
  */
 
-// Plugin definition
+// Plugin definition.
 $plugin = array(
   'title' => t('Tabs'),
   'description' => t('Show panel panes in a region as tabs.'),
@@ -37,7 +37,7 @@ function theme_panels_tabs_style_render_region($vars) {
     '#prefix' => '<div id="' . $tab_id . '">',
     '#suffix' => '</div>',
     '#attached' => array(
-      'library' => array(array('system', 'ui.tabs'), array('system', 'jquery.cookie')),
+      'library' => array(array('system', 'ui.tabs')),
       'js' => array(
         drupal_get_path('module', 'panels_tabs') . '/js/panels_tabs.js' => array('type' => 'file'),
       ),
@@ -46,9 +46,6 @@ function theme_panels_tabs_style_render_region($vars) {
 
   $settings = array();
   $settings['panelsTabs']['tabsID'][] = $tab_id;
-  $settings['panelsTabs']['tabsConfig'][$tab_id] = array(
-    'saveActiveTab' => isset($vars['settings']['panel_tab_save_active_tab']) ? (boolean) $vars['settings']['panel_tab_save_active_tab'] : TRUE,
-  );
 
   $element['#attached']['js'][] = array(
     'type' => 'setting',
@@ -58,14 +55,22 @@ function theme_panels_tabs_style_render_region($vars) {
   // Get the pane titles.
   $items = array();
   $delta = 1;
-  foreach ($display->panels[$region_id] as $pane_id) {
-    // Make sure the pane exists.
-    if (!empty($panes[$pane_id])) {
-      $title = panels_tabs_pane_titles($display->did, $pane_id);
-      $title = $title ? $title : t('Tab @delta', array('@delta' => $delta));
-      $items[] = '<a href="#'. $tab_id . '-' . $delta .'">' . $title . '</a>';
-      $delta++;
+
+  if (isset($display->panels[$region_id])) {
+    foreach ($display->panels[$region_id] as $pane_id) {
+      // Make sure the pane exists.
+      if (!empty($panes[$pane_id])) {
+        $title = panels_tabs_pane_titles($display->did, $pane_id);
+        $title = $title ? $title : t('Tab @delta', array('@delta' => $delta));
+        $items[] = '<a href="#' . $tab_id . '-' . $delta . '">' . $title . '</a>';
+        $delta++;
+      }
     }
+  }
+
+  if ($delta === 1) {
+    // No tabs to show, the tabs wrapper must not be rendered.
+    return '';
   }
 
   $element['tabs_title'] = array('#theme' => 'item_list', '#items' => $items);
@@ -83,6 +88,9 @@ function theme_panels_tabs_style_render_region($vars) {
   return drupal_render($element);
 }
 
+/**
+ * Settings form for the plugin.
+ */
 function panels_tabs_pane_settings_form($style_settings) {
   $form = array();
 
@@ -95,13 +103,6 @@ function panels_tabs_pane_settings_form($style_settings) {
       'region' => t('Fixed, based on region id (select this when panel region can be placed on the page only once)'),
       'random' => t('Generate random id (select this when panel region can be placed on the page multiple times)'),
     ),
-  );
-
-  $form['panel_tab_save_active_tab'] = array(
-    '#type' => 'checkbox',
-    '#title' => t("Save active tab and restore after page is loaded"),
-    '#decsription' => t("If this is checked selected tab will be saved after user selects a tab and restored after page reload"),
-    '#default_value' => isset($style_settings['panel_tab_save_active_tab']) ? $style_settings['panel_tab_save_active_tab'] : TRUE,
   );
 
   return $form;

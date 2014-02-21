@@ -26,11 +26,13 @@ function panels_tabs_panels_pane_content_alter(&$content, $pane, $args, $context
     if ($key == 'style_settings') {
       continue;
     }
-    if (!empty($values['style']) && $values['style'] == 'tabs' && $pane->panel == $key && !empty($content->title)) {
-      // Capture the title.
-      panels_tabs_pane_titles($display->did, $pane->pid, $content->title);
-      // Remove it form the pane.
-      $content->title = '';
+    if ((is_array($values) && !empty($values['style']) && $values['style'] == 'tabs' && $pane->panel == $key) || ($key === 'style' && $values === 'tabs')) {
+      if (!empty($content->title)) {
+        // Capture the title.
+        panels_tabs_pane_titles($display->did, $pane->pid, $content->title);
+        // Remove it form the pane.
+        $content->title = '';
+      }
     }
   }
 
@@ -44,7 +46,7 @@ function panels_tabs_panels_pane_content_alter(&$content, $pane, $args, $context
  * @param $pid
  *   Panels pane ID.
  * @param $title
- *   Optional; Panles pane title to set, or if empty then the function will
+ *   Optional; Panels pane title to set, or if empty then the function will
  *   return the captured title based on the display ID and pane ID properties.
  *
  * @return
@@ -56,4 +58,5 @@ function panels_tabs_pane_titles($did = NULL, $pid = NULL, $title = NULL) {
     return isset($cache[$did][$pid]) ? $cache[$did][$pid] : NULL;
   }
   $cache[$did][$pid] = $title;
+  return $title;
 }

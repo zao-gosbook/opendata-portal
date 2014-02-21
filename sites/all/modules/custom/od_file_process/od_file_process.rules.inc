@@ -69,6 +69,37 @@ function od_file_process_rules_action_info() {
         ),
       ),
     ),
+    'od_file_process_rule_callback_get_files' => array(
+      'label' => t('Process opendata file (returns list of files)'),
+      'group' => t('Opendata process'),
+      'arguments' => array(
+        'file_2process' => array(
+          'type' => 'unknown',
+          'label' => t('File to process'),
+        ),
+        'can_expire' => array(
+          'type' => 'boolean',
+          'label' => t('File will be deleted by cron after @time', array(
+              '@time' => format_plural((floor(DRUPAL_MAXIMUM_TEMP_FILE_AGE/3600)) % 24, '1 hour', '@count hours')
+                . ' '. t('and'). ' '. format_plural((floor(DRUPAL_MAXIMUM_TEMP_FILE_AGE/60)) % 60, '1 minute', '@count minutes')
+                . ' '. t('and'). ' '. format_plural(DRUPAL_MAXIMUM_TEMP_FILE_AGE % 60, '1 second', '@count seconds')
+            )
+          ),
+          'default' => FALSE,
+        ),
+      ),
+      'provides' => array(
+        'created_files' => array(
+          'type' => 'list<file>',
+          'label' => t('Created files'),
+        ),
+        'created_structure' => array(
+          'type' => 'file',
+          'label' => t('Created structure file'),
+        ),
+      ),
+      'base' => 'od_file_process_rule_callback_get_files',
+    ),
   );
 
 
@@ -84,12 +115,14 @@ function od_file_process_rules_action_info() {
 
 /**
  * Rule action
+ * @deprecated
  */
 function od_file_process_rule_callback($file_2process, $node_2attach, $field_2attach_data, $field_2attach_structure, $recline_additional_info = array()) {
-
+  od_file_process_prepare_playground();
   $file = file_load($file_2process['fid']);
 
-  if (in_array($file->filemime, od_file_preprocess_table_mimes()) && !empty($file_2process['file_data'])) {
+  $file_2process['file_data']['convert_to'] = 'csv';
+  if (in_array($file->filemime, od_file_preprocess_table_mimes())) { //} && !empty($file_2process['file_data'])) {
     if (isset($file_2process['file_data']['convert_to'])) {
 
       $path = drupal_realpath($file->uri);
@@ -190,6 +223,7 @@ function od_file_process_rule_callback($file_2process, $node_2attach, $field_2at
 
 /**
  * Rule action
+ * @deprecated
  */
 function od_file_process_rule_callback_get_file($file_2process,  $can_expire) {
   $salt = substr(md5(time(). microtime()), 0, 8);
@@ -251,6 +285,81 @@ function od_file_process_rule_callback_get_file($file_2process,  $can_expire) {
 
   return array(
     'created_file' => $file_data,
+    'created_structure' => $file_structure,
+  );
+}
+
+
+/**
+ * Rule action
+ */
+function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
+  $salt = substr(md5(time(). microtime()), 0, 8);
+  $file = file_load($file_2process['fid']);
+
+  $file_structure = $files_created = NULL;
+  if (in_array($file->filemime, od_file_preprocess_table_mimes()) && !empty($file_2process['file_data'])) {
+    if (isset($file_2process['file_data']['convert_to'])) {
+      $path = drupal_realpath($file->uri);
+      $file_info = pathinfo($file->uri);
+      if (mb_substr($file_info['dirname'], -1) == ':') {
+        $file_info['dirname'] .= '/';
+      }
+
+      $file_info['filename'] = "{$salt}_{$file_info['filename']}";
+
+      if ($file->filemime == 'text/csv') {
+        $data_whole = od_file_preprocess_parse_csv($path);
+      }
+      else {
+        module_load_include('inc', 'phpexcel');
+        $data_whole = phpexcel_import($path, FALSE);
+      }
+
+      $files_created = array();
+      foreach ($data_whole as $list_index => &$data) {
+        $processed = NULL;
+        array_shift($data);   // skip headers row
+        switch ($file_2process['file_data']['convert_to']) {
+          case 'csv':
+            $ext_data = 'csv';
+            $ext_struct = 'csv';
+            $processed = od_file_process_2csv($data, $file_2process['file_data']);
+            break;
+          case 'xml':
+            $ext_data = 'xml';
+            $ext_struct = 'xsd';
+            $processed = od_file_process_2xml($data, $file_2process['file_data']);
+            break;
+        }
+
+        // Try to save file
+        if (isset($ext_data) && isset($ext_struct)) {
+          // Create structure file only once using first list
+          if ($file_structure === NULL) {
+            // save structure file
+            $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '-structure.' . $ext_struct;
+            $file_structure = file_save_data($processed['structure'], $filename);
+          }
+
+          // save data file
+          $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '.' . $ext_data;
+          $files_created[$list_index] = file_save_data($processed['data'], $filename);
+        }
+      }
+
+//      if ($can_expire) {
+//        //Make files not permanent
+//        foreach ((array($file_structure) + $files_created) as $file) {
+//          $file->status = 0;
+//          file_save($file);
+//        }
+//      }
+    }
+  }
+
+  return array(
+    'created_files' => $files_created,
     'created_structure' => $file_structure,
   );
 }

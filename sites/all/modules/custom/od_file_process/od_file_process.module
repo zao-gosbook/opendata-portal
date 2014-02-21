@@ -52,6 +52,16 @@ function od_file_process_stream_wrappers_mod_get_external_url_alter(&$sandbox, S
   $sandbox['result'] = $GLOBALS['base_url'] . '/od_download/files/' . drupal_encode_path($path);
 }
 
+function od_file_process_prepare_playground() {
+  static $is_prepared = FALSE;
+  if (!$is_prepared) {
+    ini_set('memory_limit', '2G');
+    set_time_limit(1 * 60 * 60); // 1 Hour
+
+    $is_prepared = TRUE;
+  }
+}
+
 /**
  * Process data to csv files
  */ 

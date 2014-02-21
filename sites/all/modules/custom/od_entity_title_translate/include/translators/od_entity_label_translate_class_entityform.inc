@@ -23,7 +23,8 @@ class od_entity_label_translate_class_entityform extends od_entity_label_transla
     }
   }
 
-  function on_form_alter() {
+  //@fixme: organization has been deleted from user, so this doesn't work
+  function _on_form_alter() {
     $form = &$this->context['form'];
     $entity = $this->context['form']['#entity'];
     $this->setOrganization($entity);
