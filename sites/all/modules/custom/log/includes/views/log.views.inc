@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implements of hook_views_data_alter().
+ * Implements of hook_views_data().
  */
 function log_views_data() {
   $items = array();

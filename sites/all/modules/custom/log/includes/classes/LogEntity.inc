@@ -12,7 +12,7 @@ class LogEntity extends Entity {
     parent::setUp();
 
     // Set default user ID.
-    if (!isset($this->uid)) {
+    if (empty($this->uid)) {
       global $user;
       if (!empty($user->uid)) {
         $this->uid = $user->uid;

@@ -45,5 +45,6 @@ function log_schema() {
     ),
     'primary key' => array('lid'),
   );
+
   return $schema;
 }

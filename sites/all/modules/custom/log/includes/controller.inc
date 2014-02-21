@@ -5,8 +5,9 @@
  */
 function log_event($vars = array()) {
   $log = new LogEntity($vars, 'log');
-  module_invoke_all('log_event', $log);
+  module_invoke_all('log_presave', $log);
   $log->save();
+  module_invoke_all('log_insert', $log);
 
   return $log;
 }
