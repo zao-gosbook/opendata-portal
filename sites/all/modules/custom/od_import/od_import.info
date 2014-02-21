@@ -3,4 +3,4 @@ description = Opendata import
 core = 7.x
 
 dependencies[] = od_api
-dependencies[] = better_watchdog_ui_field
+dependencies[] = od_log
