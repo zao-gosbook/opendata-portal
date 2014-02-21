@@ -1,0 +1,27 @@
+<?php
+/*
+ * @file
+ */
+
+function od_detect_encoding_guess_string($string) {
+  return od_detect_encoding_get_detector()->guessEncoding($string);
+}
+
+function od_detect_encoding_guess_file($path) {
+  return od_detect_encoding_get_detector()->guessFileEncoding($path);
+}
+
+/**
+ * Gets instance of ODDetectEncoding object.
+ * @return ODDetectEncoding
+ * @todo Auto select first working adapter.
+ */
+function od_detect_encoding_get_detector() {
+  static $instance = NULL;
+  if ($instance === NULL) {
+    $adapter = new ODDetectEncodingAdapter_Enca();
+    $instance = new ODDetectEncoding($adapter);
+  }
+
+  return $instance;
+}
