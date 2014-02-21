@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Define module root directory.
+ */
+define('OD_LOG', dirname(__FILE__));
+
+/**
+ * Include API files.
+ */
+require_once OD_LOG . '/' . 'includes/constants.inc';
+require_once OD_LOG . '/' . 'includes/controller.inc';
