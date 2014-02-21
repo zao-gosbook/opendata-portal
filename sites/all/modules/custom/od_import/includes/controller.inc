@@ -60,7 +60,7 @@ function od_import_create_file($uri, $origin_uri) {
   $file_content = od_import_get_url_content($origin_uri);
   $file = file_save_data($file_content, $uri);
 
-  $file->uid = OD_IMPORT_USER_ID;
+  $file->uid = OD_COMMON_IMPORT_USER_ID;
   file_save($file);
 
   return $file;

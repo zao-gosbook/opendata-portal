@@ -1,11 +1,19 @@
 <?php
-/**
- * @file
- */
 
-/* Load additional files */
-$__dirname = dirname(__FILE__);
-require_once $__dirname. '/od_common.ajax_commands.inc'; //Load ajax commands
+/**
+ * Define module root directory.
+ */
+define('OD_COMMON', dirname(__FILE__));
+
+/**
+ * Load ajax commands.
+ */
+require_once OD_COMMON . '/od_common.ajax_commands.inc';
+
+/**
+ * Load constants.
+ */
+require_once OD_COMMON . '/includes/constants.inc';
 
 /**
  * Implements hook_module_implements_alter()
@@ -355,3 +363,8 @@ function od_common_page_delivery_callback_alter(&$callback) {
   }
 }
 
+function od_common_user_delete($account) {
+  if ($account->uid == OD_COMMON_IMPORT_USER_ID) {
+    throw new Exception('Вы не можете удалить пользователя "Робот импорта открытых данных" с идентификатором ' . OD_COMMON_IMPORT_USER_ID);
+  }
+}
