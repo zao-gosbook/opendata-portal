@@ -10,11 +10,11 @@
 function entityform_to_node_rules_action_info() {
   return array(
     'entityform_to_node_copy_create_node' => array(
-      'label' => t('Copy entity form type to a new node'),
+      'label' => t('Copy entityform type to a new node'),
       'parameter' => array(
         'ef' => array(
           'type' => 'entityform',
-          'label' => t('Entity form type to copy'),
+          'label' => t('Entityform type to copy'),
         ),
         'config' => array(
           'type' => 'struct',
@@ -43,11 +43,11 @@ function entityform_to_node_rules_action_info() {
       'base' => 'entityform_to_node_rules_action_callbacks_copy_create_node',
     ),
     'entityform_to_node_copy_existing_node' => array(
-      'label' => t('Copy entity form type to an existing node'),
+      'label' => t('Copy entityform type to an existing node'),
       'parameter' => array(
         'ef' => array(
           'type' => 'entityform',
-          'label' => t('Entity form type to copy'),
+          'label' => t('Entityform type to copy'),
         ),
         'node' => array(
           'type' => 'node',

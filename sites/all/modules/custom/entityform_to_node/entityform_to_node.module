@@ -67,7 +67,7 @@ function entityform_to_node_copy_to_node($ef, $node_type, $options = array()) {
   else {
     $node = new stdClass();
     $node->type = $node_type;
-    $node->title = 'Entity form submission copy from ' . date('c');
+    $node->title = 'Entityform submission copy from ' . date('c');
     $node->uid = $GLOBALS['user']->uid;
     node_object_prepare($node);
   }
