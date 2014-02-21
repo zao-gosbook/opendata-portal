@@ -4,11 +4,11 @@
  */
 
 class ODDetectEncoding {
-  const ENC_UTF8 = 0x00;
-  const ENC_CP1251 = 0x00;
-  const ENC_CP1252 = 0x00;
-  const ENC_ISO = 0x00;
-
+  const ENC_ASCII = 'ASCII';
+  const ENC_UTF8 = 'UTF8';
+  const ENC_CP1251 = 'CP1251';
+  const ENC_ISO_8859_16 = 'ISO-8859-16';
+  const ENC_UNKNOWN = 'unknown';
 
   /**
    * @var ODDetectEncodingAdapterInterface
@@ -28,12 +28,26 @@ class ODDetectEncoding {
     $this->_adapter = $adapter;
   }
 
+  protected function getInnerEncoding($external_encoding) {
+    $list = $this->_adapter->convertList();
+
+    return isset($list[$external_encoding]) ? $list[$external_encoding] : static::ENC_UNKNOWN;
+  }
+
   function guessFileEncoding($path) {
-    return $this->_adapter->guessFileEncoding($path);
+    if ($encoding = $this->_adapter->guessFileEncoding($path)) {
+      return $this->getInnerEncoding($encoding);
+    }
+
+    return FALSE;
   }
 
   function guessEncoding($string) {
-    return $this->_adapter->guessEncoding($string);
+    if ($encoding = $this->_adapter->guessEncoding($string)) {
+      return $this->getInnerEncoding($encoding);
+    }
+
+    return FALSE;
   }
 }
 
@@ -44,6 +58,7 @@ interface ODDetectEncodingAdapterInterface {
   public function name();
   public function errorMsg();
   public function version();
+  public function convertList();
 }
 
 abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapterInterface {

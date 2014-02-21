@@ -8,10 +8,13 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
    * @inheritdoc
    */
   public function guessFileEncoding($path) {
-    $escaped = str_replace(array('"'), array('\"'), $path);
-    if (file_exists($path) && ($output = $this->syscall("(enca -e -L russian \"{$path}\""))) {
-      $a = 1;
+    $escaped = str_replace(array('"'), array('\"'), realpath($path));
+    if (file_exists($path) && ($output = $this->syscall("enca -e -L russian \"{$path}\""))) {
+      $output = trim($output, "\n");
+      return $output;
     }
+
+    return FALSE;
   }
 
   /**
@@ -20,16 +23,20 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
   public function guessEncoding($string) {
     $escaped = str_replace(array("'"), array("\\'"), $string);
     if ($output = $this->syscall("(echo '{$escaped}' | enca -e -L russian)")) {
-      $a = 1;
+      $output = trim($output, "\n");
+      return $output;
     }
+
+    return FALSE;
   }
 
-  protected function processOutput() {
-
-  }
   function convertList() {
     return array(
-
+      'ASCII' => ODDetectEncoding::ENC_ASCII,
+      'UTF-8' => ODDetectEncoding::ENC_UTF8,
+      'CP1251' => ODDetectEncoding::ENC_CP1251,
+      'ISO-8859-16' => ODDetectEncoding::ENC_ISO_8859_16,
+      'unknown' => ODDetectEncoding::ENC_UNKNOWN,
     );
   }
 
