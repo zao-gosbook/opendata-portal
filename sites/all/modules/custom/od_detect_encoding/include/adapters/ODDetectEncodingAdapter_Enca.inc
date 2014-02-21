@@ -9,7 +9,7 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
    */
   public function guessFileEncoding($path) {
     $escaped = str_replace(array('"'), array('\"'), realpath($path));
-    if (file_exists($path) && ($output = $this->syscall("enca -e -L russian \"{$path}\""))) {
+    if (file_exists($path) && ($output = $this->syscall("enca -e -L russian \"{$escaped}\""))) {
       $output = trim($output, "\n");
       return $output;
     }
@@ -52,7 +52,7 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
   public function syscall($command, $stderr = FALSE){
     $result = '';
     $suffix = $stderr ? "2>&1" : "";
-    if ($proc = popen("($command)","r")){
+    if ($proc = popen("($command){$suffix}","r")){
       while (!feof($proc)) $result .= fgets($proc, 1000);
       pclose($proc);
       return $result;
