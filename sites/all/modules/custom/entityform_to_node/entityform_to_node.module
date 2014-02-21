@@ -1,0 +1,115 @@
+<?php
+/**
+ * @file
+ * Main module file
+ */
+
+/**
+ * Copies entity_form to node.
+ *
+ * Creates new bundle if needed and creates not existing fields if needed.
+ *
+ * @param object $ef
+ *   An entityform object
+ * @param string $node_type
+ *   Node type name
+ * @param array $options
+ *   keys are
+ *      save_node (default to FALSE) - Saves node immediately in this function
+ *      create_fields (default to TRUE) - Creates not existing fields for
+ *        node's bundle
+ *      node (default NULL) - Define existing node object which should
+ *        be replaced with entityforms' fields. This option will prevent
+ *        creation of a new node object.
+ *
+ * @return object
+ *   Created/Modified node
+ */
+function entityform_to_node_copy_to_node($ef, $node_type, $options = array()) {
+  static $default_options = array(
+    'save_node' => FALSE,
+    'create_fields' => TRUE,
+  );
+
+  // Merge options.
+  $options = array_merge($default_options, $options);
+
+  // Options' shortcuts.
+  $save_node = $options['save_node'];
+
+  $node_types = node_type_get_types();
+  if (!isset($node_types[$node_type])) {
+    $fields = (object) array(
+      'type' => (string) $node_type,
+      'name' => 'Node type ' . $node_type . ' created by rules action',
+      'base' => 'node_content',
+      'has_title' => FALSE,
+      'title_label' => 'title label',
+      'description' => 'This node type has been created by rules action',
+      'help' => '',
+      'custom' => TRUE,
+      'modified' => FALSE,
+      'locked' => FALSE,
+      'disabled' => FALSE,
+      'module' => 'common',
+    );
+
+    node_type_save($fields);
+  }
+
+  $wrapper = entity_metadata_wrapper('entityform', $ef);
+  $pi = $wrapper->getPropertyInfo();
+
+  // If node has been passed as parameter we won't create new node.
+  if (!empty($options['node']) && is_object($options['node'])) {
+    $node = $options['node'];
+  }
+  else {
+    $node = new stdClass();
+    $node->type = $node_type;
+    $node->title = 'Entity form submission copy from ' . date('c');
+    $node->uid = $GLOBALS['user']->uid;
+    node_object_prepare($node);
+  }
+
+  foreach ($pi as $property => $info) {
+    if (!empty($info['field'])) {
+      $node_property = $property;
+      $field_is_mapped = ((!empty($options['field_mappings'][$property])));
+      if (isset($options['field_mappings']) && $field_is_mapped) {
+        $node_property = $options['field_mappings'][$property];
+      }
+
+      // If we need to create the field in case
+      // if it doesn't exist.
+      // Set it to null just to be sure we don't have an
+      // old value from previous cycle.
+      $instance = NULL;
+      if (!($instance = field_info_instance('node', $node_property, $node_type)) && $options['create_fields']) {
+        $instance = field_info_instance('entityform', $node_property, $ef->type);
+        $instance['entity_type'] = 'node';
+        $instance['bundle'] = $node_type;
+
+        $instance = field_create_instance($instance);
+      }
+
+      // And finally if field's instance exists and we have filled property.
+      if ((!isset($options['field_mappings']) || $field_is_mapped) && $instance && isset($ef->{$property})) {
+        $node->{$node_property} = $ef->{$property}; // We copy it.
+      }
+    }
+  }
+
+  // And save node immediately if needed.
+  if ($save_node) {
+    try {
+      entity_save('node', $node);
+    }
+    catch (Exception $e) {
+      watchdog_exception('entityform_to_node', $e);
+      return FALSE;
+    }
+  }
+
+  return $node;
+}
