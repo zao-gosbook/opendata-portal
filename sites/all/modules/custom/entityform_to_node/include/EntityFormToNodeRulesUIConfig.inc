@@ -55,9 +55,7 @@ class EntityFormToNodeRulesUIConfig extends RulesDataUI {
       $errors['entityform_type'] = t('Please, select correct entityform type');
     }
     else {
-      //$ef_wrapper = entity_metadata_wrapper('entityform', $ef_types[$settings['config']['entityform_type']]->id);
       $node_info = entity_get_property_info('node');
-
       $node_fields = array();
       foreach ($node_info['bundles'][$settings['config']['node_type']]['properties'] as $_property => $_info) {
         if (!isset($node_fields[$_info['type']])) {
