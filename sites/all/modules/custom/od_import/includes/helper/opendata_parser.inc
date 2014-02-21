@@ -265,6 +265,7 @@ function _od_import_meta_from_data($data, $org_nid, $time_start) {
 
     if ($dataset_is_new) {
       $dataset_node = _od_import_create_dataset($identifier, $org_nid);
+      $dataset_node->od_log = FALSE;
     }
 
     $dataset_updated = FALSE;

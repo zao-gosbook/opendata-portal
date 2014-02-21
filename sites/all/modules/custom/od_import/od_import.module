@@ -6,10 +6,14 @@
 define('OD_IMPORT', dirname(__FILE__));
 
 /**
+ * Load constants.
+ */
+require_once OD_IMPORT . '/includes/constants.inc';
+
+/**
  * Include API files.
  */
-require_once OD_IMPORT . '/' . 'includes/constants.inc';
-require_once OD_IMPORT . '/' . 'includes/controller.inc';
+require_once OD_IMPORT . '/includes/controller.inc';
 
 /**
  * Implements hook_action_info().
