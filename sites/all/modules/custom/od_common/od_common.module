@@ -283,6 +283,20 @@ function od_common_field_widget_form_alter(&$element, &$form_state, $context) {
     $element[0]['#upload_validators'] = $validators;
   }
 
+  if ($context['field']['type'] == 'file') {
+    $elements = NULL;
+    if ($context['field']['cardinality'] == 1) {
+      $elements = &$element;
+    }
+    else {
+      $elements = array(&$element);
+    }
+
+    foreach ($elements as &$el) {
+
+    }
+  }
+
 
 }
 
