@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * Define module root directory.
+ */
+define('LOG', dirname(__FILE__));
+
+/**
+ * Include API files.
+ */
+require_once LOG . '/' . 'includes/controller.inc';
+
+/**
+ * Implements hook_entity_info().
+ */
+function log_entity_info() {
+  $items = array();
+
+  $items['log'] = array(
+    'label' => t('Log'),
+    'entity class' => 'LogEntity',
+    'controller class' => 'EntityAPIController',
+    'base table' => 'log',
+    'uri callback' => 'log_uri',
+    'label callback' => 'log_title',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+      'id' => 'lid',
+    ),
+    'bundles' => array(
+      'log' => array(
+        'label' => t('Log'),
+        'admin' => array(
+          'path' => 'admin/config/system/log',
+          'access arguments' => array('access content'),
+        ),
+      ),
+    ),
+    'view modes' => array(
+      'full' => array(
+        'label' => t('Default'),
+        'custom settings' => FALSE,
+      ),
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function log_menu() {
+  $items = array();
+
+  $items['admin/config/system/log'] = array(
+    'title' => 'Log settings',
+    'description' => 'Log settings.',
+    'page callback' => 'log_configure_page',
+    'access arguments' => array('administer users'), //dk
+    'file' => 'includes/pages/configure.inc',
+  );
+  $items['admin/config/system/log/settings'] = array(
+    'title' => 'Settings',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  /* //dk
+  $items['log/%log'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['log/%log/view'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['log/%log/delete'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  */
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function log_theme() {
+  $items = array();
+
+  /*
+  $items['log'] = array();
+  */
+
+  return $items;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function log_views_api() {
+  $api = array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'log') . '/includes/views',
+  );
+
+  return $api;
+}
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function log_entity_property_info_alter(&$info) {
+  $properties = &$info['log']['properties'];
+
+  $properties['uid'] = array(
+    'label' => t('User'),
+    'type' => 'user',
+    'description' => t('The user ID who initiated this log.'),
+    'required' => TRUE,
+    'schema field' => 'uid',
+  );
+  $properties['created'] = array(
+    'label' => t('Created'),
+    'type' => 'integer',
+    'description' => t('The Unix timestamp when the log was created.'),
+    'schema field' => 'created',
+  );
+  $properties['message'] = array(
+    'label' => t('Message'),
+    'type' => 'text',
+    'description' => t('Text of log message to be passed into the t() function.'),
+    'schema field' => 'message',
+  );
+}
