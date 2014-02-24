@@ -35,13 +35,19 @@ $handler->display->display_options['style_plugin'] = 'table';
 $handler->display->display_options['style_options']['default_row_class'] = FALSE;
 $handler->display->display_options['style_options']['row_class_special'] = FALSE;
 $handler->display->display_options['style_options']['columns'] = array(
+  'field_log_event_type' => 'field_log_event_type',
   'created' => 'created',
   'message' => 'message',
-  'field_dataset_ref' => 'field_dataset_ref',
-  'field_organization' => 'field_organization',
 );
 $handler->display->display_options['style_options']['default'] = '-1';
 $handler->display->display_options['style_options']['info'] = array(
+  'field_log_event_type' => array(
+    'sortable' => 0,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
   'created' => array(
     'sortable' => 0,
     'default_sort_order' => 'asc',
@@ -50,20 +56,6 @@ $handler->display->display_options['style_options']['info'] = array(
     'empty_column' => 0,
   ),
   'message' => array(
-    'sortable' => 0,
-    'default_sort_order' => 'asc',
-    'align' => '',
-    'separator' => '',
-    'empty_column' => 0,
-  ),
-  'field_dataset_ref' => array(
-    'sortable' => 0,
-    'default_sort_order' => 'asc',
-    'align' => '',
-    'separator' => '',
-    'empty_column' => 0,
-  ),
-  'field_organization' => array(
     'sortable' => 0,
     'default_sort_order' => 'asc',
     'align' => '',
@@ -80,6 +72,12 @@ $handler->display->display_options['empty']['area']['ui_name'] = 'Журнал �
 $handler->display->display_options['empty']['area']['empty'] = TRUE;
 $handler->display->display_options['empty']['area']['content'] = 'Событий в журнале не зарегистрировано.';
 $handler->display->display_options['empty']['area']['format'] = 'full_html';
+/* Связь: User */
+$handler->display->display_options['relationships']['log_related_user']['id'] = 'log_related_user';
+$handler->display->display_options['relationships']['log_related_user']['table'] = 'log';
+$handler->display->display_options['relationships']['log_related_user']['field'] = 'log_related_user';
+$handler->display->display_options['relationships']['log_related_user']['ui_name'] = 'User';
+$handler->display->display_options['relationships']['log_related_user']['label'] = 'User';
 /* Поле: Организация */
 $handler->display->display_options['fields']['field_organization']['id'] = 'field_organization';
 $handler->display->display_options['fields']['field_organization']['table'] = 'field_data_field_organization';
@@ -109,6 +107,7 @@ $handler->display->display_options['fields']['field_dataset_ref']['id'] = 'field
 $handler->display->display_options['fields']['field_dataset_ref']['table'] = 'field_data_field_dataset_ref';
 $handler->display->display_options['fields']['field_dataset_ref']['field'] = 'field_dataset_ref';
 $handler->display->display_options['fields']['field_dataset_ref']['ui_name'] = 'Набор данных';
+$handler->display->display_options['fields']['field_dataset_ref']['label'] = 'Набор данных';
 $handler->display->display_options['fields']['field_dataset_ref']['element_type'] = '0';
 $handler->display->display_options['fields']['field_dataset_ref']['element_label_type'] = '0';
 $handler->display->display_options['fields']['field_dataset_ref']['element_wrapper_type'] = '0';
@@ -148,6 +147,34 @@ $handler->display->display_options['path'] = 'opendata-log';
 /* Display: Журнал набора открытых данных */
 $handler = $view->new_display('page', 'Журнал набора открытых данных', 'opendata_meta_log');
 $handler->display->display_options['defaults']['fields'] = FALSE;
+/* Поле: Тип лога (исключено) */
+$handler->display->display_options['fields']['field_log_event_type']['id'] = 'field_log_event_type';
+$handler->display->display_options['fields']['field_log_event_type']['table'] = 'field_data_field_log_event_type';
+$handler->display->display_options['fields']['field_log_event_type']['field'] = 'field_log_event_type';
+$handler->display->display_options['fields']['field_log_event_type']['ui_name'] = 'Тип лога (исключено)';
+$handler->display->display_options['fields']['field_log_event_type']['label'] = '';
+$handler->display->display_options['fields']['field_log_event_type']['alter']['alter_text'] = TRUE;
+$handler->display->display_options['fields']['field_log_event_type']['alter']['text'] = '<div class="[field_log_event_type]"></div>';
+$handler->display->display_options['fields']['field_log_event_type']['element_type'] = '0';
+$handler->display->display_options['fields']['field_log_event_type']['element_class'] = 'icon';
+$handler->display->display_options['fields']['field_log_event_type']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_log_event_type']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['field_log_event_type']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_log_event_type']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_log_event_type']['type'] = 'list_key';
+/* Поле: Фото */
+$handler->display->display_options['fields']['picture']['id'] = 'picture';
+$handler->display->display_options['fields']['picture']['table'] = 'users';
+$handler->display->display_options['fields']['picture']['field'] = 'picture';
+$handler->display->display_options['fields']['picture']['relationship'] = 'log_related_user';
+$handler->display->display_options['fields']['picture']['ui_name'] = 'Фото';
+$handler->display->display_options['fields']['picture']['label'] = '';
+$handler->display->display_options['fields']['picture']['element_type'] = '0';
+$handler->display->display_options['fields']['picture']['element_label_type'] = '0';
+$handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['picture']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['picture']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['picture']['image_style'] = 'avatar-45x45';
 /* Поле: Время */
 $handler->display->display_options['fields']['created']['id'] = 'created';
 $handler->display->display_options['fields']['created']['table'] = 'log';
@@ -218,11 +245,13 @@ $translatables['opendata_log'] = array(
   t('следующая ›'),
   t('последняя »'),
   t('Событий в журнале не зарегистрировано.'),
-  t('Организация'),
+  t('User'),
+  t('Владелец набора данных'),
   t('Время'),
   t('Набор данных'),
   t('Сообщение'),
   t('Журнал открытых данных'),
   t('Журнал набора открытых данных'),
+  t('<div class="[field_log_event_type]"></div>'),
   t('Все'),
 );
