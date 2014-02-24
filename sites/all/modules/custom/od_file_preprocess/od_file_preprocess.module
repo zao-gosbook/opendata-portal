@@ -418,10 +418,16 @@ function od_file_preprocess_get_data_type($val) {
   }
 }
 
-function od_file_preprocess_parse_csv($path, $codepage = 'CP1251') {
-  
+function od_file_preprocess_parse_csv($path, $codepage = FALSE) {
   include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel.php';
   include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+  if (!$codepage && ($codepage = od_detect_encoding_guess_file($path)) != ODDetectEncoding::ENC_UNKNOWN) {
+    // If we couldn't guess encoding automatically, fallback it to UTF8
+    $codepage = ODDetectEncoding::ENC_UTF8;
+  }
+
+  $codepage = strtoupper($codepage);
 
   $objReader = new PHPExcel_Reader_CSV();
   $objReader->setReadDataOnly(TRUE);

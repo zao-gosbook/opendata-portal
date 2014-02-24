@@ -16,12 +16,46 @@ function od_detect_encoding_guess_file($path) {
  * @return ODDetectEncoding
  * @todo Auto select first working adapter.
  */
-function od_detect_encoding_get_detector() {
+function od_detect_encoding_get_detector($adapter = NULL) {
   static $instance = NULL;
   if ($instance === NULL) {
-    $adapter = new ODDetectEncodingAdapter_Enca();
+    $adapters = module_invoke_all('od_detect_encoding_adapters');
+    uasort($adapters, 'drupal_sort_weight');
+    $selected_adapter = NULL;
+    if ($adapter === NULL) {
+      foreach ($adapters as $_adapter) {
+        if (class_exists($_adapter['class']) && call_user_func(array($_adapter['class'], 'check'))) {
+          $selected_adapter = $_adapter;
+        }
+      }
+    }
+    elseif (isset($adapters[$adapter])) {
+      $selected_adapter = $adapters[$adapter];
+    }
+
+    if (!$selected_adapter) {
+      throw new Exception("Cant find working adapter");
+    }
+
+    $adapter = new $selected_adapter['class'];
     $instance = new ODDetectEncoding($adapter);
   }
 
   return $instance;
+}
+
+/**
+ * Implements hook_od_detect_encoding_adapters().
+ */
+function od_detect_encoding_od_detect_encoding_adapters() {
+  return array(
+    'enca' => array(
+      'class' => 'ODDetectEncodingAdapter_Enca',
+      'weight' => -20,
+    ),
+    'dummy' => array(
+      'class' => 'ODDetectEncodingAdapter_dummy',
+      'weight' => 5000,
+    ),
+  );
 }
