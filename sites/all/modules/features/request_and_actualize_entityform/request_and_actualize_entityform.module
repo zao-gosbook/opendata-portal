@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Request_and_actualize_entityform feature.
+ */
+
+include_once 'request_and_actualize_entityform.features.inc';
