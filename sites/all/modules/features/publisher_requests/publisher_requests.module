@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Publisher requests feature.
+ */
+
+include_once 'publisher_requests.features.inc';

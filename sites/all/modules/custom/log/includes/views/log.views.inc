@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implements of hook_views_data_alter().
+ * Implements of hook_views_data().
  */
 function log_views_data() {
   $items = array();
@@ -120,7 +120,7 @@ function log_views_data() {
         array('@entity' => $user_entity_type)),
       'base' => $user_entity_info['base table'],
       'base field' => $user_entity_info['entity keys']['id'],
-      'relationship field' => 'lid',
+      'relationship field' => 'uid',
     ),
   );
 
