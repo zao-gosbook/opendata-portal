@@ -2,3 +2,43 @@
 /**
  * @file
  */
+
+function od_dataset_menu() {
+  $items = array();
+
+  $items['dataset-actions/%od_dataset_node/download'] = array(
+    'title' => '',
+    'page callback' => 'od_dataset_download_page',
+    'page arguments' => array(1),
+    'access callback' => 'od_dataset_download_page_access',
+    'access arguments' => array(1),
+  );
+
+  return $items;
+}
+
+/**
+ * @param $nid
+ * @return bool|mixed
+ */
+function od_dataset_download_page_access($node) {
+  $wrapper = entity_metadata_wrapper('node', $node);
+
+  //@todo add other access checks
+  if ($wrapper->{'type'}->value() != 'dataset' || $wrapper->field_resources->count() == 0) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+function od_dataset_download_page($node) {
+  $wrapper = entity_metadata_wrapper('node', $node);
+  $resources = $wrapper->field_resources;
+  foreach ($resources as $resource) {
+    $resource_wrapper = entity_metadata_wrapper('node', $resource);
+    if ($file = $resource_wrapper->file_upload->value()) {
+      
+    }
+  }
+}
