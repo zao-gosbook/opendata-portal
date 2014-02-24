@@ -132,7 +132,7 @@ function od_file_process_rule_callback($file_2process, $node_2attach, $field_2at
       }
       else {
         module_load_include('inc', 'phpexcel');
-        $data = phpexcel_import($path, FALSE);
+        $data = od_file_process_excel_import($path, FALSE);
       }
 
       $data = $data[0];     // first worksheet
@@ -237,7 +237,7 @@ function od_file_process_rule_callback_get_file($file_2process,  $can_expire) {
       }
       else {
         module_load_include('inc', 'phpexcel');
-        $data = phpexcel_import($path, FALSE);
+        $data = od_file_process_excel_import($path, FALSE);
       }
 
       $data = $data[0];     // first worksheet
@@ -313,7 +313,7 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
       }
       else {
         module_load_include('inc', 'phpexcel');
-        $data_whole = phpexcel_import($path, FALSE);
+        $data_whole = od_file_process_excel_import($path, FALSE);
       }
 
       $files_created = array();
