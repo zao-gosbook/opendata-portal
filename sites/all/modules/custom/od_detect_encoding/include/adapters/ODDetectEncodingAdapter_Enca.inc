@@ -40,32 +40,13 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
     );
   }
 
-  /**
-   * Does system shell execution of a command.
-   *   Successfully stolen from source below.
-   *
-   * @see http://de3.php.net/manual/en/function.system.php#39969
-   * @param $command
-   * @param bool $stderr
-   * @return string|null
-   */
-  public function syscall($command, $stderr = FALSE){
-    $result = '';
-    $suffix = $stderr ? "2>&1" : "";
-    if ($proc = popen("($command){$suffix}","r")){
-      while (!feof($proc)) $result .= fgets($proc, 1000);
-      pclose($proc);
-      return $result;
-    }
-  }
-
-  public function check() {
+  public static function check() {
     $working = FALSE;
     $output = NULL;
     exec('enca -v', $output);
 
     if (isset($output[0]) && preg_match('/enca ([0-9]+)\.([0-9]+)/i', $output[0], $reg)) {
-      $this->_version = "$reg[1].$reg[2]";
+      static::$_version = "$reg[1].$reg[2]";
       $working = TRUE;
     }
 

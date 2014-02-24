@@ -4,3 +4,4 @@ core = 7.x
 dependencies[] = file
 dependencies[] = phpexcel
 dependencies[] = table_element
+dependencies[] = od_detect_encoding
