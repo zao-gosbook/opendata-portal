@@ -1176,7 +1176,13 @@ div.horizontal-tabs .form-text {
       padding-bottom: 1em;
     }
   }
+  .view-id-dataset {
+    caption {
+      text-align: left;
+    }
+  }
 }
+
 
 /**
  * dataset
@@ -2532,6 +2538,7 @@ div.horizontal-tabs .form-text {
   background: #0c87e8;
   text-transform: uppercase;
   text-decoration: none;
+  display: inline-block;
 }  
 html.js input.form-autocomplete {
   background: #fff url("../images/form-autocomplete.png") no-repeat 100% 50%;
