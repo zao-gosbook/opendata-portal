@@ -297,7 +297,7 @@ function _passport_table_rows($nid) {
     $url_datasets_structure_revisions = array();
     foreach ($resource_revisions as $revision) {
       $revision_object = entity_metadata_wrapper('node', node_load($resource[0]->nid->value(), $revision->vid));
-      if($revision->vid <> $resource[0]->vid->value()) {
+      if($revision->vid != $resource[0]->vid->value()) {
         if ($field_link_remote_file = $revision_object->field_link_remote_file->value()) {
           $url_datasets_revisions[] = $field_link_remote_file['uri'];
         }
