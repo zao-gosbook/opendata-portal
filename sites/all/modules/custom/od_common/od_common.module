@@ -249,7 +249,7 @@ function od_common_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
-  
+
   return $items;
 }
 
@@ -278,21 +278,29 @@ function od_common_field_formatter_info() {
   return $info;
 }
 
-/**
- * Implements hook_field_widget_form_alter()
- */
-function od_common_field_widget_form_alter(&$element, &$form_state, $context) {
-  if (isset($element[0]['#field_name']) && $element[0]['#field_name'] == 'field_link_remote_file') {
-    $validators = array('od_common_file_widget_clean_filename' => array());
-    foreach ($element[0]['#upload_validators'] as $validator => $info) {
-      $validators[$validator] = $info;
-    }
-
-    $element[0]['#upload_validators'] = $validators;
-  }
-
-
-}
+///**
+// * Implements hook_field_widget_form_alter()
+// */
+//function od_common_field_widget_form_alter(&$element, &$form_state, $context) {
+//  if (isset($element[0]['#field_name']) && $element[0]['#field_name'] == 'field_link_remote_file') {
+//    $validators = array('od_common_file_widget_clean_filename' => array());
+//    foreach ($element[0]['#upload_validators'] as $validator => $info) {
+//      $validators[$validator] = $info;
+//    }
+//
+//    foreach ($element as &$_element) {
+//      $_element['#upload_validators'] = $validators;
+//    }
+//  }
+//}
+//
+//function od_common_file_widget_clean_filename(stdClass $file) {
+//  if (isset($file->fid)) {
+//    $file->filename = preg_replace('/\?.*$/i', '', $file->filename);
+//  }
+//
+//  return array();
+//}
 
 function od_common_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();

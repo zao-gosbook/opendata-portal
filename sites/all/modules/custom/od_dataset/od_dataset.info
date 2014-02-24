@@ -1,0 +1,6 @@
+name = Dataset Related Module
+description = "Dataset functions, processors and etc."
+package = "Gosbook"
+core = 7.x
+
+dependencies[] = remote_file_source
