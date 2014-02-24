@@ -140,6 +140,23 @@ div.horizontal-tabs .form-text {
   }
 }
 
+/* password */
+.page-user-edit {
+  .confirm-parent, 
+  .password-parent {
+    width: auto;
+  }
+  .password-parent {
+    padding-bottom: 50px;
+    position: relative;
+    
+    .password-strength {
+      position: absolute;
+      bottom: 32px;
+      left: 0;
+    }
+  }
+}
 
 .page-node-add,
 .page-node-edit {

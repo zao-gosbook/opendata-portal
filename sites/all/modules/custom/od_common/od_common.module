@@ -145,6 +145,10 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
     $form['actions']['submit']['#value'] = t($form['actions']['submit']['#value']);
   }
+  //Hide 'Your name' form ilement for comment form
+  if (isset($form['#entity_type']) && $form['#entity_type'] == 'comment') {
+    unset($form['author']['_author']);
+  }
 }
 
 /**
