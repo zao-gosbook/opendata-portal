@@ -174,8 +174,7 @@ function _passport_table_rows($nid) {
   //Гиперссылка(URL) на набор (Link file + Link API + Upload)
   $url_datasets = array();
 
-  //Формируем массив ссылок из трех полей. По логике должно быть заполнено только одно из них.
-  //Поле field_resources в наборе множественное. Берем нужную информаци
+  // формируем массив ссылок из трех полей. По логике должно быть заполнено только одно из них.
   if ($resource->value()) {
     if ($field_link_remote_file = $resource->field_link_remote_file->value()) {
     $url_datasets[] = $field_link_remote_file['uri'];
@@ -359,7 +358,7 @@ function _passport_structured_description($nid) {
   $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
   $resource = $resource->get(0);
 
-  $resource_revisions = node_revision_list($resource);
+  $resource_revisions = node_revision_list($resource->value());
   $first_revision = end($resource_revisions); //Самая первая версия набора
   $url_datasets_revisions = array();
   if ($resource->value()) {
