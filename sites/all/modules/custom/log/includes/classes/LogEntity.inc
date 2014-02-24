@@ -5,6 +5,20 @@
  */
 class LogEntity extends Entity {
   /**
+   * Constructor.
+   */
+  public function __construct(array $values = array(), $entityType = NULL) {
+    if (empty($entityType)) {
+      throw new Exception('Cannot create an instance of Entity without a specified entity type.');
+    }
+    $this->entityType = $entityType;
+    // Set initial values.
+    foreach ($values as $key => $value) {
+      $this->$key = $value;
+    }
+    $this->setUp();
+  }
+  /**
    * Set up the object instance on construction or unserializiation.
    */
   protected function setUp() {
@@ -12,7 +26,7 @@ class LogEntity extends Entity {
     parent::setUp();
 
     // Set default user ID.
-    if (empty($this->uid)) {
+    if (!isset($this->uid)) {
       global $user;
       if (!empty($user->uid)) {
         $this->uid = $user->uid;
