@@ -76,7 +76,7 @@ function od_file_preprocess_field_widget_form_alter(&$element, &$form_state, $co
     foreach ($element as &$el) {
       $el['#process'][] = 'od_file_preprocess_file_element_set_identity';
       $el['#process'][] = 'od_file_preprocess_widget_process';
-      $el['#element_validate'][] = 'od_file_preprocess_widget_validate';
+      //$el['#element_validate'][] = 'od_file_preprocess_widget_validate';
       //$el['#attached']['js'][] = $js;
       //$el['#after_build'][] = 'od_file_preprocess_file_element_after_build';
 
@@ -153,10 +153,11 @@ function od_file_preprocess_widget_process($element, &$form_state) {
 
 
 /**
- * Validate form file element 
+ * Validate form file element
+ * @fixme: Doesn't work at all
  */
 function od_file_preprocess_widget_validate($element, &$form_state, $form) {
-
+  return;
   if (!isset($form_state['input']['op']) || 
       $form_state['input']['op'] != 'Submit Form') {  
     return;
