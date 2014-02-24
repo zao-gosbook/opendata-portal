@@ -237,7 +237,8 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
         }
         else {
           module_load_include('inc', 'phpexcel');
-          $data = phpexcel_import($path, FALSE);
+          $data = od_file_process_excel_import($path, FALSE);
+          //$data = phpexcel_import($path, FALSE);
         }
 
         if (empty($data)) return NULL;
