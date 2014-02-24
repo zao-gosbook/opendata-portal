@@ -35,10 +35,32 @@ function od_dataset_download_page_access($node) {
 function od_dataset_download_page($node) {
   $wrapper = entity_metadata_wrapper('node', $node);
   $resources = $wrapper->field_resources;
+
+  $zip = new ZipArchive();
+  $tmp_file = tempnam(sys_get_temp_dir(), 'tmp');
+  if ( true !== ($zip->open($tmp_file, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE) )) {
+    drupal_not_found(); //@fixme: Control somehow. Write to watchdog.
+  }
+
+  $resource_index = 1;
   foreach ($resources as $resource) {
     $resource_wrapper = entity_metadata_wrapper('node', $resource);
     if ($file = $resource_wrapper->file_upload->value()) {
-      
+      $ext = pathinfo($file->uri, PATHINFO_EXTENSION);
+      $suffix = $ext ? '.' . $ext : NULL;
+      $zip->addFile($file->uri, "resource_{$resource_index}{$suffix}");
     }
+
+    $resource_index++;
   }
+
+  $zip->close();
+
+  ob_clean();
+  drupal_add_http_header('Content-type', 'application/zip');
+  drupal_add_http_header('Content-disposition', 'attachment; filename=package.zip');
+  drupal_add_http_header('Content-length', filesize($tmp_file));
+  readfile($tmp_file);
+
+  drupal_exit();
 }
