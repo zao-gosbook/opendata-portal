@@ -26,6 +26,7 @@ function od_detect_encoding_get_detector($adapter = NULL) {
       foreach ($adapters as $_adapter) {
         if (class_exists($_adapter['class']) && call_user_func(array($_adapter['class'], 'check'))) {
           $selected_adapter = $_adapter;
+          break;
         }
       }
     }
@@ -52,6 +53,10 @@ function od_detect_encoding_od_detect_encoding_adapters() {
     'enca' => array(
       'class' => 'ODDetectEncodingAdapter_Enca',
       'weight' => -20,
+    ),
+    'drupal_enca' => array(
+      'class' => 'ODDetectEncodingAdapter_DrupalEnca',
+      'weight' => -100,
     ),
     'dummy' => array(
       'class' => 'ODDetectEncodingAdapter_dummy',
