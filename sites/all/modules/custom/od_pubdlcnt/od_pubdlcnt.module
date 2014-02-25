@@ -1,0 +1,98 @@
+<?php
+/**
+ * @file
+ */
+
+function od_pubdlcnt_stream_wrappers_mod_get_external_url_alter(&$sandbox, StreamWrappersModInterface $wrapper) {
+  static $alter = TRUE;
+  if (!$alter || !($fid = od_pubdlcnt_fid_by_uri($wrapper->getUri()))) {
+    return;
+  }
+
+  // Prohibit altering with this function in order to properly use next function.
+  // And to provide a recursion protection
+  $alter = FALSE;
+  $original_url = $wrapper->getExternalUrl(); // Get original external url
+  /*if (($parsed = parse_url($original_url)) && isset($parsed['scheme']) && isset($parsed['host']) && isset($parsed['path'])) {
+    $original_url = $parsed['path'];
+  }*/
+
+  $env_path = drupal_get_path('module', 'od_pubdlcnt');
+
+  $sandbox['result'] = $GLOBALS['base_url'] . '/' . url("{$env_path}/download.php", array(
+    'external' => TRUE,
+    'query' => array(
+      'fid' => $fid,
+      'goto' => $original_url,
+    ),
+  ));
+
+//  $links = &stream_wrappers_mod_context('od_pundlcnt__links');
+//  $link_hash = od_pubdlcnt_hash('link', $sandbox['result']);
+//  $links[$link_hash] = $sandbox;
+
+  //Permit altering for further operations
+  $alter = TRUE;
+}
+//
+//function od_pubdlcnt_preprocess_link(&$vars) {
+//  $links = &stream_wrappers_mod_context('od_pundlcnt__links');
+//  $link_hash = od_pubdlcnt_hash('link', $vars['path']);
+//
+//  if (isset($links[$link_hash]) && empty($links[$link_hash]['processed'])) {
+//    $links[$link_hash]['processed'] = TRUE;
+//
+//    // Neatly change our custom link themer as a main theme hook.
+//    //array_unshift($vars['theme_hook_suggestions'], 'od_pudlcnt_link_theme');
+//  }
+//
+//  $a = 1;
+//}
+
+//
+//function od_pubdlcnt_theme() {
+//  $templates = array();
+//
+//  $templates['od_pudlcnt_link_theme'] = array(
+//    'variables' => array(
+//      'item' => NULL,
+//    ),
+//  );
+//
+//  return $templates;
+//}
+//
+//function theme_od_pudlcnt_link_theme($variables) {
+//  return '<a href="' . url($variables['path'], $variables['options']) . '"' . drupal_attributes($variables['options']['attributes']) . '>' . ($variables['options']['html'] ? $variables['text'] : check_plain($variables['text'])) . '</a>';
+//}
+//
+
+function od_pubdlcnt_hash($type, $data) {
+  return substr(md5($data), 0, 8);
+}
+
+function od_pubdlcnt_file_load_by_uri($uri) {
+  $files = file_load_multiple(FALSE, array('uri' => $uri));
+  return reset($files);
+}
+
+/**
+ * @param $uri
+ * @return mixed
+ * @todo: Static cache
+ */
+function od_pubdlcnt_fid_by_uri($uri) {
+  return db_query('SELECT fid FROM {file_managed} WHERE uri=:uri', array('uri' => $uri))->fetchField();
+}
+
+/**
+ * Gets count of file downloads.
+ * @param $fid_or_file
+ * @return integer
+ */
+function od_pubdlcnt_download_count($fid_or_file) {
+  $fid = is_numeric($fid_or_file) ? $fid_or_file : $fid_or_file->fid;
+  $count = db_query('SELECT `count` FROM {od_pubdlcnt} WHERE fid=:fid', array(':fid' => $fid))->fetchField();
+
+  return $count ? $count : 0;
+}

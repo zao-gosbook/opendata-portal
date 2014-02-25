@@ -3,3 +3,4 @@ description = Opendata import
 core = 7.x
 
 dependencies[] = od_api
+dependencies[] = od_log

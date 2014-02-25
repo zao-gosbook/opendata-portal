@@ -8,8 +8,8 @@
 class OdApi {
   public $vars;
   public $root;
-  public $main_page_url;
-  public $opendata_page_url;
+  public $main_url;
+  public $list_url;
 
   public $args;
   public $currentArgs;

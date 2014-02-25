@@ -1,0 +1,50 @@
+<?php
+
+function log_schema() {
+  $schema = array();
+
+  $schema['log'] = array(
+    'description' => 'The base table for logs.',
+    'fields' => array(
+      'lid' => array(
+        'description' => 'The primary identifier for a log.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The user ID who initiated this log.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the log was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'message' => array(
+        'description' => 'Text of log message.',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ),
+    ),
+    'indexes' => array(
+      'node_created' => array('created'),
+    ),
+    'unique keys' => array(
+      'lid' => array('lid'),
+    ),
+    'foreign keys' => array(
+      'log_author' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+    'primary key' => array('lid'),
+  );
+
+  return $schema;
+}

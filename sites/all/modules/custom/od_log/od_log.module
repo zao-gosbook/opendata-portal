@@ -1,0 +1,187 @@
+<?php
+
+/**
+ * Define module root directory.
+ */
+define('OD_LOG', dirname(__FILE__));
+
+/**
+ * Load constants.
+ */
+require_once OD_LOG . '/includes/constants.inc';
+
+/**
+ * Include API files.
+ */
+require_once OD_LOG . '/includes/controller.inc';
+
+/**
+ * Implements hook_node_save
+ */
+function od_log_node_insert($node) {
+  if (isset($node->od_log) && $node->od_log === FALSE) {
+    return;
+  }
+
+  $user_id = isset($node->od_log['user']) ? $node->od_log['user'] : NULL;
+
+  switch ($node->type) {
+    case 'dataset':
+      $organization_id = !empty($node->{OD_COMMON_FIELD_DATASET_OWNER}) ? $node->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $message = 'Набор открытых данных создан';
+      od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_DATASET_ADDED, $organization_id, $node->nid, $user_id);
+      break;
+    case 'resource':
+      $dataset_id = !empty($node->{OD_COMMON_FIELD_RESOURCE_DATASET}) ? $node->{OD_COMMON_FIELD_RESOURCE_DATASET}[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $dataset = node_load($dataset_id);
+
+      $organization_id = (!empty($dataset) && !empty($dataset->{OD_COMMON_FIELD_DATASET_OWNER})) ? $dataset->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $message = 'Ресурс набора открытых данных создан';
+      od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_RESOURCE_ADDED, $organization_id, $dataset_id, $user_id);
+      break;
+  }
+}
+
+function od_log_node_update($node) {
+  if (isset($node->od_log) && $node->od_log === FALSE) {
+    return;
+  }
+
+  $user_id = isset($node->od_log['user']) ? $node->od_log['user'] : NULL;
+
+  switch ($node->type) {
+    case 'dataset':
+      $organization_id = !empty($node->{OD_COMMON_FIELD_DATASET_OWNER}) ? $node->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $message = 'Набор открытых данных обновлен';
+
+      od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_DATASET_CHANGED, $organization_id, $node->nid, $user_id);
+      break;
+    case 'resource':
+      $dataset_id = !empty($node->{OD_COMMON_FIELD_RESOURCE_DATASET}) ? $node->{OD_COMMON_FIELD_RESOURCE_DATASET}[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $dataset = node_load($dataset_id);
+
+      $organization_id = (!empty($dataset) && !empty($dataset->{OD_COMMON_FIELD_DATASET_OWNER})) ? $dataset->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $message = 'Ресурс набора открытых данных обновлен';
+      od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_RESOURCE_CHANGED, $organization_id, $dataset_id, $user_id);
+      break;
+  }
+}
+
+function od_log_node_delete($node) {
+  if (isset($node->od_log) && $node->od_log === FALSE) {
+    return;
+  }
+
+  $user_id = isset($node->od_log['user']) ? $node->od_log['user'] : NULL;
+
+  switch ($node->type) {
+    case 'resource':
+      $dataset_id = !empty($node->{OD_COMMON_FIELD_RESOURCE_DATASET}) ? $node->{OD_COMMON_FIELD_RESOURCE_DATASET}[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $dataset = node_load($dataset_id);
+
+      $organization_id = (!empty($dataset) && !empty($dataset->{OD_COMMON_FIELD_DATASET_OWNER})) ? $dataset->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $message = 'Ресурс набора открытых данных удален';
+      od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_RESOURCE_DELETED, $organization_id, $dataset_id, $user_id);
+      break;
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function od_log_views_api() {
+  // Define views api version.
+  $views_api = array(
+    'api' => 3,
+    'path' => OD_LOG . '/includes/views',
+  );
+
+  return $views_api;
+}
+
+/**
+ * Implements hook_views_default_views().
+ */
+function od_log_views_default_views() {
+  // Init output variable.
+  $items = array();
+
+  $path = OD_LOG . '/includes/views/custom_views';
+
+  foreach (array_keys(file_scan_directory($path, '/\.inc$/')) as $file_path) {
+    require $file_path;
+
+    if (isset($view)) {
+      $items[$view->name] = $view;
+    }
+  }
+
+  return $items;
+}
+
+/**
+ * Implements hook_action_info().
+ */
+function od_log_action_info() {
+  // Init output variable.
+  $items = array();
+
+  $items['od_log_notify_organization'] = array(
+    'type' => 'log',
+    'label' => 'Уведомление куратора об ошибке импорта открытых данных с сайта орагнизации',
+    'configurable' => FALSE,
+    'aggregate' => TRUE,
+    'triggers' => array('any'),
+  );
+
+  return $items;
+}
+
+/**
+ * Action callback. Import opendata from organizations.
+ */
+function od_log_notify_organization($entities) {
+  foreach ($entities as $entity) {
+    // Check
+    if (empty($entity->{OD_COMMON_FIELD_LOG_ORGANIZATION})) {
+      continue;
+    }
+
+    $organization_id = $entity->{OD_COMMON_FIELD_LOG_ORGANIZATION}[LANGUAGE_NONE]['0']['target_id'];
+
+    $organization = node_load($organization_id);
+
+    if (empty($organization->{OD_COMMON_FIELD_ORGANIZATION_CURATOR})) {
+      continue;
+    }
+
+    foreach ($organization->{OD_COMMON_FIELD_ORGANIZATION_CURATOR}[LANGUAGE_NONE] as $field_item) {
+      $user_id = $field_item['target_id'];
+      $user = user_load($user_id);
+
+      $mail_vars = array();
+      $mail_vars['message'] = $entity->message;
+      drupal_mail('od_log', 'notice', $user->mail, 'ru', $mail_vars);
+    }
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function od_log_mail($key, &$message, $vars) {
+  switch($key) {
+    case 'notice':
+      $message['subject'] = 'Уведомление куратора об ошибке импорта открытых данных с сайта орагнизации';
+      $message['body'][] = $vars['message'];
+      break;
+  }
+}

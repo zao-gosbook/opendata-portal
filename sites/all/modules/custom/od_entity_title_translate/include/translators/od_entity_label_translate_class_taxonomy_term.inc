@@ -37,6 +37,10 @@ class od_entity_label_translate_class_taxonomy_term extends od_entity_label_tran
       return;
     }
 
+    $this->on_pseudo_entity_load();
+  }
+
+  function on_pseudo_entity_load() {
     $this->context['entity']->name = $this->translate($this->context['entity']);
   }
 }

@@ -33,9 +33,8 @@ function od_passport_pane_content_type_edit_form_submit($form, &$form_state) {
  * See ctools_plugin_examples for more advanced info
  */
 function od_passport_pane_content_type_render($subtype, $conf, $args, $contexts) {
-  $nid = $args[0];
   try {
-    $rendered = od_passport_render($nid);
+    $rendered = od_passport_render(intval($args[0]));
   }
   catch (Exception $e) {
     $rendered = NULL;
@@ -109,6 +108,7 @@ function _passport_table_rows($nid) {
   $node = node_load($nid);
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
+  $resource = $resource->get(0);
   $rows = array();
   
   //Идентификатор
@@ -174,18 +174,17 @@ function _passport_table_rows($nid) {
   //Гиперссылка(URL) на набор (Link file + Link API + Upload)
   $url_datasets = array();
 
-  //Формируем массив ссылок из трех полей. По логике должно быть заполнено только одно из них.
-  //Поле field_resources в наборе множественное. Берем нужную информаци
+  // формируем массив ссылок из трех полей. По логике должно быть заполнено только одно из них.
   if ($resource->value()) {
-    if ($field_link_remote_file = $resource[0]->field_link_remote_file->value()) {
+    if ($field_link_remote_file = $resource->field_link_remote_file->value()) {
     $url_datasets[] = $field_link_remote_file['uri'];
     }
     
-    if ($field_link_api = $resource[0]->field_link_api->value()) {  
+    if ($field_link_api = $resource->field_link_api->value()) {  
     $url_datasets[] = $field_link_api['uri'];
     }
     
-    if ($field_link_upload = $resource[0]->field_upload) {
+    if ($field_link_upload = $resource->field_upload) {
       if (isset($field_link_upload->value()->uri)) {
         $url_datasets[] = file_create_url($field_link_upload->value()->uri);
       }
@@ -199,7 +198,7 @@ function _passport_table_rows($nid) {
     $rows['dataset_urls'] = array(t('Dataset URL'), !empty($data['data']) ? $data : t('No info'));
     
     //Формат данных
-    $value = $resource[0]->field_format->value()->name;
+    $value = $resource->field_format->value()->name;
     $data = array(
       'data' => isset($value) ? $value : t('No info'),
       'property' => 'dc:format',
@@ -210,12 +209,12 @@ function _passport_table_rows($nid) {
   
     //Описание структуры набора данных
     $url_datasets_structure = array();
-    
-    if ($field_link_structure_file = $resource[0]->field_link_structure_file->value()) {  
+
+    if ($field_link_structure_file = $resource->field_link_structure_file->value()) {  
         $url_datasets_structure[] = $field_link_structure_file['uri'];
       }
     
-    if ($field_upload_structure = $resource[0]->field_upload_structure) {
+    if ($field_upload_structure = $resource->field_upload_structure) {
       $field_upload_structure = $field_upload_structure->value();
       if (isset($field_upload_structure['uri'])) {
         $url_datasets_structure[] = file_create_url($field_upload_structure['uri']);
@@ -267,7 +266,7 @@ function _passport_table_rows($nid) {
   
   //Содержание последнего изменения
   if ($resource->value()) {
-    $value = $resource[0]->field_provenance->value();
+    $value = $resource->field_provenance->value();
     $data = array(
       'data' => isset($value) ? $value : t('No info'),
     );
@@ -292,12 +291,12 @@ function _passport_table_rows($nid) {
   //Гиперссылки (URL) на версии набора данных (Link file + Link API + Upload)
   //Гиперссылки (URL) на версии структуры набора данных (field_link_structure_file + field_upload_structure) 
   if ($resource->value()) {
-    $resource_revisions = node_revision_list($resource[0]->value());
+    $resource_revisions = node_revision_list($resource->value());
     $url_datasets_revisions = array();
     $url_datasets_structure_revisions = array();
     foreach ($resource_revisions as $revision) {
-      $revision_object = entity_metadata_wrapper('node', node_load($resource[0]->nid->value(), $revision->vid));
-      if($revision->vid <> $resource[0]->vid->value()) {
+      $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
+      if($revision->vid != $resource->vid->value()) {
         if ($field_link_remote_file = $revision_object->field_link_remote_file->value()) {
           $url_datasets_revisions[] = $field_link_remote_file['uri'];
         }
@@ -357,12 +356,14 @@ function _passport_structured_description($nid) {
   $node = node_load($nid);
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
-  $resource_revisions = node_revision_list($resource[0]->value());
+  $resource = $resource->get(0);
+
+  $resource_revisions = node_revision_list($resource->value());
   $first_revision = end($resource_revisions); //Самая первая версия набора
   $url_datasets_revisions = array();
   if ($resource->value()) {
       foreach ($resource_revisions as $key => $revision) {
-      $revision_object = entity_metadata_wrapper('node', node_load($resource[0]->nid->value(), $revision->vid));
+      $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
       $revision_date = date("Ymd\THi", $revision->timestamp);
       //dpm($revision_date, 'revision date');
       $revision_date_iso = date("Y-m-d", $revision->timestamp);

@@ -1,0 +1,73 @@
+<?php
+/*
+ * @file
+ */
+
+/*
+ * Result statuses
+ */
+define('MAIL_HISTORY_RESULT_SUCCESS', 1);
+define('MAIL_HISTORY_RESULT_FAIL', 0);
+define('MAIL_HISTORY_RESULT_UNKNOWN', 2);
+
+//Set true if you want to use hack in hook_init().
+//For some situations when modules have no alter hooks
+//and didn't give any posibility to interact with sending mail
+//
+//In order to enable global mail hack this just add these lines to settings.php
+// $conf['mail_history']['mode_global'] = TRUE;
+//and don't forget to clear all caches
+if (!empty($GLOBALS['mail_history']['mode_global'])) {
+  define('MAIL_HISTORY_MODE_GLOBAL', TRUE);
+}
+
+/*
+ * Control how to enable the module
+ */
+if (defined('MAIL_HISTORY_MODE_GLOBAL')):
+  /**
+   * Implements hook_init()
+   */
+  function mail_history_init() {
+    MailHistory::inst()->enableHack();
+  }
+
+
+else:
+
+  /**
+   * Implements hook_mail_alter()
+   */
+  function mail_history_mail_alter($message) {
+    //Enable using our hacked mail system
+    MailHistory::inst()->enableHack();
+  }
+
+  /**
+   * Implements hook_queue_mail_send_alter()
+   * Since queue_mail doesn't use drupal_mail()
+   * @param $message
+   */
+  function mail_history_queue_mail_send_alter($message) {
+    mail_history_mail_alter($message);
+  }
+endif;
+
+/**
+ * Implements hook_menu()
+ */
+function mail_history_menu() {
+  $items = array();
+
+  $items['admin/mail_history/list'] = array(
+    'title' => t('All mail'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mail_history_admin_page_list_form'),
+    //'access callback' => TRUE,
+    'access arguments' => array('administer mail history'),
+    'type' => MENU_CALLBACK,
+    'file' => 'mail_history.admin.inc',
+  );
+
+  return $items;
+}

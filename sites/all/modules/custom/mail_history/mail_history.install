@@ -1,0 +1,123 @@
+<?php
+/*
+ * @file
+ */
+
+
+function mail_history_schema() {
+  $schema = array();
+
+  $schema['mail_history'] = array(
+    'description' => 'Stores all mail log',
+    'fields' => array(
+      'mhid' => array(
+        'description' => 'Mail history id (primary key)',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'mid' => array(
+        'description' => 'Mail key',
+        'type' => 'varchar',
+        'length' => '2048',
+        'not null' => FALSE,
+      ),
+      'module' => array(
+        'description' => 'A module that sent a message',
+        'type' => 'varchar',
+        'length' => '128',
+        'not null' => FALSE,
+      ),
+      'mail_key' => array(
+        'description' => 'Mail key',
+        'type' => 'varchar',
+        'length' => '2048',
+        'not null' => FALSE,
+      ),
+      'mail_from' => array(
+        'description' => 'Mail from address',
+        'type' => 'varchar',
+        'length' => '2048',
+        'not null' => FALSE,
+      ),
+      'subject' => array(
+        'description' => 'Mail subject',
+        'type' => 'varchar',
+        'length' => '2048',
+        'not null' => FALSE,
+      ),
+      'body' => array(
+        'description' => 'Mail body',
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+      'headers' => array(
+        'description' => 'Headers in serialized blob',
+        'type' => 'text',
+        'not null' => FALSE,
+        'serialized' => TRUE,
+      ),
+      'params' => array(
+        'description' => 'Parameters',
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+      'language' => array(
+        'description' => 'Mail language code',
+        'type' => 'varchar',
+        'length' => '4',
+        'not null' => FALSE,
+      ),
+      'send' => array(
+        'description' => 'Whether message should be sent or not',
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => FALSE,
+      ),
+      'timestamp' => array(
+        'description' => 'When a message was sent',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'uid' => array(
+        'description' => 'Uid of a user who was sending a message',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'result' => array(
+        'description' => 'Whether an email was successfully sent',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('mhid'),
+  );
+
+  $schema['mail_history_index'] = array(
+    'description' => 'Stores information about recipients',
+    'fields' => array(
+      'mhid' => array(
+        'description' => 'Message history id from mail_history',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'mail_to' => array(
+        'description' => 'A recipient who should get a message',
+        'type' => 'varchar',
+        'length' => '128',
+        'not null' => TRUE,
+      ),
+      'group_uuid' => array(
+        'description' => 'Group uuid is as hash that is generated from all recipients list',
+        'type' => 'varchar',
+        'length' => '16',
+        'not null' => TRUE,
+      ),
+    ),
+    'indexes' => array(
+      'mhid' => array('mhid'),
+    ),
+  );
+
+  return $schema;
+}

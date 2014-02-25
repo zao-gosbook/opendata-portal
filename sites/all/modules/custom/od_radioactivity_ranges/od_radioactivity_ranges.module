@@ -8,17 +8,17 @@ function od_radioactivity_ranges_default() {
         'field_popularity' => array(
           0 => array(
             'min' => 0,
-            'max' => 10,
+            'max' => 2000,
             'value' => 'potential demand',
           ),
           1 => array(
-            'min' => 11,
-            'max' => 49,
+            'min' => 2001,
+            'max' => 3000,
             'value' => 'demand',
           ),
           2 => array(
-            'min' => 50,
-            'max' => 100,
+            'min' => 3001,
+            'max' => 100000,
             'value' => 'critical demand',
           ),
         ),
