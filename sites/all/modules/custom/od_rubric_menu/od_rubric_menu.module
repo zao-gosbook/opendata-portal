@@ -76,7 +76,7 @@ function od_rubric_menu_block_view($delta = '') {
       ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
       ->execute();
     if (count($result)) {
-      $output .= '<li class="menu-item">' . l(t('Application'), '/apps') . '</li>';
+      $output .= '<li class="menu-item">' . l(t('Applications'), 'apps') . '</li>';
     }
 
     // menu link "blogs"

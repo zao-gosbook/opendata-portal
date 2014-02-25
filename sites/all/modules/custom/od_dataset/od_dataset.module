@@ -1,0 +1,94 @@
+<?php
+/**
+ * @file
+ */
+
+function od_dataset_menu() {
+  $items = array();
+
+  $items['dataset-actions/download_package/%node'] = array(
+    'title' => '',
+    'page callback' => 'od_dataset_download_page',
+    'page arguments' => array(2, 3),
+    'access callback' => 'od_dataset_download_page_access',
+    'access arguments' => array(2, 3),
+  );
+
+  return $items;
+}
+
+/**
+ * @param $nid
+ * @return bool|mixed
+ */
+function od_dataset_download_page_access($node, $revision_id = NULL) {
+  $wrapper = od_dataset_get_wrapper($node, $revision_id);
+
+  //@todo add other access checks
+  if (!$wrapper || $wrapper->{'type'}->value() != 'dataset' || $wrapper->field_resources->count() == 0) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * Gets wrapper for a node with specific revision.
+ * @param $node_or_nid
+ * @param null $revision_id
+ * @return bool|EntityMetadataWrapper
+ */
+function od_dataset_get_wrapper($node_or_nid, $revision_id = NULL) {
+  $obj = $node_or_nid;
+  $nid = is_object($node_or_nid) && isset($node_or_nid->nid) ? $node_or_nid->nid : $node_or_nid;
+  if ($revision_id !== NULL && ($obj = node_load($nid, $revision_id)) && !$obj) {
+    return FALSE;
+  }
+
+  return entity_metadata_wrapper('node', $obj);
+}
+
+/**
+ * Page callback for downloading zip file.
+ */
+function od_dataset_download_page($node, $revision_id = NULL) {
+  $wrapper = od_dataset_get_wrapper($node, $revision_id);
+  $resources = $wrapper->field_resources;
+
+  $zip = new ZipArchive();
+  $tmp_file = tempnam(sys_get_temp_dir(), 'tmp');
+  if ( true !== ($zip->open($tmp_file, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE) )) {
+    drupal_not_found(); //@fixme: Control somehow. Write to watchdog.
+  }
+
+  $resource_index = 1;
+  foreach ($resources as $resource) {
+    if ($file = $resource->field_upload->value()) {
+      $ext = pathinfo($file->uri, PATHINFO_EXTENSION);
+      $suffix = $ext ? '.' . $ext : NULL;
+      $sWrapper = file_stream_wrapper_get_instance_by_uri($file->uri);
+      $realpath = $sWrapper->realpath();
+      if (file_exists($realpath)) {
+        $zip->addFile($realpath, "resource_{$resource_index}{$suffix}");
+      }
+    }
+
+    $resource_index++;
+  }
+
+  if (!$zip->close()) {
+    @unlink($tmp_file);
+    drupal_not_found();
+  }
+
+  ob_clean();
+  drupal_add_http_header('Content-Type', 'octet/stream');
+  drupal_add_http_header('Content-Disposition', 'attachment; filename=package.zip');
+  drupal_add_http_header('Content-Transfer-Encoding', 'Binary');
+  drupal_add_http_header('Content-Description', 'File Transfer');
+  drupal_add_http_header('Content-Length', filesize($tmp_file));
+  readfile($tmp_file);
+  @unlink($tmp_file);
+
+  drupal_exit();
+}

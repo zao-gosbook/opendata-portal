@@ -145,6 +145,10 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
     $form['actions']['submit']['#value'] = t($form['actions']['submit']['#value']);
   }
+  //Hide 'Your name' form ilement for comment form
+  if (isset($form['#entity_type']) && $form['#entity_type'] == 'comment') {
+    unset($form['author']['_author']);
+  }
 }
 
 /**
@@ -249,7 +253,7 @@ function od_common_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
-  
+
   return $items;
 }
 
@@ -278,21 +282,29 @@ function od_common_field_formatter_info() {
   return $info;
 }
 
-/**
- * Implements hook_field_widget_form_alter()
- */
-function od_common_field_widget_form_alter(&$element, &$form_state, $context) {
-  if (isset($element[0]['#field_name']) && $element[0]['#field_name'] == 'field_link_remote_file') {
-    $validators = array('od_common_file_widget_clean_filename' => array());
-    foreach ($element[0]['#upload_validators'] as $validator => $info) {
-      $validators[$validator] = $info;
-    }
-
-    $element[0]['#upload_validators'] = $validators;
-  }
-
-
-}
+///**
+// * Implements hook_field_widget_form_alter()
+// */
+//function od_common_field_widget_form_alter(&$element, &$form_state, $context) {
+//  if (isset($element[0]['#field_name']) && $element[0]['#field_name'] == 'field_link_remote_file') {
+//    $validators = array('od_common_file_widget_clean_filename' => array());
+//    foreach ($element[0]['#upload_validators'] as $validator => $info) {
+//      $validators[$validator] = $info;
+//    }
+//
+//    foreach ($element as &$_element) {
+//      $_element['#upload_validators'] = $validators;
+//    }
+//  }
+//}
+//
+//function od_common_file_widget_clean_filename(stdClass $file) {
+//  if (isset($file->fid)) {
+//    $file->filename = preg_replace('/\?.*$/i', '', $file->filename);
+//  }
+//
+//  return array();
+//}
 
 function od_common_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
@@ -363,8 +375,44 @@ function od_common_page_delivery_callback_alter(&$callback) {
   }
 }
 
+/**
+ * Implements hook_user_delete().
+ */
 function od_common_user_delete($account) {
   if ($account->uid == OD_COMMON_IMPORT_USER_ID) {
     throw new Exception('Вы не можете удалить пользователя "Робот импорта открытых данных" с идентификатором ' . OD_COMMON_IMPORT_USER_ID);
+  }
+}
+
+/**
+ * Implements hook_js_alter().
+ * Hides js links 'show row weights' in forms.
+ */
+function od_common_js_alter(&$javascript) {
+  global $user;
+  if (!in_array('administrator', $user->roles) && isset($javascript['misc/tabledrag.js'])) {
+    /**
+     * Find next after modal.js element to get his weight property.
+     */
+    reset($javascript);
+    $ctools_modal = 'misc/tabledrag.js';
+    $ctools_modal_after = FALSE;
+    while (list($key) = each($javascript)) {
+      if ($key == $ctools_modal) {
+        $ctools_modal_after = current($javascript);
+        break;
+      }
+    }
+    
+    /**
+     * Add new element to the list and set his weight.
+     */
+    if ($ctools_modal_after !== FALSE) {
+      $skp_ctools_modal = drupal_get_path('module', 'od_common') . '/js/alters/tabledrag_js_alter.js';
+      $javascript[$skp_ctools_modal] = drupal_js_defaults($skp_ctools_modal);
+      $javascript[$skp_ctools_modal]['weight'] = $javascript[$ctools_modal]['weight'] + (
+        ($ctools_modal_after['weight'] - $javascript[$ctools_modal]['weight']) / 2
+      );
+    }
   }
 }

@@ -13,6 +13,7 @@
  *    create_fields (default to TRUE) - Creates not existing fields for node's bundle
  * @return object
  *  Created node
+ * @deprecated Use entityform_to_node instead
  */
 function common_copy_ef_to_node($ef, $node_type, $options = array()) {
   static $default_options = array(
@@ -134,12 +135,12 @@ function common_copy_ef_to_node($ef, $node_type, $options = array()) {
  * @param string $extenstion
  * @return null|object
  */
-function od_common_file_get_extension_term($extension = NULL) {
+function od_common_file_get_extension_term($extension = NULL, $vocabulary = NULL) {
   $cache = &drupal_static(__FUNCTION__, array());
   $cache_key = 'default';
   $container = &$cache[$cache_key];
   if (!isset($container)) {
-    $voc = taxonomy_vocabulary_machine_name_load('format');
+    $voc = $vocabulary ? $vocabulary : taxonomy_vocabulary_machine_name_load('format');
     foreach (taxonomy_get_tree($voc->vid) as $term) {
       $container['by_ext'][$term->name] = $term;
       //$container['by_tid'][$term->tid] = $term;
