@@ -25,7 +25,7 @@ function od_dataset_download_page_access($node, $revision_id = NULL) {
   $wrapper = od_dataset_get_wrapper($node, $revision_id);
 
   //@todo add other access checks
-  if ($wrapper->{'type'}->value() != 'dataset' || $wrapper->field_resources->count() == 0) {
+  if (!$wrapper || $wrapper->{'type'}->value() != 'dataset' || $wrapper->field_resources->count() == 0) {
     return FALSE;
   }
 
