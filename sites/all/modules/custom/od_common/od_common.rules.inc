@@ -145,6 +145,27 @@ function od_common_rules_action_info() {
       'group' => t('Gosbook'),
       'base' => 'od_common_rules_actions_od_common_format_date',
     ),
+    'od_common_file_get_extension_term' => array(
+      'label' => t('Gets taxonomy term that represents file extension'),
+      'parameter' => array(
+        'file' => array(
+          'type' => 'file',
+          'label' => t('File'),
+        ),
+        'vocabulary' => array(
+          'label' => t('Select vocabulary that contains term as extensions'),
+          'type' => 'taxonomy_vocabulary',
+        ),
+      ),
+      'provides' => array(
+        'extension_term' => array(
+          'type' => 'taxonomy_term',
+          'label' => t('Formated date string'),
+        ),
+      ),
+      'group' => t('Gosbook'),
+      'base' => 'od_common_rules_actions_od_common_file_get_extension_term',
+    ),
   );
 }
 
@@ -238,5 +259,18 @@ function common_rules_actions_set_user_password($account, $password) {
 
 function common_rules_actions_get_ulogin_data() {
   //if ()
+}
+
+/**
+ * Rule callback.
+ */
+function od_common_rules_actions_od_common_file_get_extension_term($file, $vocabulary) {
+  $term = NULL;
+  if ($ext = pathinfo($file->uri, PATHINFO_EXTENSION)) {
+    od_common_module('core');
+    $term = od_common_file_get_extension_term($ext, $vocabulary);
+  }
+
+  return array('extension_term' => $term);
 }
 
