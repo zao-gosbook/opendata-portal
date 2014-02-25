@@ -2363,13 +2363,20 @@ div.horizontal-tabs .form-text {
   padding-top: 2em;
  
   #entityform_od_preprocess_wizard_form_group_div {
-    margin: 0 -20px 20px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    margin: 0 40% 20px 0;
     padding: 20px;
-    background: #fff;
+    width: auto;
     
     .form-wrapper {
       margin: 0 0 20px;
     }
+  }
+  #field-dataset-instruction-main-add-more-wrapper,
+  #field-dataset-instruction-link-add-more-wrapper {
+    color: #9D9D9D;
+    font-size: 1.2em;
+    line-height: 1.1em;    
   }
   .form-item {
     margin: 0;
@@ -2644,6 +2651,7 @@ html.js input.form-autocomplete {
 /**
  * page-user-login
  */
+.page-user.not-logged-in.section-user, 
 .page-user-login,
 .page-user-register,
 .page-user-password {
