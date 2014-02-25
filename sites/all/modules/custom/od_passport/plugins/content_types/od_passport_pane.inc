@@ -209,7 +209,7 @@ function _passport_table_rows($nid) {
   
     //Описание структуры набора данных
     $url_datasets_structure = array();
-    
+
     if ($field_link_structure_file = $resource->field_link_structure_file->value()) {  
         $url_datasets_structure[] = $field_link_structure_file['uri'];
       }

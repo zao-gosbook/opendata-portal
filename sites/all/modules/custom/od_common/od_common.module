@@ -375,6 +375,9 @@ function od_common_page_delivery_callback_alter(&$callback) {
   }
 }
 
+/**
+ * Implements hook_user_delete().
+ */
 function od_common_user_delete($account) {
   if ($account->uid == OD_COMMON_IMPORT_USER_ID) {
     throw new Exception('Вы не можете удалить пользователя "Робот импорта открытых данных" с идентификатором ' . OD_COMMON_IMPORT_USER_ID);

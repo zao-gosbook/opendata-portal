@@ -35,3 +35,14 @@ define('OD_COMMON_FIELD_RESOURCE_DATA', 'field_upload');
 define('OD_COMMON_FIELD_RESOURCE_CSV_DELIMITER', 'field_csv_delimiter');
 define('OD_COMMON_FIELD_RESOURCE_ENCODING', 'field_encoding');
 define('OD_COMMON_FIELD_RESOURCE_STRUCTURE', 'field_upload_structure');
+
+/**
+ * Organization fields.
+ */
+define('OD_COMMON_FIELD_ORGANIZATION_CURATOR', 'field_organization_curators');
+
+/**
+ * Log fields.
+ */
+define('OD_COMMON_FIELD_LOG_ORGANIZATION', 'field_organization');
+define('OD_COMMON_FIELD_LOG_DATASET', 'field_dataset_ref');
