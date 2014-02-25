@@ -126,3 +126,62 @@ function od_log_views_default_views() {
 
   return $items;
 }
+
+/**
+ * Implements hook_action_info().
+ */
+function od_log_action_info() {
+  // Init output variable.
+  $items = array();
+
+  $items['od_log_notify_organization'] = array(
+    'type' => 'log',
+    'label' => 'Уведомление куратора об ошибке импорта открытых данных с сайта орагнизации',
+    'configurable' => FALSE,
+    'aggregate' => TRUE,
+    'triggers' => array('any'),
+  );
+
+  return $items;
+}
+
+/**
+ * Action callback. Import opendata from organizations.
+ */
+function od_log_notify_organization($entities) {
+  foreach ($entities as $entity) {
+    // Check
+    if (empty($entity->{OD_COMMON_FIELD_LOG_ORGANIZATION})) {
+      continue;
+    }
+
+    $organization_id = $entity->{OD_COMMON_FIELD_LOG_ORGANIZATION}[LANGUAGE_NONE]['0']['target_id'];
+
+    $organization = node_load($organization_id);
+
+    if (empty($organization->{OD_COMMON_FIELD_ORGANIZATION_CURATOR})) {
+      continue;
+    }
+
+    foreach ($organization->{OD_COMMON_FIELD_ORGANIZATION_CURATOR}[LANGUAGE_NONE] as $field_item) {
+      $user_id = $field_item['target_id'];
+      $user = user_load($user_id);
+
+      $mail_vars = array();
+      $mail_vars['message'] = $entity->message;
+      drupal_mail('od_log', 'notice', $user->mail, 'ru', $mail_vars);
+    }
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function od_log_mail($key, &$message, $vars) {
+  switch($key) {
+    case 'notice':
+      $message['subject'] = 'Уведомление куратора об ошибке импорта открытых данных с сайта орагнизации';
+      $message['body'][] = $vars['message'];
+      break;
+  }
+}

@@ -15,7 +15,7 @@ function od_log($message, $importance = 'status', $type = NULL, $organization_id
   }
 
   if (!empty($dataset_id)) {
-    $vars[OD_COMMON_FIELD_RESOURCE_DATASET] = array(LANGUAGE_NONE => array('0' => array('target_id' => $dataset_id)));
+    $vars[OD_COMMON_FIELD_LOG_DATASET] = array(LANGUAGE_NONE => array('0' => array('target_id' => $dataset_id)));
   }
 
   drupal_set_message($message, $importance);
