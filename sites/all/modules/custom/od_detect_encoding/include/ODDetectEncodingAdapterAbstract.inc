@@ -20,7 +20,7 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
   }
 
   function __construct() {
-    $this->_error = new ODDetectEncodingException('', static::ERR_NONE);
+    $this->_error = new ODDetectEncodingException();
   }
   /**
    * Does system shell execution of a command.

@@ -12,7 +12,10 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
    */
   public function guessFileEncoding($path) {
     $escaped = $this->escape(realpath($path));
-    if (file_exists($path) && ($output = $this->syscall("{$this->command} '{$escaped}'"))) {
+    if (!file_exists($path)) {
+      $this->getExceptionObject()->setInfo(ODDetectEncoding::ERR_FILE_NOT_FOUND, "File '{$path}' was not found");
+    }
+    elseif (($output = $this->syscall("{$this->command} '{$escaped}'"))) {
       return $this->processOutput($output);
     }
 
