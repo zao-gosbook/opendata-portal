@@ -80,6 +80,13 @@ label.option {
     @include box-shadow(0 0 5px rgba(255, 162, 0, .65));
   } 
 } 
+.form-type-checkbox,
+.form-type-radio {
+ 
+  input {
+    margin-top: 3px;
+  }
+}
 div.autocomplete-deluxe-multiple {
   border-color: #ccc;
 }
@@ -2355,6 +2362,15 @@ div.horizontal-tabs .form-text {
 .entityform {
   padding-top: 2em;
  
+  #entityform_od_preprocess_wizard_form_group_div {
+    margin: 0 -20px 20px;
+    padding: 20px;
+    background: #fff;
+    
+    .form-wrapper {
+      margin: 0 0 20px;
+    }
+  }
   .form-item {
     margin: 0;
     clear: both;
@@ -2382,7 +2398,10 @@ div.horizontal-tabs .form-text {
     color: #9d9d9d;
     font-size: 1.2em;
     line-height: 1em;
+    clear: both;
+    margin: -5px 0 0;
   }
+  
   .form-submit {
     
   }
@@ -4626,6 +4645,9 @@ div.fivestar-widget .star {
   div.legend {
     float: left;
     padding-right: 10px;
+  }
+  label.option {
+    float: none;
   }
   .popup-element-title {
     float: left;
