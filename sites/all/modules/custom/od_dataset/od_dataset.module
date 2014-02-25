@@ -6,12 +6,12 @@
 function od_dataset_menu() {
   $items = array();
 
-  $items['dataset-actions/%node/download'] = array(
+  $items['dataset-actions/download_package/%node'] = array(
     'title' => '',
     'page callback' => 'od_dataset_download_page',
-    'page arguments' => array(1),
+    'page arguments' => array(2, 3),
     'access callback' => 'od_dataset_download_page_access',
-    'access arguments' => array(1),
+    'access arguments' => array(2, 3),
   );
 
   return $items;
@@ -21,8 +21,8 @@ function od_dataset_menu() {
  * @param $nid
  * @return bool|mixed
  */
-function od_dataset_download_page_access($node) {
-  $wrapper = entity_metadata_wrapper('node', $node);
+function od_dataset_download_page_access($node, $revision_id = NULL) {
+  $wrapper = od_dataset_get_wrapper($node, $revision_id);
 
   //@todo add other access checks
   if ($wrapper->{'type'}->value() != 'dataset' || $wrapper->field_resources->count() == 0) {
@@ -33,10 +33,26 @@ function od_dataset_download_page_access($node) {
 }
 
 /**
+ * Gets wrapper for a node with specific revision.
+ * @param $node_or_nid
+ * @param null $revision_id
+ * @return bool|EntityMetadataWrapper
+ */
+function od_dataset_get_wrapper($node_or_nid, $revision_id = NULL) {
+  $obj = $node_or_nid;
+  $nid = is_object($node_or_nid) && isset($node_or_nid->nid) ? $node_or_nid->nid : $node_or_nid;
+  if ($revision_id !== NULL && ($obj = node_load($nid, $revision_id)) && !$obj) {
+    return FALSE;
+  }
+
+  return entity_metadata_wrapper('node', $obj);
+}
+
+/**
  * Page callback for downloading zip file.
  */
-function od_dataset_download_page($node) {
-  $wrapper = entity_metadata_wrapper('node', $node);
+function od_dataset_download_page($node, $revision_id = NULL) {
+  $wrapper = od_dataset_get_wrapper($node, $revision_id);
   $resources = $wrapper->field_resources;
 
   $zip = new ZipArchive();
