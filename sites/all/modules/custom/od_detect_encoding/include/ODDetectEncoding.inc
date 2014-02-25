@@ -4,6 +4,9 @@
  */
 
 class ODDetectEncoding {
+  /**
+   * @fixme: Add other encodings
+   */
   const ENC_ASCII = 'ASCII';
   const ENC_UTF8 = 'UTF8';
   const ENC_CP1251 = 'CP1251';
@@ -39,7 +42,7 @@ class ODDetectEncoding {
       return $this->getInnerEncoding($encoding);
     }
 
-    return FALSE;
+    return static::ENC_UNKNOWN;
   }
 
   function guessEncoding($string) {
@@ -47,24 +50,6 @@ class ODDetectEncoding {
       return $this->getInnerEncoding($encoding);
     }
 
-    return FALSE;
-  }
-}
-
-interface ODDetectEncodingAdapterInterface {
-  public function guessFileEncoding($path);
-  public function guessEncoding($string);
-  public function check();
-  public function name();
-  public function errorMsg();
-  public function version();
-  public function convertList();
-}
-
-abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapterInterface {
-  protected $_version = '0.0.0';
-  public function errorMsg() {}
-  public function version() {
-    return $this->_version;
+    return static::ENC_UNKNOWN;
   }
 }

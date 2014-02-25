@@ -128,13 +128,16 @@ function theme_strongarm_admin_form(&$vars) {
   $headers[] = t('Variable');
   $headers[] = t('Storage');
   $headers[] = t('Value');
-  foreach (element_children($form['name']) as $name) {
-    $row = array();
-    $row[] = isset($form['revert'][$name]) ? drupal_render($form['revert'][$name]) : '';
-    $row[] = drupal_render($form['name'][$name]);
-    $row[] = drupal_render($form['storage'][$name]);
-    $row[] = drupal_render($form['value'][$name]);
-    $rows[] = $row;
+  
+  if (!empty($form['name'])) {
+    foreach (element_children($form['name']) as $name) {
+      $row = array();
+      $row[] = isset($form['revert'][$name]) ? drupal_render($form['revert'][$name]) : '';
+      $row[] = drupal_render($form['name'][$name]);
+      $row[] = drupal_render($form['storage'][$name]);
+      $row[] = drupal_render($form['value'][$name]);
+      $rows[] = $row;
+    }
   }
   $output = theme('table', array('header' => $headers, 'rows' => $rows));
   $output .= drupal_render_children($form);

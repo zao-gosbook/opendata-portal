@@ -6,4 +6,7 @@ core = 7.x
 
 ; Autoloader classes
 files[] = include/ODDetectEncoding.inc
+files[] = include/ODDetectEncodingAdapterInterface.inc
+files[] = include/ODDetectEncodingAdapterAbstract.inc
 files[] = include/adapters/ODDetectEncodingAdapter_Enca.inc
+files[] = include/ODDetectEncodingAdapter_dummy.inc
