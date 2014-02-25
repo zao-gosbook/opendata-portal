@@ -6,7 +6,7 @@
 function od_dataset_menu() {
   $items = array();
 
-  $items['dataset-actions/%od_dataset_node/download'] = array(
+  $items['dataset-actions/%node/download'] = array(
     'title' => '',
     'page callback' => 'od_dataset_download_page',
     'page arguments' => array(1),
@@ -32,6 +32,9 @@ function od_dataset_download_page_access($node) {
   return TRUE;
 }
 
+/**
+ * Page callback for downloading zip file.
+ */
 function od_dataset_download_page($node) {
   $wrapper = entity_metadata_wrapper('node', $node);
   $resources = $wrapper->field_resources;
@@ -44,23 +47,32 @@ function od_dataset_download_page($node) {
 
   $resource_index = 1;
   foreach ($resources as $resource) {
-    $resource_wrapper = entity_metadata_wrapper('node', $resource);
-    if ($file = $resource_wrapper->file_upload->value()) {
+    if ($file = $resource->field_upload->value()) {
       $ext = pathinfo($file->uri, PATHINFO_EXTENSION);
       $suffix = $ext ? '.' . $ext : NULL;
-      $zip->addFile($file->uri, "resource_{$resource_index}{$suffix}");
+      $sWrapper = file_stream_wrapper_get_instance_by_uri($file->uri);
+      $realpath = $sWrapper->realpath();
+      if (file_exists($realpath)) {
+        $zip->addFile($realpath, "resource_{$resource_index}{$suffix}");
+      }
     }
 
     $resource_index++;
   }
 
-  $zip->close();
+  if (!$zip->close()) {
+    @unlink($tmp_file);
+    drupal_not_found();
+  }
 
   ob_clean();
-  drupal_add_http_header('Content-type', 'application/zip');
-  drupal_add_http_header('Content-disposition', 'attachment; filename=package.zip');
-  drupal_add_http_header('Content-length', filesize($tmp_file));
+  drupal_add_http_header('Content-Type', 'octet/stream');
+  drupal_add_http_header('Content-Disposition', 'attachment; filename=package.zip');
+  drupal_add_http_header('Content-Transfer-Encoding', 'Binary');
+  drupal_add_http_header('Content-Description', 'File Transfer');
+  drupal_add_http_header('Content-Length', filesize($tmp_file));
   readfile($tmp_file);
+  @unlink($tmp_file);
 
   drupal_exit();
 }
