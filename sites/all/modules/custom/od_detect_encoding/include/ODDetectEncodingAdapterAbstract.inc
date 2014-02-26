@@ -83,7 +83,8 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
     }
 
     // Read file contents
-    if (!($converted = file_get_contents($input_file))) { //@fixme: replace with adapter's getContent method
+    // @fixme: replace file_get_contents() with adapter's getContent method
+    if (!($converted = file_get_contents($input_file))) {
       // @fixme: Set an error for this operation
       return FALSE;
     }
@@ -102,11 +103,10 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
 
   public function copyFile($input_file, $output_file) {
     $status = FALSE;
-    //@fixme: Replace with calling adapter's copyFile()
     if (copy($input_file, $output_file)) {
       $status = TRUE;
     }
-    //@fixme: Replace with calling adapter's getContent method
+    //@fixme: Replace file_get_contents() with calling adapter's getContent method
     elseif (($file_content = file_get_contents($input_file)) && (file_put_contents($output_file, $file_content))) {
       $status = TRUE;
     }
