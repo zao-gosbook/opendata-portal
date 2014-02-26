@@ -61,6 +61,7 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
       return $string;
     }
 
+    // Do not try to convert if our string is already has a charset passed by $out_charset.
     if ($in_charset == $out_charset) {
       return $string;
     }
