@@ -98,4 +98,8 @@ class ODDetectEncoding {
   function convertFile($input_file, $output_file,$out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
     return $this->_adapter->convertFile($input_file, $output_file,$out_charset, $in_charset);
   }
+
+  public function copyFile($input_file, $output_file) {
+    return $this->_adapter->copyFile($input_file, $output_file);
+  }
 }
