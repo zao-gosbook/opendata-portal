@@ -47,4 +47,13 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
   public function getExceptionObject() {
     return $this->_error;
   }
+
+  public function convertTo($in_charset = ODDetectEncoding::ENC_AUTO, $out_charset, $string) {
+    if ($in_charset == ODDetectEncoding::ENC_AUTO && ($in_charset = $this->guessEncoding($string)) === FALSE) {
+      $this->getExceptionObject()->setInfo(ODDetectEncoding::ERR_CONVERT, 'Can\'t convert a string because an encoding can\'t be determined.');
+      return $string;
+    }
+
+    return iconv($in_charset, $out_charset, $string);
+  }
 }

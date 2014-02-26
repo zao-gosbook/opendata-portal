@@ -14,6 +14,7 @@ class ODDetectEncoding {
   const ENC_CP1252 = 'CP1252';
   const ENC_ISO_8859_16 = 'ISO-8859-16';
   const ENC_UNKNOWN = 'unknown';
+  const ENC_AUTO = 'auto';
 
   /**
    * Errors definition
@@ -24,6 +25,9 @@ class ODDetectEncoding {
   // Internal adapter encoding has not been implemented in convertList() to
   // provide common encoding defined in ODDetectEncoding::ENC_* constants.
   const ERR_ENCODING_NOT_IMPLEMENTED = 2;
+
+  // An error has been occurred while converting.
+  const ERR_CONVERT = 3;
 
   // When an error
   const ERR_UNKNOWN = -1;
