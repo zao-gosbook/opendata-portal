@@ -72,7 +72,6 @@ function od_file_preprocess_field_widget_form_alter(&$element, &$form_state, $co
       ($context['instance']['settings']['od_file_preprocess'])) {
 
     $js = drupal_get_path('module', 'od_file_preprocess') . '/' . 'od_file_preprocess.js';
-
     foreach ($element as &$el) {
       $el['#process'][] = 'od_file_preprocess_file_element_set_identity';
       $el['#process'][] = 'od_file_preprocess_widget_process';
@@ -86,10 +85,6 @@ function od_file_preprocess_field_widget_form_alter(&$element, &$form_state, $co
   }
 }
 
-function od_file_preprocess_file_element_after_build($element, &$form_state) {
-  return $element;
-}
-
 function od_file_preprocess_file_element_set_identity($element, &$form_state) {
   $element['upload_button']['#identity'] = 'upload_button';
   $element['remove_button']['#identity'] = 'remove_button';
@@ -101,14 +96,6 @@ function od_file_preprocess_file_element_set_identity($element, &$form_state) {
  * Process form file element
  */
 function od_file_preprocess_widget_process($element, &$form_state) {
- 
-  /*if ((!isset($form_state['input']['op']) ||
-       $form_state['input']['op'] != 'Submit Form') && 
-      !$form_state['submitted']) {
-    
-    return $element;
-  }*/
-
   $field_name = $element['#field_name'];
   $lang = $element['#language'];
   $delta = $element['#delta'];
@@ -422,7 +409,7 @@ function od_file_preprocess_parse_csv($path, $codepage = FALSE) {
   include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel.php';
   include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-  if (!$codepage && ($codepage = od_detect_encoding_guess_file($path)) != ODDetectEncoding::ENC_UNKNOWN) {
+  if (!$codepage && ($codepage = od_detect_encoding_guess_file($path))) {
     // If we couldn't guess encoding automatically, fallback it to UTF8
     $codepage = ODDetectEncoding::ENC_UTF8;
   }
