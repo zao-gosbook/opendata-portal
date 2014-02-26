@@ -365,6 +365,10 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
   return array(
     'created_files' => $files_created,
     'created_structure' => $file_structure,
-    'created_structure_media' => $file_structure,
+    'created_structure_media' => array(
+      'file' => $file_structure,
+      'description' => 'created_structure_media',
+      'display' => TRUE,
+    ),
   );
 }
