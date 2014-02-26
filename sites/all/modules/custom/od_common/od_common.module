@@ -385,6 +385,39 @@ function od_common_user_delete($account) {
 }
 
 /**
+ * Implements hook_js_alter().
+ * Hides js links 'show row weights' in forms.
+ */
+function od_common_js_alter(&$javascript) {
+  global $user;
+  if (!in_array('administrator', $user->roles) && isset($javascript['misc/tabledrag.js'])) {
+    /**
+     * Find next after modal.js element to get his weight property.
+     */
+    reset($javascript);
+    $ctools_modal = 'misc/tabledrag.js';
+    $ctools_modal_after = FALSE;
+    while (list($key) = each($javascript)) {
+      if ($key == $ctools_modal) {
+        $ctools_modal_after = current($javascript);
+        break;
+      }
+    }
+    
+    /**
+     * Add new element to the list and set his weight.
+     */
+    if ($ctools_modal_after !== FALSE) {
+      $skp_ctools_modal = drupal_get_path('module', 'od_common') . '/js/alters/tabledrag_js_alter.js';
+      $javascript[$skp_ctools_modal] = drupal_js_defaults($skp_ctools_modal);
+      $javascript[$skp_ctools_modal]['weight'] = $javascript[$ctools_modal]['weight'] + (
+        ($ctools_modal_after['weight'] - $javascript[$ctools_modal]['weight']) / 2
+      );
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_THEME().
  */
 function od_common_preprocess_username(&$vars) {
