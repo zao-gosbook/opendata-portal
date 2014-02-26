@@ -115,11 +115,6 @@ function od_common_entity_property_verbatim_get($data, array $options, $name, $t
  */
 function od_common_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id) {
-    case 'dataset_actualization_entityform_edit_form': //Актуализация паспорта
-    case 'od_preprocess_wizard_entityform_edit_form': //Форма создания набора данных
-      od_common_module('od_preprocess_wizard_entityform_edit_alter');
-      _od_common_form_od_preprocess_wizard_entityform_edit_form_alter($form, $form_state);
-      break;
     case 'views_exposed_form':
       od_common_module('map_views_alter');
       _od_common_map_views_form_views_exposed_form_alter($form, $form_state);
@@ -247,13 +242,6 @@ function od_common_menu() {
     'file' => 'od_common.actualize_pasport.page.inc',
   );
 
-  $items['sparql_page'] = array(
-    'title' => '',
-    'page callback' => 'sparql_page_callback',
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-  );
-
   return $items;
 }
 
@@ -370,9 +358,6 @@ function od_common_module_loaded($module) {
  * Implements hook_page_delivery_callback_alter()
  */
 function od_common_page_delivery_callback_alter(&$callback) {
-  if (od_common_module_loaded('od_preprocess_wizard_entityform_edit_alter')) {
-    _od_common_page_delivery_callback_alter($callback);
-  }
 }
 
 /**
