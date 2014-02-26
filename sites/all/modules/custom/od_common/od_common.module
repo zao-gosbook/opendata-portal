@@ -383,3 +383,10 @@ function od_common_user_delete($account) {
     throw new Exception('Вы не можете удалить пользователя "Робот импорта открытых данных" с идентификатором ' . OD_COMMON_IMPORT_USER_ID);
   }
 }
+
+/**
+ * Implements hook_preprocess_THEME().
+ */
+function od_common_preprocess_username(&$vars) {
+  $vars['name'] = format_username($vars['account']);
+}
