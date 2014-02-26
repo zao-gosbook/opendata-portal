@@ -266,9 +266,15 @@ function common_rules_actions_get_ulogin_data() {
  */
 function od_common_rules_actions_od_common_file_get_extension_term($file, $vocabulary) {
   $term = NULL;
-  if ($ext = pathinfo($file->uri, PATHINFO_EXTENSION)) {
-    od_common_module('core');
-    $term = od_common_file_get_extension_term($ext, $vocabulary);
+  try {
+    if ($ext = pathinfo($file->uri, PATHINFO_EXTENSION)) {
+      od_common_module('core');
+      $term = od_common_file_get_extension_term($ext, $vocabulary);
+    }
+  }
+  catch (Exception $e) {
+    watchdog_exception('od_common', $e);
+    $term = NULL;
   }
 
   return array('extension_term' => $term);
