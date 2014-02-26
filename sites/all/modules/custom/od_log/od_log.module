@@ -16,7 +16,7 @@ require_once OD_LOG . '/includes/constants.inc';
 require_once OD_LOG . '/includes/controller.inc';
 
 /**
- * Implements hook_node_save
+ * Implements hook_node_insert().
  */
 function od_log_node_insert($node) {
   if (isset($node->od_log) && $node->od_log === FALSE) {
@@ -45,6 +45,9 @@ function od_log_node_insert($node) {
   }
 }
 
+/**
+ * Implements hook_node_update().
+ */
 function od_log_node_update($node) {
   if (isset($node->od_log) && $node->od_log === FALSE) {
     return;
@@ -56,7 +59,7 @@ function od_log_node_update($node) {
     case 'dataset':
       $organization_id = !empty($node->{OD_COMMON_FIELD_DATASET_OWNER}) ? $node->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
 
-      $message = 'Набор открытых данных обновлен';
+      $message = 'Набор открытых данных изменен';
 
       od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_DATASET_CHANGED, $organization_id, $node->nid, $user_id);
       break;
@@ -67,12 +70,15 @@ function od_log_node_update($node) {
 
       $organization_id = (!empty($dataset) && !empty($dataset->{OD_COMMON_FIELD_DATASET_OWNER})) ? $dataset->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
 
-      $message = 'Ресурс набора открытых данных обновлен';
+      $message = 'Ресурс набора открытых данных изменен';
       od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_RESOURCE_CHANGED, $organization_id, $dataset_id, $user_id);
       break;
   }
 }
 
+/**
+ * Implements hook_node_delete().
+ */
 function od_log_node_delete($node) {
   if (isset($node->od_log) && $node->od_log === FALSE) {
     return;

@@ -259,11 +259,24 @@ $handler->display->display_options['path'] = 'opendata-log';
 /* Display: Журнал набора открытых данных */
 $handler = $view->new_display('page', 'Журнал набора открытых данных', 'opendata_meta_log');
 $handler->display->display_options['defaults']['fields'] = FALSE;
-/* Поле: Тип лога (исключено) */
+/* Поле: Время */
+$handler->display->display_options['fields']['created']['id'] = 'created';
+$handler->display->display_options['fields']['created']['table'] = 'log';
+$handler->display->display_options['fields']['created']['field'] = 'created';
+$handler->display->display_options['fields']['created']['ui_name'] = 'Время';
+$handler->display->display_options['fields']['created']['label'] = '';
+$handler->display->display_options['fields']['created']['element_type'] = '0';
+$handler->display->display_options['fields']['created']['element_label_type'] = '0';
+$handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['created']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['created']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['created']['date_format'] = 'comment';
+$handler->display->display_options['fields']['created']['format_date_sql'] = 0;
+/* Поле: Тип лога */
 $handler->display->display_options['fields']['field_log_event_type']['id'] = 'field_log_event_type';
 $handler->display->display_options['fields']['field_log_event_type']['table'] = 'field_data_field_log_event_type';
 $handler->display->display_options['fields']['field_log_event_type']['field'] = 'field_log_event_type';
-$handler->display->display_options['fields']['field_log_event_type']['ui_name'] = 'Тип лога (исключено)';
+$handler->display->display_options['fields']['field_log_event_type']['ui_name'] = 'Тип лога';
 $handler->display->display_options['fields']['field_log_event_type']['label'] = '';
 $handler->display->display_options['fields']['field_log_event_type']['alter']['alter_text'] = TRUE;
 $handler->display->display_options['fields']['field_log_event_type']['alter']['text'] = '<div class="[field_log_event_type]"></div>';
@@ -274,40 +287,31 @@ $handler->display->display_options['fields']['field_log_event_type']['element_la
 $handler->display->display_options['fields']['field_log_event_type']['element_wrapper_type'] = '0';
 $handler->display->display_options['fields']['field_log_event_type']['element_default_classes'] = FALSE;
 $handler->display->display_options['fields']['field_log_event_type']['type'] = 'list_key';
-/* Поле: Фото */
-$handler->display->display_options['fields']['picture']['id'] = 'picture';
-$handler->display->display_options['fields']['picture']['table'] = 'users';
-$handler->display->display_options['fields']['picture']['field'] = 'picture';
-$handler->display->display_options['fields']['picture']['relationship'] = 'log_related_user';
-$handler->display->display_options['fields']['picture']['ui_name'] = 'Фото';
-$handler->display->display_options['fields']['picture']['label'] = '';
-$handler->display->display_options['fields']['picture']['element_type'] = '0';
-$handler->display->display_options['fields']['picture']['element_label_type'] = '0';
-$handler->display->display_options['fields']['picture']['element_label_colon'] = FALSE;
-$handler->display->display_options['fields']['picture']['element_wrapper_type'] = '0';
-$handler->display->display_options['fields']['picture']['element_default_classes'] = FALSE;
-$handler->display->display_options['fields']['picture']['image_style'] = 'avatar-45x45';
-/* Поле: Время */
-$handler->display->display_options['fields']['created']['id'] = 'created';
-$handler->display->display_options['fields']['created']['table'] = 'log';
-$handler->display->display_options['fields']['created']['field'] = 'created';
-$handler->display->display_options['fields']['created']['ui_name'] = 'Время';
-$handler->display->display_options['fields']['created']['label'] = 'Время';
-$handler->display->display_options['fields']['created']['element_type'] = '0';
-$handler->display->display_options['fields']['created']['element_label_type'] = '0';
-$handler->display->display_options['fields']['created']['element_wrapper_type'] = '0';
-$handler->display->display_options['fields']['created']['element_default_classes'] = FALSE;
-$handler->display->display_options['fields']['created']['date_format'] = 'comment';
-$handler->display->display_options['fields']['created']['format_date_sql'] = 0;
 /* Поле: Сообщение */
 $handler->display->display_options['fields']['message']['id'] = 'message';
 $handler->display->display_options['fields']['message']['table'] = 'log';
 $handler->display->display_options['fields']['message']['field'] = 'message';
 $handler->display->display_options['fields']['message']['ui_name'] = 'Сообщение';
+$handler->display->display_options['fields']['message']['label'] = '';
 $handler->display->display_options['fields']['message']['element_type'] = '0';
 $handler->display->display_options['fields']['message']['element_label_type'] = '0';
+$handler->display->display_options['fields']['message']['element_label_colon'] = FALSE;
 $handler->display->display_options['fields']['message']['element_wrapper_type'] = '0';
 $handler->display->display_options['fields']['message']['element_default_classes'] = FALSE;
+/* Поле: Полное имя */
+$handler->display->display_options['fields']['name']['id'] = 'name';
+$handler->display->display_options['fields']['name']['table'] = 'users';
+$handler->display->display_options['fields']['name']['field'] = 'name';
+$handler->display->display_options['fields']['name']['relationship'] = 'log_related_user';
+$handler->display->display_options['fields']['name']['ui_name'] = 'Полное имя';
+$handler->display->display_options['fields']['name']['label'] = '';
+$handler->display->display_options['fields']['name']['alter']['alter_text'] = TRUE;
+$handler->display->display_options['fields']['name']['alter']['text'] = 'Изменено: [name]';
+$handler->display->display_options['fields']['name']['element_type'] = '0';
+$handler->display->display_options['fields']['name']['element_label_type'] = '0';
+$handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
 $handler->display->display_options['defaults']['arguments'] = FALSE;
 /* Контекстный фильтр: ID набора открытых данных */
 $handler->display->display_options['arguments']['field_dataset_ref_target_id']['id'] = 'field_dataset_ref_target_id';
@@ -366,5 +370,6 @@ $translatables['opendata_log'] = array(
   t('Владелец набора данных (field_organization)'),
   t('Журнал набора открытых данных'),
   t('<div class="[field_log_event_type]"></div>'),
+  t('Изменено: [name]'),
   t('Все'),
 );
