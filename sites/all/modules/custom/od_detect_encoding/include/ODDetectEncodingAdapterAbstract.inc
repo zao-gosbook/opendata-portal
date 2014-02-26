@@ -13,6 +13,8 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
    */
   protected $_error = NULL;
 
+  protected $_convertFallback = NULL;
+
   public function errorMsg() {}
 
   public function version() {
@@ -21,6 +23,7 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
 
   function __construct() {
     $this->_error = new ODDetectEncodingException();
+    $this->setConvertFallback('TRANSLIT');
   }
   /**
    * Does system shell execution of a command.
@@ -48,12 +51,20 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
     return $this->_error;
   }
 
+  public function setConvertFallback($fallback = NULL) {
+    $this->_convertFallback = !empty($fallback) ? "//{$fallback}" : NULL;
+  }
+
   public function convertTo($in_charset = ODDetectEncoding::ENC_AUTO, $out_charset, $string) {
     if ($in_charset == ODDetectEncoding::ENC_AUTO && ($in_charset = $this->guessEncoding($string)) === FALSE) {
       $this->getExceptionObject()->setInfo(ODDetectEncoding::ERR_CONVERT, 'Can\'t convert a string because an encoding can\'t be determined.');
       return $string;
     }
 
-    return iconv($in_charset, $out_charset, $string);
+    if ($in_charset == $out_charset) {
+      return $string;
+    }
+
+    return iconv($in_charset, $out_charset . $this->_convertFallback, $string);
   }
 }
