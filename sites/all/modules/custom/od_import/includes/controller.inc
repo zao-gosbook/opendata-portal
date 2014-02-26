@@ -197,7 +197,7 @@ function od_import_detect_delimiter($data, $end_of_line = PHP_EOL, $enclosure = 
   }
 
   if ($data === FALSE) {
-    return FALSE;
+    return ',';
   }
 
   $delimiters = array();
