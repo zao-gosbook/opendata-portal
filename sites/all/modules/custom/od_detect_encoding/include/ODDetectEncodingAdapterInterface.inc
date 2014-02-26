@@ -26,10 +26,21 @@ interface ODDetectEncodingAdapterInterface {
   public function getExceptionObject();
 
   /**
+   * Converts a string
+   * @param string $string
+   * @param string $out_charset
    * @param string $in_charset
-   * @param $out_charset
-   * @param $string
-   * @return string
+   * @return bool|string
    */
-  public function convertTo($in_charset = ODDetectEncoding::ENC_AUTO, $out_charset, $string);
+  public function convertString($string, $out_charset, $in_charset = ODDetectEncoding::ENC_AUTO);
+
+  /**
+   * Converts file
+   * @param string $input_file
+   * @param string $output_file
+   * @param string $out_charset
+   * @param string $in_charset
+   * @return bool
+   */
+  public function convertFile($input_file, $output_file,$out_charset, $in_charset = ODDetectEncoding::ENC_AUTO);
 }

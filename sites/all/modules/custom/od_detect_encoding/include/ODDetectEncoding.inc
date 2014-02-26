@@ -91,7 +91,11 @@ class ODDetectEncoding {
     return FALSE;
   }
 
-  function convertTo($in_charset = ODDetectEncoding::ENC_AUTO, $out_charset, $string) {
-    return $this->_adapter->convertTo($in_charset, $out_charset, $string);
+  function convertString($string, $out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
+    return $this->_adapter->convertString($string, $out_charset, $in_charset);
+  }
+
+  function convertFile($input_file, $output_file,$out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
+    return $this->_adapter->convertFile($input_file, $output_file,$out_charset, $in_charset);
   }
 }

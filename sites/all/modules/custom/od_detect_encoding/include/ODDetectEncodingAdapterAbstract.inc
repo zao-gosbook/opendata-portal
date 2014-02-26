@@ -55,10 +55,10 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
     $this->_convertFallback = !empty($fallback) ? "//{$fallback}" : NULL;
   }
 
-  public function convertTo($in_charset = ODDetectEncoding::ENC_AUTO, $out_charset, $string) {
+  public function convertString($string, $out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
     if ($in_charset == ODDetectEncoding::ENC_AUTO && ($in_charset = $this->guessEncoding($string)) === FALSE) {
       $this->getExceptionObject()->setInfo(ODDetectEncoding::ERR_CONVERT, 'Can\'t convert a string because an encoding can\'t be determined.');
-      return $string;
+      return FALSE;
     }
 
     // Do not try to convert if our string is already has a charset passed by $out_charset.
@@ -67,5 +67,50 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
     }
 
     return iconv($in_charset, $out_charset . $this->_convertFallback, $string);
+  }
+
+  public function convertFile($input_file, $output_file, $out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
+    if ($in_charset == ODDetectEncoding::ENC_AUTO && ($in_charset = $this->guessFileEncoding($input_file)) === FALSE) {
+      $this->getExceptionObject()->setInfo(ODDetectEncoding::ERR_CONVERT, 'Can\'t convert a string because an encoding can\'t be determined.');
+      return FALSE;
+    }
+
+    // Do not try to convert if our string is already has a charset passed by $out_charset.
+    if ($in_charset == $out_charset) {
+      // Just copy a file
+      $this->copyFile($input_file, $output_file);
+      return TRUE;
+    }
+
+    // Read file contents
+    if (!($converted = file_get_contents($input_file))) { //@fixme: replace with adapter's getContent method
+      // @fixme: Set an error for this operation
+      return FALSE;
+    }
+
+    // Convert encoding
+    $converted = iconv($in_charset, $out_charset . $this->_convertFallback, $converted);
+
+    // Write an output file
+    if (!(file_put_contents($output_file, $converted))) {
+      // @fixme: Set an error for this operation
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  public function copyFile($input_file, $output_file) {
+    $status = FALSE;
+    //@fixme: Replace with calling adapter's copyFile()
+    if (copy($input_file, $output_file)) {
+      $status = TRUE;
+    }
+    //@fixme: Replace with calling adapter's getContent method
+    elseif (($file_content = file_get_contents($input_file)) && (file_put_contents($output_file, $file_content))) {
+      $status = TRUE;
+    }
+
+    return $status;
   }
 }
