@@ -209,6 +209,9 @@ function od_common_menu_alter(&$items) {
   $items['node/%node/edit']['title callback'] = 'od_common_edit_tab_title';
   $items['node/%node/edit']['title arguments'] = array(1);
   
+  //removes tab 'Download'
+  unset($items['node/%node/download']);
+  
 }
 
 function od_common_view_tab_title($node) {
