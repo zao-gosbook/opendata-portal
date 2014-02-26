@@ -2649,6 +2649,64 @@ html.js input.form-autocomplete {
 }
 
 /**
+ * data-log
+ */
+.page-node-opendata-log {
+  background: #fff;
+}
+.view-opendata-log {
+  tr {
+    border-top: 1px solid #b2b2b2;
+    border-bottom: 1px solid #b2b2b2;
+    
+    
+    td {
+      padding: 30px 10px; 
+      line-height: 25px;
+      font-size: 16px;
+      color: #666666;
+      text-transform: uppercase;
+    }
+    td:first-child {
+      width: 84px;
+    }
+    .icon {
+      width: 60px;
+      
+      div {
+        width: 36px;
+        height: 44px;
+        margin-top: 6px;
+        background: url("../images/icon-data-log.png") no-repeat 0 0;
+        
+        &.dataset_added {
+
+        }
+        &.dataset_changed {
+          background-image: url("../images/icon-data-log-changed.png");
+        }
+        &.resource_added {
+          background-image: url("../images/icon-data-log-src-created.png");
+        }
+        &.resource_changed {
+          background-image: url("../images/icon-data-log-src-changed.png");
+        }
+        &.resource_deleted {
+          background-image: url("../images/icon-data-log-src-removed.png");
+        }    
+      }
+    }
+    a {
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/**
  * page-user-login
  */
 .page-user.not-logged-in.section-user, 
