@@ -90,4 +90,8 @@ class ODDetectEncoding {
 
     return FALSE;
   }
+
+  function convertTo($in_charset = ODDetectEncoding::ENC_AUTO, $out_charset, $string) {
+    return $this->_adapter->convertTo($in_charset, $out_charset, $string);
+  }
 }

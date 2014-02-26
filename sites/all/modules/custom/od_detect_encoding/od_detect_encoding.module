@@ -11,6 +11,10 @@ function od_detect_encoding_guess_file($path) {
   return od_detect_encoding_get_detector()->guessFileEncoding($path);
 }
 
+function od_detect_encoding_convert_to($in_charset = ODDetectEncoding::ENC_AUTO, $out_charset, $string) {
+  return od_detect_encoding_get_detector()->convertTo($in_charset, $out_charset, $string);
+}
+
 /**
  * Gets instance of ODDetectEncoding object.
  * @return ODDetectEncoding
