@@ -50,7 +50,7 @@ class ODDetectEncodingAdapter_DrupalEnca extends ODDetectEncodingAdapter_Enca {
     $output = array();
     exec('wget --version', $output);
     $status = FALSE;
-    if (count($output) > 0 && preg_match('/([0-9]+)\.([0-9]+)\.([0-9])/i', $output[0], $reg)) {
+    if (count($output) > 0 && preg_match('/([0-9]+)\.([0-9]+)/i', $output[0], $reg)) {
       $status = TRUE;
     }
 
