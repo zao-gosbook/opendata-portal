@@ -416,3 +416,10 @@ function od_common_js_alter(&$javascript) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_THEME().
+ */
+function od_common_preprocess_username(&$vars) {
+  $vars['name'] = format_username($vars['account']);
+}
