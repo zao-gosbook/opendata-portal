@@ -97,6 +97,10 @@ function od_file_process_rules_action_info() {
           'type' => 'file',
           'label' => t('Created structure file'),
         ),
+        'created_structure_media' => array(
+          'type' => 'field_item_file',
+          'label' => t('Created structure file (field_item_file)'),
+        ),
       ),
       'base' => 'od_file_process_rule_callback_get_files',
     ),
@@ -361,5 +365,6 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
   return array(
     'created_files' => $files_created,
     'created_structure' => $file_structure,
+    'created_structure_media' => $file_structure,
   );
 }
