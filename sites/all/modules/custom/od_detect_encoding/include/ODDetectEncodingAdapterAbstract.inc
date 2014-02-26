@@ -4,12 +4,24 @@
  */
 
 abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapterInterface {
+  /**
+   * @var string
+   */
   protected static $_version = '0.0.0';
+  /**
+   * @var ODDetectEncodingException
+   */
+  protected $_error = NULL;
+
   public function errorMsg() {}
+
   public function version() {
     return static::$_version;
   }
 
+  function __construct() {
+    $this->_error = new ODDetectEncodingException();
+  }
   /**
    * Does system shell execution of a command.
    *   Successfully stolen from source below.
@@ -27,5 +39,12 @@ abstract class ODDetectEncodingAdapterAbstract implements ODDetectEncodingAdapte
       pclose($proc);
       return $result;
     }
+  }
+
+  /**
+   * @return ODDetectEncodingException
+   */
+  public function getExceptionObject() {
+    return $this->_error;
   }
 }

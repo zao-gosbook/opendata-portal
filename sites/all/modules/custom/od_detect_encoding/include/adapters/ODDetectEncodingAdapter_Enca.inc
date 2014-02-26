@@ -4,14 +4,19 @@
  */
 
 class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
+  //protected $_command = 'enca -e -L russian';
+  protected $command = 'enca -e -L russian'; // @todo: Replace this with magic __get()
+
   /**
    * @inheritdoc
    */
   public function guessFileEncoding($path) {
-    $escaped = str_replace(array('"'), array('\"'), realpath($path));
-    if (file_exists($path) && ($output = $this->syscall("enca -e -L russian \"{$escaped}\""))) {
-      $output = trim($output, "\n");
-      return $output;
+    $escaped = $this->escape(realpath($path));
+    if (!file_exists($path)) {
+      $this->getExceptionObject()->setInfo(ODDetectEncoding::ERR_FILE_NOT_FOUND, "File '{$path}' was not found");
+    }
+    elseif (($output = $this->syscall("{$this->command} '{$escaped}'"))) {
+      return $this->processOutput($output);
     }
 
     return FALSE;
@@ -21,10 +26,9 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
    * @inheritdoc
    */
   public function guessEncoding($string) {
-    $escaped = str_replace(array("'"), array("\\'"), $string);
-    if ($output = $this->syscall("(echo '{$escaped}' | enca -e -L russian)")) {
-      $output = trim($output, "\n");
-      return $output;
+    $escaped = $this->escape($string);
+    if ($output = $this->syscall("(echo '{$escaped}' | {$this->command})")) {
+      $this->processOutput($output);
     }
 
     return FALSE;
@@ -37,6 +41,7 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
       'CP1251' => ODDetectEncoding::ENC_CP1251,
       'ISO-8859-16' => ODDetectEncoding::ENC_ISO_8859_16,
       'unknown' => ODDetectEncoding::ENC_UNKNOWN,
+      //@todo Add other encodings
     );
   }
 
@@ -55,5 +60,14 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
 
   public function name() {
     return 'enca';
+  }
+
+  protected function processOutput($output) {
+    $output = explode('/', trim($output, "\n"));
+    return is_array($output) ? reset($output) : $output;
+  }
+
+  protected function escape($string) {
+    return str_replace(array("'"), array("\\'"), $string); //@fixme: Replace with better thing
   }
 }
