@@ -1,8 +1,13 @@
 /**
  * dkan
  */
+html {
+  min-height: 100%;  
+}
 body {
   background-color: #e5e5e5;
+  min-height: 100%;
+  position: relative;
 }
 
 /**
@@ -228,13 +233,16 @@ div.horizontal-tabs .form-text {
           color: #ffa200;
           text-decoration: none;
         }
-        &.first a:after {
+        /*&.first a:after {
           content: '/';
           padding: 0 4px;
           color: #fff;
-        }
+        }*/
         &.active a {
           color: #fff;
+        }
+        &.ru {
+          display: none;
         }
       }
     }
@@ -923,9 +931,13 @@ div.horizontal-tabs .form-text {
   }  
 
   .region-content {
-    padding: 20px 7%;
+    padding: 20px 7% 83px;
   }  
 }
+.pane-page-content {
+  padding: 0 0 83px;
+}
+
 
 /**
  * maintance
@@ -2742,6 +2754,12 @@ html.js input.form-autocomplete {
     }
   }
 }
+#user-register-form {
+  label {
+    display: none;
+  }
+}
+
 
 /**
  * view-organizations
@@ -4612,7 +4630,54 @@ div.fivestar-widget .star {
     }
   }
 }
- 
+
+/**
+ * footer
+ */ 
+.inside .footer-region {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #000;
+  color: #fff;
+  padding-top: 24px;
+  padding-bottom: 24px;  
+  @include clearfix;
+  
+  .pane-title {
+    float: left;
+    padding-left: 7%;
+    padding-bottom: 5px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1em;
+  }
+  .menu {
+    float: right;
+    margin: 0;
+    padding: 0 8% 0 0;
+    
+    li {
+      list-style: none;
+      font-size: 14px;
+      line-height: 1em;
+      padding: 0 0 0 60px;
+      float: left;
+      text-transform: uppercase;
+      
+      a {
+        color: #fff;
+        text-decoration: none;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
  
 /**
  * draggable-captcha
