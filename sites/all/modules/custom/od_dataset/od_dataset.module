@@ -3,6 +3,14 @@
  * @file
  */
 
+define('OD_DATASET_PATH', dirname(__FILE__));
+
+// Include our custom remote file source
+require_once OD_DATASET_PATH. '/od_dataset.remote_file_source_mod.inc';
+
+/**
+ * Implements hook_menu()
+ */
 function od_dataset_menu() {
   $items = array();
 

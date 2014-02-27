@@ -47,7 +47,7 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
       // Check that the file exists.
       //$request = drupal_http_request($value, array('method' => 'HEAD'));
       $http->setUrl($value);
-      $http->setMethod(HTTP_Request2::METHOD_CONNECT);
+      $http->setMethod(HTTP_Request2::METHOD_HEAD);
       $http->setConfig('store_body', false);
       $request = $http->send();
       if (($status = $request->getStatus()) && (!$status || $status != '200')) {
@@ -61,6 +61,9 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
       if (!$file) {
         $file = remote_stream_wrapper_file_create_by_uri($value);
         $file->status = FALSE;
+
+        // Clean filename
+        od_dataset_file_widget_clean_filename_validator($file);
         file_save($file);
       }
     }
@@ -91,6 +94,4 @@ function od_dataset_file_widget_clean_filename_validator(stdClass $file) {
   if (isset($file->fid)) {
     $file->filename = preg_replace('/\?.*$/i', '', $file->filename);
   }
-
-  return array();
 }
