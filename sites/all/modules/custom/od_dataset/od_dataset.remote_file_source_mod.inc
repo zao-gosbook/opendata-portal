@@ -45,7 +45,7 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
       // Check that the file exists.
       //$request = drupal_http_request($value, array('method' => 'HEAD'));
       $http->setUrl($value);
-      $http->setMethod(HTTP_Request2::METHOD_HEAD);
+      $http->setMethod('PARTIAL_GET');
       $http->setConfig('store_body', false);
       $request = $http->send();
       if (($status = $request->getStatus()) && (!$status || $status != '200')) {
@@ -80,7 +80,7 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
       unset($element['#upload_validators']['file_validate_size']);
     }
 
-    if (filefield_sources_element_validate($element, (object) $file)) {
+    if (od_dataset_filefield_sources_element_validate($element, (object) $file)) {
 
       $item = array_merge($item, (array) $file);
     }
@@ -96,4 +96,36 @@ function od_dataset_file_widget_clean_filename_validator(stdClass $file, $save =
   if ($save && isset($file->fid)) {
     file_save($file);
   }
+}
+
+/**
+ * Validate a file based on the $element['#upload_validators'] property.
+ */
+function od_dataset_filefield_sources_element_validate($element, $file) {
+  $validators = $element['#upload_validators'];
+  $errors = array();
+
+  foreach ($validators as $function => $args) {
+    // Add the $file variable to the list of arguments and pass it by
+    // reference (required for PHP 5.3 and higher).
+    array_unshift($args, NULL);
+    $args[0] = &$file;
+    $errors = array_merge($errors, call_user_func_array($function, $args));
+  }
+
+
+  // Check for validation errors.
+  if (!empty($errors)) {
+    $message = t('The selected file %name could not be referenced.', array('%name' => $file->filename));
+    if (count($errors) > 1) {
+      $message .= '<ul><li>' . implode('</li><li>', $errors) . '</li></ul>';
+    }
+    else {
+      $message .= ' ' . array_pop($errors);
+    }
+    form_error($element, $message);
+    return 0;
+  }
+
+  return 1;
 }
