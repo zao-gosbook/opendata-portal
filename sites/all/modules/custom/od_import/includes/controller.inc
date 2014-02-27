@@ -58,15 +58,21 @@ function od_import_create_file($uri, $origin_uri) {
   file_prepare_directory(drupal_dirname($uri), FILE_CREATE_DIRECTORY);
 
   $file_content = od_import_get_url_content($origin_uri);
+  $encoder = od_detect_encoding_get_detector();
+  $converted_file_content = $encoder->convertString($file_content, 'UTF-8');
+  $is_utf8 = $converted_file_content !== FALSE;
+  $file_content = $is_utf8 ? $converted_file_content : $file_content;
+
   $file = file_save_data($file_content, $uri);
 
   $file->uid = OD_COMMON_IMPORT_USER_ID;
+  $file->utf8 = $is_utf8;
   file_save($file);
 
   return $file;
 }
 
-function od_import_get_url_content($url, $encoding = NULL) {
+function od_import_get_url_content($url) {
   $curl = curl_init();
   curl_setopt($curl, CURLOPT_URL, $url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -74,21 +80,6 @@ function od_import_get_url_content($url, $encoding = NULL) {
   curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 
   $content = curl_exec($curl);
-
-  // Try to check on UTF-8 if encoding not defined.
-  if (!$encoding) {
-    // Detect UTF-8.
-    $is_utf8 = preg_match('//u', $content);
-    // Trying to encode from "Windows-1251" as most popular encoding in Russia if UTF-8 not detected.
-    if (!$is_utf8) {
-      $encoding = 'Windows-1251';
-    }
-  }
-
-  // Encode if encoding is defined.
-  if ($encoding) {
-    $content = iconv($encoding, 'UTF-8', $content);
-  }
 
   $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
