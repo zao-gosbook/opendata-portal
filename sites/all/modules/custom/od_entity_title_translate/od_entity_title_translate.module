@@ -8,7 +8,7 @@ function od_entity_title_translate_entity_load($entities, $type) {
     $context = array(
       'entity' => $entity,
     );
-    //od_file_convert_entity($entity, $type);
+
     od_entity_label_translate_factory::inst()
       ->getTranslator($type, $context)
       ->triggerEvent('entity_load');
