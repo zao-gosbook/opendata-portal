@@ -65,7 +65,7 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
       }
 
       // Clean filename
-      od_dataset_file_widget_clean_filename_validator($file);
+      od_dataset_file_widget_clean_filename_validator($file, TRUE);
     }
     catch (Exception $e) {
       form_set_error('url', $e->getMessage());
@@ -90,8 +90,12 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
 }
 
 
-function od_dataset_file_widget_clean_filename_validator(stdClass $file) {
+function od_dataset_file_widget_clean_filename_validator(stdClass $file, $save = FALSE) {
   if (isset($file->filename)) {
     $file->filename = preg_replace('/\?.*$/i', '', $file->filename);
+  }
+
+  if ($save && isset($file->fid)) {
+    file_save($file);
   }
 }
