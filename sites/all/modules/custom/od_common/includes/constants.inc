@@ -33,7 +33,7 @@ define('OD_COMMON_FIELD_RESOURCE_PROVENANCE', 'field_provenance');
 define('OD_COMMON_FIELD_RESOURCE_FORMAT', 'field_format');
 define('OD_COMMON_FIELD_RESOURCE_DATA', 'field_upload');
 define('OD_COMMON_FIELD_RESOURCE_CSV_DELIMITER', 'field_csv_delimiter');
-define('OD_COMMON_FIELD_RESOURCE_ENCODING', 'field_encoding');
+define('OD_COMMON_FIELD_RESOURCE_UTF8_ENCODING', 'field_utf8_encoding');
 define('OD_COMMON_FIELD_RESOURCE_STRUCTURE', 'field_upload_structure');
 
 /**
