@@ -637,12 +637,13 @@ function _od_import_resource_set_data($resource_node, $data, &$messages, &$resou
 
         $file->display = 1;
 
+        $resource_node->{OD_COMMON_FIELD_RESOURCE_UTF8_ENCODING}[LANGUAGE_NONE][0]['value'] = $file->utf8;
+
         switch ($file->filemime) {
           case 'text/csv':
             $file->grid = 1;
             $delimiter = od_import_detect_delimiter($file->uri);
             $resource_node->{OD_COMMON_FIELD_RESOURCE_CSV_DELIMITER}[LANGUAGE_NONE][0]['value'] = $delimiter;
-            $resource_node->{OD_COMMON_FIELD_RESOURCE_ENCODING}[LANGUAGE_NONE][0]['value'] = 'utf-8';
             break;
         }
 
