@@ -34,9 +34,7 @@ Drupal.behaviors.opendataFilePreprocess = {
     }
 
     processConvertState();
-
     $('.field-name-field-dataset-convert input', context).trigger();
-    
   }
 };
 })(jQuery);
