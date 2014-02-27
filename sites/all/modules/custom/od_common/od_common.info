@@ -13,3 +13,4 @@ dependencies[] = od_publisher
 
 ; Files to autoload classes
 files[] = rulesui/ODCommonRulesUI_ef_node_config.inc
+files[] = includes/HTTP_Request2_Adapter_CurlAdvanced.inc
