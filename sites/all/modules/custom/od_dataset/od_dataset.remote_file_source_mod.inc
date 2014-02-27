@@ -61,11 +61,11 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
       if (!$file) {
         $file = remote_stream_wrapper_file_create_by_uri($value);
         $file->status = FALSE;
-
-        // Clean filename
-        od_dataset_file_widget_clean_filename_validator($file);
         file_save($file);
       }
+
+      // Clean filename
+      od_dataset_file_widget_clean_filename_validator($file);
     }
     catch (Exception $e) {
       form_set_error('url', $e->getMessage());
