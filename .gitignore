@@ -12,5 +12,6 @@ sites/*/private
 sites/*/themes/*/.sass-cache
 sites/*/themes/*/css/*
 
+
 # Ignore httpd password file.
 .htpasswd
