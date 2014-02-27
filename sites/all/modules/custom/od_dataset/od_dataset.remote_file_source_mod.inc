@@ -4,8 +4,6 @@
  * Provides a remote stream wrapper and filefield source integration.
  */
 
-define('REMOTE_FILE_SOURCE_HINT_TEXT', 'http://example.com/files/file.zip');
-
 /**
  * Implements hook_filefield_sources_info().
  */
