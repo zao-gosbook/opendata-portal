@@ -232,18 +232,23 @@ div.horizontal-tabs .form-text {
           font-size: 14px;
           color: #ffa200;
           text-decoration: none;
+          display: block;
         }
-        /*&.first a:after {
-          content: '/';
-          padding: 0 4px;
-          color: #fff;
-        }*/
         &.active a {
-          color: #fff;
-        }
-        &.ru {
           display: none;
         }
+        /*
+        &.en a:before {
+          content: 'EN';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        &.en.active:before {
+          content: 'RU';
+        }
+        */
       }
     }
   }
