@@ -27,7 +27,7 @@ class ODDetectEncodingAdapter_Enca extends ODDetectEncodingAdapterAbstract {
    */
   public function guessEncoding($string) {
     $escaped = $this->escape($string);
-    if ($output = $this->syscall("(echo '{$escaped}' | {$this->command})")) {
+    if ($output = $this->syscall("echo '{$escaped}' | {$this->command}")) {
       return $this->processOutput($output);
     }
 
