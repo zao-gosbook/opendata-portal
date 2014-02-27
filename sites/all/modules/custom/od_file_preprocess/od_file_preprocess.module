@@ -76,7 +76,7 @@ function od_file_preprocess_field_widget_form_alter(&$element, &$form_state, $co
       $el['#process'][] = 'od_file_preprocess_file_element_set_identity';
       $el['#process'][] = 'od_file_preprocess_widget_process';
       //$el['#element_validate'][] = 'od_file_preprocess_widget_validate';
-      //$el['#attached']['js'][] = $js;
+      $el['#attached']['js'][] = $js;
       //$el['#after_build'][] = 'od_file_preprocess_file_element_after_build';
 
       //$el = od_file_preprocess_file_element_set_identity($el, $form_state);
@@ -132,6 +132,17 @@ function od_file_preprocess_widget_process($element, &$form_state) {
     if (isset($form_state['values'][$field_name][$lang][$delta]['file_data'])) {
       $wrapper = 'edit-' . str_replace('_', '-', $field_name);
       $element['file_data'] = od_file_preprocess_set_element($form_state['values'][$field_name][$lang][$delta]['file_data'], $wrapper);
+      $element['file_data']['#attributes'] = array(
+        'class' => array('od-preprocess-filedata'),
+      );
+      $element['file_data']['#type'] = 'container';
+//      $element['file_data']['#states'] = array(
+//        'visible' => array(
+//          '.field-name-field-dataset-convert input[value="1"]' => array(
+//            'checked' => FALSE,
+//          ),
+//        ),
+//      );
     }
   }
 
