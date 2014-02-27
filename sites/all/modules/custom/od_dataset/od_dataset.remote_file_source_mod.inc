@@ -91,7 +91,7 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
 
 
 function od_dataset_file_widget_clean_filename_validator(stdClass $file) {
-  if (isset($file->fid)) {
+  if (isset($file->filename)) {
     $file->filename = preg_replace('/\?.*$/i', '', $file->filename);
   }
 }
