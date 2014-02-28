@@ -46,8 +46,8 @@ function _od_import_batch_meta_finished($success, $results, $operations) {
 function _od_import_list($org) {
   // Get organization url.
   if (empty($org->field_site_url[LANGUAGE_NONE][0])) {
-    $error = 'У организации отсутствует ссылка на сайт.';
-    od_log($error, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $org->nid);
+    $message = 'У организации отсутствует ссылка на сайт.';
+    od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $org->nid);
     return FALSE;
   }
 
@@ -124,16 +124,19 @@ function _od_import_meta($meta_args, $org_nid, $time_start, &$context) {
 
   $errors = _od_import_get_errors($od);
 
-  if (!empty($errors)) {
-    $message = 'Ошибка в паспорте набора открытых данных организации: ' . $errors;
-    od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $org_nid);
-  }
-  else {
+  if (empty($errors)) {
     unset($meta['#version']);
 
-    _od_import_publisher($od, $meta, $org_nid);
+    _od_import_publisher($od, $meta);
 
-    _od_import_source($od, $meta, $org_nid);
+    _od_import_source($od, $meta);
+  }
+  else {
+    if (!is_array($meta)) {
+      $meta = array();
+    }
+
+    $meta['#errors'] = $errors;
   }
 
   // Restore default time limit execution script.
@@ -143,24 +146,20 @@ function _od_import_meta($meta_args, $org_nid, $time_start, &$context) {
   return;
 }
 
-function _od_import_publisher(OdApi $od, &$meta, $org_nid) {
+function _od_import_publisher(OdApi $od, &$meta) {
   // Publisher object.
   $publisher_args = $meta['publisher']['#api'];
   $publisher = $od->getResult($publisher_args);
 
   $errors = _od_import_get_errors($od);
 
-  if (!empty($errors)) {
-    $message = 'Ошибка в поле ответственного лица паспорта набора открытых данных: ' . $errors;
-    od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $org_nid);
-  }
-  else {
+  if (empty($errors)) {
     $meta['publisher'] = $publisher;
     unset($meta['publisher']['#version']);
   }
 }
 
-function _od_import_source(OdApi $od, &$meta, $org_nid) {
+function _od_import_source(OdApi $od, &$meta) {
   $meta['data'] = $meta['source'];
   unset($meta['source']);
 
@@ -170,19 +169,15 @@ function _od_import_source(OdApi $od, &$meta, $org_nid) {
 
   $errors = _od_import_get_errors($od);
 
-  if (!empty($errors)) {
-    $message = 'Ошибка в перечне версий наборов открытых данных органзиации: ' . $errors;
-    od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $org_nid);
-  }
-  else {
+  if (empty($errors)) {
     $meta['data'] = $source['data'];
     unset($source['data']['#version']);
 
-    _od_import_data($od, $meta, $org_nid);
+    _od_import_data($od, $meta);
   }
 }
 
-function _od_import_data(OdApi $od, &$meta, $org_nid) {
+function _od_import_data(OdApi $od, &$meta) {
   // Data object.
   foreach ($meta['data'] as &$data) {
     $data_args = $data['#api'];
@@ -190,19 +185,15 @@ function _od_import_data(OdApi $od, &$meta, $org_nid) {
 
     $errors = _od_import_get_errors($od);
 
-    if (!empty($errors)) {
-      $message = 'Ошибка в версии набора открытых данных органзиации: ' . $errors;
-      od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $org_nid);
-    }
-    else {
+    if (empty($errors)) {
       unset($data['#version']);
 
-      _od_import_structure($od, $data, $org_nid);
+      _od_import_structure($od, $data);
     }
   }
 }
 
-function _od_import_structure(OdApi $od, &$data, $org_nid) {
+function _od_import_structure(OdApi $od, &$data) {
   // Structure object.
   $structure_args = $data['structure']['#api'];
   $structure_result = $od->getResult($structure_args);
@@ -213,11 +204,7 @@ function _od_import_structure(OdApi $od, &$data, $org_nid) {
   }
   $errors = implode(', ', $errors);
 
-  if (!empty($errors)) {
-    $message = 'Ошибка в версии структуры набора открытых данных органзиации: ' . $errors;
-    od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $org_nid);
-  }
-  else {
+  if (empty($errors)) {
     $data['structure'] = $structure_result;
     unset($data['structure']['#version']);
   }
@@ -252,7 +239,14 @@ function _od_import_meta_from_data($data, $org_nid, $time_start) {
   $dataset_list_failed = array();
   foreach ($data as $meta) {
     // Skip opendata meta with error.
-    if ($meta === FALSE) {
+    if (isset($meta['#errors'])) {
+      if (isset($meta['title'])) {
+        $message = 'Ошибка в паспорте набора "' . $meta['title'] . '" открытых данных (' . $meta['#errors'] . ').';
+      }
+      else {
+        $message = 'Ошибка в паспорте набора открытых данных (' . $meta['#errors'] . '), набор не идентифицирован.';
+      }
+      od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $org_nid);
       $meta_failed_count++;
       $dataset_list_failed[] = $meta['title'];
       continue;

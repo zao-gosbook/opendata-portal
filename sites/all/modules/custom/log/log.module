@@ -21,8 +21,8 @@ function log_entity_info() {
     'entity class' => 'LogEntity',
     'controller class' => 'EntityAPIController',
     'base table' => 'log',
-    'uri callback' => 'log_uri',
-    'label callback' => 'log_title',
+    'uri callback' => 'entity_class_uri',
+    'label callback' => 'entity_class_label',
     'fieldable' => TRUE,
     'entity keys' => array(
       'id' => 'lid',
