@@ -5,6 +5,15 @@
  */
 
 /**
+ * Implements hook_ctools_plugin_api().
+ */
+function request_and_actualize_entityform_ctools_plugin_api($module = NULL, $api = NULL) {
+  if ($module == "field_group" && $api == "field_group") {
+    return array("version" => "1");
+  }
+}
+
+/**
  * Implements hook_default_entityform_type().
  */
 function request_and_actualize_entityform_default_entityform_type() {
@@ -76,7 +85,12 @@ function request_and_actualize_entityform_default_entityform_type() {
     },
     "weight" : "0",
     "rdf_mapping" : [],
-    "paths" : []
+    "paths" : { "submit" : {
+        "source" : "eform\\/submit\\/od-preprocess-wizard",
+        "alias" : "new-dataset",
+        "language" : "und"
+      }
+    }
   }');
   return $items;
 }
