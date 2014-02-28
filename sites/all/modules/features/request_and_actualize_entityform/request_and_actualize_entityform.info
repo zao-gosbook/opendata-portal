@@ -1,7 +1,7 @@
 name = Request_and_actualize_entityform
 core = 7.x
 package = Features
-version = 7.x-1.1
+version = 7.x-1.2
 project = request_and_actualize_entityform
 dependencies[] = autocomplete_deluxe
 dependencies[] = conditional_fields
@@ -63,7 +63,6 @@ features[field_base][] = field_recline_file_view
 features[field_base][] = field_rubric
 features[field_base][] = field_rubric_image
 features[field_base][] = field_show_front_page
-features[field_group][] = group_div|entityform|od_preprocess_wizard|form
 features[field_instance][] = entityform-dataset_actualization-field_content_last_change
 features[field_instance][] = entityform-dataset_actualization-field_dataset_convert
 features[field_instance][] = entityform-dataset_actualization-field_dataset_instruction_api
