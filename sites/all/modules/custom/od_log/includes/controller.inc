@@ -7,11 +7,12 @@ function od_log($message, $importance = 'status', $type = NULL, $organization_id
   $vars = array();
   $vars['uid'] = (!empty($user_id) && is_numeric($user_id)) ? $user_id : NULL;
   $vars['message'] = $message;
-  $vars['field_log_importance_type'] = array(LANGUAGE_NONE => array('0' => array('value' => $importance)));
-  $vars['field_log_event_type'] = !empty($type) ? array(LANGUAGE_NONE => array('0' => array('value' => $type))) : array();
+  $vars[OD_COMMON_FIELD_LOG_IMPORTANCE_TYPE] = array(LANGUAGE_NONE => array('0' => array('value' => $importance)));
+  $vars[OD_COMMON_FIELD_LOG_EVENT_TYPE] = !empty($type) ? array(LANGUAGE_NONE => array('0' => array('value' => $type))) : array();
+  $vars[OD_COMMON_FIELD_LOG_CURATOR_WAS_NOTIFIED] = array(LANGUAGE_NONE => array('0' => array('value' => 0)));
 
   if (!empty($organization_id)) {
-    $vars['field_organization'] = array(LANGUAGE_NONE => array('0' => array('target_id' => $organization_id)));
+    $vars[OD_COMMON_FIELD_LOG_ORGANIZATION] = array(LANGUAGE_NONE => array('0' => array('target_id' => $organization_id)));
   }
 
   if (!empty($dataset_id)) {
@@ -19,5 +20,6 @@ function od_log($message, $importance = 'status', $type = NULL, $organization_id
   }
 
   drupal_set_message($message, $importance);
-  log_event($vars);
+  $log = log_create($vars);
+  log_save($log);
 }

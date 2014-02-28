@@ -6,13 +6,9 @@
 define('OD_LOG', dirname(__FILE__));
 
 /**
- * Load constants.
+ * Include files.
  */
 require_once OD_LOG . '/includes/constants.inc';
-
-/**
- * Include API files.
- */
 require_once OD_LOG . '/includes/controller.inc';
 
 /**
@@ -107,7 +103,6 @@ function od_log_views_api() {
   // Define views api version.
   $views_api = array(
     'api' => 3,
-    'path' => OD_LOG . '/includes/views',
   );
 
   return $views_api;
@@ -155,26 +150,74 @@ function od_log_action_info() {
  * Action callback. Import opendata from organizations.
  */
 function od_log_notify_organization($entities) {
+  $messages = array();
   foreach ($entities as $entity) {
+    // Curator notified.
+    $entity->{OD_COMMON_FIELD_LOG_CURATOR_WAS_NOTIFIED}[LANGUAGE_NONE]['0']['value'] = 1;
+    log_save($entity);
+
     // Check
     if (empty($entity->{OD_COMMON_FIELD_LOG_ORGANIZATION})) {
       continue;
     }
 
     $organization_id = $entity->{OD_COMMON_FIELD_LOG_ORGANIZATION}[LANGUAGE_NONE]['0']['target_id'];
-
     $organization = node_load($organization_id);
 
     if (empty($organization->{OD_COMMON_FIELD_ORGANIZATION_CURATOR})) {
       continue;
     }
 
+    if (!isset($messages[$organization_id])) {
+      $messages[$organization_id] = array();
+    }
+
+    $dataset_id = !empty($entity->{OD_COMMON_FIELD_LOG_DATASET}) ? $entity->{OD_COMMON_FIELD_LOG_DATASET}[LANGUAGE_NONE]['0']['target_id'] : 0;
+
+    if (!isset($messages[$organization_id][$dataset_id])) {
+      $messages[$organization_id][$dataset_id] = array();
+    }
+
+    if (!in_array($entity->message, $messages[$organization_id][$dataset_id])) {
+      $messages[$organization_id][$dataset_id][] = $entity->message;
+    }
+  }
+
+  foreach ($messages as $organization_id => $organization_messages) {
+    $organization = node_load($organization_id);
+
+    $email_message = '';
+    $email_message .= 'Уважаемый сотрудник раздела открытых данных официального сайта!' . "\n\n";
+    if (!empty($organization_messages[0])) {
+      $email_message .= 'При импорте открытых данных с официального сайта были обнаружены следующие ошибки в разделе открытых данных:' . "\n";
+      foreach ($organization_messages[0] as $message) {
+        $email_message .= '— ' . $message . "\n";
+      }
+      $email_message .= 'Пожалуйста, воспользуйтесь инструментом публикации открытых данных Портала или приведите свои разделы в соответствие с Методическими рекомендациями.' . "\n\n";
+    }
+    unset($organization_messages[0]);
+
+    if (!empty($organization_messages)) {
+      $email_message .= 'С вашего сайта были загружены открытые данные на Портал, в ходе загрузки были обнаружены ошибки у следующих наборов:' . "\n";
+      foreach ($organization_messages as $dataset_id => $dataset_messages) {
+        $dataset = node_load($dataset_id);
+        $email_message .= '— ' . $dataset->title . "\n";
+        foreach ($dataset_messages as $dataset_message) {
+          $email_message .= '  — ' . $dataset_message . "\n";
+        }
+      }
+      $email_message .= 'Заполните поля в разделе открытых данных на своем сайте или отредактируйте паспорта вручную на Портале открытых данных.' . "\n\n";
+    }
+
+    $email_message .= 'С уважением.' . "\n";
+    $email_message .= 'Портал открытых данных.' . "\n";
+
     foreach ($organization->{OD_COMMON_FIELD_ORGANIZATION_CURATOR}[LANGUAGE_NONE] as $field_item) {
       $user_id = $field_item['target_id'];
       $user = user_load($user_id);
 
       $mail_vars = array();
-      $mail_vars['message'] = $entity->message;
+      $mail_vars['message'] = $email_message;
       drupal_mail('od_log', 'notice', $user->mail, 'ru', $mail_vars);
     }
   }
@@ -186,7 +229,7 @@ function od_log_notify_organization($entities) {
 function od_log_mail($key, &$message, $vars) {
   switch($key) {
     case 'notice':
-      $message['subject'] = 'Уведомление куратора об ошибке импорта открытых данных с сайта орагнизации';
+      $message['subject'] = 'Уведомление куратора об ошибках открытых данных на сайте орагнизации';
       $message['body'][] = $vars['message'];
       break;
   }
