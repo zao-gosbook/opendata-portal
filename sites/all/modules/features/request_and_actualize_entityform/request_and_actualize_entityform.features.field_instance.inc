@@ -375,40 +375,6 @@ function request_and_actualize_entityform_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-dataset_actualization-field_format'
-  $field_instances['entityform-dataset_actualization-field_format'] = array(
-    'bundle' => 'dataset_actualization',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'i18n_taxonomy',
-        'settings' => array(),
-        'type' => 'i18n_taxonomy_term_reference_link',
-        'weight' => 11,
-      ),
-    ),
-    'entity_type' => 'entityform',
-    'field_name' => 'field_format',
-    'label' => 'Data format',
-    'required' => 1,
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
-      'type' => 'options_select',
-      'weight' => 15,
-    ),
-  );
-
   // Exported field_instance: 'entityform-dataset_actualization-field_link_api'
   $field_instances['entityform-dataset_actualization-field_link_api'] = array(
     'bundle' => 'dataset_actualization',
@@ -622,42 +588,6 @@ function request_and_actualize_entityform_field_default_field_instances() {
       ),
       'type' => 'file_generic',
       'weight' => 6,
-    ),
-  );
-
-  // Exported field_instance: 'entityform-dataset_actualization-field_multivolume'
-  $field_instances['entityform-dataset_actualization-field_multivolume'] = array(
-    'bundle' => 'dataset_actualization',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 13,
-      ),
-    ),
-    'entity_type' => 'entityform',
-    'field_name' => 'field_multivolume',
-    'label' => 'Многотомность',
-    'required' => 1,
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 1,
     ),
   );
 
@@ -1077,7 +1007,7 @@ function request_and_actualize_entityform_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 19,
+      'weight' => 34,
     ),
   );
 
@@ -1185,7 +1115,7 @@ function request_and_actualize_entityform_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 24,
+      'weight' => 39,
     ),
   );
 
@@ -1286,7 +1216,7 @@ function request_and_actualize_entityform_field_default_field_instances() {
       'module' => 'markup',
       'settings' => array(),
       'type' => 'markup',
-      'weight' => 21,
+      'weight' => 36,
     ),
   );
 
@@ -1317,7 +1247,7 @@ function request_and_actualize_entityform_field_default_field_instances() {
       'module' => 'markup',
       'settings' => array(),
       'type' => 'markup',
-      'weight' => 23,
+      'weight' => 38,
     ),
   );
 
@@ -1348,7 +1278,7 @@ function request_and_actualize_entityform_field_default_field_instances() {
       'module' => 'markup',
       'settings' => array(),
       'type' => 'markup',
-      'weight' => 17,
+      'weight' => 32,
     ),
   );
 
@@ -1363,7 +1293,7 @@ function request_and_actualize_entityform_field_default_field_instances() {
         'module' => 'markup',
         'settings' => array(),
         'type' => 'markup_default',
-        'weight' => 26,
+        'weight' => 30,
       ),
     ),
     'entity_type' => 'entityform',
@@ -1379,7 +1309,7 @@ function request_and_actualize_entityform_field_default_field_instances() {
       'module' => 'markup',
       'settings' => array(),
       'type' => 'markup',
-      'weight' => 15,
+      'weight' => 30,
     ),
   );
 
@@ -1487,7 +1417,7 @@ function request_and_actualize_entityform_field_default_field_instances() {
         'apply_chosen' => 0,
       ),
       'type' => 'options_select',
-      'weight' => 16,
+      'weight' => 31,
     ),
   );
 
@@ -1673,41 +1603,6 @@ function request_and_actualize_entityform_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-od_preprocess_wizard-field_format'
-  $field_instances['entityform-od_preprocess_wizard-field_format'] = array(
-    'bundle' => 'od_preprocess_wizard',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Выберите формат файла набора открытых данных, ссылку на который вы разместили выше (или который вы загрузили). <br />
-Например: XML',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'i18n_taxonomy',
-        'settings' => array(),
-        'type' => 'i18n_taxonomy_term_reference_link',
-        'weight' => 18,
-      ),
-    ),
-    'entity_type' => 'entityform',
-    'field_name' => 'field_format',
-    'label' => 'Формат данных',
-    'required' => 1,
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'apply_chosen' => 0,
-      ),
-      'type' => 'options_select',
-      'weight' => 28,
-    ),
-  );
-
   // Exported field_instance: 'entityform-od_preprocess_wizard-field_license'
   $field_instances['entityform-od_preprocess_wizard-field_license'] = array(
     'bundle' => 'od_preprocess_wizard',
@@ -1835,7 +1730,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 22,
+      'weight' => 37,
     ),
   );
 
@@ -1884,7 +1779,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 20,
+      'weight' => 35,
     ),
   );
 
@@ -1943,43 +1838,7 @@ notspecified|Лицензия отсутствует',
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 18,
-    ),
-  );
-
-  // Exported field_instance: 'entityform-od_preprocess_wizard-field_multivolume'
-  $field_instances['entityform-od_preprocess_wizard-field_multivolume'] = array(
-    'bundle' => 'od_preprocess_wizard',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 22,
-      ),
-    ),
-    'entity_type' => 'entityform',
-    'field_name' => 'field_multivolume',
-    'label' => 'Многотомность',
-    'required' => 1,
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 14,
+      'weight' => 33,
     ),
   );
 
@@ -2038,7 +1897,7 @@ notspecified|Лицензия отсутствует',
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 25,
+      'weight' => 40,
     ),
   );
 
@@ -2097,7 +1956,7 @@ notspecified|Лицензия отсутствует',
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 26,
+      'weight' => 41,
     ),
   );
 
@@ -2136,7 +1995,7 @@ notspecified|Лицензия отсутствует',
       'active' => 1,
       'module' => 'options',
       'settings' => array(
-        'apply_chosen' => 1,
+        'apply_chosen' => 0,
       ),
       'type' => 'options_select',
       'weight' => 3,
@@ -2171,7 +2030,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 27,
+      'weight' => 42,
     ),
   );
 
@@ -2403,7 +2262,6 @@ notspecified|Лицензия отсутствует',
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Data format');
   t('E-mail ответственного лица, в соответствии с примером. <br />
 Например: ivanov123@gmail.com');
   t('Image');
@@ -2422,8 +2280,6 @@ notspecified|Лицензия отсутствует',
 Например: Министерство культуры');
   t('Выберите рубрику, к которой относится набор <br />
 Например: Экономика');
-  t('Выберите формат файла набора открытых данных, ссылку на который вы разместили выше (или который вы загрузили). <br />
-Например: XML');
   t('Данное поле заполняется русскоязычным текстом, описывающим изменения, внесенные в последнюю версию. <br />
 Например: обновление набора данных
 ');
@@ -2438,7 +2294,6 @@ notspecified|Лицензия отсутствует',
   t('Инструкция для ссылки');
   t('Ключевые слова');
   t('Лицензия');
-  t('Многотомность');
   t('Набор данных');
   t('Наименование паспорта');
   t('Номер телефон ответственного лица, в соответствии с примером <br />
@@ -2468,7 +2323,6 @@ notspecified|Лицензия отсутствует',
   t('Файл структуры');
   t('Фамилия, Имя, Отчество (через пробел, на русском языке) лица, ответственного за набор данных. <br />
 Например: Иванов Иван Иванович');
-  t('Формат данных');
 
   return $field_instances;
 }
