@@ -2,3 +2,4 @@ name = Opendata log
 description = Opendata log.
 core = 7.x
 dependencies[] = log
+dependencies[] = od_common

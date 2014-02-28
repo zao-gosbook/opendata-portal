@@ -412,7 +412,7 @@ function _od_import_dataset_set_resource(&$dataset_node, $meta, &$messages, &$da
     if (empty($field_value)) {
       $dataset_node->{OD_COMMON_FIELD_DATASET_RESOURCES} = array();
     }
-    $messages[] = 'Не заполнено поле "Ресурс".';
+    $messages[] = 'Не заполнено поле "Гиперссылка на набор открытых данных".';
   }
 }
 
@@ -532,7 +532,7 @@ function _od_import_resource_set_created($resource_node, $data, &$messages, &$re
       $field_value = array();
 
       // Set warning message.
-      $messages[] = 'Некорректно заполнено поле "Дата создания версии набора открытых данных".';
+      $messages[] = 'Некорректно заполнено поле "Дата создания набора открытых данных".';
     }
   }
   // Unreachable statement, because $data['created'] must be defined always.
@@ -541,7 +541,7 @@ function _od_import_resource_set_created($resource_node, $data, &$messages, &$re
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Дата создания версии набора открытых данных".';
+    $messages[] = 'Не заполнено поле "Дата создания набора открытых данных".';
   }
 }
 
@@ -571,7 +571,7 @@ function _od_import_resource_set_provenance($resource_node, $data, &$messages, &
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Содержание изменения версии набора открытых данных".';
+    $messages[] = 'Не заполнено поле "Содержание изменения набора открытых данных".';
   }
 }
 
@@ -603,7 +603,7 @@ function _od_import_resource_set_format($resource_node, $data, &$messages, &$res
       $field_value = array();
 
       // Set warning message.
-      $messages[] = 'Некорректно заполнено поле "Формат версии набора открытых данных".';
+      $messages[] = 'Некорректно заполнено поле "Формат набора открытых данных".';
     }
   }
   else {
@@ -611,7 +611,7 @@ function _od_import_resource_set_format($resource_node, $data, &$messages, &$res
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Формат версии набора открытых данных".';
+    $messages[] = 'Не заполнено поле "Формат набора открытых данных".';
   }
 }
 
@@ -661,7 +661,7 @@ function _od_import_resource_set_data($resource_node, $data, &$messages, &$resou
       $field_value = array();
 
       // Set warning message.
-      $messages[] = 'Не корреткно заполнено поле "Ссылка на файл версии набора открытых данных".';
+      $messages[] = 'Некорректно заполнено поле "Гиперссылка на набор открытых данных" и/или "Гиперссылки на версии набора открытых данных".';
     }
   }
   else {
@@ -669,7 +669,7 @@ function _od_import_resource_set_data($resource_node, $data, &$messages, &$resou
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Ссылка на файл версии набора открытых данных".';
+    $messages[] = 'Не заполнено поле "Гиперссылка на набор открытых данных" и/или "Гиперссылки на версии набора открытых данных".';
   }
 }
 
@@ -709,7 +709,7 @@ function _od_import_resource_set_structure($resource_node, $data, &$messages, &$
       $field_value = array();
 
       // Set warning message.
-      $messages[] = 'Не корреткно заполнено поле "Ссылка на файл версии структуры набора открытых данных".';
+      $messages[] = 'Некорректно заполнено поле "Гиперссылка на структуру наборов открытых данных" и/или "Гиперссылки на версии структур наборов открытых данных".';
     }
   }
   else {
@@ -717,6 +717,6 @@ function _od_import_resource_set_structure($resource_node, $data, &$messages, &$
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Ссылка на файл версии структуры набора открытых данных".';
+    $messages[] = 'Не заполнено поле "Гиперссылка на структуру наборов открытых данных" и/или "Гиперссылки на версии структур наборов открытых данных".';
   }
 }
