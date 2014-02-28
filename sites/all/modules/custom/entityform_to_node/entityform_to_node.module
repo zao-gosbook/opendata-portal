@@ -93,9 +93,11 @@ function entityform_to_node_copy_to_node($ef, $node_type, $options = array()) {
         $instance = field_create_instance($instance);
       }
 
+      $node_lang = field_language('node', $node, $node_property);
+      $ef_lang = field_language('entityform', $ef, $property);
       // And finally if field's instance exists and we have filled property.
-      if ((!isset($options['field_mappings']) || $field_is_mapped) && $instance && isset($ef->{$property})) {
-        $node->{$node_property} = $ef->{$property}; // We copy it.
+      if ((!isset($options['field_mappings']) || $field_is_mapped) && $instance && isset($ef->{$property}[$ef_lang])) {
+        $node->{$node_property}[$node_lang] = $ef->{$property}[$ef_lang]; // We copy it.
       }
     }
   }
