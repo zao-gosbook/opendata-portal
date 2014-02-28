@@ -166,7 +166,40 @@ function od_common_rules_action_info() {
       'group' => t('Gosbook'),
       'base' => 'od_common_rules_actions_od_common_file_get_extension_term',
     ),
+    'od_common_entity_list_get_element_by_index' => array(
+      'label' => t('Gets an element from list<entity> by index'),
+      'parameter' => array(
+        'list' => array(
+          'type' => 'list<entity>',
+          'label' => t('A list of entities'),
+        ),
+        'index' => array(
+          'label' => t('An index to return an element'),
+          'type' => 'integer',
+        ),
+      ),
+      'provides' => array(
+        'entity' => array(
+          'type' => 'list_element',
+          'label' => t('List element'),
+        ),
+      ),
+      'group' => t('Gosbook'),
+      'base' => 'od_common_rules_actions_od_common_entity_list_get_element_by_index',
+    ),
   );
+}
+
+function od_common_rules_actions_od_common_entity_list_get_element_by_index($entities, $index) {
+  $ret = array(
+    'list_element' => NULL,
+  );
+
+  if (isset($entities[$index])) {
+    $ret['list_element'] = $entities[$index];
+  }
+
+  return $ret;
 }
 
 function _od_common_callbacks_date_formats() {
