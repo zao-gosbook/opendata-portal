@@ -167,10 +167,10 @@ function od_common_rules_action_info() {
       'base' => 'od_common_rules_actions_od_common_file_get_extension_term',
     ),
     'od_common_entity_list_get_element_by_index' => array(
-      'label' => t('Gets an element from list<entity> by index'),
+      'label' => t('Gets an element from list<node> by index'),
       'parameter' => array(
         'list' => array(
-          'type' => 'list<entity>',
+          'type' => 'list<node>',
           'label' => t('A list of entities'),
         ),
         'index' => array(
