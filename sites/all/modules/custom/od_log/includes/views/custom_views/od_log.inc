@@ -57,28 +57,50 @@ $handler->display->display_options['style_plugin'] = 'table';
 $handler->display->display_options['style_options']['default_row_class'] = FALSE;
 $handler->display->display_options['style_options']['row_class_special'] = FALSE;
 $handler->display->display_options['style_options']['columns'] = array(
-  'field_log_event_type' => 'field_log_event_type',
+  'views_bulk_operations' => 'views_bulk_operations',
+  'field_organization' => 'field_organization',
   'created' => 'created',
+  'field_dataset_ref' => 'field_dataset_ref',
   'message' => 'message',
+  'field_curator_was_notified' => 'field_curator_was_notified',
 );
 $handler->display->display_options['style_options']['default'] = '-1';
 $handler->display->display_options['style_options']['info'] = array(
-  'field_log_event_type' => array(
-    'sortable' => 0,
+  'views_bulk_operations' => array(
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_organization' => array(
+    'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
     'separator' => '',
     'empty_column' => 0,
   ),
   'created' => array(
-    'sortable' => 0,
+    'sortable' => 1,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_dataset_ref' => array(
+    'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
     'separator' => '',
     'empty_column' => 0,
   ),
   'message' => array(
-    'sortable' => 0,
+    'sortable' => 1,
+    'default_sort_order' => 'asc',
+    'align' => '',
+    'separator' => '',
+    'empty_column' => 0,
+  ),
+  'field_curator_was_notified' => array(
+    'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
     'separator' => '',
@@ -219,6 +241,15 @@ $handler->display->display_options['fields']['message']['element_type'] = '0';
 $handler->display->display_options['fields']['message']['element_label_type'] = '0';
 $handler->display->display_options['fields']['message']['element_wrapper_type'] = '0';
 $handler->display->display_options['fields']['message']['element_default_classes'] = FALSE;
+/* Поле: Куратор уведомлен */
+$handler->display->display_options['fields']['field_curator_was_notified']['id'] = 'field_curator_was_notified';
+$handler->display->display_options['fields']['field_curator_was_notified']['table'] = 'field_data_field_curator_was_notified';
+$handler->display->display_options['fields']['field_curator_was_notified']['field'] = 'field_curator_was_notified';
+$handler->display->display_options['fields']['field_curator_was_notified']['ui_name'] = 'Куратор уведомлен';
+$handler->display->display_options['fields']['field_curator_was_notified']['element_type'] = '0';
+$handler->display->display_options['fields']['field_curator_was_notified']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_curator_was_notified']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_curator_was_notified']['element_default_classes'] = FALSE;
 /* Критерий сортировки: По времени */
 $handler->display->display_options['sorts']['created']['id'] = 'created';
 $handler->display->display_options['sorts']['created']['table'] = 'log';
@@ -230,23 +261,43 @@ $handler->display->display_options['sorts']['created']['order'] = 'DESC';
 $handler = $view->new_display('page', 'Журнал открытых данных', 'opendata_log');
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;
 $handler->display->display_options['defaults']['filters'] = FALSE;
-/* Критерий фильтра: Log: Тип лога (field_log_event_type) */
+/* Критерий фильтра: Тип лога */
 $handler->display->display_options['filters']['field_log_event_type_value']['id'] = 'field_log_event_type_value';
 $handler->display->display_options['filters']['field_log_event_type_value']['table'] = 'field_data_field_log_event_type';
 $handler->display->display_options['filters']['field_log_event_type_value']['field'] = 'field_log_event_type_value';
+$handler->display->display_options['filters']['field_log_event_type_value']['ui_name'] = 'Тип лога';
 $handler->display->display_options['filters']['field_log_event_type_value']['value'] = array(
   'import_data' => 'import_data',
 );
-/* Критерий фильтра: Поле: Владелец набора данных (field_organization) */
+/* Критерий фильтра: Организация */
 $handler->display->display_options['filters']['field_organization_target_id']['id'] = 'field_organization_target_id';
 $handler->display->display_options['filters']['field_organization_target_id']['table'] = 'field_data_field_organization';
 $handler->display->display_options['filters']['field_organization_target_id']['field'] = 'field_organization_target_id';
+$handler->display->display_options['filters']['field_organization_target_id']['ui_name'] = 'Организация';
 $handler->display->display_options['filters']['field_organization_target_id']['exposed'] = TRUE;
 $handler->display->display_options['filters']['field_organization_target_id']['expose']['operator_id'] = 'field_organization_target_id_op';
-$handler->display->display_options['filters']['field_organization_target_id']['expose']['label'] = 'Владелец набора данных (field_organization)';
+$handler->display->display_options['filters']['field_organization_target_id']['expose']['label'] = 'Организация';
 $handler->display->display_options['filters']['field_organization_target_id']['expose']['operator'] = 'field_organization_target_id_op';
-$handler->display->display_options['filters']['field_organization_target_id']['expose']['identifier'] = 'opendata_log_rganization';
+$handler->display->display_options['filters']['field_organization_target_id']['expose']['identifier'] = 'opendata_log_organization';
 $handler->display->display_options['filters']['field_organization_target_id']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  6 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+/* Критерий фильтра: Куратор уведомлен */
+$handler->display->display_options['filters']['field_curator_was_notified_value']['id'] = 'field_curator_was_notified_value';
+$handler->display->display_options['filters']['field_curator_was_notified_value']['table'] = 'field_data_field_curator_was_notified';
+$handler->display->display_options['filters']['field_curator_was_notified_value']['field'] = 'field_curator_was_notified_value';
+$handler->display->display_options['filters']['field_curator_was_notified_value']['ui_name'] = 'Куратор уведомлен';
+$handler->display->display_options['filters']['field_curator_was_notified_value']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_curator_was_notified_value']['expose']['operator_id'] = 'field_curator_was_notified_value_op';
+$handler->display->display_options['filters']['field_curator_was_notified_value']['expose']['label'] = 'Куратор уведомлен';
+$handler->display->display_options['filters']['field_curator_was_notified_value']['expose']['operator'] = 'field_curator_was_notified_value_op';
+$handler->display->display_options['filters']['field_curator_was_notified_value']['expose']['identifier'] = 'opendata_log_curator_was_notified';
+$handler->display->display_options['filters']['field_curator_was_notified_value']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
   6 => 0,
@@ -366,8 +417,9 @@ $translatables['opendata_log'] = array(
   t('Время'),
   t('Набор данных'),
   t('Сообщение'),
+  t('Куратор уведомлен'),
   t('Журнал открытых данных'),
-  t('Владелец набора данных (field_organization)'),
+  t('Организация'),
   t('Журнал набора открытых данных'),
   t('<div class="[field_log_event_type]"></div>'),
   t('Изменено: [name]'),
