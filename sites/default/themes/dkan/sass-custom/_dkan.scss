@@ -3,11 +3,12 @@
  */
 html {
   min-height: 100%;  
+  position: relative;
+  background-color: #000;
 }
 body {
   background-color: #e5e5e5;
   min-height: 100%;
-  position: relative;
 }
 
 /**
@@ -4634,9 +4635,12 @@ div.fivestar-widget .star {
 /**
  * footer
  */ 
+.admin-menu .inside .footer-region {
+  bottom: -20px;
+}  
 .inside .footer-region {
   position: absolute;
-  bottom: -20px;
+  bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
