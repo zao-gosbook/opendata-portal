@@ -127,7 +127,7 @@ function _passport_table_rows($nid) {
   
   //Описание набора данных
   $data = array(
-    'data' => $node_wrapper->field_dataset_body->value() ? $node_wrapper->field_dataset_body->value->value(array('decode' => TRUE)) : '',
+    'data' => @reset($node_wrapper->field_dataset_body->value(array('decode' => TRUE))),
     'property' => 'dc:description',
   );
 
