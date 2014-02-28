@@ -127,9 +127,13 @@ function _passport_table_rows($nid) {
   
   //Описание набора данных
   $data = array(
-    'data' => $node_wrapper->field_dataset_body->value() ? $node_wrapper->field_dataset_body->value->value(array('decode' => TRUE)) : '',
+    'data' => '',
     'property' => 'dc:description',
   );
+
+  if ($value = $node_wrapper->field_dataset_body->value(array('decode' => TRUE))) {
+    $data['data'] = $value['value'];
+  }
 
   $rows['field_dataset_body'] = array(t('Dataset description'), $data);
   
