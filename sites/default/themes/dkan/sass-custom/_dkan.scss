@@ -1806,14 +1806,15 @@ div.horizontal-tabs .form-text {
       margin: 0 0 2.8em;
     }
     ul.portal-info {
+      display: table;
+      width: 70%;
       
       li {
         font-size: 15px;
         line-height: 1.35em;      
-        padding: 0 0 12px;
+        padding: 0;
         list-style: none;
-        display: table;
-        width: 70%;
+        display: table-row;       
         font-size: 22px;
         line-height: 30px;
         
@@ -1840,13 +1841,13 @@ div.horizontal-tabs .form-text {
     }
     h2 {
       font-size: 2.1em;
-      line-height: 2.2em;
+      line-height: 1.1em;
       margin: 0 0 40px;
       text-transform: uppercase;
     }
     h3 {
       font-size: 1.8em;
-      line-height: 1.8em;
+      line-height: 1.1em;
       margin: 0 0 40px;
       text-transform: uppercase;      
     }
@@ -2329,6 +2330,12 @@ div.horizontal-tabs .form-text {
     
     .region-header {
       background-image: url("../images/bg-ecology.jpg");
+    }
+  }
+  &.page-taxonomy-term-867 {
+    
+    .region-header {
+      background-image: url("../images/bg-electronics.jpg");
     }
   }
   
@@ -4916,3 +4923,34 @@ div.fivestar-widget .star {
     font-family: $arial;
   }
 }
+
+.popup-style-white {
+  
+  tr.top,
+  tr.bottom {
+    display: none;
+  }
+  .popup-element-body {
+    
+    div.inner {
+      border: 1px solid #e5e5e5;
+      background: #fff;
+      padding: 10px 15px;
+      top: -10px;
+      left: 40px;
+      
+      &:before {
+        content: '';
+        position: absolute;
+        bottom: 10px;
+        left: -11px;
+        width: 12px;
+        height: 14px;
+        background: url("../images/popup-corner.png") no-repeat;
+      }
+    }
+    .center .center {
+      background: transparent;
+    }    
+  }
+} 
