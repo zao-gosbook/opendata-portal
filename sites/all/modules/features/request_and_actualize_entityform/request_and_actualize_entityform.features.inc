@@ -38,7 +38,7 @@ function request_and_actualize_entityform_default_entityform_type() {
       "submissions_view" : "default",
       "user_submissions_view" : "",
       "form_status" : "ENTITYFORM_OPEN",
-      "roles" : { "6" : "6", "1" : 0, "2" : 0, "3" : 0, "4" : 0, "5" : 0 },
+      "roles" : { "5" : "5", "1" : 0, "2" : 0, "6" : 0, "3" : 0, "4" : 0 },
       "resubmit_action" : "new",
       "redirect_path" : "",
       "instruction_pre" : {
@@ -63,7 +63,7 @@ function request_and_actualize_entityform_default_entityform_type() {
       "draft_button_text" : "",
       "draft_save_text" : { "value" : "", "format" : "full_html" },
       "submit_button_text" : "\\u0414\\u043e\\u0431\\u0430\\u0432\\u0438\\u0442\\u044c \\u043d\\u0430\\u0431\\u043e\\u0440",
-      "submit_confirm_msg" : "\\u041d\\u0430\\u0431\\u043e\\u0440 \\u043e\\u0442\\u043a\\u0440\\u044b\\u0442\\u044b\\u0445 \\u0434\\u0430\\u043d\\u043d\\u044b\\u0445 \\u0443\\u0441\\u043f\\u0435\\u0448\\u043d\\u043e \\u0434\\u043e\\u0431\\u0430\\u0432\\u043b\\u0435\\u043d",
+      "submit_confirm_msg" : "\\u003Cnone\\u003E",
       "your_submissions" : "",
       "disallow_resubmit_msg" : "",
       "delete_confirm_msg" : "",
@@ -75,7 +75,7 @@ function request_and_actualize_entityform_default_entityform_type() {
       "submissions_view" : "default",
       "user_submissions_view" : "default",
       "form_status" : "ENTITYFORM_OPEN",
-      "roles" : { "6" : "6", "1" : 0, "2" : 0, "3" : 0, "4" : 0, "5" : 0 },
+      "roles" : { "5" : "5", "1" : 0, "2" : 0, "6" : 0, "3" : 0, "4" : 0 },
       "resubmit_action" : "new",
       "redirect_path" : "user",
       "instruction_pre" : {
