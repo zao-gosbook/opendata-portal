@@ -45,10 +45,16 @@ function od_log_node_insert($node) {
  * Implements hook_node_update().
  */
 function od_log_node_update($node) {
-  if (isset($node->od_log) && $node->od_log === FALSE) {
-    return;
+//  if (isset($node->od_log) && $node->od_log === FALSE) {
+//    return;
+//  }
+  $cache = &drupal_static(__FUNCTION__, array());
+  $cache_key = implode('', entity_extract_ids('node', $node));
+  if (isset($cache[$cache_key])) {
+   return;
   }
 
+  $cache[$cache_key] = TRUE;
   $user_id = isset($node->od_log['user']) ? $node->od_log['user'] : NULL;
 
   switch ($node->type) {
