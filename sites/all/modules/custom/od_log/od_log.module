@@ -48,13 +48,19 @@ function od_log_node_update($node) {
 //  if (isset($node->od_log) && $node->od_log === FALSE) {
 //    return;
 //  }
-  $cache = &drupal_static(__FUNCTION__, array());
-  $cache_key = implode('', entity_extract_ids('node', $node));
-  if (isset($cache[$cache_key])) {
-   return;
+//  $cache = &drupal_static(__FUNCTION__, array());
+//  $cache_key = implode('', entity_extract_ids('node', $node));
+//  if (isset($cache[$cache_key])) {
+//   return;
+//  }
+//
+//  $cache[$cache_key] = TRUE;
+  $cache_property = '___' . __FUNCTION__;
+  if (isset($node->{$cache_property})) {
+    return;
   }
+  $node->{$cache_property} = TRUE;
 
-  $cache[$cache_key] = TRUE;
   $user_id = isset($node->od_log['user']) ? $node->od_log['user'] : NULL;
 
   switch ($node->type) {
