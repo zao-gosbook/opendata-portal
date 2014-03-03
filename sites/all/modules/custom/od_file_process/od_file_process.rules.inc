@@ -352,6 +352,7 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
         }
       }
 
+      //@fixme: Enable this.
 //      if ($can_expire) {
 //        //Make files not permanent
 //        foreach ((array($file_structure) + $files_created) as $file) {
@@ -365,9 +366,8 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
   return array(
     'created_files' => $files_created,
     'created_structure' => $file_structure,
-    'created_structure_media' => array(
-      'file' => $file_structure,
-      'description' => 'created_structure_media',
+    'created_structure_media' => (array) $file_structure + array(
+      'description' => $file_structure->filename,
       'display' => TRUE,
     ),
   );
