@@ -528,6 +528,8 @@ div.horizontal-tabs .form-text {
         }
       }
       &.views-field-field-fact-url {
+        vertical-align: top;
+        
         .field-content {
           width: 48px;
           height: 48px;   
@@ -2255,6 +2257,24 @@ div.horizontal-tabs .form-text {
     
     .region-header {
       background-image: url("../images/bg-trade.jpg");
+    }
+  }
+  &.page-taxonomy-term-866 {
+    
+    .region-header {
+      background-image: url("../images/bg-culture.jpg");
+    }
+  }
+  &.page-taxonomy-term-864 {
+    
+    .region-header {
+      background-image: url("../images/bg-sport.jpg");
+    }
+  }
+  &.page-taxonomy-term-865 {
+    
+    .region-header {
+      background-image: url("../images/bg-ecology.jpg");
     }
   }
   
@@ -4768,6 +4788,25 @@ div.fivestar-widget .star {
  */
 .ui-widget {
   font-family: $gill;
+}
+
+
+/**
+ * icons
+ */
+
+.hybridauth-icon-hybridauth-32 {
+  width: 46px;
+  height: 46px;
+} 
+.hybridauth-vkontakte-hybridauth-32 {
+  background: url("../images/ico-vk.png") no-repeat scroll 0 0 transparent;
+}
+.hybridauth-facebook-hybridauth-32 {
+  background: url("../images/ico-fb.png") no-repeat scroll 0 0 transparent;
+}
+.hybridauth-twitter-hybridauth-32 {
+  background: url("../images/ico-twitter.png") no-repeat scroll 0 0 transparent;
 }
 
 
