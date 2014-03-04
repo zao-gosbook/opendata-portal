@@ -5003,3 +5003,55 @@ div.fivestar-widget .star {
     }    
   }
 } 
+
+/**
+ * forum
+ */ 
+ .forum-table,
+.forum-table td {
+  border: 0;
+  vertical-align: middle;
+ }
+ .forum-table-wrap thead tr {
+  background-color: #fff;
+  border: 0;
+}
+.forum-table-wrap .forum-table-superheader, 
+.forum-table-topics thead tr {
+  @include background-image(linear-gradient(#f4f4f4, #f4f4f4));
+  border: 0;
+  color: #666666;
+}
+.forum-table-topics thead tr.odd {
+  @include background-image(linear-gradient(#fff, #fff));
+}
+.forum-table tr.even {
+  @include background-image(linear-gradient(#f4f4f4, #f4f4f4));
+  border: 0;  
+} 
+.forum-table tr.odd {
+  @include background-image(linear-gradient(#fff, #fff));
+  border: 0;
+}
+.forum-table-superheader .forum-table-name, 
+.forum-table-superheader .forum-table-name a {
+  border-bottom: 0;
+  color: #666;
+  font-weight: normal;
+  font-size: 26px;
+}
+tr.even td.forum-list-icon-default .forum-list-icon-wrapper span, 
+tr.odd td.forum-list-icon-default .forum-list-icon-wrapper span, 
+.forum-list-icon-legend .forum-list-icon-default {
+  background-image: url("../images/icon-forum-topic.png");
+}
+tr.even td.forum-list-icon-new-posts .forum-list-icon-wrapper span, 
+tr.odd td.forum-list-icon-new-posts .forum-list-icon-wrapper span, 
+.forum-list-icon-legend .forum-list-icon-new-posts {
+  background-image: url("../images/icon-forum-new-topic.png");
+}
+.forum-list-icon-wrapper {
+  @include background-image(none);
+  border: 0;
+  @include box-shadow(none);
+}
