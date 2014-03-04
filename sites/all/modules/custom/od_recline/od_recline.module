@@ -69,11 +69,11 @@ function theme_od_recline_default_formatter($variables) {
       );
     }
     if ($variables['item']['grid'] && $variables['item']['filemime'] === 'text/csv') {
-      $field_encoding = $variables['item']['entity']->field_encoding;
-      $field_encoding_value = $field_encoding['und'][0]['value'];
-      $field_csv_delimiter = $variables['item']['entity']->field_encoding;
-      if (!empty($field_encoding) && $field_encoding_value === 'utf-8' && !empty($field_csv_delimiter)) {
-        $csv_delimiter = $variables['item']['entity']->field_csv_delimiter['und'][0]['value'];
+      $field_utf8_encoding = $variables['item']['entity']->{OD_COMMON_FIELD_RESOURCE_UTF8_ENCODING};
+      $field_utf8_encoding_value = $field_utf8_encoding['und'][0]['value'];
+      $field_csv_delimiter = $variables['item']['entity']->{OD_COMMON_FIELD_RESOURCE_CSV_DELIMITER};
+      if (!empty($field_encoding) && $field_utf8_encoding_value && !empty($field_csv_delimiter)) {
+        $csv_delimiter = $field_csv_delimiter['und'][0]['value'];
         $settings['recline']['csvDelimiter'] = $csv_delimiter;
       }
       else {
