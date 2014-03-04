@@ -48,10 +48,18 @@ function od_log_node_update($node) {
 //  if (isset($node->od_log) && $node->od_log === FALSE) {
 //    return;
 //  }
-  $cache = &drupal_static(__FUNCTION__, array());
-  $cache_key = implode('', entity_extract_ids('node', $node));
+  try {
+    $cache = &drupal_static(__FUNCTION__, array());
+    $cache_key = implode('', entity_extract_ids('node', $node));
+  }
+  catch (Exception $e) {
+    // In case of an exception just write it to watchdog
+    watchdog_exception('od_log', $e);
+    return;
+  }
+
   if (isset($cache[$cache_key])) {
-   return;
+    return;
   }
 
   $cache[$cache_key] = TRUE;
