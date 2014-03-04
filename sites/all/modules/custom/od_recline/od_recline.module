@@ -77,7 +77,7 @@ function theme_od_recline_default_formatter($variables) {
         $settings['recline']['csvDelimiter'] = $csv_delimiter;
       }
       else {
-        unset($settings);
+        //unset($settings);
       }
     }
   }
