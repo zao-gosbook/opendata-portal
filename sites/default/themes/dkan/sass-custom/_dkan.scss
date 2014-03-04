@@ -198,7 +198,7 @@ div.horizontal-tabs .form-text {
  * error 404
  */
 .section-error-404 {
-  background: #081325 url("../images/header.jpg") no-repeat 50% 0;
+  background: #000 url("../images/header.jpg") no-repeat 50% 0;
   @include background-size(cover);
   
   &.not-front .region-header {
@@ -214,11 +214,12 @@ div.horizontal-tabs .form-text {
     padding: 22px 0;
     text-align: center;
     background: #fff;
-    margin: 10% auto;
+    margin: 4% auto;
     
     strong {
       display: block;
       font-size: 24px;
+      text-align: left;
       line-height: 24px;
       text-transform: uppercase;
       font-weight: normal;
@@ -227,7 +228,7 @@ div.horizontal-tabs .form-text {
     }
     .num {
       font-size: 300px;
-      line-height: 300px;   
+      line-height: 230px;   
       color: #ffa200;
     }
     span {
