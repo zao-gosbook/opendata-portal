@@ -45,26 +45,14 @@ function od_log_node_insert($node) {
  * Implements hook_node_update().
  */
 function od_log_node_update($node) {
-//  if (isset($node->od_log) && $node->od_log === FALSE) {
-//    return;
-//  }
-  try {
-    $cache = &drupal_static(__FUNCTION__, array());
-    $cache_key = implode('', entity_extract_ids('node', $node));
-  }
-  catch (Exception $e) {
-    // In case of an exception just write it to watchdog
-    watchdog_exception('od_log', $e);
+  static $alter = TRUE;
+  if (!$alter) {
     return;
   }
 
-  if (isset($cache[$cache_key])) {
-    return;
-  }
+  $alter = FALSE;
 
-  $cache[$cache_key] = TRUE;
   $user_id = isset($node->od_log['user']) ? $node->od_log['user'] : NULL;
-
   switch ($node->type) {
     case 'dataset':
       $organization_id = !empty($node->{OD_COMMON_FIELD_DATASET_OWNER}) ? $node->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
@@ -84,6 +72,8 @@ function od_log_node_update($node) {
       od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_RESOURCE_CHANGED, $organization_id, $dataset_id, $user_id);
       break;
   }
+
+  $alter = TRUE;
 }
 
 /**
