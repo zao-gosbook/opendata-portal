@@ -345,6 +345,80 @@ $zen-auto-include-item-base: false;
       }
     }
   }
+  
+  /* about */
+  .section-about {
+    
+    .node.node-page {
+      padding: 20px;
+      
+      p {
+        font-size: 1.1em;
+        line-height: 1.1em;
+        margin: 0 0 1.8em;
+      }
+      ul.portal-info {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        
+        li {
+          font-size: 15px;
+          line-height: 1.35em;      
+          padding: 0 0 12px;
+          list-style: none;
+          display: block;       
+          font-size: 14px;
+          line-height: 18px;
+          
+          .img-wrapper {
+            display: block;
+            padding: 0 0 0px;
+            margin: 0 auto;
+            width: 100px;
+            
+            img {
+              top: 0;
+            }
+          }
+          .content-wrapper {
+            display: block;
+            
+            p {
+              margin: 0;
+            }
+          }
+        }      
+      }
+      h2 {
+        font-size: 1.5em;
+        line-height: 1.1em;
+        margin: 0 0 10px;
+        text-transform: uppercase;
+      }
+      h3 {
+        font-size: 1.35em;
+        line-height: 1.1em;
+        margin: 0 0 10px;   
+      }
+    }
+    .social-nets {
+      padding-left: 60px;
+      height: 46px;
+      line-height: 46px;
+      text-transform: uppercase;
+      font-size: 1.1em;
+      text-decoration: none;
+      background: url("../images/ico-fb.png") no-repeat 0 0;
+      display: inline-block;
+    }
+    iframe {
+      width: 100%;
+      height: 300px;
+    }
+  }
+  
 
   /**
    * competitions
