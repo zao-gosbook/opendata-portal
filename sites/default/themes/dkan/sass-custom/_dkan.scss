@@ -190,9 +190,55 @@ div.horizontal-tabs .form-text {
 }
 
 .front .region-header {
-  @include background-size(cover);
+  
   overflow: hidden;
 }
+
+/**
+ * error 404
+ */
+.section-error-404 {
+  background: #081325 url("../images/header.jpg") no-repeat 50% 0;
+  @include background-size(cover);
+  
+  &.not-front .region-header {
+    background: transparent;
+  }
+  .pane-page-title h1,
+  .pane-pane-messages,
+  .rules-debug-log  {
+    display: none;
+  }
+  .error-404 {
+    width: 600px;
+    padding: 22px 0;
+    text-align: center;
+    background: #fff;
+    margin: 10% auto;
+    
+    strong {
+      display: block;
+      font-size: 24px;
+      line-height: 24px;
+      text-transform: uppercase;
+      font-weight: normal;
+      padding: 0 0 20px 86px; 
+      color: #ffa200;
+    }
+    .num {
+      font-size: 300px;
+      line-height: 300px;   
+      color: #ffa200;
+    }
+    span {
+      display: block;
+      color: #434343;
+      padding: 20px 0 0;
+      font-size: 18px;
+    }
+  }
+}
+
 .panels-flexible-row.region-header  {
   padding: 2% 1.5% 1% 1.5%;
 }
