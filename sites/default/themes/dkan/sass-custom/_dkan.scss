@@ -5271,4 +5271,94 @@ tr.odd td.forum-list-icon-new-posts .forum-list-icon-wrapper span,
   font-size: 16px;
   background: url("../images/icon-forum-topic.png") no-repeat 0 0;
 }
-
+.comment-edit .af-button-small span, 
+.post-edit .af-button-small span,
+.comment-delete .af-button-small span, 
+.post-delete .af-button-small span,
+.comment-add .af-button-small span, 
+.comment-reply .af-button-small span,
+.forum-jump-links .af-button-small span {
+  background: transparent;
+}
+.forum-post-links ul.links li.statistics_counter {
+  padding: 0 26px 0 48px;
+  background: url("../images/icon-forum-post-view.png") no-repeat 0 50%;
+  color: #666;
+  font-size: 16px;
+  margin-left: 11px;
+}
+.forum-post-links ul.links li a {
+  text-decoration: none;
+}
+.forum-post-links {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.forum-jump-links {
+  margin: 10px 10px 10px 20px;
+}
+.forum-post-footer {
+  border-top: 1px solid #fff;
+}
+div.forum-post {
+  border: 0;
+  background: #f4f4f4;
+  margin-bottom: 20px;
+}
+.forum-post-info {
+  @include background-image(linear-gradient(#f4f4f4, #f4f4f4));
+  border-bottom: 1px solid #fff;
+  border-top: 0;
+  color: #b5b5b5;
+  font-weight: normal;
+  padding: 12px 20px;
+}
+.forum-posted-on {
+  font-weight: normal;
+  font-size: 14px;
+  padding-left: 0;
+}
+.forum-post-number a {
+  font-size: 16px;
+  color: #666 !important;
+  text-decoration: none;
+}
+.forum-post-panel-sub {
+  width: 210px;
+  
+  .author-pane {
+    margin: 12px 20px;
+  }
+  .username {
+    font-size: 14px;
+    text-transform: uppercase;
+    line-height: 22px;
+    text-decoration: none;
+  }
+  .user-picture img {
+    border: 10px solid #e5e5e5;
+    margin-top: 10px;
+  }
+}
+.forum-post-panel-main {
+  background-color: #fff;
+  border-left: 0;
+  margin-left: 210px;
+}
+.forum-post-title {
+  border-bottom: 1px solid #f4f4f4;
+  padding: 10px 18px;
+  font-size: 16px;
+  line-height: 22px;  
+}
+.forum-post-panel-main .post-title, .forum-post-panel-main .forum-post-content {
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 10px;
+  
+  p {
+    margin: 0 0 12px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
