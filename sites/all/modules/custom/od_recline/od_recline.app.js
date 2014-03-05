@@ -160,6 +160,8 @@
       state: state,
       views: views
     });
+
+    $(window).trigger('reclineexplorercreated');
     return views;
   }
 })(jQuery);

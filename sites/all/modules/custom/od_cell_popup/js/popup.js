@@ -9,8 +9,12 @@
         return $('.recline-data-explorer>.data-view-container .slick-viewport>.grid-canvas .slick-cell', context);
       }
 
-      getCells().ready(function(e) {
-        setTimeout(main, 500);
+//      getCells().ready(function(e) {
+//        setTimeout(main, 1000);
+//      });
+
+      $(window).bind('reclineexplorercreated', function() {
+        main();
       });
 
       function main() {

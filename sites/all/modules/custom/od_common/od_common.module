@@ -266,6 +266,12 @@ function od_common_actualize_access_callback($node) {
 function od_common_field_formatter_info() {
   $info = array();
 
+  $info['od_common_recline_link_formatter_multivolume'] = array(
+    'label' => t('Recline link (for multivolume and not)'),
+    'field types' => array('recline_field', 'file'),
+    'description' => t('Displays file as a link.'),
+  );
+
   if (module_exists('od_pubdlcnt')) {
     $info['od_common_file_dlcnt'] = array(
       'label' => t('Download counts of a file'),
@@ -317,6 +323,25 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
         );
 
         $element[$delta] = $build;
+      }
+
+      break;
+    case 'od_common_recline_link_formatter_multivolume':
+      foreach ($items as $delta => $item) {
+        try {
+          $wrapper = entity_metadata_wrapper($entity_type, $entity);
+          if (($dataset = $wrapper->field_dataset_ref->value()) && ($wrapper->field_dataset_ref->field_multivolume->raw() == TRUE)) {
+            $item['uri'] = url('dataset-actions/download_package/' . $dataset->nid, array('absolute' => TRUE));
+          }
+        }
+        catch (Exception $e) {
+          throw $e;
+        }
+
+        $element[$delta] = array(
+          '#theme' => 'recline_link_formatter',
+          '#item' => $item,
+        );
       }
 
       break;

@@ -43,12 +43,21 @@ function od_dataset_filefield_source_remotefile_value($element, &$item) {
       od_common_module('tools.http_request2');
       $http = od_common_tools_http_request2();
       // Check that the file exists.
-      //$request = drupal_http_request($value, array('method' => 'HEAD'));
       $http->setUrl($value);
       $http->setMethod('PARTIAL_GET');
       $http->setConfig('store_body', false);
-      $request = $http->send();
-      if (($status = $request->getStatus()) && (!$status || $status != '200')) {
+      try {
+        // Try to make a request
+        $request = $http->send();
+      }
+      catch (Exception $e) {
+        // Silently log exception to watchdog
+        watchdog_exception('od_dataset', $e);
+        $request = FALSE;
+      }
+
+      // If an error occurred or file not found then set an error on a form.
+      if ($request === FALSE || (($status = $request->getStatus()) && (!$status || $status != '200'))) {
         form_error($element, t('Unable to fetch file from Remote File URL %url (error @code: %error).', array('%url' => $value, '@code' => $status, '%error' => $request->error)));
         return;
       }
