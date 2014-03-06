@@ -670,6 +670,7 @@ div.horizontal-tabs .form-text {
   padding-bottom: 0;
   margin-bottom: 0;
   width: 100%;
+  position: relative;
   
   &.panels-flexible-row {
     padding-bottom: 0;
@@ -699,6 +700,7 @@ div.horizontal-tabs .form-text {
       color: #fff;
       font-size: 20px;
       background: #ff8a00;
+      width: 30%;
       
       span {
         font-size: 60px;
@@ -723,6 +725,24 @@ div.horizontal-tabs .form-text {
         margin-top: -11px;
         background: url("../images/arr-orange-left.png") no-repeat;
       }
+    }
+  }
+  .pane-2 {
+    position: absolute;
+    right: 8%;
+    top: 24px;
+    
+    a {
+      display: block;
+      width: 296px;
+      height: 41px;
+      line-height: 41px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      text-transform: uppercase;
+      background: #0c87e8;
+      text-align: center;
     }
   }
 }
@@ -886,7 +906,8 @@ div.horizontal-tabs .form-text {
 }
 
 .pane-gb-search-pane {
-  padding: 20px 7%;
+  width: 588px;
+  display: table;
   
   form {
     position: relative;
