@@ -243,7 +243,7 @@ div.horizontal-tabs .form-text {
 }
 
 .panels-flexible-row.region-header  {
-  padding: 2% 1.5% 1% 1.5%;
+  padding: 21px 1.5% 1% 1.5%;
 }
 .region-header {
   /*height: 660px;*/
@@ -252,15 +252,27 @@ div.horizontal-tabs .form-text {
   padding: 2% 1.5% 1% 1.5%;
   @include box-sizing(padding-box);
   position: relative;
+  overflow-x: hidden;
   /*display: table;
   width: 100%;*/  
+  
+  &:before {
+    content: '';
+    top: 145px;
+    left: -1.5%;
+    right: -1.5%;
+    height: 17px;
+    background: #ffa200;
+    position: absolute;
+    z-index: 100;
+  }
   
   .panels-flexible-region {
     width: 100%;
   }
   .pane-locale-language  {
     position: absolute;
-    top: 10px;
+    top: 28px;
     right: 1.5%;
     
     ul {
@@ -299,11 +311,11 @@ div.horizontal-tabs .form-text {
   }
   #logo {
     padding-right: 11px;
-    margin-top: -22px;
+    margin-top: 0;
   }
   #name-and-slogan {
-    padding-top: 20px;
-    padding-right: 5%;
+    padding-top: 37px;
+    padding-right: 7%;
     margin-top: -4px;
     
     a {
@@ -321,11 +333,11 @@ div.horizontal-tabs .form-text {
     color: #0c87e8;
   }
   .pane-system-main-menu {
-    float: left;
-    padding-bottom: 20px;
-    padding-top: 10px;
+    padding-left: 10%;
+    padding-top: 22px;
     
-     > ul {
+    
+    > ul {
       margin: 0;
       padding: 0;
       float: left;
@@ -425,7 +437,8 @@ div.horizontal-tabs .form-text {
   }
   .pane-system-user-menu {
     float: right;
-    padding: 10px 10px 20px 30px;
+    margin-top: -57px;
+    padding: 0 60px 20px 30px;
     
     > ul {
       margin: 0;
@@ -444,7 +457,7 @@ div.horizontal-tabs .form-text {
           /*padding: 17px 15px;
           font-size: 16px;
           line-height: 16px;*/
-          padding: 1em .95em;          
+          padding: .75em .95em;          
           font-size: 1.1em;
           line-height: 1.1em;          
           background: #fff;
@@ -919,7 +932,7 @@ div.horizontal-tabs .form-text {
     @include box-sizing(padding-box);
     display: block;
     width: 100%;
-    padding: 7px 270px 7px 18px;
+    padding: 8px 270px 8px 18px;
     font-size: 16px;
     line-height: 16px;
     border: 0;
@@ -936,7 +949,7 @@ div.horizontal-tabs .form-text {
   .form-submit {
     position: absolute;
     right: 5px;
-    top: 8px;
+    top: 4px;
     width: 24px;
     height: 24px;
     border: 0;
@@ -945,11 +958,14 @@ div.horizontal-tabs .form-text {
     background: url("../images/ico-search-big.png") no-repeat;
     padding: 0;
   }
+  label[for="edit-field-query"] {
+    display: none;
+  }
   #edit-field-select {
     overflow: hidden;
     position: absolute;
     right: 40px;
-    top: 12px;
+    top: 8px;
     
     .form-type-radio {
       float: left;
