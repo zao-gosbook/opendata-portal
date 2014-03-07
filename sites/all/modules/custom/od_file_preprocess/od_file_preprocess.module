@@ -206,7 +206,7 @@ function od_file_preprocess_widget_validate($element, &$form_state, $form) {
  */
 function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
   $cache = _od_file_preprocess_caches(__FUNCTION__);
-  $cache_key = substr(md5($file . $process_2nd_row), 0, 8);
+  $cache_key = substr(md5($file->uri . $process_2nd_row), 0, 8);
   if (!isset($cache[$cache_key])) {
     // Lets think pessimistically and say that we won't get structure.
     $cache[$cache_key] = NULL;
