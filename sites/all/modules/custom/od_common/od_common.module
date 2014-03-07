@@ -197,6 +197,10 @@ function od_common_theme() {
     'render element' => 'element',
   );
 
+  $themes['od_common_recline_link_formatter'] = array(
+    'variables' => array('item' => NULL, 'options' => array(), 'title' => NULL),
+  );
+
   return $themes;
 }
 
@@ -331,27 +335,102 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
 
       break;
     case 'od_common_recline_link_formatter_multivolume':
+      // @fixme Create submodule
       foreach ($items as $delta => $item) {
+        // Change download callback to od_dataset's callback to support encodings
+        $download_uri = 'dataset-actions/download_file/'. $item['fid'];
         try {
           $wrapper = entity_metadata_wrapper($entity_type, $entity);
           if (($dataset = $wrapper->field_dataset_ref->value()) && ($wrapper->field_dataset_ref->field_multivolume->raw() == TRUE)) {
-            $item['uri'] = url('dataset-actions/download_package/' . $dataset->nid, array('absolute' => TRUE));
+            $download_uri = 'dataset-actions/download_package/' . $dataset->nid;
           }
         }
         catch (Exception $e) {
           throw $e;
         }
 
-        $element[$delta] = array(
-          '#theme' => 'recline_link_formatter',
-          '#item' => $item,
+        $element[$delta]['links_container'] = array(
+          '#prefix' => '<div class="multi-download-link-wrapper">',
+          '#suffix' => '</div>',
+          'main_link' => array(
+            '#markup' => '<div class="main-download-link-wrapper"><a href="#">'. t('Download').'</a></div>'
+          ),
+          'dropdown_links' => array(
+            '#prefix' => '<div class="element-invisible dropdown-links state-collapsed">',
+            '#suffix' => '</div>',
+          ),
         );
+
+        $element[$delta]['links_container']['#attached']['js'][] = array(
+          'type' => 'file',
+          'data' => drupal_get_path('module', 'od_common'). '/js/multi-download-links.js',
+        );
+
+        foreach (array(ODDetectEncoding::ENC_CP1251, ODDetectEncoding::ENC_UTF8) as $target_encoding) {
+          $options = array();
+          $options['query']['encoding'] = $target_encoding;
+          $options['html'] = TRUE;
+
+          // Replace our uri to different
+          $item['uri'] = $download_uri; //url($download_uri, $options);
+
+          // Use recline's theme function
+          $element[$delta]['links_container']['dropdown_links'][$target_encoding] = array(
+            'item' => array(
+              '#theme' => 'od_common_recline_link_formatter',
+              '#item' => $item,
+              '#options' => $options,
+              '#title' => t('Download in %encoding encoding', array('%encoding' => $target_encoding)),
+            ),
+//            'item_suffix' => array(
+//              '#markup' => "<span>(in {$target_encoding} encoding)</span>",
+//            ),
+            '#attributes' => array(
+              'class' => array("encoding-{$target_encoding}"),
+            ),
+          );
+        }
       }
 
       break;
   }
 
   return $element;
+}
+
+/**
+ * Returns HTML for an recline field formatter.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - item: Associative array of recline field
+ *
+ * @ingroup themeable
+ */
+function theme_od_common_recline_link_formatter($variables) {
+  $file = $variables['item'];
+
+  $url = file_create_url($file['uri']);
+
+  $icon = '';
+
+  // Set options as per anchor format described at
+  // http://microformats.org/wiki/file-format-examples
+  $options = $variables['options'];
+  $options['attributes']['type'] = $file['filemime'] . '; length=' . $file['filesize'];
+
+  // Use the description as the link text if available.
+  if (empty($file['description'])) {
+    $link_text = $file['filename'];
+  }
+  else {
+    $link_text = $file->description;
+    $options['attributes']['title'] = check_plain($file['filename']);
+  }
+
+  $variables['title'] = !$variables['title'] ? t('Download') : $variables['title'];
+  $file = l($variables['title'], $url, $options);
+  return '<div class="download">' . $file . '</div><span class="data-explorer"></span>';
 }
 
 /**
