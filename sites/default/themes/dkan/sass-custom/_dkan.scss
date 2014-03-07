@@ -265,6 +265,10 @@ div.horizontal-tabs .form-text {
     background: #ffa200;
     position: absolute;
     z-index: 100;
+    
+  }
+  &.active-region:before {
+    height: 41px;
   }
   
   .panels-flexible-region {
@@ -404,7 +408,7 @@ div.horizontal-tabs .form-text {
             background: #fff;
             padding-top: 16px;
             padding-bottom: 16px;
-            margin-left: -79px;
+            margin-left: -79px !important;
             
             li {
               float: left;

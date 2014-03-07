@@ -85,12 +85,30 @@
 
   Drupal.behaviors.preventClickHrefUserMenu = {
     attach: function(context, settings) {
-      $(context).find('.sf-menu-for-profile.sf-horizontal>li.menuparent>a').bind('click', function(e) {
-        e.preventDefault();
-        return false;
+      $('.region-header .pane-system-main-menu > ul > li > a').click(function(e) {
+        if(!$(this).parent("li").hasClass("sf-item-2")){
+          $(".region-header").addClass("active-region");
+          var half_link_width = $(this).width()/2;
+          var ul = $(this).next("ul");
+          var item = 2; 
+          ul.find("li").each(function(){
+            item = item + $(this).width();
+          });
+          var margin = -item/2 + half_link_width;
+          ul.css({
+            width: item,
+            "margin-left": margin
+          });          
+        }
+        else {
+          $(".region-header").removeClass("active-region");
+        }
       });
     }
   }
+  
+  
+  
 
   /**
    * Кнопка ПОКАЗАТЬ/СКРЫТЬ элементы на главной странице.
