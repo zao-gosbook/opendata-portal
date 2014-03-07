@@ -300,7 +300,7 @@ function common_rules_actions_get_ulogin_data() {
 function od_common_rules_actions_od_common_file_get_extension_term($file, $vocabulary) {
   $term = NULL;
   try {
-    if ($ext = pathinfo($file->uri, PATHINFO_EXTENSION)) {
+    if ($ext = pathinfo($file->filename, PATHINFO_EXTENSION)) {
       od_common_module('core');
       $term = od_common_file_get_extension_term($ext, $vocabulary);
     }
