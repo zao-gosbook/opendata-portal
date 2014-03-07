@@ -83,6 +83,24 @@
     }
   }
 
+  Drupal.behaviors.positionActiveMenu = {
+    attach: function(context, settings) {  
+      $(".not-front .region-header").addClass("active-region");
+      var li = $('.region-header .pane-system-main-menu > ul > li.sfHover');
+      var half_link_width = li.width()/2;
+      var ul = $('.region-header .pane-system-main-menu > ul > li.sfHover > ul');
+      var item = 2; 
+      ul.find("li").each(function(){
+        item = item + $(this).width();
+      });
+      var margin = -item/2 + half_link_width;
+      ul.css({
+        width: item,
+        "margin-left": margin
+      });       
+    }
+  }
+  
   Drupal.behaviors.preventClickHrefUserMenu = {
     attach: function(context, settings) {
       $('.region-header .pane-system-main-menu > ul > li > a').click(function(e) {

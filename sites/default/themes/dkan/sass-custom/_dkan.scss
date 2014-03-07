@@ -9,7 +9,8 @@ html {
 body {
   background-color: #e5e5e5;
   min-height: 100%;
-  position: relative;  
+  position: relative;
+  overflow-x: hidden;  
 }
 
 /**
@@ -251,8 +252,7 @@ div.horizontal-tabs .form-text {
   /*background-size: auto 100%;*/  
   padding: 2% 1.5% 1% 1.5%;
   @include box-sizing(padding-box);
-  position: relative;
-  overflow-x: hidden;
+  position: relative;  
   /*display: table;
   width: 100%;*/  
   
@@ -391,9 +391,9 @@ div.horizontal-tabs .form-text {
           }
         }
         &.last > ul {
-          /*width: 27em !important;*/
+          /*width: 27em !important;
           left: auto;
-          right: 0;
+          right: 0;*/
         } 
         /* rubrikator */
         &.sf-item-2 {
@@ -556,6 +556,27 @@ div.horizontal-tabs .form-text {
     }    
   }
 }
+
+/**
+ * breadcrumb
+ */
+.breadcrumb {
+  padding: 40px 7% 0;
+  * {
+    display: inline-block;
+    font-size: 16px;
+  }
+  a {
+    color: #666;
+    text-decoration: none;
+  }
+  .first a {
+    width: 14px;
+    height: 13px;
+    background: url("../images/icon-home.png") no-repeat;
+  }
+}
+
 /**
  * menu help
  */
@@ -3015,6 +3036,18 @@ html.js input.form-autocomplete {
   background: #fff;
 } 
 .view-organizations {
+  
+  .pane-btn {
+    padding: 20px;
+    background: #e5e5e5;
+    margin-bottom: 30px;
+    
+    a.btn {
+      font-size: 18px;
+      padding: 1em 2.6em
+    }
+  }
+  
   .view-filters {
     
     label {
@@ -3038,9 +3071,30 @@ html.js input.form-autocomplete {
   }  
   td,
   th {
-    padding: 0.8em;
+    padding: 18px 14px;
     text-align: left;
+    vertical-align: middle;
+    color: #4d4d4d;
   }  
+  th {
+    text-transform: uppercase;
+    font-weight: normal;
+  }
+  td {
+    font-size: 16px;
+    
+    a {
+      text-decoration: none;
+    }
+    &.views-field-field-site-url a {
+      display: block;
+      width: 25px;
+      height: 21px;
+      overflow: hidden;
+      text-indent: -10000px;
+      background: url("../images/icon-direct.png");
+    }
+  }
 }
 table {
   width: 100%;
@@ -3055,10 +3109,10 @@ table {
   }
   th {
     text-align: left;
-    padding: 0 1em 1em;
+    padding: 0 1em 1.3em;
     
     a {
-      color: #000;
+      text-decoration: none;
     }
   }
   td {
