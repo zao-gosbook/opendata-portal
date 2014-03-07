@@ -63,40 +63,6 @@ function od_file_process_prepare_playground() {
 }
 
 /**
- * Same as phpexcel_import but with short time caching.
- * @param $path
- * @param bool $keyed_by_headers
- * @param bool $keyed_by_worksheet
- * @param null $custom_calls
- * @return array|bool|PHPEXCEL_ERROR_FILE_NOT_READABLE|PHPEXCEL_ERROR_LIBRARY_NOT_FOUND
- */
-function od_file_process_excel_import($path, $keyed_by_headers = TRUE, $keyed_by_worksheet = FALSE, $custom_calls = NULL) {
-  static $cache_default = array(
-    'bin' => 'cache',
-    'data' => null,
-  );
-
-  $cid = substr(md5(implode('_', func_get_args())), 0, 8);
-  static $cache = NULL;
-  if (!$cache || FALSE === ($cache = cache_get($cid, $cache_default['bin']))) {
-    $cache = (object) $cache_default;
-    $cache->cid = $cid;
-    $cache->expire = strtotime('+10 minutes');
-  }
-
-  $cache->bin = $cache_default['bin'];
-
-  if (!isset($cache->data)) {
-    $cache->data = phpexcel_import($path, $keyed_by_headers, $keyed_by_worksheet, $custom_calls);
-    $cache->data = $cache->data ? $cache->data : FALSE;
-
-    cache_set($cache->cid, $cache->data, $cache->bin, $cache->expire);
-  }
-
-  return $cache->data;
-}
-
-/**
  * Process data to csv files
  */ 
 function od_file_process_2csv($data, $structure) {

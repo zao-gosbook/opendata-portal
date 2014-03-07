@@ -205,73 +205,86 @@ function od_file_preprocess_widget_validate($element, &$form_state, $form) {
  * @todo Cache php_excel loaded things to prevent parsing it again
  */
 function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
-  od_file_process_prepare_playground();
-  if (!is_object($file)) return NULL;
-  $path = drupal_realpath($file->uri);
+  $cache = _od_file_preprocess_caches(__FUNCTION__);
+  $cache_key = substr(md5($file . $process_2nd_row), 0, 8);
+  if (!isset($cache[$cache_key])) {
+    // Lets think pessimistically and say that we won't get structure.
+    $cache[$cache_key] = NULL;
 
-  switch ($file->filemime) {
-    case 'application/vnd.ms-excel':                                          // .xls
-    case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': // .xlsx
-    case 'application/vnd.oasis.opendocument.spreadsheet':                    // .ods
-    case 'text/csv':
+    od_file_process_prepare_playground();
+    if (!is_object($file)) return NULL;
+    $path = drupal_realpath($file->uri);
 
-        $structure = array(
-          //'process_2nd_row' => $process_2nd_row,
-        );
-      
-        if ($file->filemime == 'text/csv') {
-          $data = od_file_preprocess_parse_csv($path);
-        }
-        else {
-          module_load_include('inc', 'phpexcel');
-          $data = od_file_process_excel_import($path, FALSE);
-          //$data = phpexcel_import($path, FALSE);
-        }
+    switch ($file->filemime) {
+      case 'application/vnd.ms-excel':                                          // .xls
+      case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': // .xlsx
+      case 'application/vnd.oasis.opendocument.spreadsheet':                    // .ods
+      case 'text/csv':
+      case 'application/zip':
 
-        if (empty($data)) return NULL;
-        
-        $data = $data[0]; //first worksheet
-        $headers = array_shift($data);
+          $structure = array(
+            //'process_2nd_row' => $process_2nd_row,
+          );
 
-        $col_types = array_fill(0, count($headers), 'undefined');       
-        $col_desc = ($process_2nd_row) ? NULL : array_shift($data);
-        
-        $data_type_weight = array(
-          'undefined' => 0,
-          'integer' => 10,
-          'float' => 20,
-          'double' => 30,
-          'anyURI' => 40,
-          'string' => 50,
-        );
-        
-        foreach ($headers as $col => $header) {
-          foreach ($data as $row) {
-            $cell = $row[$col];
-            
-            if ($col_types[$col] == 'undefined') {
-              $col_types[$col] = od_file_preprocess_get_data_type($cell);
-            }
-            else {
-              $cell_type = od_file_preprocess_get_data_type($cell);
-              if ($data_type_weight[$cell_type] > $data_type_weight[$col_types[$col]]) {
-                $col_types[$col] = $cell_type;
-              }
-            }
+          if ($file->filemime == 'text/csv') {
+            $data = od_file_preprocess_parse_csv($path);
+          }
+          elseif ($file->filemime == 'application/zip') {
+            $data = od_file_preprocess_parse_zip($path);
+          }
+          else {
+            module_load_include('inc', 'phpexcel');
+            $data = od_file_preprocess_excel_import($path, FALSE);
+            //$data = phpexcel_import($path, FALSE);
           }
 
-          $structure['col_data'][$col]['col_name']['value'] = $header;
-          $structure['col_data'][$col]['col_desc'] = ($col_desc) ? $col_desc[$col] : '';
-          $structure['col_data'][$col]['datatype'] = $col_types[$col];
-          
-          $col++;
-        }
+          if (empty($data)) return NULL;
 
-        $structure['is_table_data'] = TRUE;
-        return $structure;
-      break;
+          $data = $data[0]; //first worksheet
+          $headers = array_shift($data);
 
+          $col_types = array_fill(0, count($headers), 'undefined');
+          $col_desc = ($process_2nd_row) ? NULL : array_shift($data);
+
+          $data_type_weight = array(
+            'undefined' => 0,
+            'integer' => 10,
+            'float' => 20,
+            'double' => 30,
+            'anyURI' => 40,
+            'string' => 50,
+          );
+
+          foreach ($headers as $col => $header) {
+            foreach ($data as $row) {
+              $cell = $row[$col];
+
+              if ($col_types[$col] == 'undefined') {
+                $col_types[$col] = od_file_preprocess_get_data_type($cell);
+              }
+              else {
+                $cell_type = od_file_preprocess_get_data_type($cell);
+                if ($data_type_weight[$cell_type] > $data_type_weight[$col_types[$col]]) {
+                  $col_types[$col] = $cell_type;
+                }
+              }
+            }
+
+            $structure['col_data'][$col]['col_name']['value'] = $header;
+            $structure['col_data'][$col]['col_desc'] = ($col_desc) ? $col_desc[$col] : '';
+            $structure['col_data'][$col]['datatype'] = $col_types[$col];
+
+            $col++;
+          }
+
+          $structure['is_table_data'] = TRUE;
+          $cache[$cache_key] = $structure;
+        break;
+
+    }
   }
+
+  return $cache[$cache_key];
 }
 
 
@@ -416,38 +429,153 @@ function od_file_preprocess_get_data_type($val) {
   }
 }
 
+/**
+ * @param $path
+ * @param bool $codepage
+ * @return array
+ */
 function od_file_preprocess_parse_csv($path, $codepage = FALSE) {
-  include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel.php';
-  include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel/IOFactory.php';
+  $cache = _od_file_preprocess_caches(__FUNCTION__);
+  $cache_key = substr(md5($path), 0, 8);
+  if (!isset($cache[$cache_key])) {
+    include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel.php';
+    include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-  if (!$codepage && ($codepage = od_detect_encoding_guess_file($path))) {
-    // If we couldn't guess encoding automatically, fallback it to UTF8
-    $codepage = ODDetectEncoding::ENC_UTF8;
-  }
-
-  $codepage = strtoupper($codepage);
-
-  $objReader = new PHPExcel_Reader_CSV();
-  $objReader->setReadDataOnly(TRUE);
-  //default MS Excell - created csv settings
-  $objReader->setInputEncoding($codepage);
-  $objReader->setDelimiter(';');
-  
-  $objPHPExcel = $objReader->load($path);
-  $objWorksheet = $objPHPExcel->getActiveSheet();
-
-  $row_n = 0;
-  $data = array();
-  foreach ($objWorksheet->getRowIterator() as $row) {
-    $col_n = 0;
-    $cellIterator = $row->getCellIterator();
-    $cellIterator->setIterateOnlyExistingCells(false);
-    foreach ($cellIterator as $cell) {
-      $data[0][$row_n][$col_n] = $cell->getValue();
-      $col_n++;
+    if (!$codepage && ($codepage = od_detect_encoding_guess_file($path))) {
+      // If we couldn't guess encoding automatically, fallback it to UTF8
+      $codepage = ODDetectEncoding::ENC_UTF8;
     }
-    $row_n++;
+
+    $codepage = strtoupper($codepage);
+
+    $objReader = new PHPExcel_Reader_CSV();
+    $objReader->setReadDataOnly(TRUE);
+    //default MS Excell - created csv settings
+    $objReader->setInputEncoding($codepage);
+    $objReader->setDelimiter(';');
+
+    $objPHPExcel = $objReader->load($path);
+    $objWorksheet = $objPHPExcel->getActiveSheet();
+
+    $row_n = 0;
+    $data = array();
+    foreach ($objWorksheet->getRowIterator() as $row) {
+      $col_n = 0;
+      $cellIterator = $row->getCellIterator();
+      $cellIterator->setIterateOnlyExistingCells(false);
+      foreach ($cellIterator as $cell) {
+        $data[0][$row_n][$col_n] = $cell->getValue();
+        $col_n++;
+      }
+      $row_n++;
+    }
+
+    $cache[$cache_key] = $data;
   }
 
-  return $data;
+  return $cache[$cache_key];
+}
+
+/**
+ * @param null $key
+ * @param array $default
+ * @return mixed
+ * @todo Turn to drupalcache, not static
+ */
+function &_od_file_preprocess_caches($key = NULL, $default = array()) {
+  $cache = drupal_static(__FUNCTION__, array());
+  if  ($key != NULL) {
+    if (!isset($cache[$key])) {
+      $cache[$key] = $default;
+    }
+
+    return $cache[$key];
+  }
+
+  return $cache;
+}
+
+/**
+ * @param $path
+ * @return array|bool
+ * @todo Cache
+ */
+function od_file_preprocess_parse_zip($path) {
+  $cache = _od_file_preprocess_caches(__FUNCTION__);
+  $cache_key = substr(md5($path), 0, 8);
+  if (!isset($cache[$cache_key])) {
+    $zip = new ZipArchive();
+    if ($zip->open($path) != TRUE) {
+      return FALSE; // An error was ocurred
+    }
+
+    $temp_dir = $tmp = 'temporary://'. substr(md5($path . time() . srand(time())), 0, 8);
+    $i = 0;
+    while (file_exists($tmp) && $i <= 50) {
+      $tmp = $temp_dir. $i++;
+    }
+
+    $temp_dir = $tmp;
+    mkdir($temp_dir);
+    $zip->extractTo($temp_dir);
+    $zip->close();
+
+    od_common_module('core');
+    if (!($files_list = od_common_list_dir($temp_dir))) {
+      return FALSE;
+    }
+
+    $data = array();
+    foreach ($files_list->raw as $fileinfo) {
+      switch ($fileinfo['extension']) {
+        case 'csv':
+          $processed = od_file_preprocess_parse_csv($fileinfo['uri']);
+          if (is_array($processed)) {
+            $data = array_merge($data, $processed);
+          }
+          break;
+      }
+    }
+
+    $cache[$cache_key] = !empty($data) ? $data : FALSE;
+    $data = NULL;
+    $processed = NULL;
+  }
+
+  return $cache[$cache_key];
+}
+
+/**
+ * Same as phpexcel_import but with short time caching.
+ * @param $path
+ * @param bool $keyed_by_headers
+ * @param bool $keyed_by_worksheet
+ * @param null $custom_calls
+ * @return array|bool|PHPEXCEL_ERROR_FILE_NOT_READABLE|PHPEXCEL_ERROR_LIBRARY_NOT_FOUND
+ * @todo Use _od_file_preprocess_caches()
+ */
+function od_file_preprocess_excel_import($path, $keyed_by_headers = TRUE, $keyed_by_worksheet = FALSE, $custom_calls = NULL) {
+  static $cache_default = array(
+    'bin' => 'cache',
+    'data' => null,
+  );
+
+  $cid = substr(md5(implode('_', func_get_args())), 0, 8);
+  static $cache = NULL;
+  if (!$cache || FALSE === ($cache = cache_get($cid, $cache_default['bin']))) {
+    $cache = (object) $cache_default;
+    $cache->cid = $cid;
+    $cache->expire = strtotime('+10 minutes');
+  }
+
+  $cache->bin = $cache_default['bin'];
+
+  if (!isset($cache->data)) {
+    $cache->data = phpexcel_import($path, $keyed_by_headers, $keyed_by_worksheet, $custom_calls);
+    $cache->data = $cache->data ? $cache->data : FALSE;
+
+    cache_set($cache->cid, $cache->data, $cache->bin, $cache->expire);
+  }
+
+  return $cache->data;
 }

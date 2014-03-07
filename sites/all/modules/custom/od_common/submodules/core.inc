@@ -192,3 +192,40 @@ function &od_common_static_storage($name = NULL, $value = NULL, $delete = FALSE)
 
   return $ret;
 }
+
+function od_common_list_dir($directory, &$raw = NULL) {
+  $fd = opendir($directory);
+  if (!$fd) {
+    return FALSE;
+  }
+
+  $list = array(
+    'raw' => array(),
+    'list' => array(),
+  );
+
+  if ($raw) {
+    $list['raw'] = &$raw;
+  }
+
+  while ($file = readdir($fd)) {
+    if ($file != '.' && $file != '..') {
+      $fullpath = rtrim($directory, '/\\') . '/' . $file;
+      $record = pathinfo($fullpath) + array(
+        'uri' => $fullpath,
+        'filename' => $file,
+        'parent' => $directory,
+      );
+
+      if (is_dir($fullpath)) {
+        $record['children'] = od_common_list_dir($fullpath, $list['raw'])->list;
+      }
+
+      $list['list'][$fullpath] =
+      $list['raw'][$fullpath] = $record;
+    }
+  }
+
+
+  return (object) $list;
+}
