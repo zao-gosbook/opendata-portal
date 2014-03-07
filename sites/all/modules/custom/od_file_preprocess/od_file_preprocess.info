@@ -5,3 +5,4 @@ dependencies[] = file
 dependencies[] = phpexcel
 dependencies[] = table_element
 dependencies[] = od_detect_encoding
+dependencies[] = od_common
