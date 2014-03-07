@@ -135,12 +135,16 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       od_common_module('od_user_profile_form_alter');
       _od_common_form_user_profile_form_alter($form, $form_state);
       break;
+    case 'piwik_reports_dateselect_form': 
+      od_common_module('od_piwik_reports_dateselect_form_alter');
+      _od_common_form_piwik_reports_dateselect_form_alter($form, $form_state);
+      break;
   }
   //Translate submit button
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
     $form['actions']['submit']['#value'] = t($form['actions']['submit']['#value']);
   }
-  //Hide 'Your name' form ilement for comment form
+  //Hide 'Your name' form element for comment form
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'comment') {
     unset($form['author']['_author']);
   }
