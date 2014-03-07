@@ -21,7 +21,8 @@
       over = function(){
         var $$ = $(this), menu = getMenu($$);
         clearTimeout(menu.sfTimer);
-        $$.showSuperfishUl().siblings().hideSuperfishUl();
+        //$$.showSuperfishUl().siblings().hideSuperfishUl();
+        $$.click(function() {$(this).showSuperfishUl().siblings().hideSuperfishUl(); });
       },
       out = function(){
         var $$ = $(this), menu = getMenu($$), o = sf.op;
