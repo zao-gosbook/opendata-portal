@@ -25,13 +25,15 @@
         $$.click(function() {$(this).showSuperfishUl().siblings().hideSuperfishUl(); });
       },
       out = function(){
-        var $$ = $(this), menu = getMenu($$), o = sf.op;
-        clearTimeout(menu.sfTimer);
-        menu.sfTimer=setTimeout(function(){
-          o.retainPath=($.inArray($$[0],o.$path)>-1);
-          $$.hideSuperfishUl();
-          if (o.$path.length && $$.parents(['li.',o.hoverClass].join('')).length<1){over.call(o.$path);}
-        },o.delay);
+        if (o.delay >= 0) {
+          var $$ = $(this), menu = getMenu($$), o = sf.op;
+          clearTimeout(menu.sfTimer);
+          menu.sfTimer=setTimeout(function(){
+            o.retainPath=($.inArray($$[0],o.$path)>-1);
+            $$.hideSuperfishUl();
+            if (o.$path.length && $$.parents(['li.',o.hoverClass].join('')).length<1){over.call(o.$path);}
+          },o.delay);
+        }
       },
       getMenu = function($menu){
         var menu = $menu.parents(['ul.',c.menuClass,':first'].join(''))[0];
