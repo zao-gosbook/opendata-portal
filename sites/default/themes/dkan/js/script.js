@@ -148,5 +148,14 @@
       });
     }
   }
+
+  Drupal.behaviors.superfishMainMenuMod = {
+    attach: function(context, settings) {
+      var $activeEl = $('.sf-main-menu li.menuparent ul a.active');
+      if ($activeEl.length > 0) {
+        $activeEl.parents('.menuparent:eq(0)').showSuperfishUl();
+      }
+    }
+  }
   
 })(jQuery, Drupal, this, this.document);
