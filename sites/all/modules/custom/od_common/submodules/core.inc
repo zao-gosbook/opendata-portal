@@ -222,10 +222,20 @@ function od_common_list_dir($directory, &$raw = NULL) {
       }
 
       $list['list'][$fullpath] =
-      $list['raw'][$fullpath] = $record;
+        $list['raw'][$fullpath] = $record;
     }
   }
 
 
   return (object) $list;
+}
+
+function od_common_tmpfilename($directory, $seed = '') {
+  $temp_dir = $tmp = $directory . '/' . substr(md5($seed . time() . srand(time())), 0, 8);
+  $i = 0;
+  while (file_exists($tmp) && $i <= 50) {
+    $tmp = $temp_dir. $i++;
+  }
+
+  return $tmp;
 }

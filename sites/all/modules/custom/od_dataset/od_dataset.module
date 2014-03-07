@@ -16,10 +16,17 @@ function od_dataset_menu() {
 
   $items['dataset-actions/download_package/%node'] = array(
     'title' => '',
-    'page callback' => 'od_dataset_download_page',
+    'page callback' => 'od_dataset_download_package_page_callback',
     'page arguments' => array(2, 3),
-    'access callback' => 'od_dataset_download_page_access',
+    'access callback' => 'od_dataset_download_package_access_callback',
     'access arguments' => array(2, 3),
+  );
+
+  $items['dataset-actions/download_file/%file'] = array(
+    'page callback' => 'od_dataset_download_file_page_callback',
+    'page arguments' => array(2),
+    'access callback' => 'od_dataset_download_file_access_callback',
+    'access arguments' => array(2),
   );
 
   return $items;
@@ -29,7 +36,7 @@ function od_dataset_menu() {
  * @param $nid
  * @return bool|mixed
  */
-function od_dataset_download_page_access($node, $revision_id = NULL) {
+function od_dataset_download_package_access_callback($node, $revision_id = NULL) {
   $wrapper = od_dataset_get_wrapper($node, $revision_id);
 
   //@todo add other access checks
@@ -37,6 +44,10 @@ function od_dataset_download_page_access($node, $revision_id = NULL) {
     return FALSE;
   }
 
+  return TRUE;
+}
+
+function od_dataset_download_file_access_callback($file) {
   return TRUE;
 }
 
@@ -59,7 +70,9 @@ function od_dataset_get_wrapper($node_or_nid, $revision_id = NULL) {
 /**
  * Page callback for downloading zip file.
  */
-function od_dataset_download_page($node, $revision_id = NULL) {
+function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
+  od_common_module('core');
+  $target_encoding = isset($_GET['encoding']) ? $_GET['encoding'] : NULL;
   $wrapper = od_dataset_get_wrapper($node, $revision_id);
   $resources = $wrapper->field_resources;
 
@@ -69,15 +82,23 @@ function od_dataset_download_page($node, $revision_id = NULL) {
     drupal_not_found(); //@fixme: Control somehow. Write to watchdog.
   }
 
+  $detector = od_detect_encoding_get_detector();
   $resource_index = 1;
   foreach ($resources as $resource) {
     if ($file = $resource->field_upload->value()) {
       $ext = pathinfo($file->uri, PATHINFO_EXTENSION);
       $suffix = $ext ? '.' . $ext : NULL;
-      $sWrapper = file_stream_wrapper_get_instance_by_uri($file->uri);
-      $realpath = $sWrapper->realpath();
-      if (file_exists($realpath)) {
-        $zip->addFile($realpath, "resource_{$resource_index}{$suffix}");
+
+      $tmp_wrapper = file_stream_wrapper_get_instance_by_scheme('temporary');
+      $out_file = od_common_tmpfilename($tmp_wrapper->realpath(), $file->uri);
+      $realpath = file_stream_wrapper_get_instance_by_uri($file->uri)->realpath();
+      if (file_exists($file->uri)) {
+        $add_file = $realpath;
+        if ($target_encoding && $detector->convertFile($file->uri, $out_file, $target_encoding)) {
+          $add_file = $out_file;
+        }
+
+        $zip->addFile($add_file, "resource_{$resource_index}{$suffix}");
       }
     }
 
@@ -89,14 +110,36 @@ function od_dataset_download_page($node, $revision_id = NULL) {
     drupal_not_found();
   }
 
-  ob_clean();
-  drupal_add_http_header('Content-Type', 'octet/stream');
-  drupal_add_http_header('Content-Disposition', 'attachment; filename=package.zip');
-  drupal_add_http_header('Content-Transfer-Encoding', 'Binary');
-  drupal_add_http_header('Content-Description', 'File Transfer');
-  drupal_add_http_header('Content-Length', filesize($tmp_file));
-  readfile($tmp_file);
-  @unlink($tmp_file);
+  od_dataset_download_file($tmp_file);
+  drupal_exit();
+}
+
+function od_dataset_download_file_page_callback($file) {
+  $target_encoding = isset($_GET['encoding']) ? $_GET['encoding'] : NULL;
+  if ($target_encoding) {
+    od_common_module('core');
+    $detector = od_detect_encoding_get_detector();
+    $out_file = od_common_tmpfilename('temporary://', $file->uri);
+    // @fixme: Check if encoding is valid before converting
+    if ($detector->convertFile($file->uri, $out_file, $target_encoding)) {
+      od_dataset_download_file($out_file, $file->filename);
+    }
+  }
+  else {
+    od_dataset_download_file($file->uri, $file->filename);
+  }
 
   drupal_exit();
+}
+
+function od_dataset_download_file($path, $filename = NULL) {
+  $filename = !$filename ? pathinfo($path, PATHINFO_FILENAME) : $filename;
+  ob_clean();
+  drupal_add_http_header('Content-Type', 'octet/stream');
+  drupal_add_http_header('Content-Disposition', 'attachment; filename='. $filename);
+  drupal_add_http_header('Content-Transfer-Encoding', 'Binary');
+  drupal_add_http_header('Content-Description', 'File Transfer');
+  drupal_add_http_header('Content-Length', filesize($path));
+  readfile($path);
+  @unlink($path);
 }
