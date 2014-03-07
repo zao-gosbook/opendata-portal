@@ -387,16 +387,88 @@ div.horizontal-tabs .form-text {
           }
         }
         &.last > ul {
-          width: 27em !important;
+          /*width: 27em !important;*/
           left: auto;
           right: 0;
-        }        
+        } 
+        /* rubrikator */
+        &.sf-item-2 {
+          
+          &.sfHover{
+            &:after {
+              background-image: url("../images/submenu-arr-top-white.png");
+            }
+          }          
+          > ul {
+            width: 588px !important;
+            background: #fff;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            margin-left: -79px;
+            
+            li {
+              float: left;
+              clear: none;
+              width: 33.33%;
+              
+              a {
+                background-color: #fff;
+                background-repeat: no-repeat;
+                background-position: 8px 50%;
+                background-size: 55px auto;
+                display: block;
+                padding-left: 64px;
+                color: #0c87e8;
+                
+                &.nolink {
+                  display: none;
+                }
+                &[href$=bezopasnost]{
+                  background-image: url("../images/ico-taxonomy-security.png");
+                }
+                &[href$=geography]{
+                  background-image: url("../images/ico-taxonomy-geography.png");
+                }
+                &[href$=gosudarstvo]{
+                  background-image: url("../images/ico-taxonomy-gov.png");
+                }
+                &[href$=zdorove]{
+                  background-image: url("../images/ico-taxonomy-health.png");
+                }
+                &[href$=education]{
+                  background-image: url("../images/ico-taxonomy-housing.png");
+                }
+                &[href$=culture]{
+                  background-image: url("../images/ico-taxonomy-culture.png");
+                }
+                &[href$=sport]{
+                  background-image: url("../images/ico-taxonomy-sport.png");
+                }
+                &[href$=stroitelstvo]{
+                  background-image: url("../images/ico-taxonomy-building.png");
+                }
+                &[href$=torgovlya]{
+                  background-image: url("../images/ico-taxonomy-trade.png");
+                }
+                &[href$=transport]{
+                  background-image: url("../images/ico-taxonomy-transport.png");
+                }
+                &[href$=ecology]{
+                  background-image: url("../images/ico-taxonomy-ecology.png");
+                }
+                &[href$=ekonomika]{
+                  background-image: url("../images/ico-taxonomy-economy.png");
+                }
+              }
+            }
+          }          
+        }  
         ul {
           position: absolute;
           top: 67px;
           left: 0;
           white-space: nowrap;
-          width: 50em !important;
+          /*width: 50em !important;*/
           
           li {
             float: left;
@@ -426,7 +498,7 @@ div.horizontal-tabs .form-text {
               
               &:hover,
               &.active {
-                background: #fff;
+                background-color: #fff;
                 color: #000; 
               }              
             }
