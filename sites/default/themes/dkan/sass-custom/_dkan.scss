@@ -4915,20 +4915,40 @@ div.fivestar-widget .star {
   font-size: 15px;
   
   li {
-    padding: 0 21px;
+    padding: 0;
+    display: inline-block;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    border: 1px solid #e5e5e5;
+    border-right: 0;
+    font-size: 18px;    
     
     &.pager-item,
     &.pager-current {
-      padding: 0 18px;
       font-weight: normal;
-      font-size: 18px;
+    }
+    &.last {
+      border-right: 1px solid #e5e5e5;
+    }
+    &.pager-current {
+      background-color: #e5e5e5;
+      padding: 0 19px;
+    }
+    &.pager-ellipsis {
+      padding: 0 19px;
     }
     
     a {
       text-decoration: none;
+      height: 43px;
+      line-height: 43px;     
+      padding: 0 19px;
+      display: inline-block;
       
       &:hover {
-        text-decoration: underline;
+        text-decoration: none;
+        background-color: #e5e5e5;
       }
     }
   }
