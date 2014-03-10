@@ -565,6 +565,7 @@ div.horizontal-tabs .form-text {
   * {
     display: inline-block;
     font-size: 16px;
+    color: #666;
   }
   a {
     color: #666;
@@ -2214,8 +2215,79 @@ div.horizontal-tabs .form-text {
     }
   }  
 }
-.page-blog {
 
+
+.page-blog {
+  background-color: #fff;
+  
+  .views-row {
+   clear: both;
+   padding-bottom: 30px;
+   
+    .views-field-picture {
+      float: left;
+      margin: 0 30px 20px 0;
+      
+      img {
+        border: 12px solid #e6e6e6;
+      }
+    }
+    .views-field-field-rubric-image {
+      margin-left: 136px;
+      color: #7a7a7a;
+      font-size: 16px;
+      text-transform: uppercase; 
+      position: relative;
+      padding-left: 76px;
+      
+      .image {
+        left: -4px;
+        position: absolute;
+        top: -10px;
+      }
+      img {
+        width: 50px;
+      }
+    } 
+    .views-field-title h3 {
+      margin: 5px 0 8px 210px;
+      line-height: 24px;
+      font-size: 24px;
+      
+      a {
+        text-decoration: none;
+      } 
+    }
+    .views-field-name {
+      margin-left: 136px;
+      color: #7a7a7a;
+      font-size: 16px;
+      line-height: 22px;
+      text-transform: uppercase;
+      
+      .label {
+        color: #bababa;
+      }
+    }
+    .views-field-created {
+      margin-left: 136px;
+      line-height: 22px;
+      font-size: 16px;
+      color: #bababa;
+      padding-bottom: 20px;
+    }
+    .views-field-body {
+      clear: both;
+      font-size: 16px;
+      line-height: 22px;
+      color: #666;
+      
+      p {
+        margin: 0 0 15px;
+      }
+    }
+  }
+  
   .node-blog {    
     margin-bottom: 4.5em !important;
     display: table;
@@ -2365,6 +2437,46 @@ div.horizontal-tabs .form-text {
   }
 }
 
+/**
+ * converter
+ */
+.entitytype-file_converting_service-form {
+  width: 45%;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #a3a3a3;
+  padding: 20px;
+  
+  .pre-intructions {
+    margin: 0 -21px;
+    padding: 0 21px 30px;
+    position: relative;
+    color: #666;
+    font-size: 16px;
+    line-height: 22px;
+    
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      height: 20px;
+      border-top: 1px solid #a3a3a3;
+      border-bottom: 1px solid #a3a3a3;
+      background: #e5e5e5;
+    }
+    p {
+      margin-top: 0;
+    }
+  }
+  #edit-actions {
+    margin: 0;
+    padding: 0;
+  }
+} 
+ 
+ 
 /**
  * page rubric
  */
@@ -4922,7 +5034,8 @@ div.fivestar-widget .star {
     text-align: center;
     border: 1px solid #e5e5e5;
     border-right: 0;
-    font-size: 18px;    
+    font-size: 18px; 
+    margin-left: -4px;    
     
     &.pager-item,
     &.pager-current {

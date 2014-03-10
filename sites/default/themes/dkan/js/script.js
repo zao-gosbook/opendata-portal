@@ -86,18 +86,23 @@
   Drupal.behaviors.positionActiveMenu = {
     attach: function(context, settings) {  
       $(".not-front .region-header").addClass("active-region");
-      var li = $('.region-header .pane-system-main-menu > ul > li.sfHover');
-      var half_link_width = li.width()/2;
-      var ul = $('.region-header .pane-system-main-menu > ul > li.sfHover > ul');
-      var item = 2; 
-      ul.find("li").each(function(){
-        item = item + $(this).width();
+      $('.region-header .pane-system-main-menu > ul > li.sfHover').livequery(function(){
+        if($(this).hasClass('sfHover')) {
+          var li = $(this);
+          var half_link_width = li.width()/2;
+          var ul = li.children('ul');
+          var item = 2; 
+          ul.find("li").each(function(){
+            item = item + $(this).width();
+          });
+          var margin = -item/2 + half_link_width;
+          ul.css({
+            width: item,
+            "margin-left": margin
+          });             
+        }
       });
-      var margin = -item/2 + half_link_width;
-      ul.css({
-        width: item,
-        "margin-left": margin
-      });       
+    
     }
   }
   
@@ -112,9 +117,10 @@
           ul.find("li").each(function(){
             item = item + $(this).width();
           });
-          var margin = -item/2 + half_link_width;
+          var margin = half_link_width - item/2;
           ul.css({
             width: item,
+            //"padding-top": half_link_width,
             "margin-left": margin
           });          
         }

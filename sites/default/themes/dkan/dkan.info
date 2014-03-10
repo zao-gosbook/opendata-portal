@@ -68,6 +68,7 @@ stylesheets[all][] = css/styles.css
 
 scripts[] = js/jhints.js
 scripts[] = js/masonry.pkgd.min.js
+scripts[] = js/livequery.js
 scripts[] = js/script.js
 
 
