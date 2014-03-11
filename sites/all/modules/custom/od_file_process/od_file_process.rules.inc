@@ -403,11 +403,12 @@ function od_file_process_rule_callback_od_copy_recline_visualization_data($data,
   try {
     $wrapper = entity_metadata_wrapper($entity_type, $entity);
     if (($pi = $wrapper->{$field_name}->getPropertyInfo()) && is_array($data) && !empty($data)) {
+      $file = $entity->{$field_name}->value();
       foreach ($data as $visual_type) {
-        $file = $entity->{$field_name}->value();
-        $file->grid = 1;
-        $entity->{$field_name}->set($file);
+        $file->{$visual_type} = 1;
       }
+
+      $entity->{$field_name}->set($file);
     }
   }
   catch (Exception $e) {
