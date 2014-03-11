@@ -4211,14 +4211,68 @@ div.fivestar-widget .star {
 }
 .node-organization.view-mode-full  {
   .field {
-    font-size: 15px;
+    font-size: 16px;
+    line-height: 22px;
     text-transform: uppercase;
     @include clearfix;
-    padding-bottom: 15px;      
+    padding-bottom: 17px;   
+    color: #666;
   }
   .field-label {
-    width: 290px;
+    width: 400px;
+    font-weight: normal;
     float: left;
+  }
+  .field-name-field-site-url,
+  .field-name-field-opendata-portal-url {
+    a {
+      display: block;
+      width: 25px;
+      height: 21px;
+      overflow: hidden;
+      text-indent: -10000px;
+      background: url("../images/icon-direct.png");
+    }
+  }
+}
+.node-type-organization  .pane-organizations-organization-datasets {
+  padding-top: 30px;
+  
+  h2 {
+    color: #000000;
+    font-size: 24px;
+    line-height: 30px;
+    margin: 0 0 20px;
+  }
+  .view-content > div {
+    padding-bottom: 35px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #e5e5e5;
+    @include clearfix;
+    text-transform: uppercase;
+    
+    .views-field-field-rubric-image {
+      float: left;
+      width: 106px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .views-field-field-rubric {
+      font-size: 16px;
+      line-height: 22px;
+      color: #666;
+      margin-left: 106px;
+      display: block;
+    }
+    .views-field-title {
+      font-size: 20px;
+      line-height: 28px;   
+      margin-left: 106px;
+
+      a {
+        text-decoration: none;
+      }
+    }
   }
 }
 
@@ -4534,7 +4588,6 @@ div.fivestar-widget .star {
     border-right: 5px solid #bfbfbf;
     padding-right: 4%;
     margin-bottom: 4.5em;
-    @include clearfix;
     
     .field-type-image {
       img {
@@ -4544,7 +4597,7 @@ div.fivestar-widget .star {
     }
     .field-name-title {
       h2 {
-        margin: 0 0 .2em;
+        margin: 0 0 0;
         line-height: 1.1em;
       }
     }
@@ -4637,35 +4690,7 @@ div.fivestar-widget .star {
  * competition
  */  
 .node-type-competition {
-  background-color: #e5e5e5;
-  
-  .pane-page-title {
-    text-align: center;
-    position: relative;
-    padding: 20px 0;
-    clear: both;
-    
-    &:before {
-      position: absolute;
-      z-index: 1;
-      content: '';
-      width: 100%;
-      border-top: 1px solid #a5a5a5;
-      left: 0;
-      top: 50%;
-    }
-    h1 {
-      margin: 0;
-      padding: 0 30px;
-      display: inline-block;
-      background-color: #e5e5e5;
-      color: #0c87e8;
-      font-size: 36px;
-      line-height: 36px;
-      position: relative;
-      z-index: 2;      
-    }
-  }
+
   a.btn {
     float: right;
     padding: .4em 1em;
@@ -4676,15 +4701,44 @@ div.fivestar-widget .star {
     text-transform: uppercase;
   }
 }
+.node-type-competition {
+  background-color: #fff;
+}
 #pane-competition {
   .panel-pane {
-    padding-bottom: 20px;
+    padding-bottom: 9px;
     font-size: 16px;
+    color: #666;
+    text-transform: uppercase;
     
     .field-label {
       text-transform: uppercase;
-      padding-bottom: 8px;
       font-weight: normal;
+      color: #b5b5b5;
+    }
+    a {
+      text-decoration: none;
+    }
+    .field-name-field-competition-place {
+      padding-bottom: 22px;
+      
+      .field-items {
+        text-transform: none;
+      }
+    }
+    .field-name-field-competition-rubric {
+      .field-items a {
+        color: #0C87E8;
+      }      
+    }
+    
+    .finished {
+      background: url("../images/icon-konkurs-finish.png") no-repeat scroll 0 50% transparent;
+      display: block;
+      height: 52px;
+      line-height: 51px;
+      padding: 0 0 0 70px;
+      margin-top: 17px;
     }
   }
   .details-1,  
@@ -4748,7 +4802,7 @@ div.fivestar-widget .star {
     
     img {
       float: left;
-      max-width: 55%;
+      max-width: 95%;
       margin-right: 25px;
       margin-bottom: 20px;
     }
@@ -4766,13 +4820,21 @@ div.fivestar-widget .star {
     }
   }
   .pane-node-field-competition-description {
-    font-size: 18px;
-    line-height: 1.5em;
+    font-size: 16px;
+    line-height: 1.4em;
     color: #666;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #e5e5e5;
+    
     
     p {
       margin: 0 0 20px;
+      text-transform: none;
     }
+  }
+  .pane-node-comment-form {
+    text-transform: none;
   }
 }
 /* login or register */
@@ -5117,7 +5179,7 @@ div.fivestar-widget .star {
 .page-competitions {
   background: #fff;
 }
-.view-competitions-for-rubrics {
+.view.view-competitions-for-rubrics {
   .view-filters {
     @include clearfix;
     padding-bottom: 20px;
@@ -5142,8 +5204,20 @@ div.fivestar-widget .star {
   .views-row {
     border-right: 5px solid #bfbfbf;
     padding-right: 4%;
-    margin-bottom: 4.5em;
-    @include clearfix;
+    padding-bottom: 2.25em;
+    margin-bottom: 2.25em;
+    position: relative;
+    
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: -5px;
+      border-bottom: 1px solid #e5e5e5;
+      background: #fff;
+      height: 2.25em;
+    }
     
     .ds-2col > .group-left {
       width: 357px;
@@ -5153,16 +5227,32 @@ div.fivestar-widget .star {
       width: auto;
       margin-left: 380px;
       
+      .field-label {
+        text-transform: uppercase;
+      }
+      
       .field-name-title,
       .field-name-field-competition-place,
       .field-name-field-competition-date,
       .field-name-field-competition-organizer,
+      .field-name-field-competition-type,
       .field-name-dynamic-field {
         margin-left: 80px;
+        
+        .field {
+          margin-left: 0;
+        }
+        a {
+          text-decoration: none;
+        }
       }
       
       .field-name-field-competition-place {
         padding-bottom: 23px;
+        
+        .field-items {
+          text-transform: none;
+        }
       }
       .finished {
         display: block;
@@ -5173,10 +5263,21 @@ div.fivestar-widget .star {
       }
       .view-mode-rubric_icon_with_title {
         clear: none;
+        height: 24px;
+        overflow: hidden;
         
-        .field-type-ds {
-          display: block;
+        div {
+          display: inline-block;
         }
+        .field-name-title {
+          margin-left: 0;
+          
+          h2 {
+            font-size: 16px;
+            margin: 0;          
+          }
+        }
+        
       }
       .field-name-field-rubric-image {
         float: left;
@@ -5191,6 +5292,9 @@ div.fivestar-widget .star {
         }
       }      
     }
+    .field-name-field-competition-date {
+      margin-top: 5px;
+    }
     
     .field-type-image img {
       float: left;
@@ -5200,10 +5304,11 @@ div.fivestar-widget .star {
       font-size: 16px;
       line-height: 25px;
       text-transform: uppercase;
+      padding-top: 0;
       color: #666;
       
       div {
-        display: inline;
+        display: inline-block;
         float: none;
       }
       .field-label {
@@ -5215,16 +5320,13 @@ div.fivestar-widget .star {
       }
     }
 
-    .field-name-field-competition-place {
-      font-size: 18px;
-      text-transform: none;
-    }
     .field-name-title h2 {
       text-transform: uppercase;
-      font-size: 16px;
-      line-height: 22px;
+      font-size: 24px;
+      line-height: 28px;
       display: block;
-      margin: 0;
+      margin: -4px 0 0;
+      padding: 0;
       
       a {
         text-decoration: none;
