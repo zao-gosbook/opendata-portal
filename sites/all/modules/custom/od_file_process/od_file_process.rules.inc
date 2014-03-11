@@ -402,13 +402,15 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
 function od_file_process_rule_callback_od_copy_recline_visualization_data($data, $entity, $entity_type, $field_name) {
   try {
     $wrapper = entity_metadata_wrapper($entity_type, $entity);
+    $entity_full = $wrapper->value();
     if (($pi = $wrapper->{$field_name}->getPropertyInfo()) && is_array($data) && !empty($data)) {
-      $file = $entity->{$field_name}->value();
+      $langcode = $entity->{$field_name}->getPropertyLanguage();
+      $langcode = !$langcode ? LANGUAGE_NONE : $langcode;
       foreach ($data as $visual_type) {
-        $file->{$visual_type} = 1;
+        foreach ($entity_full->{$field_name}[$langcode] as &$_item) {
+          $_item[$visual_type] = 1;
+        }
       }
-
-      $entity->{$field_name}->set($file);
     }
   }
   catch (Exception $e) {
