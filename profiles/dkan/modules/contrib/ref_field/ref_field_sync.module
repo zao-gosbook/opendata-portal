@@ -325,7 +325,6 @@ function ref_field_sync_entity_delete($entity, $type) {
         if (count($entities) > 0) {
           // Remove reference from synced field.
           ref_field_sync_remove_reference($field['settings']['target_type'], $entities[$target_id], $entity->{$info['entity keys']['id']}, $field['settings']['sync']);
-
         }
       }
     }
