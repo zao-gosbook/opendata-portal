@@ -36,11 +36,12 @@ h1, h2, h3, h4 {
 }
 
 .pane-page-title {
-  padding: 0 7%;
-  color: #fff;
   
   h1 {
-    margin: 1em 0;/**/
+    color: #000000;
+    font-size: 24px;
+    line-height: 30px;
+    margin: 0 0 8px;
   }
 }
 
@@ -1019,6 +1020,9 @@ div.horizontal-tabs .form-text {
   }
 }
 
+.pane-search-block {
+  display: table;
+}
 .pane-gb-search-pane {
   width: 588px;
   display: table;
