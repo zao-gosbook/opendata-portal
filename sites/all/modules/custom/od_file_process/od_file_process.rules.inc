@@ -414,6 +414,7 @@ function od_file_process_rule_callback_od_copy_recline_visualization_data($data,
     }
   }
   catch (Exception $e) {
+    watchdog_exception('od_file_process', $e);
     return NULL;
   }
 }
