@@ -104,6 +104,29 @@ function od_file_process_rules_action_info() {
       ),
       'base' => 'od_file_process_rule_callback_get_files',
     ),
+    'od_copy_recline_visualization_data' => array(
+      'label' => t('Copy recline visualization data to a file'),
+      'group' => t('Opendata process'),
+      'arguments' => array(
+        'data' => array(
+          'type' => 'list<text>',
+          'label' => t('Visualization data'),
+        ),
+        'entity' => array(
+          'type' => 'entity',
+          'label' => t('An entity that\'s field will be changed'),
+        ),
+        'entity_type' => array(
+          'type' => 'text',
+          'label' => t('A type of an entity provided above'),
+        ),
+        'field_name' => array(
+          'type' => 'text',
+          'label' => t('Field name that represents recline file')
+        ),
+      ),
+      'base' => 'od_file_process_rule_callback_od_copy_recline_visualization_data',
+    ),
   );
 
 
@@ -374,4 +397,20 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
       'display' => TRUE,
     ),
   );
+}
+
+function od_file_process_rule_callback_od_copy_recline_visualization_data($data, $entity, $entity_type, $field_name) {
+  try {
+    $wrapper = entity_metadata_wrapper($entity_type, $entity);
+    if (($pi = $wrapper->{$field_name}->getPropertyInfo()) && is_array($data) && !empty($data)) {
+      foreach ($data as $visual_type) {
+        $file = $entity->{$field_name}->value();
+        $file->grid = 1;
+        $entity->{$field_name}->set($file);
+      }
+    }
+  }
+  catch (Exception $e) {
+    return NULL;
+  }
 }
