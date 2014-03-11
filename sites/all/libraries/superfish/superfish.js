@@ -25,7 +25,7 @@
         $$.click(function() {$(this).showSuperfishUl().siblings().hideSuperfishUl(); });
       },
       out = function(){
-        if (o.delay >= 0) {
+        if (o && o.delay >= 0) {
           var $$ = $(this), menu = getMenu($$), o = sf.op;
           clearTimeout(menu.sfTimer);
           menu.sfTimer=setTimeout(function(){
