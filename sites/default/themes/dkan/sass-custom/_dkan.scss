@@ -569,7 +569,7 @@ div.horizontal-tabs .form-text {
     color: #666;
   }
   a {
-    color: #666;
+    color: #0C87E8;
     text-decoration: none;
   }
   .first a {
@@ -3405,6 +3405,10 @@ table {
 .section-ideas .region-content {
   padding-top: 30px;
 }
+.page-ideas {
+  background-color: #fff;
+}
+
 .view-ideas {
   .view-header {
     a {
@@ -3420,14 +3424,16 @@ table {
     }     
   }
   .views-row {
-    padding-bottom: 57px;
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid #e5e5e5;
     overflow: hidden;
     text-transform: uppercase;
   }
   .views-field-field-rubric-image {
     img {
       float: left;
-      margin-top: -4px;
+      margin-top: -6px;
     }
   }
   .views-field-field-rubric {
@@ -3439,6 +3445,7 @@ table {
   .views-field-title {
     font-size: 2em;
     line-height: 1.4em;
+    padding-bottom: 3px;
     margin-left: 70px;
     
     a {
@@ -3462,6 +3469,21 @@ table {
     float: right;
     padding: 0 0 17px 30px;
     border-left: 5px solid #bfbfbf;
+  }
+  .views-field-name,
+  .views-field-created  {
+    margin-left: 70px;
+    font-size: 16px;
+    line-height: 22px;
+    color: #666;
+    text-transform: uppercase;
+    
+    .views-label {
+      color: #b5b5b5;
+    }
+  }
+  .views-field-created {
+    color: #b5b5b5;  
   }
 }
 
@@ -4191,40 +4213,72 @@ div.fivestar-widget .star {
  * app
  */
 .node-type-app {
-  /*background: #fff;*/
+  background: #fff;/**/
 }
 .node-app.view-mode-full  {
   .field {
-    font-size: 15px;
+    font-size: 16px;
+    line-height: 25px;
     text-transform: uppercase;
     @include clearfix;
-    padding-bottom: 15px;      
+    padding-bottom: 4px;      
   }
   .field-label {
-    width: 290px;
+    padding-right: 5px;
     float: left;
   }
-  .field-type-fivestar {
-    .field-items {
-      float: left;
-    }
-  }
+  .field-items {
+    float: left;
+  }  
 }
-.app-info {
+.app-col-left {
+  
+}
+
+.app-col-right {
   @include clearfix; 
   padding-bottom: 40px;
-  width: 100%;
+  width: auto;
+  margin: 0 0 0 265px;
+  float: none;
   
-  .panel-pane {
+  > .inside {
     float: left;
+    width: 100%;
+  }
+  .panels-flexible-row {
+    padding: 0 0 20px;
+    
+    &.panels-flexible-row-last {
+      padding-bottom: 0;
+    }
+  }
+  .panel-pane {
     color: #666;
-    font-size: 15px;
+    font-size: 16px;
     text-transform: uppercase;
-    line-height: 1.5em;
+    line-height: 22px;
+    padding-bottom: 2px;
+    clear: left;
   }
   .field-label {
     font-weight: normal;
-    color: #FFA200;  
+    float: left;
+    color: #b5b5b5;
+  }
+  .field-items {
+    float: left;
+    
+    a {
+      text-decoration: none;
+    }
+  }
+  div.fivestar-widget {
+    float: left;
+    padding: 3px 5px 0 2px;
+  }
+  form.fivestar-widget div.description {
+    float: left;
   }
   &.row-1 {
     padding-bottom: 40px;
@@ -4237,21 +4291,12 @@ div.fivestar-widget .star {
   h2 {
     margin: 0;
     font-weight: normal;
-    color: #FFA200;  
-    line-height: 1.5;
-    font-size: 15px;
+    float: left;
+    color: #b5b5b5; 
+    line-height: 22px;
+    font-size: 16px;
   }
-  .pane-node-field-fivestar,
-  .pane-node-field-app-url-organization {
-    width: 22%;
-  }
-  .pane-node-field-rubric,
-  .pane-node-field-app-phone,
-  .pane-node-field-app-mail  {
-    float: none;
-    
-    margin: 0 50% 0 22%;
-  }
+
   .pane-node-field-app-phone,
   .pane-node-field-app-mail {
     
@@ -4259,15 +4304,42 @@ div.fivestar-widget .star {
       display: inline;
     }
   }
-  .pane-node-field-app-url-datasets,
-  .pane-node-field-tags {
-    width: 50%;
-    float: right;
+  .pane-node-field-app-url-google-play,
+  .pane-node-field-app-url-windows-phone,
+  .pane-node-field-app-url-apple-store {
+    display: inline-block;
+    margin-right: 0;
+    
+    a {
+      width: 127px;
+      height: 38px;
+      margin-right: 6px;
+      text-indent: -10000px;
+      @include border-radius(4px);
+      overflow: hidden;  
+      display: inline-block;
+    }
+  } 
+  .pane-node-field-app-url-google-play a {
+    background: url("../images/app-googleplay.png") no-repeat 0 0;
+    width: 112px;
   }
+  .pane-node-field-app-url-windows-phone a {
+    background: url("../images/app-windows.png") no-repeat 0 0;
+  }
+  .pane-node-field-app-url-apple-store a {
+    background: url("../images/app-apple.png") no-repeat 0 0;
+    width: 136px;
+  }
+  
+}
+.app-col-left {
+  width: 255px;
 }
 .pane-node-field-app-image img {
   float: left;
   margin: 0 40px 0 0;
+  @include border-radius(25px);
 }
 .region-app-image {
   float: none;
@@ -4296,35 +4368,28 @@ div.fivestar-widget .star {
       font-size: 15px;
     }
   }
-  .pane-entity-field {
-    float: left;
-    padding-left: 6px;
-    
-    a {
-      display: block;
-      width: 127px;
-      height: 38px;
-      text-indent: -10000px;
-      @include border-radius(4px);
-      overflow: hidden;
-    }
-    &.pane-node-field-app-url-google-play a {
-      background: url("../images/app-googleplay.png") no-repeat 0 0;
-      width: 112px;
-    }
-    &.pane-node-field-app-url-windows-phone a {
-      background: url("../images/app-windows.png") no-repeat 0 0;
-    }
-    &.pane-node-field-app-url-apple-store a {
-      background: url("../images/app-apple.png") no-repeat 0 0;
-      width: 136px;
-    }
-  }
   .pane-node-body {
     float: none;
     padding: 0 0 15px;
   }
-}  
+} 
+.app-col-bottom {
+  color: #666;
+  line-height: 22px;
+  font-size: 16px;
+  
+  .pane-node-body {
+    margin: 24px 0 0;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 28px;    
+  }
+  p {
+    line-height: 22px;
+    font-size: 16px;
+    margin: 0 0 15px;
+  }
+}
+
 
 /**
  * doc
