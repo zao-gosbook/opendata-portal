@@ -366,10 +366,11 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
         // Try to save file
         if (isset($ext_data) && isset($ext_struct)) {
           // Create structure file only once using first list
-          if ($file_structure === NULL) {
+          if ($file_structure === NULL && isset($processed['structure'])) {
             // save structure file
             $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '-structure.' . $ext_struct;
             $file_structure = file_save_data($processed['structure'], $filename);
+            od_file_process_structure_save($file_2process['file_data'], $file_structure->fid);
           }
 
           // save data file

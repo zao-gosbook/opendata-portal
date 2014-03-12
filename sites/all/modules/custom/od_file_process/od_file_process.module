@@ -225,3 +225,12 @@ function write_xml(XMLWriter $xml, $data, $level) {
     $xml->writeElement($key_r, $value);
   }
 }
+
+function od_file_process_structure_load($fid) {
+  return universal_data_storage_load_by_bind($fid, 'od_file_process_structure');
+}
+
+function od_file_process_structure_save($structure, $fid) {
+  $record = universal_data_storage_create($structure, $fid, 'od_file_process_structure');
+  universal_data_storage_save($record);
+}
