@@ -1,0 +1,9 @@
+name = Universal data storage
+description = Реализует сущность, предоставляющую универсальное хранилище
+package = Gosbook
+core = 7.x
+
+dependencies[] = entity
+
+; Autoload classes
+files[] = include/DataStorageController.inc

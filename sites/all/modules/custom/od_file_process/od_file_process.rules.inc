@@ -101,8 +101,35 @@ function od_file_process_rules_action_info() {
           'type' => 'field_item_file',
           'label' => t('Created structure file (field_item_file)'),
         ),
+        'structure_meta' => array(
+          'type' => 'universal_data_storage',
+          'label' => t('Structure record as universal_data_storage entity')
+        ),
       ),
       'base' => 'od_file_process_rule_callback_get_files',
+    ),
+    'od_copy_recline_visualization_data' => array(
+      'label' => t('Copy recline visualization data to a file'),
+      'group' => t('Opendata process'),
+      'arguments' => array(
+        'data' => array(
+          'type' => 'list<text>',
+          'label' => t('Visualization data'),
+        ),
+        'entity' => array(
+          'type' => 'entity',
+          'label' => t('An entity that\'s field will be changed'),
+        ),
+        'entity_type' => array(
+          'type' => 'text',
+          'label' => t('A type of an entity provided above'),
+        ),
+        'field_name' => array(
+          'type' => 'text',
+          'label' => t('Field name that represents recline file')
+        ),
+      ),
+      'base' => 'od_file_process_rule_callback_od_copy_recline_visualization_data',
     ),
   );
 
@@ -301,7 +328,7 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
   $salt = substr(md5(time(). microtime()), 0, 8);
   $file = file_load($file_2process['fid']);
 
-  $file_structure = $files_created = NULL;
+  $file_structure = $files_created = $structure_meta = NULL;
   if (in_array($file->filemime, od_file_preprocess_table_mimes()) && !empty($file_2process['file_data'])) {
     if (isset($file_2process['file_data']['convert_to'])) {
       $path = drupal_realpath($file->uri);
@@ -343,10 +370,11 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
         // Try to save file
         if (isset($ext_data) && isset($ext_struct)) {
           // Create structure file only once using first list
-          if ($file_structure === NULL) {
+          if ($file_structure === NULL && isset($processed['structure'])) {
             // save structure file
             $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '-structure.' . $ext_struct;
             $file_structure = file_save_data($processed['structure'], $filename);
+            $structure_meta = od_file_process_structure_record($file_2process['file_data'], $file_structure->fid);
           }
 
           // save data file
@@ -373,5 +401,26 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
       'description' => $file_structure->filename,
       'display' => TRUE,
     ),
+    'structure_meta' => $structure_meta,
   );
+}
+
+function od_file_process_rule_callback_od_copy_recline_visualization_data($data, $entity, $entity_type, $field_name) {
+  try {
+    $wrapper = entity_metadata_wrapper($entity_type, $entity);
+    $entity_full = $wrapper->value();
+    if (($pi = $wrapper->{$field_name}->getPropertyInfo()) && is_array($data) && !empty($data)) {
+      $langcode = $entity->{$field_name}->getPropertyLanguage();
+      $langcode = !$langcode ? LANGUAGE_NONE : $langcode;
+      foreach ($data as $visual_type) {
+        foreach ($entity_full->{$field_name}[$langcode] as &$_item) {
+          $_item[$visual_type] = 1;
+        }
+      }
+    }
+  }
+  catch (Exception $e) {
+    watchdog_exception('od_file_process', $e);
+    return NULL;
+  }
 }

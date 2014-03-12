@@ -3,3 +3,4 @@ description = Process file, uploaded by opendata wizard
 core = 7.x
 dependencies[] = od_file_preprocess
 dependencies[] = stream_wrappers_mod
+dependencies[] = universal_data_storage

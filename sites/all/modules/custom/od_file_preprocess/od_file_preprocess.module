@@ -240,7 +240,7 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
 
           if (empty($data)) return NULL;
 
-          $data = $data[0]; //first worksheet
+          $data = array_map('array_filter', $data[0]); //first worksheet, clear empty rows and cells
           $headers = array_shift($data);
 
           $col_types = array_fill(0, count($headers), 'undefined');
