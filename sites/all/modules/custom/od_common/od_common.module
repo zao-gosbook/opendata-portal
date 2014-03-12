@@ -523,3 +523,14 @@ function od_common_js_alter(&$javascript) {
 function od_common_preprocess_username(&$vars) {
   $vars['name'] = format_username($vars['account']);
 }
+
+
+/**
+ * Implements hook_node_access()
+ */
+function od_common_node_access($node, $op, $account) {
+  if (is_object($node) && $node->type == 'idea' && $op == 'update' && $node->status == 1 && !user_access('administer', $account)) {
+    return NODE_ACCESS_DENY;
+  }
+  return NODE_ACCESS_IGNORE;
+}
