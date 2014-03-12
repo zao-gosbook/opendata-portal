@@ -8,6 +8,140 @@ function od_rubric_menu_block_info() {
   );
 }
 
+function render_rubric_term_submenu() {
+  $render_info = array(
+    'news' => array(
+      'item_visibility_callback' => 'render_rubric_news_exists',
+    ),
+    'data' => array(
+      'item_visibility_callback' => 'render_rubric_data_exists',
+    ),
+    'competitions' => array(
+      'item_visibility_callback' => 'render_rubric_competitions_exists',
+    ),
+    'applications' => array(
+      'item_visibility_callback' => 'render_rubric_applications_exists',
+    ),
+    'blogs' => array(
+      'item_visibility_callback' => 'render_rubric_blogs_exists',
+    ),
+    'maps' => array(
+      'item_visibility_callback' => 'render_rubric_maps_exists',
+    ),
+
+  );
+
+  $build_menu = array(
+    '#prefix' => '<ul>',
+    '#suffix' => '</ul>',
+  );
+
+  $tree = taxonomy_get_tree(3); //rubrics
+  foreach ($tree as $term) {
+    $output = render_rubric_image($term);
+    $output .= l(i18n_taxonomy_term_name($term), "taxonomy/term/{$term->tid}");
+    $list_class = arg(2) == $term->tid? 'expanded' : 'collapsed';
+    $build_menu[$term->tid] = array(
+      '#prefix' =>  "<li class='$list_class'>",
+      '#suffix' => '</li>',
+    );
+    $build_menu[$term->tid]['menu'] = array(
+      '#markup' => $output,
+    );
+    $build_menu[$term->tid]['children'] = array(
+      '#prefix' => '<ul>',
+      '#suffix' => '</ul>',
+    );
+    foreach ($render_info as $submenu_key => $info) {
+      if ($info['item_visibility_callback']($term)) {
+        switch ($submenu_key) {
+          case 'news':
+            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
+            break;
+          case 'data':
+            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . $term->tid  . '" rel="nofollow">' . t('Data') . '</a>'. '</li>';
+            break;
+          case 'competitions':
+            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Contests'), 'taxonomy/term/'. $term->tid. '/competition') . '</li>';
+            break;
+          case 'applications':
+            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Applications'), 'apps') . '</li>';
+            break;
+          case 'blogs':
+            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Blogs'), 'taxonomy/term/' . $term->tid / '/blogs') . '</li>';
+            break;
+          case 'maps':
+            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Map'), "taxonomy/term/{$term->tid}/map") . '</li>';
+            break;
+        }
+      }
+    }
+  }
+
+  return $build_menu;
+}
+
+function render_rubric_image($term) {
+  $term_new = taxonomy_term_load($term->tid);
+  $term_wrapper = entity_metadata_wrapper('taxonomy_term', $term_new);
+  $output = '';
+  if (isset($term_wrapper)) {
+    try {
+      //Check if we have image for this term
+      if ($image = $term_wrapper->field_rubric_image->value()) {
+        $output .= '<div class="menu-icon"><img src="' .  image_style_url('thumbnail', file_uri_target($image['uri'])) .  '"></div>';
+      }
+    }
+    catch (EntityMetadataWrapperException $e) {
+      //Silence
+      //dpm($e);
+    }
+  }
+  return $output;
+}
+
+function render_rubric_news_exists($term) {
+  return TRUE;
+}
+
+function render_rubric_data_exists($term) {
+  $query_datasets = new EntityFieldQuery;
+  $result_datasets = $query_datasets->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'dataset')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+    ->execute();
+  if (count($result_datasets)) return TRUE;
+}
+
+function render_rubric_competitions_exists($term) {
+  return TRUE;
+}
+
+function render_rubric_applications_exists($term) {
+  $query = new EntityFieldQuery;
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'app')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+    ->execute();
+  if (count($result)) return TRUE;
+}
+
+function render_rubric_blogs_exists($term) {
+  $query = new EntityFieldQuery;
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'blog')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+    ->execute(); //@fixme: Might be better to execute view here? or it's fine? View can be cached.
+  if (count($result)) return TRUE;
+}
+
+function render_rubric_maps_exists($term) {
+  if (render_rubric_data_exists($term)) return TRUE;
+}
+
 function od_rubric_menu_block_view($delta = '') {
   /*
    * @todo: Сделать небольшой рефакторинг кода
@@ -19,97 +153,6 @@ function od_rubric_menu_block_view($delta = '') {
   if ($delta != 'block_rubric_menu') {
     return;
   }
-
-  if (arg(0) == 'taxonomy' && arg(1) == 'term' && ($tid = arg(2)) && is_numeric($tid) && ($term = taxonomy_term_load($tid))) {
-    $tw = entity_metadata_wrapper('taxonomy_term', $term);
-  }
-  elseif (arg(0) == 'node' && ($nid = arg(1)) && is_numeric($nid)) {
-    if (($node = node_load($nid)) && $node->type == 'competition' && !empty($node->field_competition_rubric)) {
-      $competition_wrapper = entity_metadata_wrapper('node', $node);
-      $term = $competition_wrapper->field_competition_rubric->value();
-      $tw = entity_metadata_wrapper('taxonomy_term', $term);
-    }
-  }
-  
-  if(isset($tw)) { 
-    $output = ''; 
-    try {
-      //Check if we have image for this term
-      if ($image = $tw->field_rubric_image->value()) {
-        $output .= '<div class="menu-icon"><img src="' .  image_style_url('thumbnail', file_uri_target($image['uri'])) . '</div>';
-      }
-    }
-    catch (EntityMetadataWrapperException $e) {
-      //Silence
-      //dpm($e);
-    }
-
-    $output .= '<div class="menu-caption"><span>';
-    $output .= l($tw->name->value(), "taxonomy/term/{$term->tid}"); //Will be auto translated name
-    $output .= '</span></div>';
-    $output .= '<ul class="category-menu">';
-    $output .= '<li class="menu-item">' . l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
-    
-    //menu link "datasets"
-    $query_datasets = new EntityFieldQuery;
-    $result_datasets = $query_datasets->entityCondition('entity_type', 'node')
-      ->entityCondition('bundle', 'dataset')
-      ->propertyCondition('status', 1)
-      ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-      ->execute();
-    if (count($result_datasets)) {
-      $output .= '<li class="menu-item">';
-      $output .= '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . $term->tid; //@fixme: l()|url() + options['query']...
-      $output .= '" rel="nofollow">' . t('Data') . '</a>' . '</li>';
-    }
-    
-    //menu link "competitions"
-    $output .= '<li class="menu-item">';
-    $output .= l(t('Contests'), 'taxonomy/term/'. $term->tid. '/competition',  array('attributes' => array('class' => array(isset($competition_wrapper)?'active':'item'))));
-    $output .= '</li>';
-
-    //menu link "application"
-    $query = new EntityFieldQuery;
-    $result = $query->entityCondition('entity_type', 'node')
-      ->entityCondition('bundle', 'app')
-      ->propertyCondition('status', 1)
-      ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-      ->execute();
-    if (count($result)) {
-      $output .= '<li class="menu-item">' . l(t('Applications'), 'apps') . '</li>';
-    }
-
-    // menu link "blogs"
-    $query = new EntityFieldQuery;
-    $result = $query->entityCondition('entity_type', 'node')
-      ->entityCondition('bundle', 'blog')
-      ->propertyCondition('status', 1)
-      ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-      ->execute(); //@fixme: Might be better to execute view here? or it's fine? View can be cached.
-    if (count($result)) {
-      $output .= '<li class="menu-item">' . l(t('Blogs'), "taxonomy/term/{$term->tid}/blogs") . '</li>';
-    }
-
-    //menu link "map"
-    if (count($result_datasets)) {
-      $output .= '<li class="menu-item">' . l(t('Map'), "taxonomy/term/{$term->tid}/map") . '</li>';
-    }
-    
-    //menu link "Documents"
-    $query = new EntityFieldQuery;
-    $result = $query->entityCondition('entity_type', 'node')
-      ->entityCondition('bundle', 'document')
-      ->propertyCondition('status', 1)
-      ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-      ->execute();
-    if (count($result)) {
-     $output .= '<li class="menu-item">';
-     $output .= '<a href="' . url('library') . '?f[0]=field_rubric%3A' . $term->tid; //@fixme: l()|url() + options['query']...
-     $output .= '" rel="nofollow">' . t('Documents') . '</a>' . '</li>';
-    }
-    
-    $output .= '</ul>';
-    $block['content'] = $output;
-  }
+  $block['content'] = render(render_rubric_term_submenu());
   return $block;
 }
