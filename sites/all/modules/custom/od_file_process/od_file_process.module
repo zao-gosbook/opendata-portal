@@ -227,7 +227,14 @@ function write_xml(XMLWriter $xml, $data, $level) {
 }
 
 function od_file_process_structure_load($fid) {
-  return reset(universal_data_storage_load_by_bind($fid, 'od_file_process_structure'));
+  if ($structure = reset(universal_data_storage_load_by_bind($fid, 'od_file_process_structure'))) {
+    $structure = universal_data_storage_record_to_array($structure);
+  }
+  else {
+    $structure = NULL;
+  }
+
+  return $structure;
 }
 
 function od_file_process_structure_record($structure, $fid) {
