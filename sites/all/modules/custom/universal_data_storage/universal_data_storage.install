@@ -1,0 +1,150 @@
+<?php
+/*
+ * @file
+ */
+
+function universal_data_storage_schema() {
+  $schema = array();
+
+  $schema['universal_data_storage'] = array(
+    'description' => '',
+    'fields' => array(
+      'data_id' => array(
+        'description' => '',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'fkey' => array(
+        'description' => '',
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+      ),
+      'rid' => array(
+        'description' => '',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'bind_to' => array(
+        'description' => '',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('data_id'),
+    'unique keys' => array(
+      'rid' => array('rid')
+    ),
+    'indexes' => array(
+      'bint_to' => array('bind_to', 'fkey'),
+    ),
+  );
+
+
+  $schema['universal_data_storage_data'] = array(
+    'description' => '',
+    'fields' => array(
+      'rid' => array(
+        'description' => '',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => '',
+        'type' => 'varchar',
+        'length' => '128',
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => '',
+        'type' => 'varchar',
+        'length' => '32',
+        'not null' => TRUE,
+        'default' => 'string',
+      ),
+      'path' => array(
+        'description' => '',
+        'type' => 'varchar',
+        'length' => '2048',
+        'not null' => TRUE,
+      ),
+      'value_string' => array(
+        'description' => '',
+        'type' => 'varchar',
+        'length' => '2048',
+        'not null' => FALSE,
+      ),
+      'value_digit' => array(
+        'description' => '',
+        'type' => 'numeric',
+        'not null' => FALSE,
+        'precision' => '30',
+        'scale' => '10',
+      ),
+    ),
+  );
+
+//  $schema['universal_data_storage_history'] = array(
+//    'description' => '',
+//    'fields' => array(
+//      'rid' => array(
+//        'description' => '',
+//        'type' => 'int',
+//        'not null' => TRUE,
+//      ),
+//      'operation' => array(
+//        'description' => '',
+//        'type' => 'varchar',
+//        'length' => '64',
+//        'not null' => TRUE,
+//        'default' => 'unknown',
+//      ),
+//      'object' => array(
+//        'description' => '',
+//        'type' => 'varchar',
+//        'length' => '64',
+//        'not null' => TRUE,
+//        'default' => 'entity',
+//      ),
+//      'uid' => array(
+//        'description' => '',
+//        'type' => 'int',
+//        'not null' => TRUE,
+//      ),
+//      'date' => array(
+//        'description' => '',
+//        'type' => 'varchar',
+//        'length' => '64',
+//        'not null' => TRUE,
+//      ),
+//    ),
+//    'primary key' => array('rid', 'date'),
+//  );
+
+  $schema['universal_data_storage_revision'] = array(
+    'description' => '',
+    'fields' => array(
+      'rid' => array(
+        'description' => '',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'created' => array(
+        'description' => '',
+        'type' => 'varchar',
+        'length' => '32',
+        'not null' => FALSE,
+      ),
+      'edited' => array(
+        'description' => '',
+        'type' => 'varchar',
+        'length' => '32',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('rid'),
+  );
+
+
+  return $schema;
+}

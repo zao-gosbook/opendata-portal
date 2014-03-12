@@ -101,6 +101,10 @@ function od_file_process_rules_action_info() {
           'type' => 'field_item_file',
           'label' => t('Created structure file (field_item_file)'),
         ),
+        'structure_meta' => array(
+          'type' => 'universal_data_storage',
+          'label' => t('Structure record as universal_data_storage entity')
+        ),
       ),
       'base' => 'od_file_process_rule_callback_get_files',
     ),
@@ -324,7 +328,7 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
   $salt = substr(md5(time(). microtime()), 0, 8);
   $file = file_load($file_2process['fid']);
 
-  $file_structure = $files_created = NULL;
+  $file_structure = $files_created = $structure_meta = NULL;
   if (in_array($file->filemime, od_file_preprocess_table_mimes()) && !empty($file_2process['file_data'])) {
     if (isset($file_2process['file_data']['convert_to'])) {
       $path = drupal_realpath($file->uri);
@@ -370,7 +374,7 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
             // save structure file
             $filename = $file_info['dirname'] . '/' . $file_info['filename'] . '-structure.' . $ext_struct;
             $file_structure = file_save_data($processed['structure'], $filename);
-            od_file_process_structure_save($file_2process['file_data'], $file_structure->fid);
+            $structure_meta = od_file_process_structure_record($file_2process['file_data'], $file_structure->fid);
           }
 
           // save data file
@@ -397,6 +401,7 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
       'description' => $file_structure->filename,
       'display' => TRUE,
     ),
+    'structure_meta' => $structure_meta,
   );
 }
 
