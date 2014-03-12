@@ -317,11 +317,15 @@ div.horizontal-tabs .form-text {
   #logo {
     padding-right: 11px;
     margin-top: 0;
+    position: relative;
+    z-index: 2;    
   }
   #name-and-slogan {
     padding-top: 37px;
     padding-right: 7%;
     margin-top: -4px;
+    position: relative;
+    z-index: 2;     
     
     h1 {
       display: block;
@@ -771,9 +775,15 @@ div.horizontal-tabs .form-text {
     }    
   }
 }
+.not-front {
+  .region-header-facts {
+    display: none;
+  }
+}
 .region-header-facts {
   position: relative;
   z-index: 10;
+  margin-bottom: 70px;
   
   .ctools-collapsible-container .ctools-collapsible-handle.pane-title {
     display: none;
@@ -785,7 +795,7 @@ div.horizontal-tabs .form-text {
     z-index: 1000;
     height: 25px;
     left: 50%;
-    bottom: 0;
+    bottom: -70px;
     cursor: pointer;
     margin-left: -25px;
     background: url("../images/ico-toggle-map.png") no-repeat 0 0;
@@ -1242,8 +1252,53 @@ div.horizontal-tabs .form-text {
     margin-top: 0;
   }
 }
-.pane-superfish-2 {
+.pane-superfish-2{
   margin: 20px 0;
+
+  > ul {
+    border-bottom: 1px solid #000;
+    margin: 0;
+    padding: 0;
+    display: table;
+    width: 100%;
+  
+    > li {
+      padding-right: 1px;
+      
+      a {
+        display: block;
+        padding: .5em 1.75em;
+        background-color: #b9b9b9;
+        color: #fff;
+        text-transform: uppercase;
+        text-decoration: none;
+        
+        &:hover,
+        &.active {
+          background-color: #0c87e8;
+        }
+      }
+      &.sfHover {
+        > a {
+          background-color: #0c87e8;
+        }
+      }
+      ul {
+        a {
+          
+        }
+      }
+    }
+  }
+  .sf-sub-indicator {
+    margin-top: -5px;
+    right: 0.55em;
+    top: 50%;
+  }    
+}  
+.ui-tabs {
+  margin: 20px 0;
+  padding: 0;
 
   > ul {
     border-bottom: 1px solid #000;
@@ -5708,6 +5763,32 @@ div.fivestar-widget .star {
   }
 } 
 
+/**
+ * moderation
+ */ 
+.panels-flexible-region.pane-btn-grey {
+  padding: 20px;
+  background: #e5e5e5;
+  margin-bottom: 30px;  
+  @include clearfix;
+  
+  .panel-pane {
+    float: left;
+    margin-right: 20px;
+    
+    a {
+      display: inline-block;
+      line-height: 1em;
+      color: #fff;
+      text-transform: uppercase;
+      background: #0c87e8;
+      text-decoration: none;      
+      font-size: 18px;
+      padding: 1em 2.6em;
+      
+    }
+  }  
+}
 /**
  * forum
  */ 
