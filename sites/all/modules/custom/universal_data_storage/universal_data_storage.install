@@ -36,7 +36,7 @@ function universal_data_storage_schema() {
       'rid' => array('rid')
     ),
     'indexes' => array(
-      'bint_to' => array('bind_to', 'fkey'),
+      'bind_to' => array('bind_to', 'fkey'),
     ),
   );
 
@@ -81,6 +81,9 @@ function universal_data_storage_schema() {
         'precision' => '30',
         'scale' => '10',
       ),
+    ),
+    'indexes' => array(
+      'rid' => array('rid'),
     ),
   );
 
