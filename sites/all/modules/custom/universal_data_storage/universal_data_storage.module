@@ -1,0 +1,389 @@
+<?php
+/**
+ * @file
+ */
+//Define constants
+define('UNIVERSAL_DATA_STORAGE_LOAD_TYPE_DATA_ID', 1);
+define('UNIVERSAL_DATA_STORAGE_LOAD_TYPE_REVISION_ID', 2);
+define('UNIVERSAL_DATA_STORAGE_LOAD_TYPE_BIND_TO', 3);
+
+/**
+ * Implements hook_entity_info()
+ * @return array
+ */
+function universal_data_storage_entity_info() {
+  $info = array();
+
+  $info['universal_data_storage'] = array(
+    'label' => t('Data storage'),
+    'controller class' => 'DataStorageController',
+    'base table' => 'universal_data_storage',
+    //'revision table' => 'shared_data_storage_revision',
+    'entity keys' => array(
+      'id' => 'data_id',
+      'bundle' => 'fkey',
+      'revision' => 'rid',
+    ),
+    'bundles' => array(
+      'universal_data_storage' => array(
+        'label' => t('Data storage default bundle'),
+      ),
+    ),
+  );
+
+  return $info;
+}
+
+function universal_data_storage_entity_property_info_alter(&$info) {
+  $properties = &$info['universal_data_storage']['properties'];
+  $properties['bind_to'] = array(
+    'type' => 'integer',
+    'label' => t('Bind to'),
+    'setter callback' => 'entity_property_verbatim_set',
+    'getter callback' => 'entity_property_verbatim_get',
+  );
+}
+/**
+ * Creates universal_data_storage record from nested array
+ * @param $tree
+ *  An array of data
+ * @param null $path
+ *  Internal use only. Should be NULL
+ * @return object
+ *  A universal_data_storage object that could be saved as entity
+ * @todo: Add param that will contain types of fields
+ */
+function universal_data_storage_create_record(&$tree, $path = NULL) {
+  $delta = 0;
+  $record = NULL;
+  if (!isset($path)) {
+    $record = new stdClass();
+  }
+  else {
+    $record = array();
+  }
+
+  foreach ($tree as $key=>&$value) {
+    $obj = new stdClass();
+    //$obj->parent = $parent;
+    $obj->type = 'string';
+    $obj->name = $key; //(isset($rkey) ? $rkey. ';' : ';'). $key;
+    $obj->delta = $delta++;
+    $obj->path = "{$path}/{$key}";
+
+    if (is_array($value)) {
+      $obj->value = universal_data_storage_create_record($tree[$key], $obj->path);
+      $obj->type = 'container';
+      //$obj->value = (array) $obj->value;
+    }
+    else {
+      $obj->type = 'string';
+      $obj->value = $tree[$key];
+    }
+
+    if (!isset($path)) {
+      $record->{$key} = $obj;
+    }
+    else {
+      $record[$key] = $obj;
+    }
+  }
+
+  return $record;
+}
+
+/**
+ * Get mysql formated date
+ * @param int $date
+ * @return string
+ *  A string formated like 1970-01-01 00:00:00
+ */
+function universal_data_storage_date_mysql($date = REQUEST_TIME) {
+  return date('Y-m-d H:i:s', $date);
+}
+
+/**
+ * Create new revision for storing an object
+ * @return int
+ *  Revision id (rid)
+ */
+function universal_data_storage_create_revision() {
+  $fields = array(
+    'edited' => NULL,
+    'created' => universal_data_storage_date_mysql(),
+  );
+
+  $rid = db_insert('universal_data_storage_revision')
+      ->fields($fields)
+      ->execute();
+
+  return $rid;
+}
+
+/**
+ * Saves the record
+ * @param $record
+ *  Record created from array via universal_data_storage_record_create()
+ * @return object
+ *  Saved record
+ * @throws Exception
+ *
+ * @see universal_data_storage_record_create()
+ * @see universal_data_storage_record_load()
+ */
+function universal_data_storage_record_save($record) {
+  $transaction = db_transaction();
+  try {
+    $record = (array) $record;
+    if ((!isset($record['data_id']) || !isset($record['rid'])) && empty($record['no_revision'])) {
+      $record['rid'] = universal_data_storage_create_revision();
+    }
+    //dpm($record);
+
+    _universal_data_storage_save_record_recursive($record, $record['rid']);
+
+    $fields = array(
+      'fkey' => isset($record['fkey']) ? $record['fkey'] : 'default',
+      'rid' => $record['rid'],
+      'bind_to' => $record['bind_to'],
+    );
+
+    if (isset($record['data_id'])) {
+      db_update('universal_data_storage')
+          ->fields($fields)
+          ->condition('data_id', $record['data_id'])
+          ->execute();
+      //dpm($fields, 'Fields update');
+    }
+    else {
+      db_insert('universal_data_storage')
+        ->fields($fields)
+        ->execute();
+    }
+  }
+  catch (Exception $e) {
+    $transaction->rollback();
+    //dpm($e->getMessage());
+    throw $e;
+  }
+
+  return (object)$record;
+}
+
+/**
+ * Internal use only!
+ * Helper functions that recursively saves the record
+ * @param $record
+ * @param $rid
+ * @param InsertQuery $ins
+ */
+function _universal_data_storage_save_record_recursive($record, $rid, InsertQuery $ins = NULL) {
+  //dpm($record); return;
+  $insertQuery = $ins;
+  if (!isset($insertQuery)) {
+    $insertQuery = db_insert('universal_data_storage_data');
+    $insertQuery
+      ->fields(array(
+        'rid',
+        'name',
+        'type',
+        'path',
+        'value_string',
+        'value_digit',
+      ));
+  }
+
+  foreach ((array)$record as $key=>$obj) {
+    if (!is_object($obj) || $key == 'original') {
+      continue;
+    }
+
+    $values = array(
+      'rid' => $rid,
+      'name' => $obj->name,
+      'path' => $obj->path,
+      'type' => $obj->type,
+      'value_string' => NULL,
+      'value_digit' => NULL,
+    );
+
+    if (array_key_exists("value_{$obj->type}", $values)) {
+      $values["value_{$obj->type}"] = $obj->value;
+    }
+    elseif (is_array($obj->value)) {
+      _universal_data_storage_save_record_recursive($obj->value, $rid, $insertQuery);
+    }
+
+    $insertQuery->values($values);
+
+  }
+
+  if (!isset($ins)) {
+    $insertQuery->execute();
+  }
+}
+
+function universal_data_storage_load_by_bind($bind_to, $fkey) {
+  static $conditions = array(
+    'load_type' => UNIVERSAL_DATA_STORAGE_LOAD_TYPE_BIND_TO,
+  );
+
+  $ids = array(array($bind_to, $fkey));
+
+  return universal_data_storage_record_load_multiple($ids, $conditions);
+}
+
+function universal_data_storage_record_load($id) {
+  return reset(universal_data_storage_record_load_multiple(array($id)));
+}
+
+
+function universal_data_storage_record_load_multiple($ids = array(), $conditions = array()) {
+  if (empty($ids)) {
+    return FALSE;
+  }
+
+  $default_conditions = array(
+    'load_type' => UNIVERSAL_DATA_STORAGE_LOAD_TYPE_DATA_ID,
+  );
+
+  $conditions = array_merge($default_conditions, $conditions);
+
+  $query = db_select('universal_data_storage_data', 'sd');
+  $query
+    ->innerJoin('universal_data_storage', 'ds', 'ds.rid=sd.rid');
+  $query
+    ->fields('sd')
+    ->fields('ds', array('data_id', 'fkey', 'bind_to'));
+
+  switch ($conditions['load_type']) {
+    default:
+      $query
+        ->condition('ds.data_id', $ids, 'IN');
+      break;
+    case UNIVERSAL_DATA_STORAGE_LOAD_TYPE_BIND_TO:
+      reset($ids);
+      $or = db_or();
+      while (list ($bind_to, $fkey) = current($ids)) {
+        $and = db_and();
+        $and
+          ->condition('ds.bind_to', $bind_to)
+          ->condition('ds.fkey', $fkey);
+
+        $or
+          ->condition($and);
+
+        next($ids);
+      }
+
+      $query
+        ->condition($or);
+      //dpq($query);
+      break;
+  }
+
+
+  $rows = $query->execute()->fetchAll();
+
+  $records = array();
+  foreach ($rows as $row) {
+    if (!isset($records[$row->rid])) {
+      $records[$row->rid] = (object) array(
+        'rid' => $row->rid,
+        'data_id' => $row->data_id,
+        'fkey' => $row->fkey,
+        'bind_to' => $row->bind_to,
+      );
+    }
+    $record = &$records[$row->rid];
+
+    $path = explode('/', $row->path);
+
+    $container = &$record; //[end($path)];
+    $container_arr = &$record;
+    array_shift($path);
+    $key = array_pop($path);
+
+    if ($first = array_shift($path)) {
+      if (!isset($container->{$first}->value)) {
+        $container->{$first}->value = array();
+      }
+
+      $container = &$container->{$first}->value;
+    }
+
+    foreach ($path as $part) {
+      if (!isset($container[$part]->value)) {
+        $container[$part]->value = array();
+      }
+
+      $container = &$container[$part]->value;
+    }
+
+    $obj = NULL;
+    if (is_array($container)) {
+      if (!isset($container[$key])) {
+        $container[$key] = new stdClass();
+      }
+
+      //@note: Objects with pointer behaving very very strange...
+      $obj = $container[$key];
+    }
+    else {
+      if (!isset($container->{$key})) {
+        $container->{$key} = new stdClass();
+      }
+
+      //@note: Objects with pointer behaving very very strange...
+      $obj = $container->{$key};
+    }
+
+    $obj->type = $row->type;
+    $obj->name = $row->name;
+    $obj->delta = isset($row->delta) ? $row->delta : 0;
+    $obj->rid = $row->rid;
+    $obj->path = $row->path;
+
+    if (!isset($obj->value)) {
+      $obj->value = isset($row->{"value_{$row->type}"}) ? $row->{"value_{$row->type}"} : NULL;
+    }
+
+    //Clear the pointer
+    $obj = NULL;
+  }
+
+  return $records;
+}
+
+function universal_data_storage_record_to_array($record) {
+  $data = array();
+  $record = (array) $record;
+  foreach ($record as $property => &$value) {
+    if (is_object($value) && isset($value->value)) {
+      if ($value->type == 'container') {
+        $data[$property] = universal_data_storage_record_to_array($value->value);
+      }
+      else {
+        $data[$property] = $value->value;
+      }
+    }
+  }
+
+  return $data;
+}
+
+function universal_data_storage_record_bind($record, $bind_to, $fkey) {
+  $record->bind_to = $bind_to;
+  $record->fkey = $fkey;
+}
+
+function universal_data_storage_create($tree, $bind_to, $fkey) {
+  $record = universal_data_storage_create_record($tree);
+  universal_data_storage_record_bind($record, $bind_to, $fkey);
+
+  return $record;
+}
+
+function universal_data_storage_save($record) {
+  return entity_save('universal_data_storage', $record);
+}
