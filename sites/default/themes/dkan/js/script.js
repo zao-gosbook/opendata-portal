@@ -183,7 +183,7 @@
    */
   Drupal.behaviors.openTitleIntNewWindow = {
     attach: function (context, settings) {
-      $('body.section-dataset .view-content .field-name-title a').live('click', function () {
+      $('body.section-dataset .view-content .field-name-title a', context).live('click', function () {
         var win = window.open($(this).attr('href'));
         win.focus();
         return false;
