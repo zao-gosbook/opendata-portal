@@ -193,7 +193,7 @@ div.horizontal-tabs .form-text {
 }
 
 .front .region-header {
-  
+  @include background-size(cover);
   overflow: hidden;
 }
 
@@ -325,6 +325,17 @@ div.horizontal-tabs .form-text {
     
     h1 {
       display: block;
+      position: relative;
+      
+      &:before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: -18px;
+        width: 40px;
+        height: 12px;
+        background: url("../images/alpha.png") no-repeat;
+      }
     }
     
     a {
@@ -340,6 +351,7 @@ div.horizontal-tabs .form-text {
     font-size: 12px;
     text-transform: uppercase;
     color: #0c87e8;
+    letter-spacing: 0.87px;
   }
   .pane-system-main-menu {
     padding-left: 10%;
