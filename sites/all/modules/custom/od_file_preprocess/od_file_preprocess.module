@@ -435,13 +435,13 @@ function od_file_preprocess_get_data_type($val) {
  * @return array
  */
 function od_file_preprocess_parse_csv($path, $codepage = FALSE) {
-  $cache = _od_file_preprocess_caches(__FUNCTION__);
+  $cache = &_od_file_preprocess_caches(__FUNCTION__);
   $cache_key = substr(md5($path), 0, 8);
   if (!isset($cache[$cache_key])) {
     include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel.php';
     include_once DRUPAL_ROOT . '/sites/all/libraries/PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-    if (!$codepage && ($codepage = od_detect_encoding_guess_file($path))) {
+    if (!$codepage && FALSE === ($codepage = od_detect_encoding_guess_file($path))) {
       // If we couldn't guess encoding automatically, fallback it to UTF8
       $codepage = ODDetectEncoding::ENC_UTF8;
     }
@@ -483,7 +483,7 @@ function od_file_preprocess_parse_csv($path, $codepage = FALSE) {
  * @todo Turn to drupalcache, not static
  */
 function &_od_file_preprocess_caches($key = NULL, $default = array()) {
-  $cache = drupal_static(__FUNCTION__, array());
+  $cache = &drupal_static(__FUNCTION__, array());
   if  ($key != NULL) {
     if (!isset($cache[$key])) {
       $cache[$key] = $default;
@@ -501,7 +501,7 @@ function &_od_file_preprocess_caches($key = NULL, $default = array()) {
  * @todo Cache
  */
 function od_file_preprocess_parse_zip($path) {
-  $cache = _od_file_preprocess_caches(__FUNCTION__);
+  $cache = &_od_file_preprocess_caches(__FUNCTION__);
   $cache_key = substr(md5($path), 0, 8);
   if (!isset($cache[$cache_key])) {
     $zip = new ZipArchive();
