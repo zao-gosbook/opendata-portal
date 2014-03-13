@@ -36,7 +36,24 @@
         });         
       });
     }
+  }
+  
+  Drupal.behaviors.TaxonomyColumnsRubric = {
+    attach: function (context) {      
+      $('.page-taxonomy-term .rubric-content .view .view-content', context).once('massontry', function() {
+        var massontry = $(this);
+        $('<div class="view-header"></div>').prependTo(massontry);
+        var container = document.querySelector('.page-taxonomy-term .rubric-content .view .view-content');
+        var msnry = new Masonry( container, {
+          // options
+          //columnWidth: 200,
+          itemSelector: '.views-row'/**/,
+          gutter: '.page-taxonomy-term .rubric-content .view .view-content .view-header'
+        });         
+      });
+    }
   }   
+  
   
   Drupal.behaviors.ActiveElement = {
     attach: function (context, settings) {
@@ -98,8 +115,28 @@
           var margin = -item/2 + half_link_width;
           ul.css({
             width: item,
-            "margin-left": margin
-          });             
+            //"margin-left": margin
+          }); 
+          if(li.hasClass("sf-item-1")) { // 
+            ul.css({
+              "margin-left": "-227px"
+            });  
+          } 
+          if(li.hasClass("sf-item-3")) { //
+            ul.css({
+              "margin-left": "-150px"
+            });  
+          } 
+          if(li.hasClass("sf-item-4")) { //
+            ul.css({
+              "margin-left": "-310px"
+            });  
+          } 
+          if(li.hasClass("sf-item-6")) { //
+            ul.css({
+              "margin-left": "-141px"
+            });  
+          }          
         }
       });
     
@@ -121,8 +158,29 @@
           ul.css({
             width: item,
             //"padding-top": half_link_width,
-            "margin-left": margin
-          });          
+            //"margin-left": margin
+          });  
+          // кастомное положение блоков
+          if($(this).parent("li").hasClass("sf-item-1")) { // 
+            ul.css({
+              "margin-left": "-227px"
+            });  
+          } 
+          if($(this).parent("li").hasClass("sf-item-3")) { //
+            ul.css({
+              "margin-left": "-150px"
+            });  
+          } 
+          if($(this).parent("li").hasClass("sf-item-4")) { //
+            ul.css({
+              "margin-left": "-310px"
+            });  
+          } 
+          if($(this).parent("li").hasClass("sf-item-6")) { //
+            ul.css({
+              "margin-left": "-141px"
+            });  
+          }          
         }
         else {
           $(".region-header").removeClass("active-region");
@@ -130,6 +188,7 @@
       });
     }
   }
+  
   
   
   
@@ -183,10 +242,9 @@
    */
   Drupal.behaviors.openTitleIntNewWindow = {
     attach: function (context, settings) {
-      $('body.section-dataset .view-content .field-name-title a').once('open-in-new-window').bind('click', function (e) {
+      $('body.section-dataset .view-content .field-name-title a').live('click', function () {
         var win = window.open($(this).attr('href'));
         win.focus();
-        e.preventDefault();
         return false;
       });
     }
