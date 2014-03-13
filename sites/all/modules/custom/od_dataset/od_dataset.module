@@ -110,7 +110,7 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
     drupal_not_found();
   }
 
-  od_dataset_download_file($tmp_file);
+  od_dataset_download_file($tmp_file, drupal_substr($wrapper->title->value(), 0, 200). '.zip');
   drupal_exit();
 }
 

@@ -239,3 +239,44 @@ function od_common_tmpfilename($directory, $seed = '') {
 
   return $tmp;
 }
+
+/**
+ * Manipulates with data array given by $storage parameter
+ * @param $storage
+ * @param null $param
+ * @param null $value
+ * @param bool $remove
+ * @return null
+ */
+function &_od_common_param_value_manipulation(&$storage, $param = NULL, $value = NULL, $remove = FALSE) {
+  $context_rw = &$storage;
+  $context = $storage;
+  if ($remove) {
+    if ($param !== NULL && isset($context_rw[$param])) {
+      unset($context_rw[$param]);
+    }
+    elseif ($param == NULL) {
+      $context_rw = array();
+    }
+  }
+  else {
+    $context = &$context_rw;
+  }
+
+  $retval = NULL;
+  if ($param !== NULL) {
+    // Getter
+    $retval = &$context[$param];
+
+    // Setter
+    if ($value !== NULL) {
+      $context_rw[$param] = $value;
+      $context[$param] = $value;
+    }
+  }
+  elseif ($param === NULL) {
+    $retval = &$context;
+  }
+
+  return $retval;
+}

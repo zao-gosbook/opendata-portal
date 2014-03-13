@@ -3094,24 +3094,24 @@ class PrivatemsgMessageController extends DrupalDefaultEntityController {
   }
 }
 
-/**
- * Implements hook_date_formats().
- */
-function privatemsg_date_formats() {
-  $formats = array('g:i a', 'H:i', 'M j', 'j M', 'm/d/y', 'd/m/y', 'j/n/y', 'n/j/y');
-  $types = array_keys(privatemsg_date_format_types());
-  $date_formats = array();
-  foreach ($types as $type) {
-    foreach ($formats as $format) {
-      $date_formats[] = array(
-        'type' => $type,
-        'format' => $format,
-        'locales' => array(),
-      );
-    }
-  }
-  return $date_formats;
-}
+///**
+// * Implements hook_date_formats().
+// */
+//function privatemsg_date_formats() {
+//  $formats = array('g:i a', 'H:i', 'M j', 'j M', 'm/d/y', 'd/m/y', 'j/n/y', 'n/j/y');
+//  $types = array_keys(privatemsg_date_format_types());
+//  $date_formats = array();
+//  foreach ($types as $type) {
+//    foreach ($formats as $format) {
+//      $date_formats[] = array(
+//        'type' => $type,
+//        'format' => $format,
+//        'locales' => array(),
+//      );
+//    }
+//  }
+//  return $date_formats;
+//}
 
 /**
  * Implements hook_date_format_types().
