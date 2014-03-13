@@ -2807,7 +2807,7 @@ div.horizontal-tabs .form-text {
  * page rubric
  */
 .rubric-menu {
-  width: 40%;
+  width: 26.6%;
   background: #fff;
   
   .inside {
@@ -2850,31 +2850,76 @@ div.horizontal-tabs .form-text {
       text-transform: uppercase;
     }
   }
-  .category-menu {
+  > ul > li > a {
+    display: block;
+    margin-left: 80px;
+    margin-top: -50px;
+    height: 50px;
+    line-height: 50px;  
+    text-transform: uppercase;     
+    text-decoration: none;
+    position: relative;
+    font-size: 15px;
+  } 
+  
+  > ul > li.expanded > a  {
+    color: #fff;
+  }
+
+    ul {
     margin: 0;
     padding: 0;
+    
+    
+    li.collapsed {
+      border-bottom: 1px solid #e5e5e5;
+      
+      ul {
+        display: none;
+      }  
+      .menu-icon {
+        background: none repeat scroll 0 0 #fff;
+        
+        a {
+          color: #0c87e8;
+        }
+        img {
+          filter: url(../images/filter.svg#grayscale);
+          filter: none;
+          -webkit-filter: none;
+          -moz-filter: none;
+          -ms-filter: none;
+          -o-filter: none;/**/      
+        }
+        span {
+          
+        }
+      }      
+    }    
     
     li {
       margin: 0;
       padding: 0;
       list-style: none;
       
-      a {
-        display: block;
-        height: 40px;
-        line-height: 40px;
-        color: #000;
-        font-size: 13px;     
-        padding: 0 1.25em 0 90px;
-        text-decoration: none;
-        border-bottom: 1px solid #fff;
-        text-transform: uppercase;
-        background: #ffa200;
-        
-        &.active,
-        &:hover {
-          background: #fff;
-        }
+      ul li {
+        a {
+          display: block;
+          height: 40px;
+          line-height: 40px;
+          color: #000;
+          font-size: 13px;     
+          padding: 0 1.25em 0 100px;
+          text-decoration: none;
+          border-bottom: 1px solid #fff;
+          text-transform: uppercase;
+          background: #ffa200;
+          
+          &.active,
+          &:hover {
+            background: #fff;
+          }
+        }      
       }
     }
   }
