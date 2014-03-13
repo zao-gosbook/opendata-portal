@@ -2923,7 +2923,32 @@ div.horizontal-tabs .form-text {
       }
     }
   }
-} 
+}
+body {
+  &.page-taxonomy-term-news,
+  &.page-taxonomy-term-competition,
+  &.page-taxonomy-term-blogs,
+  &.page-taxonomy-term-map {
+    background: #e5e5e5;
+  }
+}
+ 
+.rubric-content {
+  width: 100%;
+  margin-left: -26.6%;
+  
+  > .inside {
+    margin-left: 26.6%;
+    padding-left: 27px;
+  }
+  
+  .pane-page-title h1 {
+    font-size: 36px;
+    margin-bottom: 32px;
+    color: #4d4d4d;
+  }
+}
+
 .page-taxonomy-term {   
   .region-header {
     border-bottom: 0;
@@ -3021,7 +3046,8 @@ div.horizontal-tabs .form-text {
     margin-left: 0;
     margin-right: 0;
   }
-  .view-rubric-nodes{
+  .view-rubric-nodes,
+  .rubric-content .view  {
     /*@include column-count(3);
     @include column-gap(20px);*/
     
@@ -3038,9 +3064,11 @@ div.horizontal-tabs .form-text {
     }
     .views-row {
       background: #fff;
+      padding-right: 0;
+      border: 0;
       /*padding: 1.1em;*/
       margin-bottom: 2.2em;
-      /**/width: 32%;
+      /**/width: 49%;
       
       .node {
         padding: 1.1em;

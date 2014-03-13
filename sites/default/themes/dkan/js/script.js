@@ -36,7 +36,24 @@
         });         
       });
     }
+  }
+  
+  Drupal.behaviors.TaxonomyColumnsRubric = {
+    attach: function (context) {      
+      $('.page-taxonomy-term .rubric-content .view .view-content', context).once('massontry', function() {
+        var massontry = $(this);
+        $('<div class="view-header"></div>').prependTo(massontry);
+        var container = document.querySelector('.page-taxonomy-term .rubric-content .view .view-content');
+        var msnry = new Masonry( container, {
+          // options
+          //columnWidth: 200,
+          itemSelector: '.views-row'/**/,
+          gutter: '.page-taxonomy-term .rubric-content .view .view-content .view-header'
+        });         
+      });
+    }
   }   
+  
   
   Drupal.behaviors.ActiveElement = {
     attach: function (context, settings) {
@@ -122,7 +139,13 @@
             width: item,
             //"padding-top": half_link_width,
             "margin-left": margin
-          });          
+          });  
+          // кастомное положение блоков
+          if($(this).parent("li").attr("id", "menu-2351-1")) {
+            ul.css({
+              "margin-left": "-50px"
+            });  
+          }          
         }
         else {
           $(".region-header").removeClass("active-region");
@@ -130,6 +153,7 @@
       });
     }
   }
+  
   
   
   
@@ -183,10 +207,9 @@
    */
   Drupal.behaviors.openTitleIntNewWindow = {
     attach: function (context, settings) {
-      $('body.section-dataset .view-content .field-name-title a').once('open-in-new-window').bind('click', function (e) {
+      $('body.section-dataset .view-content .field-name-title a').live('click', function () {
         var win = window.open($(this).attr('href'));
         win.focus();
-        e.preventDefault();
         return false;
       });
     }
