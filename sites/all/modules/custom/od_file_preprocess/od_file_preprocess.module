@@ -4,6 +4,10 @@ define('CSV_DELIMETER', ',');
 define('CSV_ENCLOSURE', chr(34)); // "
 define('CRLF', chr(0x0d) . chr(0x0a));
 define('DT_VOCAB', 'xsd');
+define('OD_FILE_PREPROCESS_CONSTISTENCY_OK',            bindec('000001'));
+define('OD_FILE_PREPROCESS_CONSTISTENCY_FAILURE',       bindec('000010'));
+define('OD_FILE_PREPROCESS_CONSTISTENCY_WARNING',       bindec('000100'));
+define('OD_FILE_PREPROCESS_CONSTISTENCY_SINGLE_FILE',   bindec('001000'));
 
 
 /**
@@ -88,6 +92,30 @@ function od_file_preprocess_field_widget_form_alter(&$element, &$form_state, $co
 function od_file_preprocess_file_element_set_identity($element, &$form_state) {
   $element['upload_button']['#identity'] = 'upload_button';
   $element['remove_button']['#identity'] = 'remove_button';
+  $element['errors'] = array(
+    '#type' => 'container',
+    '#weight' => -5000,
+  );
+
+  if (($fid = $element['#value']['fid']) != 0 && ($file = file_load($fid))) {
+    switch($file->filemime) {
+      case 'application/zip':
+      case 'text/csv':
+        $element['appropriate_options']['csv_parser']['delimiter'] = array(
+          '#type' => 'select',
+          '#title' => t('CSV Delimiter'),
+          '#options' => array(
+            ';' => t('Semicolon (;)'),
+            ',' => t('Comma (,)'),
+          ),
+          '#identity' => 'delimiter_change',
+          '#ajax' => $element['upload_button']['#ajax'],
+        );
+        break;
+    }
+  }
+
+  //$element['appropriate_options']['#weight'] = -500;
 
   return $element;
 }
@@ -96,6 +124,10 @@ function od_file_preprocess_file_element_set_identity($element, &$form_state) {
  * Process form file element
  */
 function od_file_preprocess_widget_process($element, &$form_state) {
+  if (empty($form_state['triggering_element'])) {
+    return $element;
+  }
+
   $field_name = $element['#field_name'];
   $lang = $element['#language'];
   $delta = $element['#delta'];
@@ -108,6 +140,28 @@ function od_file_preprocess_widget_process($element, &$form_state) {
     return $element;
   }
 
+  $file = $element['#file'];
+
+  // Set shared options if needed
+  $options = &$element['#value']['appropriate_options'];
+  if (!empty($options) && is_array($options)) {
+    foreach ($options as $_key => $_values) {
+      foreach ($_values as $_property => $_value) {
+        od_file_preprocess_options($_key, $_property, $_value);
+      }
+    }
+  }
+
+  // Check consistency of a file.
+  $consistency = od_file_preprocess_check_structures($file, TRUE);
+
+  if ($consistency & (OD_FILE_PREPROCESS_CONSTISTENCY_FAILURE | OD_FILE_PREPROCESS_CONSTISTENCY_WARNING)) {
+    $element['errors']['consistency'] = array(
+      '#markup' => t('There was an error in consistency'),
+    );
+  }
+
+
   $identity = isset($form_state['triggering_element']['#identity']) ? $form_state['triggering_element']['#identity'] : 'unknown';
   if ($identity == 'remove_button' || !$generate_structure) {
     //$element['file_data'] = null;
@@ -116,9 +170,14 @@ function od_file_preprocess_widget_process($element, &$form_state) {
     $form_state['storage']['structure'] = null;
   }
   elseif ($generate_structure) {
-    $file = $element['#file'];
-    $structure = od_file_preprocess_get_structure($file, TRUE);
+    /*
+     * @note: This will get this from static cache
+     * cause od_file_preprocess_check_structures() above has called this function already.
+     */
+    $structures = od_file_preprocess_get_structure($file, TRUE, FALSE);
 
+    // Get structure of the first element
+    $structure = reset($structures);
     if (is_array($structure)) {
       $element['file_data']['#parents'] = array(
         $field_name,
@@ -204,9 +263,9 @@ function od_file_preprocess_widget_validate($element, &$form_state, $form) {
  *  Parse file structure into $form_state-liked array
  * @todo Cache php_excel loaded things to prevent parsing it again
  */
-function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
-  $cache = _od_file_preprocess_caches(__FUNCTION__);
-  $cache_key = substr(md5($file->uri . $process_2nd_row), 0, 8);
+function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE, $index = 0) {
+  $cache = &_od_file_preprocess_caches(__FUNCTION__);
+  $cache_key = substr(md5($file->uri . $process_2nd_row . $index. filemtime($file->uri)), 0, 8);
   if (!isset($cache[$cache_key])) {
     // Lets think pessimistically and say that we won't get structure.
     $cache[$cache_key] = NULL;
@@ -222,7 +281,7 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
       case 'text/csv':
       case 'application/zip':
 
-          $structure = array(
+          $structures = array(
             //'process_2nd_row' => $process_2nd_row,
           );
 
@@ -239,54 +298,105 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE) {
           }
 
           if (empty($data)) return NULL;
+          $data = array_map('array_filter', $data);
 
-          $data = array_map('array_filter', $data[0]); //first worksheet, clear empty rows and cells
-          $headers = array_shift($data);
-
-          $col_types = array_fill(0, count($headers), 'undefined');
-          $col_desc = ($process_2nd_row) ? NULL : array_shift($data);
-
-          $data_type_weight = array(
-            'undefined' => 0,
-            'integer' => 10,
-            'float' => 20,
-            'double' => 30,
-            'anyURI' => 40,
-            'string' => 50,
-          );
-
-          foreach ($headers as $col => $header) {
-            foreach ($data as $row) {
-              $cell = $row[$col];
-
-              if ($col_types[$col] == 'undefined') {
-                $col_types[$col] = od_file_preprocess_get_data_type($cell);
-              }
-              else {
-                $cell_type = od_file_preprocess_get_data_type($cell);
-                if ($data_type_weight[$cell_type] > $data_type_weight[$col_types[$col]]) {
-                  $col_types[$col] = $cell_type;
-                }
-              }
+          if (is_numeric($index)) {
+            if (isset($data[$index])) {
+              $data = array(
+                $index => $data[$index],
+              );
             }
-
-            $structure['col_data'][$col]['col_name']['value'] = $header;
-            $structure['col_data'][$col]['col_desc'] = ($col_desc) ? $col_desc[$col] : '';
-            $structure['col_data'][$col]['datatype'] = $col_types[$col];
-
-            $col++;
+            else {
+              return NULL;
+            }
           }
 
-          $structure['is_table_data'] = TRUE;
-          $cache[$cache_key] = $structure;
+          foreach ($data as $item_index => &$_data) {
+            $_data = array_map('array_filter', $_data); //clear empty rows and cells
+            $headers = array_shift($_data);
+
+            $col_types = array_fill(0, count($headers), 'undefined');
+            $col_desc = ($process_2nd_row) ? NULL : array_shift($_data);
+
+            $data_type_weight = array(
+              'undefined' => 0,
+              'integer' => 10,
+              'float' => 20,
+              'double' => 30,
+              'anyURI' => 40,
+              'string' => 50,
+            );
+
+            $structure = array();
+            foreach ($headers as $col => $header) {
+              foreach ($data as $row) {
+                $cell = $row[$col];
+
+                if ($col_types[$col] == 'undefined') {
+                  $col_types[$col] = od_file_preprocess_get_data_type($cell);
+                }
+                else {
+                  $cell_type = od_file_preprocess_get_data_type($cell);
+                  if ($data_type_weight[$cell_type] > $data_type_weight[$col_types[$col]]) {
+                    $col_types[$col] = $cell_type;
+                  }
+                }
+              }
+
+              $structure['col_data'][$col]['col_name']['value'] = $header;
+              $structure['col_data'][$col]['col_desc'] = ($col_desc) ? $col_desc[$col] : '';
+              $structure['col_data'][$col]['datatype'] = $col_types[$col];
+
+              $col++;
+            }
+
+            $structure['is_table_data'] = TRUE;
+            $structures[$item_index] = $structure;
+          }
+
+
+          $cache[$cache_key] = $structures;
         break;
 
     }
   }
 
-  return $cache[$cache_key];
+  $ret = &$cache[$cache_key];
+  if (is_numeric($index)) {
+    $ret = isset($ret[$index]) ? $ret[$index] : NULL;
+  }
+
+  return $ret;
 }
 
+function od_file_preprocess_check_structures($file, $process_second_row = FALSE) {
+  $cache = &_od_file_preprocess_caches(__FUNCTION__);
+  $cache_key = substr(md5($file->uri . $process_second_row), 0, 8);
+  if (!isset($cache[$cache_key])) {
+    $consistency = OD_FILE_PREPROCESS_CONSTISTENCY_WARNING;
+    if (($structures = od_file_preprocess_get_structure($file, $process_second_row, FALSE)) && count($structures) > 0) {
+      $consistency = OD_FILE_PREPROCESS_CONSTISTENCY_OK;
+      $first = array_shift($structures);
+      if (!empty($structures)) {
+        $quality_control_hash = substr(md5(serialize($first)), 0, 32);
+        foreach ($structures as $structure) {
+          $hash = substr(md5(serialize($structure)), 0, 32);
+          if ($hash != $quality_control_hash) {
+            $consistency = OD_FILE_PREPROCESS_CONSTISTENCY_FAILURE;
+            break;
+          }
+        }
+      }
+      else {
+        $consistency = OD_FILE_PREPROCESS_CONSTISTENCY_SINGLE_FILE | OD_FILE_PREPROCESS_CONSTISTENCY_OK;
+      }
+    }
+
+    $cache[$cache_key] = $consistency;
+  }
+
+  return $cache[$cache_key];
+}
 
 /**
  * Create form element from $form_state values
@@ -307,23 +417,23 @@ function od_file_preprocess_set_element($values = array(), $wrapper = '') {
     ),
   );
 */
-  if (!empty($values['codepage'])) {
-    $element['codepage'] = array(
-      '#type' => 'select',
-      '#title' => t('Code page of loaded document'),
-      '#options' => array(
-        'CP1251' => 'cp-1251 (Windows)',
-        'UTF-8' => 'utf-8 (Unicode)',
-      ),
-      '#ajax' => array(
-        'callback' => 'od_file_preprocess_ajax_callback',
-        'wrapper' => $wrapper,
-        'method' => 'replace',
-        'effect' => 'fade',
-      ),
-      '#default_value' => $values['codepage'],
-    );
-  }
+//  if (!empty($values['codepage'])) {
+//    $element['codepage'] = array(
+//      '#type' => 'select',
+//      '#title' => t('Code page of loaded document'),
+//      '#options' => array(
+//        'CP1251' => 'cp-1251 (Windows)',
+//        'UTF-8' => 'utf-8 (Unicode)',
+//      ),
+//      '#ajax' => array(
+//        'callback' => 'od_file_preprocess_ajax_callback',
+//        'wrapper' => $wrapper,
+//        'method' => 'replace',
+//        'effect' => 'fade',
+//      ),
+//      '#default_value' => $values['codepage'],
+//    );
+//  }
 
   if (!empty($values['is_table_data'])) {
     $element['convert_to'] = array(
@@ -452,7 +562,7 @@ function od_file_preprocess_parse_csv($path, $codepage = FALSE) {
     $objReader->setReadDataOnly(TRUE);
     //default MS Excell - created csv settings
     $objReader->setInputEncoding($codepage);
-    $objReader->setDelimiter(';');
+    $objReader->setDelimiter(od_file_preprocess_options('csv_parser', 'delimiter', NULL, FALSE, ';'));
 
     $objPHPExcel = $objReader->load($path);
     $objWorksheet = $objPHPExcel->getActiveSheet();
@@ -482,17 +592,53 @@ function od_file_preprocess_parse_csv($path, $codepage = FALSE) {
  * @return mixed
  * @todo Turn to drupalcache, not static
  */
-function &_od_file_preprocess_caches($key = NULL, $default = array()) {
+function &_od_file_preprocess_caches($key = NULL, $default = array(), $reset = FALSE) {
   $cache = &drupal_static(__FUNCTION__, array());
   if  ($key != NULL) {
-    if (!isset($cache[$key])) {
+    if ($reset || !isset($cache[$key])) {
       $cache[$key] = $default;
     }
 
     return $cache[$key];
   }
 
+  if ($reset) {
+    $cache = $default;
+  }
+
   return $cache;
+}
+
+/**
+ * Manipulates with shared od_file_preprocess module's options
+ * @param string $key
+ * @param string $name
+ * @param mixed $value
+ * @param bool $remove
+ * @param mixed $default
+ * @return mixed|null
+ */
+function od_file_preprocess_options($key = 'global', $name = NULL, $value = NULL, $remove = FALSE, $default = NULL) {
+  static $key_cache_dependencies = array(
+    'csv_parser' => array('od_file_preprocess_parse_csv', 'od_file_preprocess_get_structure'),
+  );
+
+  od_common_module('core');
+  $defaults = array();
+  $cache = &_od_file_preprocess_caches(__FUNCTION__, $defaults);
+  $storage = &$cache[$key];
+  if (_od_common_param_value_manipulation($storage, $name, $value) === NULL && $default !== NULL) {
+    _od_common_param_value_manipulation($storage, $name, $default);
+  }
+
+  // If writing happens
+  if (($remove || $value !== NULL) && isset($key_cache_dependencies[$key])) {
+    foreach ($key_cache_dependencies[$key] as $_cid) {
+      _od_file_preprocess_caches($_cid, NULL, TRUE);
+    }
+  }
+
+  return _od_common_param_value_manipulation($storage, $name, $value, $remove);
 }
 
 /**
@@ -524,7 +670,7 @@ function od_file_preprocess_parse_zip($path) {
     foreach ($files_list->raw as $fileinfo) {
       switch ($fileinfo['extension']) {
         case 'csv':
-          $processed = od_file_preprocess_parse_csv($fileinfo['uri']);
+          $processed = od_file_preprocess_parse_csv($fileinfo['uri'], FALSE);
           if (is_array($processed)) {
             $data = array_merge($data, $processed);
           }
