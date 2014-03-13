@@ -8,7 +8,7 @@
  **/
 function _od_common_form_user_login_alter(&$form, &$form_state) {
   unset($form['name']['#title']);
-  $form['name']['#attributes'] = array('placeholder' => 'Email');
+  $form['name']['#attributes'] = array('placeholder' => t('Email'));
   unset($form['pass']['#title']);
   $form['pass']['#attributes'] = array('placeholder' => t('Password'));
   $form['reset_pass_text'] = array(
