@@ -194,7 +194,7 @@
 
   Drupal.behaviors.superfishMainMenuMod = {
     attach: function(context, settings) {
-      var $activeEl = $('.sf-main-menu li.menuparent:not(.no-superfish-autoopen) ul a.active');
+      var $activeEl = $('.sf-main-menu li.menuparent ul a.active:not(.no-superfish-autoopen)');
       if ($activeEl.length > 0) {
         $activeEl.parents('.menuparent:eq(0)').showSuperfishUl();
       }
