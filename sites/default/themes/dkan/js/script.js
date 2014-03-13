@@ -115,8 +115,28 @@
           var margin = -item/2 + half_link_width;
           ul.css({
             width: item,
-            "margin-left": margin
-          });             
+            //"margin-left": margin
+          }); 
+          if(li.hasClass("sf-item-1")) { // 
+            ul.css({
+              "margin-left": "-227px"
+            });  
+          } 
+          if(li.hasClass("sf-item-3")) { //
+            ul.css({
+              "margin-left": "-150px"
+            });  
+          } 
+          if(li.hasClass("sf-item-4")) { //
+            ul.css({
+              "margin-left": "-310px"
+            });  
+          } 
+          if(li.hasClass("sf-item-6")) { //
+            ul.css({
+              "margin-left": "-141px"
+            });  
+          }          
         }
       });
     
@@ -138,12 +158,27 @@
           ul.css({
             width: item,
             //"padding-top": half_link_width,
-            "margin-left": margin
+            //"margin-left": margin
           });  
           // кастомное положение блоков
-          if($(this).parent("li").attr("id", "menu-2351-1")) {
+          if($(this).parent("li").hasClass("sf-item-1")) { // 
             ul.css({
-              "margin-left": "-50px"
+              "margin-left": "-227px"
+            });  
+          } 
+          if($(this).parent("li").hasClass("sf-item-3")) { //
+            ul.css({
+              "margin-left": "-150px"
+            });  
+          } 
+          if($(this).parent("li").hasClass("sf-item-4")) { //
+            ul.css({
+              "margin-left": "-310px"
+            });  
+          } 
+          if($(this).parent("li").hasClass("sf-item-6")) { //
+            ul.css({
+              "margin-left": "-141px"
             });  
           }          
         }

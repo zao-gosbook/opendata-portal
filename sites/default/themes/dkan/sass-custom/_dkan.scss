@@ -194,7 +194,7 @@ div.horizontal-tabs .form-text {
 
 .front .region-header {
   @include background-size(cover);
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 /**
@@ -831,15 +831,16 @@ div.horizontal-tabs .form-text {
     h2 {
       color: #fff;
       font-size: 28px;
-      padding: 1.46% 15px 1.2% 7%;
+      padding: 0 15px 0 7%;
       float: left;
+      height: 75px;
+      line-height: 75px;
       margin: 0;
-      line-height: 1.3em;
     }
     .view {
       float: right;
       position: relative;
-      padding: 1.7% 8% 1.2% 28px;
+      padding: 0 8% 0 28px;
       color: #fff;
       font-size: 20px;
       background: #ff8a00;
@@ -847,6 +848,9 @@ div.horizontal-tabs .form-text {
       
       span {
         font-size: 60px;
+        height: 75px;
+        line-height: 73px;
+        display: block;
         
         a {
           text-decoration: none;
@@ -873,7 +877,7 @@ div.horizontal-tabs .form-text {
   .pane-2 {
     position: absolute;
     right: 8%;
-    top: 24px;
+    top: 17px;
     
     a {
       display: block;
@@ -1149,7 +1153,7 @@ div.horizontal-tabs .form-text {
   
   .region-header {
     background: #081426;
-    border-bottom: 10px solid #ffa200;
+    height: 160px;
   }  
 
   .region-content {
@@ -2954,7 +2958,7 @@ body {
     border-bottom: 0;
     background-repeat: no-repeat;
     background-position: 50% 0;
-    @include background-size(100% auto);
+    @include background-size(cover);
     
     border-bottom: 0;
   }  
