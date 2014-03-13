@@ -628,13 +628,11 @@ $zen-auto-include-item-base: false;
     .form-text {
       font-size: 18px;
       line-height: 18px;
-    }
-    .form-submit {
-      background-size: cover;
-      height: 50px;
-      top: -8px;
-      width: 48px;
-    }    
+    }   
+  }
+  .region-header .header__site-slogan {
+    color: #0C87E8;
+    font-size: 9px;
   }
   .pane-rubrics-rubrics-front  {
     margin-left: 10px;
@@ -1054,19 +1052,34 @@ $zen-auto-include-item-base: false;
   .pane-page-title {
     padding: 0 21px;
   }
+
   .region-header {
     #name-and-slogan a {
       font-size: 23px;
+    }   
+
+    .header-front-top {
+      padding-bottom: 110px;
     }    
     .pane-system-main-menu {
-      clear: left;
-      padding-left: 124px;
-      margin-top: -23px;
-      padding-top: 15px;
+      position: absolute;
+      right: 25px;
+      top: 79px;
+      margin: 0;
+      padding: 0;
+    }
+    .pane-locale-language {
+      top: 7px;
+    }
+    .pane-system-main-menu > ul > li > a {
+      padding: 1em .5em;
     }
     .pane-system-user-menu {
-      padding-top: 15px;
-      margin-top: -73px;
+      padding: 0;
+      position: absolute;
+      left: 138px;
+      top: 20px;
+      margin: 0;
       
       > ul li a {
         text-indent: -10000px;  
@@ -1140,11 +1153,17 @@ $zen-auto-include-item-base: false;
       line-height: 18px;
     }
     .form-submit {
-      background-size: cover;
-      height: 70px;
-      top: -8px;
-      width: 67px;
+
     }    
+  }
+  .pane-search-block {
+    position: absolute;
+    right: 4px;
+    top: 32px;    
+    
+    .pane-gb-search-pane {
+      width: 475px;
+    }
   }
   .region-content {
     .pane-gb-search-pane {
