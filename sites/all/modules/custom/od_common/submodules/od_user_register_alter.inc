@@ -15,4 +15,12 @@ function _od_common_form_user_register_form_alter(&$form, &$form_state) {
     '#markup' => t('<p>Already have an account? Return to <a href="/user/login">login</a>.</p>'),
     '#weight' => 5000,
   );
+  $form['#submit'][] = 'od_common_user_register_submit';
+}
+
+/*
+ * Submit handler for the user registration form.
+ */
+function od_common_user_register_submit($form, &$form_state) {
+  $form_state['redirect'] = 'user/register';
 }
