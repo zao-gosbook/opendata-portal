@@ -77,7 +77,7 @@ $zen-auto-include-item-base: false;
 /**
  * Use 3 grid columns for smaller screens.
  */
-@media all and (max-width: 800px) and (min-width: 100px)  {
+@media all and (max-width: 765px) and (min-width: 100px)  {
 
   $zen-column-count: 3;
 
@@ -994,7 +994,7 @@ $zen-auto-include-item-base: false;
 /**
  * iPad (maxWidth 768px)
  */
-@media all and (max-width: 1025px) and (min-width: 801px) {
+@media all and (max-width: 1025px) and (min-width: 767px) {
 
   $zen-column-count: 5;
 
@@ -1163,6 +1163,7 @@ $zen-auto-include-item-base: false;
     
     .pane-gb-search-pane {
       width: 475px;
+      padding: 0;
     }
   }
   .region-content {
