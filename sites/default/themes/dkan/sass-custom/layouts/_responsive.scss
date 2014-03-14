@@ -1231,10 +1231,16 @@ $zen-auto-include-item-base: false;
   .panels-flexible-row.region-header {
     overflow: hidden;
   }
+  .not-front  .panels-flexible-row.region-header {
+    overflow: visible;
+  }
   .region-content {
     .pane-gb-search-pane {
       margin: 0;
     }
+  }
+  .region-header .pane-system-main-menu > ul > li.sf-item-2 > ul {
+    width: 534px !important;
   }
   .pane-rubrics-rubrics-front  {
     margin-left: 21px;
@@ -1259,16 +1265,64 @@ $zen-auto-include-item-base: false;
       }
     }
   }   
+  /* apps */
+  .page-apps .pane-page-content .left-column h2 {
+    font-size: 17px;
+  }
+  .page-apps .pane-page-content .left-column .form-item label {
+    display: table-cell;
+    font-size: 12px;
+    height: 49px;
+    line-height: 1.4em;
+    vertical-align: middle;
+  }  
+  .page-apps .pane-page-content .right-column .new-apps, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .views-row,
+  .page-apps .pane-page-content .right-column .popular-apps {
+      width: 100%;
+  } 
+  
+  /* dataset */  
+  .page-dataset {
+    .pane-page-title h1 {
+      margin-top: -30px;
+      margin-botton: 15px;
+    }
+  }
+  .breadcrumb {
+    padding: 14px 21px 10px;
+  }
+  .pane-datasets-search-dataset-search .view-content {
+    clear: both;
+  }
+  .pane-dataset {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+/**
+ * only ipad hacks
+ */
+@media only screen and (device-width: 768px) {
+  .not-front  > .panel-flexible  {
+    width: 100%;
+    overflow: hidden;
+  }
 }
 
 /**
  * addaptive facts
  */
 @media all and (max-width: 1200px) and (min-width: 765px) {
-  .pane-page-title h1 {
-    margin: .5em 0 .6em;
-    font-size: 22px;
+  .pane-page-title {
+    padding: 0;
+    h1 {
+      margin: .5em 0 .6em;
+      font-size: 22px;
+    }    
   }
+
   .view-quick-facts {
     padding-top: 115px;
     padding-bottom: 20%;
@@ -1614,6 +1668,48 @@ $zen-auto-include-item-base: false;
   .comment {
     font-size: 14px;
   }   
+}
+
+/**
+ * count dataset
+ */
+@media all and (max-width: 1630px) and (min-width: 1026px) {
+  .region-orange .pane-dataset-datasets-total-count,
+  .region-orange .pane-dataset-datasets-total-count-for-guest  {
+    h2 {
+      font-size: 17px;
+      height: 48px;
+      line-height: 48px;
+    }  
+    .view {
+      font-size: 19px;   
+      
+      span {
+        font-size: 26px;
+        height: 48px;
+        line-height: 48px;
+      }
+    }
+  }
+  .region-orange {
+    .pane-2 {
+      top: 13px;
+      
+      a {
+        display: block;
+        width: auto;
+        height: 22px;
+        line-height: 22px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 12px;
+        text-transform: uppercase;
+        background: #0c87e8;
+        text-align: center;
+        padding: 0 15px;
+      }
+    }  
+  }
 }
 
 /**
