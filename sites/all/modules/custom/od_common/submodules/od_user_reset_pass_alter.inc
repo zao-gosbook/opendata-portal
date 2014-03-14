@@ -8,5 +8,5 @@
  **/
 function _od_common_form_user_pass_alter(&$form, &$form_state) {
   unset($form['name']['#title']);
-  $form['name']['#attributes'] = array('placeholder' => 'E-mail');
+  $form['name']['#attributes'] = array('placeholder' => t('E-mail'));
 }
