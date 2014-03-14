@@ -123,6 +123,9 @@
             });  
           } 
           if(li.hasClass("sf-item-3")) { //
+            if($('body').width() > 765 && $('body').width() < 1200) {
+              alert();
+            }
             ul.css({
               "margin-left": "-150px"
             });  
@@ -167,6 +170,12 @@
             });  
           } 
           if($(this).parent("li").hasClass("sf-item-3")) { //
+            if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-157px"
+              });              
+            } 
+            //alert($('body').width());  
             ul.css({
               "margin-left": "-150px"
             });  

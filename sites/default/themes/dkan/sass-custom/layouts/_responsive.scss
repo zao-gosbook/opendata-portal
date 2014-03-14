@@ -1052,8 +1052,21 @@ $zen-auto-include-item-base: false;
   .pane-page-title {
     padding: 0 21px;
   }
-
+  .region-header-facts {
+    margin-bottom: 20px;
+    
+    .ctools-toggle {
+      bottom: -17px;
+    }
+  }
+  .pane-rubrics-rubrics-front .title {
+    margin-top: 13px;
+  }  
+  .region-header.active-region:before {
+    height: 42px;
+  }
   .region-header {
+  
     #name-and-slogan a {
       font-size: 23px;
     }   
@@ -1075,11 +1088,11 @@ $zen-auto-include-item-base: false;
       padding: 1em .5em;
     }
     .pane-system-user-menu {
+      left: 14px;
+      margin: 0;
       padding: 0;
       position: absolute;
-      left: 138px;
-      top: 20px;
-      margin: 0;
+      top: 89px;
       
       > ul li a {
         text-indent: -10000px;  
@@ -1119,17 +1132,45 @@ $zen-auto-include-item-base: false;
   .region-orange .pane-dataset-datasets-total-count,
   .region-orange .pane-dataset-datasets-total-count-for-guest  {
     h2 {
-      font-size: 17px;
-      padding: 1.1% 15px 1% 21px;
+      font-size: 15px;
+      height: 42px;
+      line-height: 42px;
+      padding: 0 0 0 21px;
     }  
     .view {
       font-size: 17px;
-      padding: 1.1% 21px 0.8% 28px;     
+      padding: 0 21px 0 28px;     
       
       span {
-        font-size: 30px;
+        font-size: 24px;
+        height: 42px;
+        line-height: 42px;
       }
     }
+  }
+  .region-header .pane-system-main-menu > ul > li ul li a {
+    padding: 1em 0.5em;
+  }
+  .region-orange {
+    .pane-2 {
+      position: absolute;
+      right: 21px;
+      top: 11px;
+      
+      a {
+        display: block;
+        width: auto;
+        height: 20px;
+        line-height: 20px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 12px;
+        text-transform: uppercase;
+        background: #0c87e8;
+        text-align: center;
+        padding: 0 15px;
+      }
+    }  
   }
   .panels-flexible-region-4-region_main_content {
     width: 100%;
@@ -1156,15 +1197,39 @@ $zen-auto-include-item-base: false;
 
     }    
   }
+  .header__logo-image {
+    width: 70px;
+  }
+  .region-header #name-and-slogan {
+    padding-top: 9px;
+  }
+  .region-header .header__site-slogan {
+    font-size: 9px;
+  }
   .pane-search-block {
     position: absolute;
     right: 4px;
     top: 32px;    
     
     .pane-gb-search-pane {
-      width: 475px;
+      width: 409px;
       padding: 0;
+      
+      .form-text {
+        @include border-radius(0);
+        font-size: 15px;
+        line-height: 18px;
+        padding-right: 230px;
+        padding-left: 10px;
+      }
+      #edit-field-select .form-type-radio label  {
+        font-size: 14px;
+        margin-top: 0px;
+      }
     }
+  }
+  .panels-flexible-row.region-header {
+    overflow: hidden;
   }
   .region-content {
     .pane-gb-search-pane {
@@ -1199,7 +1264,7 @@ $zen-auto-include-item-base: false;
 /**
  * addaptive facts
  */
-@media all and (max-width: 1200px) and (min-width: 801px) {
+@media all and (max-width: 1200px) and (min-width: 765px) {
   .pane-page-title h1 {
     margin: .5em 0 .6em;
     font-size: 22px;
@@ -1207,6 +1272,7 @@ $zen-auto-include-item-base: false;
   .view-quick-facts {
     padding-top: 115px;
     padding-bottom: 20%;
+    overflow: hidden;
     
     .view-content > div { 
       
@@ -1551,12 +1617,73 @@ $zen-auto-include-item-base: false;
 }
 
 /**
+ * user menu
+ */
+@media all and (max-width: 1360px) and (min-width: 1026px) {
+  
+  .region-header {
+    
+    .pane-system-user-menu {
+      left: 142px;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 106px;
+      
+      > ul li a {
+        text-indent: -10000px;  
+        overflow: hidden;
+        background-color: #FFFFFF;
+        background-image: url("../images/ico-set-ui.png");
+        background-repeat: no-repeat;
+        background-position: 0 -1000px;
+        border: 1px solid #4E4118;
+        @include border-radius(50%);
+        height: 30px;
+        padding: 0;
+        width: 30px;
+        margin-right: 7px;
+      }
+      > ul li a[href$="/user/login"] {
+        background: #fff url("../images/ico-set-ui.png") no-repeat -539px -353px;
+        padding-left: 0;
+      }
+      > ul li a[href$="/user"] {
+        background-position: -387px -353px;
+      }
+      > ul li a[href$="/messages"] {
+        background-position: -349px -48px;
+      }
+      > ul li a[href$="/user/logout"] {
+        background-position: -119px -10px;
+      }
+      > ul li a[href$="/user/register"] {
+        background-position: -387px -314px;
+      }
+      > ul li.last a {
+        margin-right: 0;
+      }
+    }      
+  }
+}
+ 
+/**
  * addaptive facts
  */
-@media all and (max-width: 1600px) and (min-width: 1200px) {
+@media all and (max-width: 1199px) and (min-width: 1026px) {
   .view-quick-facts {
     .views-row {
-      top: -50px;
+      top: 80px;
+      width: 42%; 
+    }
+  }
+} 
+ 
+@media all and (max-width: 1600px) and (min-width: 1200px) {
+  
+  .view-quick-facts {
+    .views-row {
+      top: 80px;
       width: 52%;
       
       /* Every other three fast facts, starting from the first */
