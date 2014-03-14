@@ -1154,6 +1154,7 @@ div.horizontal-tabs .form-text {
   .region-header {
     background: #081426;
     height: 160px;
+    @include box-sizing(border-box);
   }  
 
   .region-content {
@@ -5274,19 +5275,19 @@ div.fivestar-widget .star {
   width: 100%;
   
   .inside {
-    padding: 20px 0 20px;    
+    padding: 0 0 20px;    
+    @include clearfix;
   }
 
   .form-type-radio {
     float: left;
     margin-right: 0; 
     position: relative;
-    overflow: hidden;
     margin: 0;
     
     input {
       position: absolute;
-      left: -100px;
+      left: -10000px;
     }
     label {
       padding: 0 18px;
@@ -5298,7 +5299,6 @@ div.fivestar-widget .star {
       cursor: pointer;
       color: #0c87e8;
       margin-right: 1px;
-      position: relative;
     }
     &.active-element label {
       color: #fff;
@@ -5321,6 +5321,12 @@ div.fivestar-widget .star {
 .stat-tabs {
   .panels-flexible-region {
     width: 100%;
+  }
+  h2 {
+    font-size: 30px;
+    color: #4d4d4d;
+    margin: .75em 0;
+    line-height: 1em;
   }
 }
  
