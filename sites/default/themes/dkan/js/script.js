@@ -117,25 +117,55 @@
             width: item,
             //"margin-left": margin
           }); 
-          if(li.hasClass("sf-item-1")) { // 
-            ul.css({
-              "margin-left": "-227px"
-            });  
+          // кастомное положение блоков
+          if($(this).parent("li").hasClass("sf-item-1")) { // 
+            if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-199px"
+              });              
+            } 
+            else {            
+              ul.css({
+                "margin-left": "-227px"
+              }); 
+            }
           } 
-          if(li.hasClass("sf-item-3")) { //
-            ul.css({
-              "margin-left": "-150px"
-            });  
+          if($(this).parent("li").hasClass("sf-item-3")) { //
+            if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-123px"
+              });              
+            } 
+            else {
+              ul.css({
+                "margin-left": "-150px"
+              });              
+            }
+            //alert($('body').width());  
           } 
-          if(li.hasClass("sf-item-4")) { //
-            ul.css({
-              "margin-left": "-310px"
-            });  
+          if($(this).parent("li").hasClass("sf-item-4")) { //
+            if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-317px"
+              });              
+            } 
+            else {           
+              ul.css({
+                "margin-left": "-310px"
+              });  
+            }
           } 
-          if(li.hasClass("sf-item-6")) { //
-            ul.css({
-              "margin-left": "-141px"
-            });  
+          if($(this).parent("li").hasClass("sf-item-6")) { //
+             if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-343px"
+              });              
+            } 
+            else {             
+              ul.css({
+                "margin-left": "-141px"
+              });  
+            }
           }          
         }
       });
@@ -162,24 +192,53 @@
           });  
           // кастомное положение блоков
           if($(this).parent("li").hasClass("sf-item-1")) { // 
-            ul.css({
-              "margin-left": "-227px"
-            });  
+            if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-199px"
+              });              
+            } 
+            else {            
+              ul.css({
+                "margin-left": "-227px"
+              }); 
+            }
           } 
           if($(this).parent("li").hasClass("sf-item-3")) { //
-            ul.css({
-              "margin-left": "-150px"
-            });  
+            if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-123px"
+              });              
+            } 
+            else {
+              ul.css({
+                "margin-left": "-150px"
+              });              
+            }
+            //alert($('body').width());  
           } 
           if($(this).parent("li").hasClass("sf-item-4")) { //
-            ul.css({
-              "margin-left": "-310px"
-            });  
+            if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-317px"
+              });              
+            } 
+            else {           
+              ul.css({
+                "margin-left": "-310px"
+              });  
+            }
           } 
           if($(this).parent("li").hasClass("sf-item-6")) { //
-            ul.css({
-              "margin-left": "-141px"
-            });  
+             if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-343px"
+              });              
+            } 
+            else {             
+              ul.css({
+                "margin-left": "-141px"
+              });  
+            }
           }          
         }
         else {
