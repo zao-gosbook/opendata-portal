@@ -348,6 +348,7 @@ div.horizontal-tabs .form-text {
       line-height: 30px;
       text-decoration: none;
       text-transform: uppercase;
+      text-shadow: 0px 0px 3px #000;
     }
   }
   .header__site-slogan {
@@ -520,6 +521,7 @@ div.horizontal-tabs .form-text {
               border-right: 0;
               text-decoration: none;
               text-transform: uppercase; 
+              border-right: 1px solid #fff;
               
               &:hover,
               &.active {
