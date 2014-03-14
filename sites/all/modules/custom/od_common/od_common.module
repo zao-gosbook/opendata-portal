@@ -139,6 +139,10 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       od_common_module('od_piwik_reports_dateselect_form_alter');
       _od_common_form_piwik_reports_dateselect_form_alter($form, $form_state);
       break;
+    case 'user_pass_reset':
+      od_common_module('od_user_pass_reset_form_alter');
+      _od_common_for_user_pass_reset_form_alter($form, $form_state);
+      break;
   }
   //Translate submit button
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
