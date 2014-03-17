@@ -65,7 +65,7 @@ function render_rubric_term_submenu() {
             $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Contests'), 'taxonomy/term/'. $term->tid . '/competition') . '</li>';
             break;
           case 'applications':
-            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Applications'), 'apps') . '</li>';
+            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. '<a href="' . url('apps') . '?f[0]=field_rubric%3A' . $term->tid  . '" rel="nofollow">' . t('Applications') . '</a>'. '</li>';
             break;
           case 'blogs':
             $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Blogs'), 'taxonomy/term/' . $term->tid . '/blogs') . '</li>';
