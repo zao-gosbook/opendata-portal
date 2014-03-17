@@ -3864,13 +3864,19 @@ table {
       background-position: -44px -44px;
     }    
   }
-  .up-active,
-  .up-active:hover {
-    background-position: 0 -44px;      
+  .up-active {
+    background-position: 0 -44px;
+    
+    &:hover {
+      background-position: 0 -44px;
+    }
   }
-  .down-active,
-  .down-active:hover {
-    background-position: -44px -44px;  
+  .down-active {
+    background-position: -44px -44px; 
+    
+    &:hover {
+      background-position: -44px -44px;  
+    }    
   }
 
   .vote-current-score {
