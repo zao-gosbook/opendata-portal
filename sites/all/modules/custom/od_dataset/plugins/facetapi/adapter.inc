@@ -9,6 +9,9 @@
  * Facet API adapter for the Search API module.
  */
 class ODDatasetSearchApiFacetapiAdapter extends FacetapiAdapter {
+  protected $view_mode = FALSE;
+  protected $settings_backup = array();
+  protected $view_mode_settings = array();
 
   /**
    * Cached value for the current search for this searcher, if any.
@@ -267,5 +270,53 @@ class ODDatasetSearchApiFacetapiAdapter extends FacetapiAdapter {
         '#default_value' => !empty($options['exclude']),
       );
     }
+  }
+
+//  public function initSettingsObject($name, $facet_name, $realm_name = NULL) {
+//    $settings = parent::initSettingsObject($name, $facet_name, $realm_name);
+//
+//    if ($this->view_mode) {
+//      $settings->settings['widget'] = 'od_facets_term_view_tag';
+//    }
+//
+//    return $settings;
+//  }
+
+//  public function getFacetSettings(array $facet, array $realm) {
+//    $name = $this->info['name'] . ':' . $realm['name'] . ':' . $facet['name'];
+//    if ($this->settings_cache_clear_flag) {
+//      $this->settings_cache_clear_flag = FALSE;
+//
+//      if (isset($this->settings[$name])) {
+//        unset($this->settings[$name]);
+//      }
+//    }
+//
+//    $settings = parent::getFacetSettings($facet, $realm);
+//    if (empty($this->view_mode_settings[$name])) {
+//      $this->view_mode_settings[$name] = $settings;
+//    }
+//
+//    return $settings;
+//  }
+
+  public function setViewMode($mode = TRUE) {
+    if ($mode === TRUE && !$this->view_mode) {
+      $this->settings_backup = $this->settings;
+    }
+    elseif ($mode === FALSE && $this->view_mode) {
+      $this->settings = $this->settings_backup;
+      $this->settings_backup = array();
+    }
+
+    $this->view_mode = $mode;
+  }
+
+  public function addViewHack($facet, $handler) {
+    //$facet = $this->getFacet(array('name' => $facet));
+    if ($this->view_mode) {
+      //$this->settings['widget'] = 'od_facets_term_view_tag';
+    }
+    //$this->getFacetSettings($facet)
   }
 }
