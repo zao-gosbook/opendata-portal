@@ -12,7 +12,7 @@ body {
   position: relative;
   overflow-x: hidden;  
   font-family: $gill;
-  font-size: 75%;
+  font-size: 1;
   line-height: 1.5em;  
 }
 
@@ -46,6 +46,11 @@ h1, h2, h3, h4 {
     line-height: 30px;
     margin: 0 0 8px;
   }
+}
+
+.view-empty {
+  font-size: 16px;
+  color: #000;
 }
 
 body > .panel-flexible {
@@ -202,6 +207,11 @@ div.horizontal-tabs .form-text {
   @include background-size(cover);
   /*overflow: hidden;*/
 }
+/* label for textarea comments */
+#comment-body-add-more-wrapper .form-type-textarea .form-required {
+  display: none;
+}
+
 
 /**
  * error 404
@@ -272,7 +282,7 @@ div.horizontal-tabs .form-text {
     background: #ffa200;
     position: absolute;
     z-index: 100;
-    
+    display: block;
   }
   &.active-region:before {
     height: 41px;
@@ -593,7 +603,7 @@ div.horizontal-tabs .form-text {
 .breadcrumb {
   padding: 40px 7% 0;
   background-color: trabsparent;
-  @include background-image(linear-gradient(#fff, #fff));
+  @include background-image(none);
   background-repeat: repeat-x;
   border: 0;
   @include border-radius(0);
@@ -601,7 +611,7 @@ div.horizontal-tabs .form-text {
    margin: 0;
   
   * {
-    display: inline-block;
+    display: inline;
     font-size: 16px;
     color: #666;
   }
@@ -615,6 +625,7 @@ div.horizontal-tabs .form-text {
     background: url("../images/icon-home.png") no-repeat;
     text-indent: -10000px;
     overflow: hidden;
+    display: inline-block;
   }
 }
 
@@ -1078,6 +1089,7 @@ div.horizontal-tabs .form-text {
   
   form {
     position: relative;
+    margin: 0;
   }
   .form-item {
     margin: 0;
@@ -1094,6 +1106,8 @@ div.horizontal-tabs .form-text {
     color: #676767;
     margin: 0;
     float: none;
+    height: auto;
+    @include border-radius(0);
     
     &:focus {
       color: #4d4d4d;
@@ -2073,6 +2087,7 @@ div.horizontal-tabs .form-text {
     }
     .field-name-post-date,
     .views-field-changed,
+    .views-field-field-document-status,
     .views-field-created    {
       font-size: 1.3em;
       line-height: 1.55em;      
@@ -2322,18 +2337,27 @@ div.horizontal-tabs .form-text {
     display: none;
   }
 }
-.node-news.view-mode-full {
+.node.node-news.view-mode-full {
+  background: #fff;
+  padding: 20px;
+  margin-top: 15px;
+  
   .field-name-post-date {
     color: #666;
     font-size: 1.3em;
     line-height: 1.55em;
     padding-bottom: 10px;      
   }
+  .field-type-image img {
+    float: left;
+    margin: 0 20px 20px 0;
+  }
   .field-name-body {
     color: #666666;
-    font-size: 1.3em;
-    line-height: 1.55em;
-    padding-bottom: 50px;    
+    font-size: 15px;
+    line-height: 1.35em;
+    padding: 0 0 50px; 
+    margin: 0;
     
     p {
       margin: 0 0 20px;
@@ -2357,6 +2381,37 @@ div.horizontal-tabs .form-text {
   }
 }
 .node-blog.view-mode-full {
+  background: #fff;
+  padding: 20px;
+  margin-top: 15px;
+  
+  .field-name-post-date {
+    display: inline-block;    
+    color: #666;
+    font-size: 1.3em;
+    line-height: 1.55em;
+    padding-bottom: 20px;    
+    
+    * {
+      display: inline-block;   
+    }
+  } 
+  .field-type-image img {
+    float: left;
+    margin: 0 20px 20px 0;
+  }
+  .field-name-body {
+    color: #666666;
+    font-size: 15px;
+    line-height: 1.35em;
+    padding: 0 0 50px; 
+    margin: 0;
+    
+    p {
+      margin: 0 0 20px;
+    }
+  } 
+
   
   .field-name-author {
     display: inline-block;    
@@ -2369,18 +2424,7 @@ div.horizontal-tabs .form-text {
     * {
       display: inline-block;   
     }
-  }
-  .field-name-post-date {
-    display: inline-block;    
-    color: #666;
-    font-size: 1.3em;
-    line-height: 1.55em;
-    padding-bottom: 20px;    
-    
-    * {
-      display: inline-block;   
-    }
-  }  
+  } 
   .field-name-body {
     color: #666666;
     font-size: 1.3em;
@@ -2961,6 +3005,10 @@ div.horizontal-tabs .form-text {
             background: #fff;
           }
         }      
+      }
+      ul li:last-child a.active,
+      ul li:last-child a.active:hover {
+        border-bottom: 1px solid #e5e5e5;
       }
     }
   }
@@ -3813,13 +3861,15 @@ table {
     background-position: -44px 0;    
     
     &:hover {
-      background-position: 0 0;
+      background-position: -44px -44px;
     }    
   }
-  .up-active {
-    background-position: 0 -44px;    
+  .up-active,
+  .up-active:hover {
+    background-position: 0 -44px;      
   }
-  .down-active {
+  .down-active,
+  .down-active:hover {
     background-position: -44px -44px;  
   }
 
