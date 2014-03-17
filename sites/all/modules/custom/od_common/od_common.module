@@ -538,3 +538,98 @@ function od_common_node_access($node, $op, $account) {
   }
   return NODE_ACCESS_IGNORE;
 }
+
+
+function od_common_preprocess_privatemsg_view(&$vars) {
+  $message = $vars['message'];
+  $vars['message_timestamp'] = _od_common_privatemsg_format_date($message->timestamp);
+}
+
+function od_common_preprocess_privatemsg_recipients(&$vars) {
+  $vars['participants'] = ''; // assign a default empty value
+  if (isset($vars['thread']['participants'])) {
+    $vars['participants'] = _od_common_privatemsg_format_participants($vars['thread']['participants']);
+  }
+}
+
+/**
+ * Formats a timestamp according to the defines rules.
+ *
+ * @param $timestamp
+ *   UNIX Timestamp.
+ *
+ * @return
+ *   The formatted date.
+ */
+function _od_common_privatemsg_format_date($timestamp) {
+  if ($timestamp > ((int)(REQUEST_TIME / 3600)) * 3600) {
+    return t('@interval ago', array('@interval' => format_interval(abs(REQUEST_TIME - $timestamp), 1)));
+  }
+  if ($timestamp > ((int)(REQUEST_TIME / 86400)) * 86400) {
+    return format_date($timestamp, 'custom', 'd.m.Y, H:i');
+  }
+  if ($timestamp > mktime(0, 0, 0, 1, 0, date('Y'))) {
+    return format_date($timestamp, 'custom', 'd.m.Y, H:i');
+  }
+  return format_date($timestamp, 'custom', 'd.m.Y');
+}
+
+/**
+ * Format an array of user objects.
+ *
+ * @param $part_array
+ *   Array with user objects, for example the one returned by
+ *   _privatemsg_generate_user_array.
+ *
+ * @param $limit
+ *   Limit the number of user objects which should be displayed.
+ * @param $no_text
+ *   When TRUE, don't display the Participants/From text.
+ * @return
+ *   String with formatted user objects, like user1, user2.
+ */
+function _od_common_privatemsg_format_participants($part_array, $limit = NULL, $no_text = FALSE) {
+  global $user;
+  if (count($part_array) > 0) {
+    $to = array();
+    $limited = FALSE;
+    foreach ($part_array as $account) {
+
+      // Directly address the current user.
+      if (isset($account->type) && in_array($account->type, array('hidden', 'user')) && $account->recipient == $user->uid) {
+        array_unshift($to, $no_text ? t('You') : t('you'));
+        continue;
+      }
+
+      // Don't display recipients with type hidden.
+      if (isset($account->type) && $account->type == 'hidden') {
+        continue;
+      }
+      if (is_int($limit) && count($to) >= $limit) {
+        $limited = TRUE;
+        break;
+      }
+      $to[] = privatemsg_recipient_format($account);
+    }
+
+    $limit_string = '';
+    if ($limited) {
+      $limit_string = t(' and others');
+    }
+
+
+    if ($no_text) {
+      return implode(', ', $to) . $limit_string;
+    }
+
+    $last = array_pop($to);
+    if (count($to) == 0) { // Only one participant
+      return t("From you");
+    }
+    else { // Multiple participants..
+      $participants = implode(', ', $to);
+      return t('Between !participants and !last', array('!participants' => $participants, '!last' => $last));
+    }
+  }
+  return '';
+}
