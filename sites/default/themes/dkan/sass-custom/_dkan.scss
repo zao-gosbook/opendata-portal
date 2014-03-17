@@ -45,6 +45,9 @@ h1, h2, h3, h4 {
   }
 }
 
+body > .panel-flexible {
+  overflow: hidden;
+}
 
 /**
  * links
@@ -404,7 +407,7 @@ div.horizontal-tabs .form-text {
             position: absolute;
             left: 50%;
             margin-left: -7px;
-            bottom: -26px;
+            bottom: -27px;
             background: url("../images/submenu-arr-top.png") no-repeat;
           }
           > a {
@@ -2161,6 +2164,24 @@ div.horizontal-tabs .form-text {
 /* apps */
 .panels-flexible-region-16-region_main_content {
   width: 100%;
+}
+
+/* rules and recomendations */
+.section-pravila-i-rekomendacii {
+  background-color: #fff;
+  
+  .node-page.view-mode-full {
+    font-size: 16px;
+    color: #666;
+    padding-top: 20px;
+    
+    p {
+      margin: 0 0 20px;
+    }
+    li {
+      line-height: 1.3;
+    }
+  }
 }
 
 /* about */
