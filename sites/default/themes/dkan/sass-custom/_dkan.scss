@@ -11,6 +11,9 @@ body {
   min-height: 100%;
   position: relative;
   overflow-x: hidden;  
+  font-family: $gill;
+  font-size: 75%;
+  line-height: 1.5em;  
 }
 
 /**
@@ -386,7 +389,7 @@ div.horizontal-tabs .form-text {
           font-size: 16px;
           line-height: 16px;*/
           padding: 1em .95em;          
-          font-size: 1.1em;
+          font-size: 13.2px;
           line-height: 1.1em;
           background: #0c87e8;
           border-right: 1px solid #4e4118;
@@ -434,6 +437,7 @@ div.horizontal-tabs .form-text {
             padding-top: 16px;
             padding-bottom: 16px;
             margin-left: -79px !important;
+            @include box-shadow(0 5px 5px #CCCCCC);
             
             li {
               float: left;
@@ -518,7 +522,7 @@ div.horizontal-tabs .form-text {
               font-size: 16px;
               line-height: 16px;*/
               padding: 1em .95em;          
-              font-size: 1.1em;
+              font-size: 13.2px;
               line-height: 1.1em;
               background: #ffa200;
               border-right: 0;
@@ -563,7 +567,7 @@ div.horizontal-tabs .form-text {
           font-size: 16px;
           line-height: 16px;*/
           padding: .75em .95em;          
-          font-size: 1.1em;
+          font-size: 13.2px;
           line-height: 1.1em;          
           background: #fff;
           border-right: 1px solid #4e4118;
@@ -588,6 +592,14 @@ div.horizontal-tabs .form-text {
  */
 .breadcrumb {
   padding: 40px 7% 0;
+  background-color: trabsparent;
+  @include background-image(linear-gradient(#fff, #fff));
+  background-repeat: repeat-x;
+  border: 0;
+  @include border-radius(0);
+  @include box-shadow(none);
+   margin: 0;
+  
   * {
     display: inline-block;
     font-size: 16px;
@@ -4430,6 +4442,7 @@ div.fivestar-widget .star {
       text-transform: uppercase;
     }
     .field-name-field-upload-structure,
+    .field-name-field-provenance,
     .field-name-field-created {
       @include clearfix;
       padding-bottom: 12px;
