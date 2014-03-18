@@ -5,5 +5,4 @@ package = Gosbook
 core = 7.x
 
 files[] = plugins/facetapi/od_facets_ajax_widget_links.inc
-files[] = plugins/facetapi/od_facets_term_view_tag.inc
 
