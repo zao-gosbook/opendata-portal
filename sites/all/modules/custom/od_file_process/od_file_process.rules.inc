@@ -329,7 +329,10 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
   $file = file_load($file_2process['fid']);
 
   $file_structure = $files_created = $structure_meta = NULL;
-  if (in_array($file->filemime, od_file_preprocess_table_mimes()) && !empty($file_2process['file_data'])) {
+  if ($file->filemime == 'application/xml') {
+    $files_created[] = $file;
+  }
+  elseif (in_array($file->filemime, od_file_preprocess_table_mimes()) && !empty($file_2process['file_data'])) {
     if (isset($file_2process['file_data']['convert_to'])) {
       $path = drupal_realpath($file->uri);
       $file_info = pathinfo($file->uri);

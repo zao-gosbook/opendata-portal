@@ -8,6 +8,7 @@ define('OD_FILE_PREPROCESS_CONSTISTENCY_OK',            bindec('000001'));
 define('OD_FILE_PREPROCESS_CONSTISTENCY_FAILURE',       bindec('000010'));
 define('OD_FILE_PREPROCESS_CONSTISTENCY_WARNING',       bindec('000100'));
 define('OD_FILE_PREPROCESS_CONSTISTENCY_SINGLE_FILE',   bindec('001000'));
+define('OD_FILE_PREPROCESS_CONSTISTENCY_NO_STRUCTURE',  bindec('010000'));
 
 
 /**
@@ -188,6 +189,9 @@ function od_file_preprocess_widget_process($element, &$form_state) {
       form_set_value($element['file_data'], $structure, $form_state);
     }
 
+    module_load_include('rules.inc', 'od_file_process');
+    $processed = od_file_process_rule_callback_get_files($element['#value'], TRUE);
+
     if (isset($form_state['values'][$field_name][$lang][$delta]['file_data'])) {
       $wrapper = 'edit-' . str_replace('_', '-', $field_name);
       $element['file_data'] = od_file_preprocess_set_element($form_state['values'][$field_name][$lang][$delta]['file_data'], $wrapper);
@@ -268,7 +272,7 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE, $inde
   $cache_key = substr(md5($file->uri . $process_2nd_row . $index. filemtime($file->uri)), 0, 8);
   if (!isset($cache[$cache_key])) {
     // Lets think pessimistically and say that we won't get structure.
-    $cache[$cache_key] = NULL;
+    $cache[$cache_key] = FALSE;
 
     od_file_process_prepare_playground();
     if (!is_object($file)) return NULL;
@@ -307,7 +311,7 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE, $inde
               );
             }
             else {
-              return NULL;
+              return FALSE;
             }
           }
 
@@ -357,7 +361,9 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE, $inde
 
           $cache[$cache_key] = $structures;
         break;
-
+      default:
+        $cache[$cache_key] = NULL; // No errors were occurred. Just there is no structure for this file type.
+        break;
     }
   }
 
@@ -390,6 +396,12 @@ function od_file_preprocess_check_structures($file, $process_second_row = FALSE)
       else {
         $consistency = OD_FILE_PREPROCESS_CONSTISTENCY_SINGLE_FILE | OD_FILE_PREPROCESS_CONSTISTENCY_OK;
       }
+    }
+    elseif ($structures === NULL) {
+      $consistency = OD_FILE_PREPROCESS_CONSTISTENCY_NO_STRUCTURE;
+    }
+    elseif ($structures === FALSE) {
+      $consistency = OD_FILE_PREPROCESS_CONSTISTENCY_FAILURE;
     }
 
     $cache[$cache_key] = $consistency;
