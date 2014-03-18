@@ -38,41 +38,44 @@ function render_rubric_term_submenu() {
 
   $tree = taxonomy_get_tree(3); //rubrics
   foreach ($tree as $term) {
-    $output = render_rubric_image($term);
-    $output .= l(i18n_taxonomy_term_name($term), "taxonomy/term/{$term->tid}");
-    $list_class = arg(2) == $term->tid? 'expanded' : 'collapsed';
-    $build_menu[$term->tid] = array(
-      '#prefix' =>  "<li class='$list_class'>",
-      '#suffix' => '</li>',
-    );
-    $build_menu[$term->tid]['menu'] = array(
-      '#markup' => $output,
-    );
-    $build_menu[$term->tid]['children'] = array(
-      '#prefix' => '<ul>',
-      '#suffix' => '</ul>',
-    );
-    foreach ($render_info as $submenu_key => $info) {
-      if ($info['item_visibility_callback']($term)) {
-        switch ($submenu_key) {
-          case 'news':
-            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
-            break;
-          case 'data':
-            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . $term->tid  . '" rel="nofollow">' . t('Data') . '</a>'. '</li>';
-            break;
-          case 'competitions':
-            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Contests'), 'taxonomy/term/'. $term->tid . '/competition') . '</li>';
-            break;
-          case 'applications':
-            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. '<a href="' . url('apps') . '?f[0]=field_rubric%3A' . $term->tid  . '" rel="nofollow">' . t('Applications') . '</a>'. '</li>';
-            break;
-          case 'blogs':
-            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Blogs'), 'taxonomy/term/' . $term->tid . '/blogs') . '</li>';
-            break;
-          case 'maps':
-            $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Map'), "taxonomy/term/{$term->tid}/map") . '</li>';
-            break;
+    $tw = entity_metadata_wrapper('taxonomy_term', taxonomy_term_load($term->tid));
+    if ($tw->field_show_front_page->value() == 1) { //если рубрика показывается на главной странице
+      $output = render_rubric_image($term);
+      $output .= l(i18n_taxonomy_term_name($term), "taxonomy/term/{$term->tid}");
+      $list_class = arg(2) == $term->tid? 'expanded' : 'collapsed';
+      $build_menu[$term->tid] = array(
+        '#prefix' =>  "<li class='$list_class'>",
+        '#suffix' => '</li>',
+      );
+      $build_menu[$term->tid]['menu'] = array(
+        '#markup' => $output,
+      );
+      $build_menu[$term->tid]['children'] = array(
+        '#prefix' => '<ul>',
+        '#suffix' => '</ul>',
+      );
+      foreach ($render_info as $submenu_key => $info) {
+        if ($info['item_visibility_callback']($term)) {
+          switch ($submenu_key) {
+            case 'news':
+              $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
+              break;
+            case 'data':
+              $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . $term->tid  . '" rel="nofollow">' . t('Data') . '</a>'. '</li>';
+              break;
+            case 'competitions':
+              $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Contests'), 'taxonomy/term/'. $term->tid . '/competition') . '</li>';
+              break;
+            case 'applications':
+              $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. '<a href="' . url('apps') . '?f[0]=field_rubric%3A' . $term->tid  . '" rel="nofollow">' . t('Applications') . '</a>'. '</li>';
+              break;
+            case 'blogs':
+              $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Blogs'), 'taxonomy/term/' . $term->tid . '/blogs') . '</li>';
+              break;
+            case 'maps':
+              $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Map'), "taxonomy/term/{$term->tid}/map") . '</li>';
+              break;
+          }
         }
       }
     }
