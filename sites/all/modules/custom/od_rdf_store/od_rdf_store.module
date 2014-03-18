@@ -296,6 +296,19 @@ class ODStoreEndPoint extends ARC2_StoreEndpoint {
     ';
   }
 
+  function v($name, $default = false, $o = false) {
+    $ret = parent::v($name, $default, $o);
+    static $translatable = array(
+      'endpoint_heading' => TRUE,
+    );
+
+    if ($ret && isset($translatable[$name])) {
+      $ret = t($ret);
+    }
+
+    return $ret;
+  }
+
   function go($auto_setup = 0) {
     //$this->sendHeaders();
     $this->handleRequest($auto_setup);
