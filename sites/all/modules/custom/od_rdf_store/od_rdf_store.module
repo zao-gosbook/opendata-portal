@@ -294,6 +294,68 @@ class ODStoreEndPoint extends ARC2_StoreEndpoint {
     	</div>
     ';
   }
+  function getHTMLDocOptions() {
+    $sel = $this->p('output');
+    $sel_code = ' selected="selected"';
+    return '
+      <div class="options">
+        <h3>' . t('Options') . '</h3>
+        <dl>
+          <dt class="first">' . t('Output format (if supported by query type):') . '</dt>
+          <dd>
+            <select id="output" name="output">
+              <option value="" ' . (!$sel ? $sel_code : '') . '>' . t('Default') . '</option>
+              <option value="xml" ' . ($sel == 'xml' ? $sel_code : '') . '>XML</option>
+              <option value="json" ' . ($sel == 'json' ? $sel_code : '') . '>JSON</option>
+              <option value="plain" ' . ($sel == 'plain' ? $sel_code : '') . '>Plain</option>
+              <option value="php_ser" ' . ($sel == 'php_ser' ? $sel_code : '') . '>Serialized PHP</option>
+              <option value="turtle" ' . ($sel == 'turtle' ? $sel_code : '') . '>Turtle</option>
+              <option value="rdfxml" ' . ($sel == 'rdfxml' ? $sel_code : '') . '>RDF/XML</option>
+              <option value="infos" ' . ($sel == 'infos' ? $sel_code : '') . '>Query Structure</option>
+              ' . ($this->allow_sql ? '<option value="sql" ' . ($sel == 'sql' ? $sel_code : '') . '>SQL</option>' : '') . '
+              <option value="htmltab" ' . ($sel == 'htmltab' ? $sel_code : '') . '>HTML Table</option>
+              <option value="tsv" ' . ($sel == 'tsv' ? $sel_code : '') . '>TSV</option>
+            </select>
+          </dd>
+
+          <dt>' . t('jsonp/callback (for JSON results)') . '</dt>
+          <dd>
+            <input type="text" id="jsonp" name="jsonp" value="' . htmlspecialchars($this->p('jsonp')) . '" />
+          </dd>
+
+          <dt>' . t('API key (if required)') . '</dt>
+          <dd>
+            <input type="text" id="key" name="key" value="' . htmlspecialchars($this->p('key')) . '" />
+          </dd>
+
+          <dt>' . t('Show results inline:') . '</dt>
+          <dd>
+            <input type="checkbox" name="show_inline" value="1" ' . ($this->p('show_inline') ? ' checked="checked"' : '') . ' />
+          </dd>
+
+        </dl>
+      </div>
+      <div class="options-2">' .
+        t('Change HTTP method:') . '
+            <a href="javascript:;" onclick="javascript:document.getElementById(\'sparql-form\').method=\'get\'">GET</a>
+            <a href="javascript:;" onclick="javascript:document.getElementById(\'sparql-form\').method=\'post\'">POST</a>
+       </div>
+    ';
+  }
+
+  function getHTMLDocForm() {
+    $q = $this->p('query') ? htmlspecialchars($this->p('query')) : "SELECT * WHERE {\n  GRAPH ?g { ?s ?p ?o . }\n}\nLIMIT 10";
+    return '
+      <form id="sparql-form" action="?" enctype="application/x-www-form-urlencoded" method="' . ($_SERVER['REQUEST_METHOD'] == 'GET' ? 'get' : 'post' ) . '">
+        <textarea id="query" name="query" rows="20" cols="80">' . $q . '</textarea>
+        ' . $this->getHTMLDocOptions() . '
+        <div class="form-buttons">
+          <input type="submit" value="' . t('Send Query') . '" />
+          <input type="reset" value="' . t('Reset') . '"/>
+        </div>
+      </form>
+    ';
+  }
 
 //  function v($name, $default = false, $o = false) {
 //    $ret = parent::v($name, $default, $o);
