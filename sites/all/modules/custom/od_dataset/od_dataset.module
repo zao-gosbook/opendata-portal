@@ -143,3 +143,10 @@ function od_dataset_download_file($path, $filename = NULL) {
   readfile($path);
   @unlink($path);
 }
+
+function od_dataset_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'od_dataset') . '/views',
+  );
+}
