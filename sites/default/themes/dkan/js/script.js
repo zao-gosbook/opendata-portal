@@ -186,7 +186,7 @@
           });
           var margin = half_link_width - item/2;
           ul.css({
-            width: item,
+            width: item
             //"padding-top": half_link_width,
             //"margin-left": margin
           });  
