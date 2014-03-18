@@ -118,7 +118,7 @@
             //"margin-left": margin
           }); 
           // кастомное положение блоков
-          if($(this).parent("li").hasClass("sf-item-1")) { // 
+          if($(this).hasClass("sf-item-1")) { // 
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
                 "margin-left": "-199px"
@@ -130,7 +130,7 @@
               }); 
             }
           } 
-          if($(this).parent("li").hasClass("sf-item-3")) { //
+          if($(this).hasClass("sf-item-3")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
                 "margin-left": "-123px"
@@ -143,7 +143,7 @@
             }
             //alert($('body').width());  
           } 
-          if($(this).parent("li").hasClass("sf-item-4")) { //
+          if($(this).hasClass("sf-item-4")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
                 "margin-left": "-317px"
@@ -155,7 +155,7 @@
               });  
             }
           } 
-          if($(this).parent("li").hasClass("sf-item-6")) { //
+          if($(this).hasClass("sf-item-6")) { //
              if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
                 "margin-left": "-343px"
