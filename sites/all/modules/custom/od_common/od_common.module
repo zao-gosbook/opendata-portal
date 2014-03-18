@@ -194,6 +194,23 @@ function od_common_preprocess_date_combo(&$vars) {
 }
 
 /**
+ * Implements hook_preprcess_THEMEHOOK()
+ *
+ * Adds id and class .ctools-collapsible-remember to ctools elements if they don't have them.
+ */
+function od_common_preprocess_panels_style_collapsible(&$vars) {
+  if (!isset($vars['pane'])) {
+    $hash = substr(md5(substr($vars['content'], 0, 80)), 0, 8);
+    $vars['pane'] = (object) array(
+      'css' => array(
+        'css_id' => "auto-generated-id-$hash",
+        'css_class' => 'ctools-collapsible-remember',
+      ),
+    );
+  }
+}
+
+/**
  * Implements hook_theme()
  */
 function od_common_theme() {
