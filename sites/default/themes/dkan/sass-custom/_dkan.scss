@@ -449,7 +449,7 @@ div.horizontal-tabs .form-text {
             padding-top: 16px;
             padding-bottom: 16px;
             margin-left: -79px !important;
-            @include box-shadow(0 5px 5px #CCCCCC);
+            @include box-shadow(0 5px 5px rgba(0,0,0, .24));
             
             li {
               float: left;
@@ -599,6 +599,10 @@ div.horizontal-tabs .form-text {
       }
     }    
   }
+}
+/* position mainmenu for page-node-add */
+.custom-form-template .region-header .pane-system-main-menu {
+  padding-top: 57px;
 }
 
 /**
