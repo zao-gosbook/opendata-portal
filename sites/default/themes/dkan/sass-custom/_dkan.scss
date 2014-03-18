@@ -533,9 +533,9 @@ div.horizontal-tabs .form-text {
               /*padding: 17px 15px;          
               font-size: 16px;
               line-height: 16px;*/
-              padding: 1em .95em;          
+              padding: 0 .95em;          
               font-size: 13.2px;
-              line-height: 1.1em;
+              line-height: 41px;
               background: #ffa200;
               border-right: 0;
               text-decoration: none;
@@ -575,6 +575,8 @@ div.horizontal-tabs .form-text {
         a {
           display: block;
           color: #ffa200;
+          margin: 0;
+          border: 0;
           /*padding: 17px 15px;
           font-size: 16px;
           line-height: 16px;*/
@@ -1829,7 +1831,8 @@ div.horizontal-tabs .form-text {
       width: 52px;
       height: 52px;
       top: 0;
-      background: url("../images/icon-search-big.png") no-repeat scroll 0 0 / cover transparent;
+      background: url("../images/icon-search-big.png") no-repeat scroll 0 0;
+      @include background-size(cover);
       border: 0 none;
       overflow: hidden;
       text-indent: -10000px;

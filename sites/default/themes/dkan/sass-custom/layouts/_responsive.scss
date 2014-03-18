@@ -1062,8 +1062,8 @@ $zen-auto-include-item-base: false;
   .pane-rubrics-rubrics-front .title {
     margin-top: 13px;
   }  
-  .region-header.active-region:before {
-    height: 42px;
+  .region-header:before {
+    top: 146px;
   }
   .region-header {
   
@@ -1106,11 +1106,14 @@ $zen-auto-include-item-base: false;
         height: 30px;
         padding: 0;
         width: 30px;
-        margin-right: 7px;
+        margin: 0 7px 0 0;
       }
       > ul li a[href$="/user/login"] {
         background: #fff url("../images/ico-set-ui.png") no-repeat -539px -353px;
         padding-left: 0;
+      }
+      > ul li a[href*="users"] {
+        background-position: -387px -353px;
       }
       > ul li a[href$="/user"] {
         background-position: -387px -353px;
@@ -1123,6 +1126,9 @@ $zen-auto-include-item-base: false;
       }
       > ul li a[href$="/user/register"] {
         background-position: -387px -314px;
+      }
+      > ul li a[href*="moderation"] {
+        background-position: -159px -48px;
       }
       > ul li.last a {
         margin-right: 0;
@@ -1157,7 +1163,7 @@ $zen-auto-include-item-base: false;
   }
   
   .region-header .pane-system-main-menu > ul > li ul li a {
-    padding: 1em 0.5em;
+    padding: 0 0.5em;
   }
   .region-orange {
     .pane-2 {
@@ -1752,6 +1758,9 @@ $zen-auto-include-item-base: false;
         background: #fff url("../images/ico-set-ui.png") no-repeat -539px -353px;
         padding-left: 0;
       }
+      > ul li a[href*="users"] {
+        background-position: -387px -353px;
+      }
       > ul li a[href$="/user"] {
         background-position: -387px -353px;
       }
@@ -1763,6 +1772,9 @@ $zen-auto-include-item-base: false;
       }
       > ul li a[href$="/user/register"] {
         background-position: -387px -314px;
+      }
+      > ul li a[href*="moderation"] {
+        background-position: -159px -48px;
       }
       > ul li.last a {
         margin-right: 0;
