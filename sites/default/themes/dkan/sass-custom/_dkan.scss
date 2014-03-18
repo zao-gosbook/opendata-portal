@@ -12,7 +12,7 @@ body {
   position: relative;
   overflow-x: hidden;  
   font-family: $gill;
-  font-size: 1;
+  font-size: 100%;
   line-height: 1.5em;  
 }
 
@@ -1517,7 +1517,7 @@ div.horizontal-tabs .form-text {
     margin-right: 7%;
   }
   .region-user-main-info {
-    width: 50%;
+    width: 25%;
     font-size: 16px;
     line-height: 1.35em;
     color: #4d4d4d;
@@ -1592,8 +1592,58 @@ div.horizontal-tabs .form-text {
     }      
   }
   .region-user-avatar {
-    width: 50%;
+    width: 25%;
      
+  } 
+  .user-menu {
+    float: left;
+    width: 50%;
+    
+    .inside {
+      width: 50%;
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      
+      .menu__item.is-leaf {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        
+        a {
+          display: block;
+          background: #0c87e7;
+          color: #fff;
+          text-transform: uppercase;
+          text-decoration: none;
+          text-align: center;
+          font-size: 13px;
+          margin-bottom: 10px;
+          padding: 7px 0;
+        }
+      }
+    }
+    .pane-menu-menu-user-menu-3 {
+      padding: 0 0 10px;
+      
+      ul li.menu__item.is-leaf a {
+        font-size: 16px;
+        padding: 12px 0;
+      }
+    }
+    .pane-menu-menu-user-menu-2 {
+      padding: 23px 30px 20px;
+      background: #e5e5e5;
+      
+      h2 {
+        font-size: 13px;
+        color: #666;
+        line-height: 14px;
+        margin: 3px 0 12px;
+        text-transform: none;
+      }
+    }
   }  
   .pane-page-content {
     margin-left: 7%;
