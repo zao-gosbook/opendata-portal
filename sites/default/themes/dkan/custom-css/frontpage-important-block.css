@@ -1,0 +1,11 @@
+.frontpage-important-info-block {
+    float: right;
+    clear: both;
+    /* left: 58%; */
+    width: 34%;
+    font-size: 14pt;
+    color: #ffffff;
+    margin-bottom: -67%;
+    /* top: 10px; */
+    margin-top: 22%;
+}
