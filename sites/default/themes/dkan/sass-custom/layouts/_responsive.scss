@@ -1148,6 +1148,14 @@ $zen-auto-include-item-base: false;
       }
     }
   }
+  /* rubrics taxonomy */
+  .pane-od-rubric-menu-block-rubric-menu > ul > li > a {
+    font-size: 13px;
+  }
+  .pane-od-rubric-menu-block-rubric-menu ul li ul li a {
+    padding-left: 80px;
+  }
+  
   .region-header .pane-system-main-menu > ul > li ul li a {
     padding: 1em 0.5em;
   }

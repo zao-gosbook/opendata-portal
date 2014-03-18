@@ -125,6 +125,8 @@ div.horizontal-tabs .form-text {
   line-height: 47px;*/
   padding-top: 1.1em;
   padding-bottom: 1.1em;  
+  height: 58px;
+  line-height: 50px;  
 }
 .form-required {
   color: #0c87e8;
@@ -632,12 +634,13 @@ div.horizontal-tabs .form-text {
 /**
  * menu help
  */
+ 
 .feedback-block {
   position: fixed;
   left: 0;
   top: 50%;
   z-index: 200;
-  margin-top: -110px;
+  margin-top: -50px;
   
   ul {
     margin: 0;
@@ -654,7 +657,7 @@ div.horizontal-tabs .form-text {
         height: 55px;
         line-height: 16px;
         vertical-align: middle;
-        background: #fff url("../images/front-menu-help.png") no-repeat 0 -1000px;
+        background:  url("../images/front-menu-help.png") no-repeat 0 -1000px;
         font-size: 12px;
         text-decoration: none;
         @include transition(padding 0.3s ease);
@@ -699,6 +702,13 @@ div.horizontal-tabs .form-text {
         }
       }
     }
+  }
+}
+.front .feedback-block ul li a {
+  background-color: #fff;
+  
+  &:hover {
+     background-color: #0c87e8;
   }
 }
 
@@ -1480,6 +1490,7 @@ div.horizontal-tabs .form-text {
   
   .region-content {
     background: #fff;
+    padding-bottom: 30px;
     
     .pane-gb-search-pane .form-text {
       border: 1px solid #000;
@@ -1499,16 +1510,16 @@ div.horizontal-tabs .form-text {
     padding-bottom: 6px;
   }
   .pane-user-roles {
-    color: #b5b5b5;
+    color: #666;
     font-size: 16px;
-    line-height: 1em;
+    line-height: 1.3em;
     text-transform: uppercase;
     
     h2 {
       font-size: 16px;
-      line-height: 1em;
+      line-height: 1.3em;
       margin: 0;
-      float: left;
+      color: #b5b5b5;
       padding-right: 7px;
     }
   }
@@ -5820,6 +5831,17 @@ div.fivestar-widget .star {
     }
   }
 }
+.page-taxonomy-term-competition {
+  .view-competitions-for-rubrics.view .views-row {
+    background: transparent;
+    width: auto;
+    
+    &:before {
+      background: transparent;
+    }
+  }
+}
+
 
 /**
  * feedback
@@ -6076,6 +6098,27 @@ div.fivestar-widget .star {
  */
 .ui-widget {
   font-family: $gill;
+  
+  .view {
+    
+  }
+  .views-row {
+    padding-bottom: 24px;
+    line-height: 22px;
+    color: #666;
+    
+    .views-field-timestamp {
+      color: #b6b6b6;
+      padding: 0 0 7px;
+    }
+    a {
+      color: #0C87E8;
+      text-decoration: none;
+    }
+  }
+  .view-header {
+    padding-bottom: 20px;
+  }
 }
 
 
