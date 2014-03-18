@@ -150,16 +150,3 @@ function od_dataset_views_api() {
     'path' => drupal_get_path('module', 'od_dataset') . '/views',
   );
 }
-
-/**
- * Implements hook_facetapi_adapters().
- */
-function od_dataset_facetapi_adapters() {
-  return array(
-    'search_api' => array(
-      'handler' => array(
-        'class' => 'ODDatasetSearchApiFacetapiAdapter',
-      ),
-    ),
-  );
-}

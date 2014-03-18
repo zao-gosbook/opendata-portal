@@ -23,9 +23,6 @@ function od_common_module_implements_alter(&$implementations, $hook) {
   if ($hook == 'node_view' && isset($implementations['dkan_datastore'])) {
     unset($implementations['dkan_datastore']);
   }
-  elseif ($hook == 'facetapi_adapters' && isset($implementations['search_api_facetapi'])) {
-    unset($implementations['search_api_facetapi']);
-  }
   elseif ($hook == 'i18n_object_info' && isset($implementations['i18n_taxonomy'])) {
     unset($implementations['i18n_taxonomy']);
   }
