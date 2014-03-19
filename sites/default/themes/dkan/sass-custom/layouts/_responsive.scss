@@ -1148,7 +1148,8 @@ $zen-auto-include-item-base: false;
     }  
     .view {
       font-size: 17px;
-      padding: 0 21px 0 28px;     
+      padding: 0 21px 0 16px;  
+      width: 26%;
       
       span {
         font-size: 24px;
@@ -1245,9 +1246,7 @@ $zen-auto-include-item-base: false;
       }
     }
   }
-  .panels-flexible-row.region-header {
-    overflow: hidden;
-  }
+
   .not-front  .panels-flexible-row.region-header {
     overflow: visible;
   }
