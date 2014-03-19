@@ -49,8 +49,6 @@ function _od_import_update_dataset($dataset_node, $meta, $org_id, &$dataset_upda
   _od_import_dataset_set_created($dataset_node, $meta, $messages, $dataset_updated);
   // Set dataset updated field.
   _od_import_dataset_set_updated($dataset_node, $meta, $messages, $dataset_updated);
-  // Set dataset provenance field.
-  _od_import_dataset_set_provenance($dataset_node, $meta, $messages, $dataset_updated);
   // Set dataset subject field.
   _od_import_dataset_set_subject($dataset_node, $meta, $messages, $dataset_updated);
   // Set dataset publisher name field.
@@ -219,36 +217,6 @@ function _od_import_dataset_set_updated(&$dataset_node, $meta, &$messages, &$dat
 
     // Set warning message.
     $messages[] = 'Не заполнено поле "Дата последнего изменения".';
-  }
-}
-
-/**
- * Set dataset provenance field.
- */
-function _od_import_dataset_set_provenance(&$dataset_node, $meta, &$messages, &$dataset_updated) {
-  // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_PROVENANCE};
-
-  if (isset($meta['data'][0]['provenance'])) {
-    // Get the new field value.
-    $new_field_value = array(LANGUAGE_NONE => array(0 => array(
-      'value' => $meta['data'][0]['provenance'],
-      'format' => NULL,
-      'safe_value' => $meta['data'][0]['provenance'],
-    )));
-
-    // Update the field if it has changed.
-    if ($field_value !== $new_field_value) {
-      $field_value = $new_field_value;
-      $dataset_updated = TRUE;
-    }
-  }
-  else {
-    // Set the field default value.
-    $field_value = array();
-
-    // Set warning message.
-    $messages[] = 'Не заполнено поле "Содержание последнего изменения".';
   }
 }
 
