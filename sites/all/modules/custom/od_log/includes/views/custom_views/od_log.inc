@@ -14,7 +14,7 @@ $view->disabled = FALSE; /* Edit this to true to make a default view disabled in
 $handler = $view->new_display('default', 'Master', 'default');
 $handler->display->display_options['use_more_always'] = FALSE;
 $handler->display->display_options['use_more_text'] = 'ещё';
-$handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['access']['type'] = 'none';
 $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
 $handler->display->display_options['exposed_form']['type'] = 'better_exposed_filters';
@@ -61,7 +61,7 @@ $handler->display->display_options['style_options']['columns'] = array(
   'field_organization' => 'field_organization',
   'message' => 'message',
 );
-$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['default'] = 'created';
 $handler->display->display_options['style_options']['info'] = array(
   'created' => array(
     'sortable' => 1,
@@ -134,15 +134,15 @@ $handler->display->display_options['fields']['message']['element_type'] = '0';
 $handler->display->display_options['fields']['message']['element_label_type'] = '0';
 $handler->display->display_options['fields']['message']['element_wrapper_type'] = '0';
 $handler->display->display_options['fields']['message']['element_default_classes'] = FALSE;
-/* Критерий сортировки: По времени */
-$handler->display->display_options['sorts']['created']['id'] = 'created';
-$handler->display->display_options['sorts']['created']['table'] = 'log';
-$handler->display->display_options['sorts']['created']['field'] = 'created';
-$handler->display->display_options['sorts']['created']['ui_name'] = 'По времени';
-$handler->display->display_options['sorts']['created']['order'] = 'DESC';
 
 /* Display: Журнал открытых данных */
 $handler = $view->new_display('page', 'Журнал открытых данных', 'opendata_log');
+$handler->display->display_options['defaults']['access'] = FALSE;
+$handler->display->display_options['access']['type'] = 'role';
+$handler->display->display_options['access']['role'] = array(
+  5 => '5',
+  4 => '4',
+);
 $handler->display->display_options['defaults']['style_plugin'] = FALSE;
 $handler->display->display_options['style_plugin'] = 'table';
 $handler->display->display_options['style_options']['default_row_class'] = FALSE;
@@ -155,7 +155,7 @@ $handler->display->display_options['style_options']['columns'] = array(
   'message' => 'message',
   'field_curator_was_notified' => 'field_curator_was_notified',
 );
-$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['default'] = 'created';
 $handler->display->display_options['style_options']['info'] = array(
   'views_bulk_operations' => array(
     'align' => '',
@@ -381,6 +381,8 @@ $handler->display->display_options['path'] = 'opendata-log';
 
 /* Display: Журнал набора открытых данных */
 $handler = $view->new_display('page', 'Журнал набора открытых данных', 'opendata_meta_log');
+$handler->display->display_options['defaults']['access'] = FALSE;
+$handler->display->display_options['access']['type'] = 'perm';
 $handler->display->display_options['defaults']['style_plugin'] = FALSE;
 $handler->display->display_options['style_plugin'] = 'table';
 $handler->display->display_options['style_options']['default_row_class'] = FALSE;
@@ -391,7 +393,7 @@ $handler->display->display_options['style_options']['columns'] = array(
   'message' => 'message',
   'name' => 'name',
 );
-$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['default'] = 'created';
 $handler->display->display_options['style_options']['info'] = array(
   'created' => array(
     'sortable' => 1,

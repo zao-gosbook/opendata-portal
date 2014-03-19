@@ -247,8 +247,6 @@ function od_common_menu_alter(&$items) {
   unset($items['node/%node/track']);
   unset($items['node/%node/activity']);
   unset($items['node/%node/resource']);
-  
-  
 }
 
 function od_common_view_tab_title($node) {
@@ -264,6 +262,22 @@ function od_common_edit_tab_title($node) {
   }
   return t('Edit');
 }
+
+function od_common_preprocess_menu_link(&$vars) {
+  if (isset($vars['element']['#original_link']['href']) && 'messages' == $vars['element']['#original_link']['href']) {
+    $vars['element']['#title'] = od_privatemsg_title_callback();
+    $vars['element']['#localized_options']['html'] = TRUE;
+  }
+}
+
+function od_privatemsg_title_callback($title = NULL) {
+  $count = privatemsg_unread_count();
+  if ($count > 0) {
+    return t("Messages <span class='messages-count'>@count</a>", array('@count' => $count));
+  }
+  return t('Messages');
+}
+
 
 /**
  * Implementation of hook_menu().
