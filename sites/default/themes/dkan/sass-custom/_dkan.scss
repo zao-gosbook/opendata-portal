@@ -1774,6 +1774,77 @@ div.horizontal-tabs .form-text {
     display: block;
   }
 }
+.section-library,
+.section-library-developers {
+  .pane-datasets-search-dataset-search > .view > .view-header {
+    color: #4d4d4d;
+    font-size: 38px;
+    line-height: 36px;
+    position: relative;
+    padding-top: 40px;     
+  }
+}
+
+/* only dataset */
+.page-dataset {
+  .pane-datasets-search-dataset-search form {
+    width: 100%;
+    margin: 0 0 20px;
+    float: none;
+    
+    .description {
+      display: block;
+      font-size: 16px;
+      padding-top: 6px;
+      color: #666;
+    }
+  }
+}
+
+/* selected filters */
+.selected-filters-wrapper {
+  background: #e5e5e5;
+  padding: 20px 20px 11px;
+  margin: 0 0 30px;
+  @include clearfix;
+  color: #666;
+  
+  &.empty {
+    background: transparent;
+    padding: 0;
+    margin: 0;    
+  }
+  
+  .filter-info-wrapper {
+    clear: both;
+    float: left;
+    width: 160px;
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 9px;
+  }
+  .filter-items-wrapper {
+    margin-left: 160px;
+    
+    .filter-item-wrapper {
+      float: left;
+      margin-right: 10px;
+      
+      a {
+        height: 21px;
+        line-height: 21px;
+        display: block;
+        text-decoration: none;
+        padding: 0 26px 0 8px;
+        font-size: 14px;
+        color: #fff;
+        background: #7c7c7c url("../images/icon-close-white.png") no-repeat 100% 50%;     
+      }
+    }
+  }
+}
+
+
 .page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.first {
   display: block;
 }
@@ -2112,7 +2183,24 @@ div.horizontal-tabs .form-text {
     border-right: 5px solid #bfbfbf;
     padding-right: 4%;
     margin-bottom: 4.5em;
+    padding-bottom: 10px;
+    padding-top: 10px;
     
+    &.recommended {
+      background-color: #fffada;
+      
+      .node-dataset .field-type-taxonomy-term-reference .field-type-image img {
+        top: 23px;
+      }
+    }
+    
+    .field-name-field-dataset-standard {
+      color: #ffa200;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 22px;
+      padding-bottom: 6px;
+    }
     .node {
       border-right: 0;
       padding-right: 0;
