@@ -654,3 +654,13 @@ function _od_common_privatemsg_format_participants($part_array, $limit = NULL, $
   }
   return '';
 }
+
+/**
+ * Implements hook_views_api().
+ */
+function od_common_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'od_common') . '/views',
+  );
+}
