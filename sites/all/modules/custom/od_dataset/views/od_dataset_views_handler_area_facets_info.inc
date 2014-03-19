@@ -86,7 +86,7 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
       $filters[$facet_name] = $filter;
     }
 
-    if ($total_items > 0) {
+    if ($total_items == 0) {
       $wrapper_classes['empty'] = 'empty';
     }
 
