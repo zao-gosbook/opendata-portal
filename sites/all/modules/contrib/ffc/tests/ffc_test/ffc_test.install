@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Field formatter conditions test install file.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function ffc_test_install() {
+  db_update('system')
+    ->fields(array('weight' => 50))
+    ->condition('name', 'ffc_test')
+    ->execute();
+}

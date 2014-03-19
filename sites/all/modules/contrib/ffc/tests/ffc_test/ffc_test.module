@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Field formatter conditions test module.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function ffc_test_form_field_ui_display_overview_form_alter(&$form, &$form_state) {
+  // Make it easier to test the buttons.
+  foreach (element_children($form['fields']) as $key) {
+    if (isset($form['fields'][$key]['settings_edit'])) {
+      $settings = $form['fields'][$key]['settings_edit'];
+      if (!empty($settings)) {
+        $form['fields'][$key]['settings_edit']['#type'] = 'submit';
+        $form['fields'][$key]['settings_edit']['#value'] = 'edit ' . $key;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ffc_conditions_info().
+ */
+function ffc_test_ffc_conditions_info() {
+  $conditions = array();
+
+  $conditions['test_condition'] = array(
+    'title' => t('This is a test condition'),
+    'field types' => array('image'),
+  );
+
+  return $conditions;
+}

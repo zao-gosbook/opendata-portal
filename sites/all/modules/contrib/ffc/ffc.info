@@ -1,0 +1,12 @@
+name = Field formatter conditions
+description = Adds conditional functionality to fields.
+core = 7.x
+dependencies[] = field_formatter_settings
+files[] = tests/ffc.test
+
+; Information added by drupal.org packaging script on 2013-09-30
+version = "7.x-1.0-beta2+0-dev"
+core = "7.x"
+project = "ffc"
+datestamp = "1380578660"
+

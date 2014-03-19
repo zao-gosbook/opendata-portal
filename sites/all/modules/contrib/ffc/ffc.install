@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @file
+ * Field formatter conditions install file.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function ffc_install() {
+  db_update('system')
+    ->fields(array('weight' => 30))
+    ->condition('name', 'ffc')
+    ->execute();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ffc_uninstall() {
+  // Getting all fields.
+  $field_info = field_info_fields();
+
+  foreach ($field_info as $field) {
+    foreach ($field['bundles'] as $entity_type => $bundles) {
+      foreach ($bundles as $bundle) {
+        // Getting field instance and modify the settings.
+        $instance = db_select('field_config_instance', 'fci')
+          ->fields('fci', array('data'))
+          ->condition('field_name', $field['field_name'])
+          ->condition('entity_type', $entity_type)
+          ->condition('bundle', $bundle)
+          ->execute()
+          ->fetchField();
+
+        $instance = unserialize($instance);
+
+        foreach ($instance['display'] as &$display) {
+          if (isset($display['settings']['conditions'])) {
+            unset($display['settings']['conditions']);
+          }
+        }
+
+        $instance = serialize($instance);
+
+        // Finally we update the current field instance.
+        db_update('field_config_instance')
+          ->fields(array('data' => $instance))
+          ->condition('field_name', $field['field_name'])
+          ->condition('entity_type', $entity_type)
+          ->condition('bundle', $bundle)
+          ->execute();
+      }
+    }
+  }
+
+  // Clear caches.
+  field_cache_clear();
+
+  if (db_table_exists('views_display')) {
+    // Getting all view displays from database.
+    $view_displays = db_select('views_display', 'vd')
+      ->fields('vd')
+      ->execute();
+
+    // Iterate all view displays and modify them.
+    foreach ($view_displays as $view_display) {
+      $vid = $view_display->vid;
+      $id = $view_display->id;
+      $display_options = unserialize($view_display->display_options);
+
+      if (isset($display_options['fields'])) {
+        foreach ($display_options['fields'] as &$field) {
+          $settings = &$field['settings'];
+          if (isset($settings['conditions'])) {
+            unset($settings['conditions']);
+          }
+        }
+      }
+
+      $display_options = serialize($display_options);
+
+      // Finally we update the current view display.
+      db_update('views_display')
+        ->fields(array('display_options' => $display_options))
+        ->condition('vid', $vid)
+        ->condition('id', $id)
+        ->execute();
+    }
+  }
+}
