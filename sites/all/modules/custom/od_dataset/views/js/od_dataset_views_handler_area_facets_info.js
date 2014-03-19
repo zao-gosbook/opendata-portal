@@ -18,7 +18,7 @@
             $box.remove();
 
             if ($mainWrapper.find('.filter-wrapper').length == 0) {
-              $mainWrapper.remove();
+              $mainWrapper.addClass('empty');
             }
           });
       })
