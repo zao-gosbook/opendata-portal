@@ -170,14 +170,14 @@ $handler->display->display_options['style_options']['info'] = array(
     'empty_column' => 0,
   ),
   'field_organization' => array(
-    'sortable' => 0,
+    'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
     'separator' => '',
     'empty_column' => 0,
   ),
   'field_dataset' => array(
-    'sortable' => 0,
+    'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
     'separator' => '',
@@ -191,7 +191,7 @@ $handler->display->display_options['style_options']['info'] = array(
     'empty_column' => 0,
   ),
   'field_curator_was_notified' => array(
-    'sortable' => 0,
+    'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
     'separator' => '',
