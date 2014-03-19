@@ -27,5 +27,7 @@ function od_common_module_od_map_page_render_selector() {
     )
   ));
 
+  $build['#prefix'] = '<div class="od-map-page-switcher-wrapper">';
+  $build['#suffix'] = '</div>';
   return $build;
 }
