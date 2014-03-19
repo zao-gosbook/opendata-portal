@@ -37,11 +37,10 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
       $facets_to_proceed[] = $facet['name'];
     }
 
-    $filters = array(
-      '#prefix' => '<div class="selected-filters-wrapper">',
-      '#suffix' => '</div>',
-    );
+    $filters = array();
+    $wrapper_classes = array('selected-filters-wrapper');
     $adapter->buildRealm($realm_name);
+    $total_items = 0;
     foreach ($facets_to_proceed as $facet_name) {
       $facet = $adapter->getFacet(array('name' => $facet_name));
       /*$processor = new FacetapiFacetProcessor($facet);
@@ -54,7 +53,7 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
       }));
 
       $filter = array();
-      if (count($facet_build)) {
+      if (($count = count($facet_build)) && $total_items+=$count) {
         $filter['#prefix'] = '<div class="filter-wrapper">';
         $filter['#suffix'] = '</div>';
 
@@ -70,9 +69,11 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
 
           $filter['filters'][$item_index] = array(
             '#markup' => "
-              <span class=\"before\"></span>
-              <span class=\"item-{$item_index}\">{$item['#markup']}</span>
-              <span class=\"after\"></span>
+              <a href=\"#\">
+                <span class=\"before\"></span>
+                <span class=\"item-{$item_index}\">{$item['#markup']}</span>
+                <span class=\"after\"></span>
+              </a>
             ",
             '#prefix' => '<div '.drupal_attributes($wrapper_attributes).'>',
             '#suffix' => '</div>',
@@ -84,6 +85,20 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
 
       $filters[$facet_name] = $filter;
     }
+
+    if ($total_items > 0) {
+      $wrapper_classes['empty'] = 'empty';
+    }
+
+    $filters['#prefix'] = '
+    <div ' . drupal_attributes(array('class' => $wrapper_classes)) . '>
+        <div class="selected-filters-load">
+    ';
+    $filters['#suffix'] = '
+        </div>
+    </div>';
+
+    // Wrap filters element
 
 //    $fake_plugin_info = array(
 //      'id' => 'od_facets_term_view_tag',
