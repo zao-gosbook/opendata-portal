@@ -64,12 +64,16 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
         foreach ($facet_build as $item) {
           $wrapper_attributes = array(
             'class' => array('filter-item-wrapper'),
+          );
+
+          $anchor_attributes = array(
             'data-facet-target' => "{$facet_info['name']}:{$item['#indexed_value']}",
+            'href' => '#',
           );
 
           $filter['filters'][$item_index] = array(
             '#markup' => "
-              <a href=\"#\">
+              <a " . drupal_attributes($anchor_attributes) . ">
                 <span class=\"before\"></span>
                 <span class=\"item-{$item_index}\">{$item['#markup']}</span>
                 <span class=\"after\"></span>
@@ -90,6 +94,7 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
       $wrapper_classes['empty'] = 'empty';
     }
 
+    // Wrap filters element
     $filters['#prefix'] = '
     <div ' . drupal_attributes(array('class' => $wrapper_classes)) . '>
         <div class="selected-filters-load">
@@ -98,7 +103,8 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
         </div>
     </div>';
 
-    // Wrap filters element
+    // Attach js
+    $filters['#attached']['js'][] = drupal_get_path('module', 'od_dataset') . '/views/js/od_dataset_views_handler_area_facets_info.js';
 
 //    $fake_plugin_info = array(
 //      'id' => 'od_facets_term_view_tag',
