@@ -9,7 +9,7 @@
             e.preventDefault();
 
             var $this = $(this);
-            var $box = $this.parents('.filter-wrapper:eq(0)');
+            var $box = $this.parents('.filter-item-wrapper:eq(0)');
             var targetDataFacet = $this.attr('data-facet-target');
             var $targetFacets = $('[name="' + targetDataFacet + '"]');
             $targetFacets.trigger('click');
