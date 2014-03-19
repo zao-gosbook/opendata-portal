@@ -14,7 +14,7 @@ $view->disabled = FALSE; /* Edit this to true to make a default view disabled in
 $handler = $view->new_display('default', 'Master', 'default');
 $handler->display->display_options['use_more_always'] = FALSE;
 $handler->display->display_options['use_more_text'] = 'ещё';
-$handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['access']['type'] = 'none';
 $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
 $handler->display->display_options['exposed_form']['type'] = 'better_exposed_filters';
@@ -137,6 +137,12 @@ $handler->display->display_options['fields']['message']['element_default_classes
 
 /* Display: Журнал открытых данных */
 $handler = $view->new_display('page', 'Журнал открытых данных', 'opendata_log');
+$handler->display->display_options['defaults']['access'] = FALSE;
+$handler->display->display_options['access']['type'] = 'role';
+$handler->display->display_options['access']['role'] = array(
+  5 => '5',
+  4 => '4',
+);
 $handler->display->display_options['defaults']['style_plugin'] = FALSE;
 $handler->display->display_options['style_plugin'] = 'table';
 $handler->display->display_options['style_options']['default_row_class'] = FALSE;
@@ -375,6 +381,8 @@ $handler->display->display_options['path'] = 'opendata-log';
 
 /* Display: Журнал набора открытых данных */
 $handler = $view->new_display('page', 'Журнал набора открытых данных', 'opendata_meta_log');
+$handler->display->display_options['defaults']['access'] = FALSE;
+$handler->display->display_options['access']['type'] = 'perm';
 $handler->display->display_options['defaults']['style_plugin'] = FALSE;
 $handler->display->display_options['style_plugin'] = 'table';
 $handler->display->display_options['style_options']['default_row_class'] = FALSE;
