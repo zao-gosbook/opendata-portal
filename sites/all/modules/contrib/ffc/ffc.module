@@ -1,0 +1,318 @@
+<?php
+
+/**
+ * @file
+ * Field formatter conditions.
+ */
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function ffc_field_formatter_info_alter(&$field_types) {
+  foreach (array_keys($field_types) as $type) {
+    $field_types[$type]['settings']['conditions'] = array();
+  }
+}
+
+/**
+ * Implements hook_form_field_ui_display_overview_form_alter().
+ */
+function ffc_form_field_ui_display_overview_form_alter(&$form, &$form_state) {
+  // Attach an en extra validate handler so we can clean up empty conditions.
+  $form['#validate'][] = 'ffc_validate_field_display_overview';
+}
+
+/**
+ * Validate handler to clean up empty formatter conditions.
+ */
+function ffc_validate_field_display_overview(&$form, &$form_state) {
+  if (!empty($form_state['formatter_settings']) && is_array($form_state['formatter_settings'])) {
+    foreach ($form_state['formatter_settings'] as $key => $info) {
+      if (empty($info['conditions'][0]['condition'])) {
+        $form_state['formatter_settings'][$key]['conditions'] = array();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ */
+function ffc_field_formatter_settings_summary_alter(&$summary, $context) {
+  // Check if this is a Display Suite field.
+  $ds = !empty($context['ds']);
+
+  // Get settings.
+  if ($ds) {
+    $settings['conditions'] = array();
+    if (!empty($context['field']['formatter_settings']['conditions'])) {
+      $settings['conditions'] = $context['field']['formatter_settings']['conditions'];
+    }
+  }
+  else {
+    $display = $context['instance']['display'][$context['view_mode']];
+    $settings = $display['settings'];
+  }
+
+  $break = empty($summary) || $ds ? '' : '<br />';
+  if (empty($settings['conditions'])) {
+    $summary .= $break . t('No conditions.');
+  }
+  else {
+    $summary .= $break . t('Conditions configured.');
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_form_alter().
+ */
+function ffc_field_formatter_settings_form_alter(&$settings_form, $context) {
+  $conditions = ffc_get_conditions();
+  _ffc_field_formatter_settings_form_alter($settings_form, $context, $conditions);
+}
+
+/**
+ * Implements hook_form_rules_ui_add_element_alter().
+ */
+function ffc_form_rules_ui_add_element_alter(&$form, $form_state) {
+  module_load_include('inc', 'ffc', 'ffc.rules');
+  _ffc_form_rules_ui_element_alter($form);
+}
+
+/**
+ * Implements hook_form_rules_ui_edit_element_alter().
+ */
+function ffc_form_rules_ui_edit_element_alter(&$form, $form_state) {
+  module_load_include('inc', 'ffc', 'ffc.rules');
+  _ffc_form_rules_ui_element_alter($form);
+}
+
+/**
+ * Implements hook_field_attach_view_alter().
+ */
+function ffc_field_attach_view_alter(&$build, $context) {
+  foreach (element_children($build) as $field_name) {
+
+    $settings = array();
+    // Check conditions, continue when nothing is configured.
+    if ($build[$field_name]['#field_type'] == 'ds') {
+      $field_settings = ds_get_field_settings($build[$field_name]['#entity_type'], $build[$field_name]['#bundle'], $context['view_mode']);
+      $settings['conditions'] = array();
+      if (!empty($field_settings[$field_name]['formatter_settings']['conditions'])) {
+        $settings['conditions'] = $field_settings[$field_name]['formatter_settings']['conditions'];
+      }
+    }
+    else {
+      $settings = field_formatter_settings_get_instance_display_settings($build[$field_name]['#entity_type'], $field_name, $build[$field_name]['#bundle'], $context['view_mode']);
+    }
+    if (empty($settings['conditions'])) {
+      continue;
+    }
+
+    // Execute conditions.
+    foreach ($settings['conditions'] as $condition) {
+      $callback = 'ffc_condition_execute_' . $condition['condition'];
+      // Use function_exists because we don't clean up when modules are
+      // disabled. It might be a good idea to do that in the future.
+      if (function_exists($callback)) {
+        $callback($build, $field_name, !empty($condition['configuration']) ? $condition['configuration'] : '', $context);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_hook_info().
+ */
+function ffc_hook_info() {
+  $hooks['ffc_conditions_info'] = array(
+    'group' => 'ffc_conditions_info',
+  );
+  return $hooks;
+}
+
+/**
+ * Get all field formatter conditions.
+ */
+function ffc_get_conditions() {
+  return module_invoke_all('ffc_conditions_info');
+}
+
+/**
+ * Hide the source field when target field is not empty.
+ */
+function ffc_condition_execute_hide_not_empty(&$build, $source, $configuration) {
+  if (!empty($build[$configuration['target']]['#items'])) {
+    $build[$source]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Hide the source field if target field is empty.
+ */
+function ffc_condition_execute_hide_if_empty(&$build, $source, $configuration) {
+  if (empty($build[$configuration['target']]['#items'])) {
+    $build[$source]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Hide the source field when target field does not contain a string.
+ */
+function ffc_condition_execute_hide_no_string(&$build, $source, $configuration, $context = NULL) {
+  $found = _target_string_search($build, $configuration, $context);
+  if ($found == FALSE) {
+    $build[$source]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Hide the source field when target field contains a string.
+ */
+function ffc_condition_execute_hide_if_string(&$build, $source, $configuration, $context = NULL) {
+  $found = _target_string_search($build, $configuration, $context);
+  if ($found == TRUE) {
+    $build[$source]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Hide the source field when the current user has a certain role.
+ */
+function ffc_condition_execute_hide_on_role(&$build, $source, $configuration) {
+  global $user;
+  if (array_intersect_key($configuration['roles'], $user->roles) != array()) {
+    $build[$source]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Hide the source field when the current path is matched.
+ */
+function ffc_condition_execute_hide_on_pages(&$build, $source, $configuration) {
+  $pages = $configuration['pages'];
+  $visibility = $configuration['visibility'];
+
+  $path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
+
+  $page_match = drupal_match_path($path, $pages);
+  if ($path != $_GET['q']) {
+    $page_match = $page_match || drupal_match_path($_GET['q'], $pages);
+  }
+  $page_match = !($visibility xor $page_match);
+
+  if ($page_match) {
+    $build[$source]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Hide the link URL in case the title is empty.
+ */
+function ffc_condition_execute_hide_link_when_title_is_empty(&$build, $source, $configuration) {
+  if (!empty($build[$source]['#items'])) {
+    foreach ($build[$source]['#items'] as $key => $info) {
+      // If the title is left empty on the entity form, the link module
+      // will fill in the url in that field.
+      if ($info['title'] === $info['url']) {
+        unset($build[$source]['#items'][$key]);
+      }
+    }
+  }
+
+  if (empty($build[$source]['#items'])) {
+    $build[$source]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Hide date/time after from or to has expired.
+ */
+function ffc_condition_execute_hide_date_time(&$build, $source, $configuration) {
+  $field = $configuration['field'];
+  if (!empty($build[$source]['#items'])) {
+    foreach ($build[$source]['#items'] as $key => $info) {
+      $time = ($build[$source]['#field_type'] == 'datestamp' ? $info[$field] : strtotime($info[$field]));
+      if ($time < REQUEST_TIME) {
+        unset($build[$source]['#items'][$key]);
+      }
+    }
+  }
+
+  if (empty($build[$source]['#items'])) {
+    $build[$source]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Execute a rules event.
+ */
+function ffc_condition_execute_rules_event(&$build, $source, $configuration, $context) {
+  $rule_event = $configuration['rule'];
+  if ($rule = entity_load('rules_config', array($rule_event))) {
+    $rule = reset($rule);
+    $state = new RulesState();
+    $FFCElement = new FFCElement($build);
+    $state->addVariable($context['entity_type'], $context['entity'], array('type' => $context['entity_type']));
+    $state->addVariable('ffc_element', $FFCElement, array('type' => 'ffc_element'));
+    $state->addVariable('ffc_field', $source, array('type' => 'ffc_field'));
+    // We pass in an empty variable. This is to 'trick' rules so it can
+    // evaluate the rule. This ffc_empty can be used in the action callback,
+    // to store information. Might need revision in case we want to add
+    // more in the future I guess.
+    $state->addVariable('ffc_empty', '', array('type' => 'ffc_empty'));
+    $rule->evaluate($state);
+
+    // Only overwrite if there was an action fired.
+    if ($FFCElement->fired) {
+      $build = $FFCElement->element;
+    }
+  }
+}
+
+/**
+ *
+ * Helper function which converts any objects in the target into arrays
+ * and compares strings recursively and returns TRUE if the string
+ * was found or FALSE if not.
+ */
+function _target_string_search(&$build, $configuration, $context = NULL) {
+  // Only search if the field is not empty.
+  if (!empty($context['entity']->$configuration['target']) || !empty($build[$configuration['target']]['#items'])) {
+    // Check if we have $context and use it if set, otherwise use $build.
+    $target = isset($context) ? $context['entity']->$configuration['target'] : $build[$configuration['target']]['#items'];
+    // Convert any Objects into Arrays in our target field.
+    $converted_target = json_decode(json_encode($target), TRUE);
+    $string = $configuration['string'];
+
+    $found = FALSE;
+    // Make a little object with things we'll pass into our little lambda below.
+    $data = (object) array(
+      'string' => $string,
+      'found' => &$found
+    );
+
+    // Process each item in this field.
+    foreach ($converted_target as $delta) {
+      // Whether this item is ready value, or another multidimensional array compare our string.
+      array_walk_recursive($delta, create_function('&$item, $key, $data', 'if ($item == $data->string) $data->found = TRUE;'), $data);
+    }
+    return $found;
+  }
+
+  return FALSE;
+}
+
+/**
+ * FFC element class.
+ */
+class FFCElement {
+
+  public $element;
+  public $target_field = '';
+  public $fired = FALSE;
+
+  function __construct($element) {
+    $this->element = $element;
+  }
+}

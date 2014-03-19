@@ -60,7 +60,7 @@ $handler->display->display_options['style_options']['columns'] = array(
   'views_bulk_operations' => 'views_bulk_operations',
   'field_organization' => 'field_organization',
   'created' => 'created',
-  'field_dataset_ref' => 'field_dataset_ref',
+  'field_dataset' => 'field_dataset',
   'message' => 'message',
   'field_curator_was_notified' => 'field_curator_was_notified',
 );
@@ -85,7 +85,7 @@ $handler->display->display_options['style_options']['info'] = array(
     'separator' => '',
     'empty_column' => 0,
   ),
-  'field_dataset_ref' => array(
+  'field_dataset' => array(
     'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
@@ -220,16 +220,16 @@ $handler->display->display_options['fields']['created']['element_default_classes
 $handler->display->display_options['fields']['created']['date_format'] = 'comment';
 $handler->display->display_options['fields']['created']['format_date_sql'] = 0;
 /* Поле: Набор данных */
-$handler->display->display_options['fields']['field_dataset_ref']['id'] = 'field_dataset_ref';
-$handler->display->display_options['fields']['field_dataset_ref']['table'] = 'field_data_field_dataset_ref';
-$handler->display->display_options['fields']['field_dataset_ref']['field'] = 'field_dataset_ref';
-$handler->display->display_options['fields']['field_dataset_ref']['ui_name'] = 'Набор данных';
-$handler->display->display_options['fields']['field_dataset_ref']['label'] = 'Набор данных';
-$handler->display->display_options['fields']['field_dataset_ref']['element_type'] = '0';
-$handler->display->display_options['fields']['field_dataset_ref']['element_label_type'] = '0';
-$handler->display->display_options['fields']['field_dataset_ref']['element_wrapper_type'] = '0';
-$handler->display->display_options['fields']['field_dataset_ref']['element_default_classes'] = FALSE;
-$handler->display->display_options['fields']['field_dataset_ref']['settings'] = array(
+$handler->display->display_options['fields']['field_dataset']['id'] = 'field_dataset';
+$handler->display->display_options['fields']['field_dataset']['table'] = 'field_data_field_dataset';
+$handler->display->display_options['fields']['field_dataset']['field'] = 'field_dataset';
+$handler->display->display_options['fields']['field_dataset']['ui_name'] = 'Набор данных';
+$handler->display->display_options['fields']['field_dataset']['label'] = 'Набор данных';
+$handler->display->display_options['fields']['field_dataset']['element_type'] = '0';
+$handler->display->display_options['fields']['field_dataset']['element_label_type'] = '0';
+$handler->display->display_options['fields']['field_dataset']['element_wrapper_type'] = '0';
+$handler->display->display_options['fields']['field_dataset']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_dataset']['settings'] = array(
   'link' => 1,
 );
 /* Поле: Сообщение */
@@ -365,19 +365,19 @@ $handler->display->display_options['fields']['name']['element_wrapper_type'] = '
 $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
 $handler->display->display_options['defaults']['arguments'] = FALSE;
 /* Контекстный фильтр: ID набора открытых данных */
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['id'] = 'field_dataset_ref_target_id';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['table'] = 'field_data_field_dataset_ref';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['field'] = 'field_dataset_ref_target_id';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['ui_name'] = 'ID набора открытых данных';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['default_action'] = 'not found';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['exception']['title'] = 'Все';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['default_argument_type'] = 'fixed';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['summary']['number_of_records'] = '0';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['summary']['format'] = 'default_summary';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['summary_options']['items_per_page'] = '25';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['specify_validation'] = TRUE;
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['validate']['type'] = 'node';
-$handler->display->display_options['arguments']['field_dataset_ref_target_id']['validate_options']['types'] = array(
+$handler->display->display_options['arguments']['field_dataset_target_id']['id'] = 'field_dataset_target_id';
+$handler->display->display_options['arguments']['field_dataset_target_id']['table'] = 'field_data_field_dataset';
+$handler->display->display_options['arguments']['field_dataset_target_id']['field'] = 'field_dataset_target_id';
+$handler->display->display_options['arguments']['field_dataset_target_id']['ui_name'] = 'ID набора открытых данных';
+$handler->display->display_options['arguments']['field_dataset_target_id']['default_action'] = 'not found';
+$handler->display->display_options['arguments']['field_dataset_target_id']['exception']['title'] = 'Все';
+$handler->display->display_options['arguments']['field_dataset_target_id']['default_argument_type'] = 'fixed';
+$handler->display->display_options['arguments']['field_dataset_target_id']['summary']['number_of_records'] = '0';
+$handler->display->display_options['arguments']['field_dataset_target_id']['summary']['format'] = 'default_summary';
+$handler->display->display_options['arguments']['field_dataset_target_id']['summary_options']['items_per_page'] = '25';
+$handler->display->display_options['arguments']['field_dataset_target_id']['specify_validation'] = TRUE;
+$handler->display->display_options['arguments']['field_dataset_target_id']['validate']['type'] = 'node';
+$handler->display->display_options['arguments']['field_dataset_target_id']['validate_options']['types'] = array(
   'dataset' => 'dataset',
 );
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;

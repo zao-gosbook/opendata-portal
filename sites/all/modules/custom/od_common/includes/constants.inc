@@ -45,7 +45,7 @@ define('OD_COMMON_FIELD_ORGANIZATION_CURATOR', 'field_organization_curators');
  * Log fields.
  */
 define('OD_COMMON_FIELD_LOG_ORGANIZATION', 'field_organization');
-define('OD_COMMON_FIELD_LOG_DATASET', 'field_dataset_ref');
+define('OD_COMMON_FIELD_LOG_DATASET', 'field_dataset');
 define('OD_COMMON_FIELD_LOG_IMPORTANCE_TYPE', 'field_log_importance_type');
 define('OD_COMMON_FIELD_LOG_EVENT_TYPE', 'field_log_event_type');
 define('OD_COMMON_FIELD_LOG_CURATOR_WAS_NOTIFIED', 'field_curator_was_notified');
