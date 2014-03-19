@@ -58,9 +58,8 @@ $handler->display->display_options['style_options']['default_row_class'] = FALSE
 $handler->display->display_options['style_options']['row_class_special'] = FALSE;
 $handler->display->display_options['style_options']['columns'] = array(
   'created' => 'created',
-  'field_log_event_type' => 'field_log_event_type',
+  'field_organization' => 'field_organization',
   'message' => 'message',
-  'name' => 'name',
 );
 $handler->display->display_options['style_options']['default'] = '-1';
 $handler->display->display_options['style_options']['info'] = array(
@@ -71,7 +70,7 @@ $handler->display->display_options['style_options']['info'] = array(
     'separator' => '',
     'empty_column' => 0,
   ),
-  'field_log_event_type' => array(
+  'field_organization' => array(
     'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
@@ -80,13 +79,6 @@ $handler->display->display_options['style_options']['info'] = array(
   ),
   'message' => array(
     'sortable' => 0,
-    'default_sort_order' => 'asc',
-    'align' => '',
-    'separator' => '',
-    'empty_column' => 0,
-  ),
-  'name' => array(
-    'sortable' => 1,
     'default_sort_order' => 'asc',
     'align' => '',
     'separator' => '',
@@ -125,6 +117,7 @@ $handler->display->display_options['fields']['field_organization']['id'] = 'fiel
 $handler->display->display_options['fields']['field_organization']['table'] = 'field_data_field_organization';
 $handler->display->display_options['fields']['field_organization']['field'] = 'field_organization';
 $handler->display->display_options['fields']['field_organization']['ui_name'] = 'Организация';
+$handler->display->display_options['fields']['field_organization']['label'] = 'Организация';
 $handler->display->display_options['fields']['field_organization']['element_type'] = '0';
 $handler->display->display_options['fields']['field_organization']['element_label_type'] = '0';
 $handler->display->display_options['fields']['field_organization']['element_wrapper_type'] = '0';
@@ -241,6 +234,7 @@ $handler->display->display_options['fields']['field_organization']['id'] = 'fiel
 $handler->display->display_options['fields']['field_organization']['table'] = 'field_data_field_organization';
 $handler->display->display_options['fields']['field_organization']['field'] = 'field_organization';
 $handler->display->display_options['fields']['field_organization']['ui_name'] = 'Организация';
+$handler->display->display_options['fields']['field_organization']['label'] = 'Организация';
 $handler->display->display_options['fields']['field_organization']['element_type'] = '0';
 $handler->display->display_options['fields']['field_organization']['element_label_type'] = '0';
 $handler->display->display_options['fields']['field_organization']['element_wrapper_type'] = '0';
@@ -401,10 +395,11 @@ $handler->display->display_options['arguments']['field_dataset_target_id']['vali
 );
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;
 $handler->display->display_options['defaults']['filters'] = FALSE;
-/* Критерий фильтра: Log: Тип лога (field_log_event_type) */
+/* Критерий фильтра: Тип лога */
 $handler->display->display_options['filters']['field_log_event_type_value']['id'] = 'field_log_event_type_value';
 $handler->display->display_options['filters']['field_log_event_type_value']['table'] = 'field_data_field_log_event_type';
 $handler->display->display_options['filters']['field_log_event_type_value']['field'] = 'field_log_event_type_value';
+$handler->display->display_options['filters']['field_log_event_type_value']['ui_name'] = 'Тип лога';
 $handler->display->display_options['filters']['field_log_event_type_value']['operator'] = 'not';
 $handler->display->display_options['filters']['field_log_event_type_value']['value'] = array(
   'import_data' => 'import_data',
@@ -433,12 +428,11 @@ $translatables['opendata_log'] = array(
   t('Событий в журнале не зарегистрировано.'),
   t('User'),
   t('Время'),
-  t('Владелец набора данных'),
+  t('Организация'),
   t('Сообщение'),
   t('Журнал открытых данных'),
   t('Набор данных'),
   t('Куратор уведомлен'),
-  t('Организация'),
   t('Журнал набора открытых данных'),
   t('<div class="[field_log_event_type]"></div>'),
   t('Изменено: [name]'),
