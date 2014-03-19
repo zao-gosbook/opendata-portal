@@ -23,9 +23,5 @@ class od_common_better_exposed_filters_exposed_form_plugin extends better_expose
       '#default_value' => 0,
       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
     );
-    $form['selected'] = $selected;
-    //unset($form['field_organization_target_id']);
-    dpm($form);
   }
-
 }
