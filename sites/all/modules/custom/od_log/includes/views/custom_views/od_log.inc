@@ -61,7 +61,7 @@ $handler->display->display_options['style_options']['columns'] = array(
   'field_organization' => 'field_organization',
   'message' => 'message',
 );
-$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['default'] = 'created';
 $handler->display->display_options['style_options']['info'] = array(
   'created' => array(
     'sortable' => 1,
@@ -134,12 +134,6 @@ $handler->display->display_options['fields']['message']['element_type'] = '0';
 $handler->display->display_options['fields']['message']['element_label_type'] = '0';
 $handler->display->display_options['fields']['message']['element_wrapper_type'] = '0';
 $handler->display->display_options['fields']['message']['element_default_classes'] = FALSE;
-/* Критерий сортировки: По времени */
-$handler->display->display_options['sorts']['created']['id'] = 'created';
-$handler->display->display_options['sorts']['created']['table'] = 'log';
-$handler->display->display_options['sorts']['created']['field'] = 'created';
-$handler->display->display_options['sorts']['created']['ui_name'] = 'По времени';
-$handler->display->display_options['sorts']['created']['order'] = 'DESC';
 
 /* Display: Журнал открытых данных */
 $handler = $view->new_display('page', 'Журнал открытых данных', 'opendata_log');
@@ -155,7 +149,7 @@ $handler->display->display_options['style_options']['columns'] = array(
   'message' => 'message',
   'field_curator_was_notified' => 'field_curator_was_notified',
 );
-$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['default'] = 'created';
 $handler->display->display_options['style_options']['info'] = array(
   'views_bulk_operations' => array(
     'align' => '',
@@ -391,7 +385,7 @@ $handler->display->display_options['style_options']['columns'] = array(
   'message' => 'message',
   'name' => 'name',
 );
-$handler->display->display_options['style_options']['default'] = '-1';
+$handler->display->display_options['style_options']['default'] = 'created';
 $handler->display->display_options['style_options']['info'] = array(
   'created' => array(
     'sortable' => 1,
