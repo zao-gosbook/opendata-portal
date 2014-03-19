@@ -38,8 +38,13 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
     }
 
     $filters = array(
-      '#prefix' => '<div class="selected-filters-wrapper">',
-      '#suffix' => '</div>',
+      '#prefix' => '
+        <div class="selected-filters-wrapper">
+          <div class="selected-filters-load">
+      ',
+      '#suffix' => '
+          </div>
+        </div>',
     );
     $adapter->buildRealm($realm_name);
     foreach ($facets_to_proceed as $facet_name) {
@@ -70,9 +75,11 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
 
           $filter['filters'][$item_index] = array(
             '#markup' => "
-              <span class=\"before\"></span>
-              <span class=\"item-{$item_index}\">{$item['#markup']}</span>
-              <span class=\"after\"></span>
+              <a href=\"#\">
+                <span class=\"before\"></span>
+                <span class=\"item-{$item_index}\">{$item['#markup']}</span>
+                <span class=\"after\"></span>
+              </a>
             ",
             '#prefix' => '<div '.drupal_attributes($wrapper_attributes).'>',
             '#suffix' => '</div>',
