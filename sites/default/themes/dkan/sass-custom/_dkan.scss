@@ -2442,13 +2442,41 @@ div.horizontal-tabs .form-text {
 
 /*.node-type-blog,.node-type-news*/
 .node-type-idea {
-  background: #fff; 
 }
-.node-idea.view-mode-full {
+.panels-flexible-row.idea-row-white {
+  background: #fff;
+  padding: 30px;
+  
+  .idea-info {
+    float: left;
+    width: 100%;
+    margin-right: -145px;
+    
+    > .inside {
+      margin: 0 150px 0 0;
+      padding-left: 65px;
+      position: relative;
+    }
+  }
+  .idea-vote {
+    width: 130px;
+    border-left: 5px solid #dadada; 
+  }
+  .pane-taxonomy-term-field-rubric-image {
+    position: absolute;
+    left: -2px;
+    top: -5px;
+  }  
+  h1 {
+    color: #4d4d4d;
+    font-size: 24px;
+    line-height: 30px;
+    margin: 0 0 4px;
+  }
   .field-name-field-rubric {
     color: #4C4C4C;
     font-size: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 4px;
     text-transform: uppercase;
     
     a {
@@ -2456,15 +2484,37 @@ div.horizontal-tabs .form-text {
       text-decoration: none;
     }
   }
+  .pane-node-author {
+    h2,
+    * {
+      display: inline-block;
+      margin: 0;
+      font-size: 16px;
+      line-height: 22px;
+      color: #b5b5b5;
+      text-transform: uppercase;
+      padding-right: 5px;
+    }
+    a {
+      color: #0C87E8;
+      text-dcoration: none;
+    }
+  }
+  .pane-node-created {
+    font-size: 16px;
+    line-height: 22px;
+    color: #b5b5b5;    
+  }
   .field-name-field-idea-vote-up-down {
     float: right;
     margin: 0 0 15px 20px;
   }
   .field-name-body {
     color: #666666;
-    font-size: 1.3em;
+    font-size: 1.33em;
     line-height: 1.55em;
-    padding-bottom: 20px;    
+    padding-top: 20px;    
+    margin-right: -150px;
     
     p {
       margin: 0 0 20px;
@@ -3985,11 +4035,35 @@ table {
 }
 
 /**
+ * frontpage notice
+ */
+div.frontpage-important-info-block {
+  float: none; 
+  clear: both; 
+  left: auto; 
+  width: 25%;
+  font-size: 15px;
+  color: #ffffff;
+  margin-bottom: 0; 
+  top: auto; 
+  margin-top: 0; 
+  position: absolute;
+  bottom: -47px;
+  right: 20px;
+  line-height: 1.15;
+  background-color: rgba(0,0,0,.45);
+  padding: 15px;
+}
+
+/**
  * widget up-down
  */
 .vud-widget-thumbs {
   margin: 0;
   
+  .ajax-progress-throbber {
+    display: none;
+  }
   .up-score {
     border: 0;
     padding-left: 0;
@@ -4566,9 +4640,9 @@ div.fivestar-widget .star {
   padding-bottom: 30px;
 }
 .comment {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.15em;
-  color: #434343;
+  color: #666;
   padding: .85em .65em;
   background-color: #d5d5d5;
   border-bottom: 1px solid #fff;
@@ -5045,6 +5119,11 @@ div.fivestar-widget .star {
         text-decoration: none;
         text-transform: uppercase;
       }    
+    }
+  }
+  #privatemsg-new {
+    #edit-cancel {
+      display: none;
     }
   }
   #privatemsg-list  {
