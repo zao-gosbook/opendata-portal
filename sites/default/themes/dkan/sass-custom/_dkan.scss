@@ -1688,6 +1688,7 @@ div.horizontal-tabs .form-text {
  */
 .page-search, 
 .section-library, 
+.section-library-developers, 
 .page-dataset {
   background: #fff;
   
@@ -1777,7 +1778,7 @@ div.horizontal-tabs .form-text {
   display: block;
 }
 .pane-datasets-search-dataset-search {
-  .view-header {
+  .view-results {
     color: #4d4d4d;
     font-size: 38px;
     line-height: 36px;
@@ -1822,7 +1823,7 @@ div.horizontal-tabs .form-text {
     .form-text {
       border: 10px solid #e5e5e5;
       padding: .55em 5em .55em .7em;
-      font-size: 1.2em;
+      font-size: 1.3em;
       @include box-sizing(border-box);/**/
       width: 100%;
       margin: 0;
