@@ -475,10 +475,12 @@ function theme_od_common_recline_link_formatter($variables) {
 /**
  * Loads module from submodules directory
  * @param $module
+ * @param $silent (optional)
+ *  Set to TRUE if it's needed to prevent throwing an exception. Defaults to FALSE.
  * @return mixed
  * @throws Exception
  */
-function od_common_module($module) {
+function od_common_module($module, $silent = FALSE) {
   $cache = &drupal_static(__FUNCTION__, array());
   $cache_key = $module;
   if (!isset($cache[$cache_key])) {
@@ -486,12 +488,14 @@ function od_common_module($module) {
     $filepath = drupal_get_path('module', 'od_common'). '/submodules/'. $module. '.inc';
     $cache[$cache_key] = file_exists($filepath);
     //If file not exists
-    if (!$cache[$cache_key]) {
+    if (!$cache[$cache_key] && !$silent) {
       throw new Exception("od_common module named \"{$module}\" was not found in \"{$filepath}\"");
     }
 
-    //Now we know that file exists, so include it
-    require_once $filepath;
+    if ($cache[$cache_key]) {
+      //Now we know that file exists, so include it
+      require_once $filepath;
+    }
   }
 
   return $cache[$cache_key];
