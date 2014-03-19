@@ -1062,8 +1062,11 @@ $zen-auto-include-item-base: false;
   .pane-rubrics-rubrics-front .title {
     margin-top: 13px;
   }  
-  .region-header.active-region:before {
-    height: 42px;
+  .region-header:before {
+    top: 146px;
+  }
+  .custom-form-template .region-header .pane-system-main-menu {
+    padding-top: 0;
   }
   .region-header {
   
@@ -1106,11 +1109,14 @@ $zen-auto-include-item-base: false;
         height: 30px;
         padding: 0;
         width: 30px;
-        margin-right: 7px;
+        margin: 0 7px 0 0;
       }
       > ul li a[href$="/user/login"] {
         background: #fff url("../images/ico-set-ui.png") no-repeat -539px -353px;
         padding-left: 0;
+      }
+      > ul li a[href*="users"] {
+        background-position: -387px -353px;
       }
       > ul li a[href$="/user"] {
         background-position: -387px -353px;
@@ -1124,6 +1130,9 @@ $zen-auto-include-item-base: false;
       > ul li a[href$="/user/register"] {
         background-position: -387px -314px;
       }
+      > ul li a[href*="moderation"] {
+        background-position: -159px -48px;
+      }
       > ul li.last a {
         margin-right: 0;
       }
@@ -1135,7 +1144,7 @@ $zen-auto-include-item-base: false;
       font-size: 15px;
       height: 42px;
       line-height: 42px;
-      padding: 0 0 0 21px;
+      padding: 0 0 0 63px;
     }  
     .view {
       font-size: 17px;
@@ -1148,8 +1157,16 @@ $zen-auto-include-item-base: false;
       }
     }
   }
+  /* rubrics taxonomy */
+  .pane-od-rubric-menu-block-rubric-menu > ul > li > a {
+    font-size: 13px;
+  }
+  .pane-od-rubric-menu-block-rubric-menu ul li ul li a {
+    padding-left: 80px;
+  }
+  
   .region-header .pane-system-main-menu > ul > li ul li a {
-    padding: 1em 0.5em;
+    padding: 0 0.5em;
   }
   .region-orange {
     .pane-2 {
@@ -1291,7 +1308,7 @@ $zen-auto-include-item-base: false;
     }
   }
   .breadcrumb {
-    padding: 14px 21px 10px;
+    padding: 40px 21px 10px;
   }
   .pane-datasets-search-dataset-search .view-content {
     clear: both;
@@ -1744,6 +1761,9 @@ $zen-auto-include-item-base: false;
         background: #fff url("../images/ico-set-ui.png") no-repeat -539px -353px;
         padding-left: 0;
       }
+      > ul li a[href*="users"] {
+        background-position: -387px -353px;
+      }
       > ul li a[href$="/user"] {
         background-position: -387px -353px;
       }
@@ -1755,6 +1775,9 @@ $zen-auto-include-item-base: false;
       }
       > ul li a[href$="/user/register"] {
         background-position: -387px -314px;
+      }
+      > ul li a[href*="moderation"] {
+        background-position: -159px -48px;
       }
       > ul li.last a {
         margin-right: 0;

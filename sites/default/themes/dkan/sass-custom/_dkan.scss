@@ -12,7 +12,7 @@ body {
   position: relative;
   overflow-x: hidden;  
   font-family: $gill;
-  font-size: 1;
+  font-size: 100%;
   line-height: 1.5em;  
 }
 
@@ -125,6 +125,8 @@ div.horizontal-tabs .form-text {
   line-height: 47px;*/
   padding-top: 1.1em;
   padding-bottom: 1.1em;  
+  height: 58px;
+  line-height: 50px;  
 }
 .form-required {
   color: #0c87e8;
@@ -447,7 +449,7 @@ div.horizontal-tabs .form-text {
             padding-top: 16px;
             padding-bottom: 16px;
             margin-left: -79px !important;
-            @include box-shadow(0 5px 5px #CCCCCC);
+            @include box-shadow(0 5px 5px rgba(0,0,0, .24));
             
             li {
               float: left;
@@ -531,9 +533,9 @@ div.horizontal-tabs .form-text {
               /*padding: 17px 15px;          
               font-size: 16px;
               line-height: 16px;*/
-              padding: 1em .95em;          
+              padding: 0 .95em;          
               font-size: 13.2px;
-              line-height: 1.1em;
+              line-height: 41px;
               background: #ffa200;
               border-right: 0;
               text-decoration: none;
@@ -573,6 +575,8 @@ div.horizontal-tabs .form-text {
         a {
           display: block;
           color: #ffa200;
+          margin: 0;
+          border: 0;
           /*padding: 17px 15px;
           font-size: 16px;
           line-height: 16px;*/
@@ -595,6 +599,10 @@ div.horizontal-tabs .form-text {
       }
     }    
   }
+}
+/* position mainmenu for page-node-add */
+.custom-form-template .region-header .pane-system-main-menu {
+  padding-top: 57px;
 }
 
 /**
@@ -632,12 +640,13 @@ div.horizontal-tabs .form-text {
 /**
  * menu help
  */
+ 
 .feedback-block {
   position: fixed;
   left: 0;
   top: 50%;
   z-index: 200;
-  margin-top: -110px;
+  margin-top: -50px;
   
   ul {
     margin: 0;
@@ -654,7 +663,7 @@ div.horizontal-tabs .form-text {
         height: 55px;
         line-height: 16px;
         vertical-align: middle;
-        background: #fff url("../images/front-menu-help.png") no-repeat 0 -1000px;
+        background:  url("../images/front-menu-help.png") no-repeat 0 -1000px;
         font-size: 12px;
         text-decoration: none;
         @include transition(padding 0.3s ease);
@@ -699,6 +708,13 @@ div.horizontal-tabs .form-text {
         }
       }
     }
+  }
+}
+.front .feedback-block ul li a {
+  background-color: #fff;
+  
+  &:hover {
+     background-color: #0c87e8;
   }
 }
 
@@ -1480,6 +1496,7 @@ div.horizontal-tabs .form-text {
   
   .region-content {
     background: #fff;
+    padding-bottom: 30px;
     
     .pane-gb-search-pane .form-text {
       border: 1px solid #000;
@@ -1499,16 +1516,16 @@ div.horizontal-tabs .form-text {
     padding-bottom: 6px;
   }
   .pane-user-roles {
-    color: #b5b5b5;
+    color: #666;
     font-size: 16px;
-    line-height: 1em;
+    line-height: 1.3em;
     text-transform: uppercase;
     
     h2 {
       font-size: 16px;
-      line-height: 1em;
+      line-height: 1.3em;
       margin: 0;
-      float: left;
+      color: #b5b5b5;
       padding-right: 7px;
     }
   }
@@ -1517,7 +1534,7 @@ div.horizontal-tabs .form-text {
     margin-right: 7%;
   }
   .region-user-main-info {
-    width: 50%;
+    width: 25%;
     font-size: 16px;
     line-height: 1.35em;
     color: #4d4d4d;
@@ -1592,8 +1609,58 @@ div.horizontal-tabs .form-text {
     }      
   }
   .region-user-avatar {
-    width: 50%;
+    width: 25%;
      
+  } 
+  .user-menu {
+    float: left;
+    width: 50%;
+    
+    .inside {
+      width: 50%;
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      
+      .menu__item.is-leaf {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        
+        a {
+          display: block;
+          background: #0c87e7;
+          color: #fff;
+          text-transform: uppercase;
+          text-decoration: none;
+          text-align: center;
+          font-size: 13px;
+          margin-bottom: 10px;
+          padding: 7px 0;
+        }
+      }
+    }
+    .pane-menu-menu-user-menu-3 {
+      padding: 0 0 10px;
+      
+      ul li.menu__item.is-leaf a {
+        font-size: 16px;
+        padding: 12px 0;
+      }
+    }
+    .pane-menu-menu-user-menu-2 {
+      padding: 23px 30px 20px;
+      background: #e5e5e5;
+      
+      h2 {
+        font-size: 13px;
+        color: #666;
+        line-height: 14px;
+        margin: 3px 0 12px;
+        text-transform: none;
+      }
+    }
   }  
   .pane-page-content {
     margin-left: 7%;
@@ -1768,7 +1835,8 @@ div.horizontal-tabs .form-text {
       width: 52px;
       height: 52px;
       top: 0;
-      background: url("../images/icon-search-big.png") no-repeat scroll 0 0 / cover transparent;
+      background: url("../images/icon-search-big.png") no-repeat scroll 0 0;
+      @include background-size(cover);
       border: 0 none;
       overflow: hidden;
       text-indent: -10000px;
@@ -5770,6 +5838,17 @@ div.fivestar-widget .star {
     }
   }
 }
+.page-taxonomy-term-competition {
+  .view-competitions-for-rubrics.view .views-row {
+    background: transparent;
+    width: auto;
+    
+    &:before {
+      background: transparent;
+    }
+  }
+}
+
 
 /**
  * feedback
@@ -6026,6 +6105,27 @@ div.fivestar-widget .star {
  */
 .ui-widget {
   font-family: $gill;
+  
+  .view {
+    
+  }
+  .views-row {
+    padding-bottom: 24px;
+    line-height: 22px;
+    color: #666;
+    
+    .views-field-timestamp {
+      color: #b6b6b6;
+      padding: 0 0 7px;
+    }
+    a {
+      color: #0C87E8;
+      text-decoration: none;
+    }
+  }
+  .view-header {
+    padding-bottom: 20px;
+  }
 }
 
 
