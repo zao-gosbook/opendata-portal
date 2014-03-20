@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Flags_Permissions_and_other feature.
+ */
+
+include_once 'flags_permissions_and_other.features.inc';
