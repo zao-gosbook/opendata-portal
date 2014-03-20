@@ -5489,7 +5489,7 @@ div.fivestar-widget .star {
 .chzn-container-multi .chzn-choices .search-choice {
   margin: 12px 0 3px 10px;
 }
-.chzn-container {
+.entityform .chzn-container {
   width: 60% !important; 
 }
 .chzn-container-multi .chzn-choices {
@@ -5804,23 +5804,52 @@ div.fivestar-widget .star {
 
 .view-datasets-map {
   
-
-  .views-exposed-widgets {
-    margin-bottom: 3.2em;
+  .views-exposed-form label {
+    font-weight: normal;
   }
   .views-exposed-widget {
     float: none;
-  }
+  }  
+
   .views-widget-filter-field_geolocation_distance {
     clear: both;
   }
   .views-widget-filter-field_organization_target_id {
+    float: left;
+    width: 100%;
+    margin-right: -126px;   
+    padding: 0;
+    
+    
     label {
       float: left;
       width: 455px;
+      padding-top: 6px;
     }
     .views-widget {
-      margin-left: 465px;
+      margin-right: 126px;
+      margin-left: 455px;
+    }
+    select {
+      width: 100%;
+    }
+    .chzn-container {
+      font-size: 16px;
+      
+      .chzn-single {
+        background-color: #FFFFFF;
+        @include background-image(none);
+        border: 1px solid #ccc;
+        @include border-radius(0);
+        @include box-shadow(none);
+        color: #444444;
+        height: 47px;
+        line-height: 44px;
+        
+        div b {
+          background-position: 0 13px;
+        }
+      }
     }
   }
   .geolocation-address .form-type-textfield {
@@ -5835,45 +5864,49 @@ div.fivestar-widget .star {
     overflow: visible;
     
     label {
-      width: 106px;
+      width: 470px;
       float: left;
       padding-top: 6px;
     }
     .form-item-field-geolocation-distance-googlemap-address-field {
-      margin-left: 106px;
+      margin-right: 300px;
+      margin-left: 480px;
+      
+      .form-text {
+        width: 100%;
+      }
     }
   }
   .geolocation-lat-item,
   .geolocation-lng-item {
     overflow: visible;
     clear: left;
-    float: left;
-    width: 250px;
+    margin-left: 480px;
     
     label {
-      width: 137px;
-      float: left;
-      padding-top: 6px;
+      font-size: 14px;
+      text-transform: none;
+      color: #4d4d4d;
+      width: auto;
     }
     span {
-      float: left;
-      color: #0c87e8;
-      font-size: 2em;
-      font-weight: normal;
-      line-height: 1.5em;
-      padding-top: 5px;
-      text-transform: uppercase;
-      width: 107px;
+      width: 70px;
+      color: #939393;
     }
   }  
+  .geolocation-lng-item {
+    clear: none;
+    margin-left: 10px;
+  }
   .geolocation-address {
 
   }
   .geolocation-help {
-    margin: 0 0 0 106px; 
+    margin: 0 0 0 480px; 
     padding: 5px 0 0;
     position: relative;
     font-size: 14px;
+    color: #939393;
     
     .geolocation-address-geocode, 
     .geolocation-remove span {
@@ -5891,12 +5924,15 @@ div.fivestar-widget .star {
       display: block;
       font-size: 0.85em;
       margin: 10px 0 0;
-      padding: 1.25em 1.05em 1.25em 4.7em;
+      padding: 1.25em 0 1.25em 4.7em;
       text-align: left;
       text-transform: uppercase;
       color: #0c87e8;
-      border: 1px solid #ffa200;
+      border: 2px solid #0c87e8;
       width: 155px;
+      position: absolute;
+      top: -60px;
+      right: 0;
     }
   }
   .geolocation-remove span {
@@ -5909,6 +5945,10 @@ div.fivestar-widget .star {
     text-transform: uppercase;
     color: #666;
   }
+  .geolocation-help, .geolocation-map {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
   
   .form-item-field-geolocation-distance-search-distance {
     overflow: hidden;
@@ -5918,6 +5958,7 @@ div.fivestar-widget .star {
       float: left;
       padding-top: 6px;
       padding-right: 10px;
+      width: 470px;
     }
     .form-text {
       width: 77px;
@@ -5925,7 +5966,7 @@ div.fivestar-widget .star {
   }
   .views-submit-button {
     float: right;
-    padding: 0 5px 0 0;
+    padding: 0 5px 50px 0;
     
     .form-submit {
       margin: 0;
