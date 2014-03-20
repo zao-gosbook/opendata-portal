@@ -1148,7 +1148,8 @@ $zen-auto-include-item-base: false;
     }  
     .view {
       font-size: 17px;
-      padding: 0 21px 0 28px;     
+      padding: 0 21px 0 16px;  
+      width: 26%;
       
       span {
         font-size: 24px;
@@ -1245,9 +1246,7 @@ $zen-auto-include-item-base: false;
       }
     }
   }
-  .panels-flexible-row.region-header {
-    overflow: hidden;
-  }
+
   .not-front  .panels-flexible-row.region-header {
     overflow: visible;
   }
@@ -1316,6 +1315,11 @@ $zen-auto-include-item-base: false;
   .pane-dataset {
     width: 100%;
     margin-left: 0;
+  }
+  div.frontpage-important-info-block   {
+    width: 43%;
+    font-size: 12px;
+    bottom: -1px;
   }
 }
 /**
