@@ -10,7 +10,6 @@ body {
   background-color: #e5e5e5;
   min-height: 100%;
   position: relative;
-  overflow-x: hidden;  
   font-family: $gill;
   font-size: 100%;
   line-height: 1.5em;  
@@ -5892,6 +5891,12 @@ div.fivestar-widget .star {
     span {
       width: 70px;
       color: #939393;
+      font-size: 14px;
+      line-height: 1.5em;
+      padding-bottom: 0.2em;
+      padding-top: 6px;
+      padding-left: 6px;
+      display: inline-block;
     }
   }  
   .geolocation-lng-item {

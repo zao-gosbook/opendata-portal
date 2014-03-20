@@ -1323,6 +1323,27 @@ $zen-auto-include-item-base: false;
     font-size: 12px;
     bottom: -1px;
   }
+  
+  /* map */
+  .view-datasets-map .field-widget-geolocation-googlemap label[for="edit-field-geolocation-distance-googlemap-address"] {
+    width: 150px;
+  }
+  .view-datasets-map .field-widget-geolocation-googlemap .form-item-field-geolocation-distance-googlemap-address-field {
+    margin-right: 234px;
+    margin-left: 150px;
+  }  
+  .view-datasets-map .geolocation-help {
+    margin: 0 0 0 150px;
+  }  
+  .view-datasets-map .geolocation-lat-item {
+    margin-left: 150px;
+  }
+  .view-datasets-map .views-widget-filter-field_organization_target_id label {
+    width: 256px;
+  }
+  .view-datasets-map .views-widget-filter-field_organization_target_id .views-widget {
+    margin-left: 254px;
+  }  
 }
 /**
  * only ipad hacks
