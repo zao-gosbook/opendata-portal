@@ -1708,6 +1708,49 @@ div.horizontal-tabs .form-text {
     display: block;
   }
 }
+.dataset-export {
+  @include clearfix;
+
+  h2.pane-title {
+    display: none;
+
+  }
+}
+.export-registry-wrapper {
+  float: right;
+  padding-bottom: 10px;
+  position: relative;
+  z-index: 100;
+  
+  h2 {
+    float: left;
+    margin: 0;
+    font-size: 1.25em;
+    line-height: 40px;
+    height: 40px;
+    color: #666;
+    padding-right: 7px;    
+  }
+  .export-registry {
+    float: left;
+    
+    a {
+      display: block;
+      width: 40px;
+      height: 40px;
+      text-indent: -10000px;
+      float: left;
+      
+      &.csv {
+        background: url("../images/icon-dataset-csv.png") no-repeat;
+        margin-right: 7px;
+      }      
+      &.xls {
+        background: url("../images/icon-dataset-xls.png") no-repeat;
+      }
+    }
+  }
+}
 .pane-search-api-sorts-search-sorts {
   float: right;
   padding-bottom: 1.25em;
