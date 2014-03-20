@@ -10557,3 +10557,6125 @@ if ($account = user_load(\'%user:uid\'))  {
 
   return $export;
 }
+
+/**
+ * Implements hook_default_page_manager_pages().
+ */
+function nodes_breadcrumbs_pm_pages_default_page_manager_pages() {
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'about';
+  $page->task = 'page';
+  $page->admin_title = 'О портале';
+  $page->admin_description = '';
+  $page->path = 'about';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_about_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'about';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'О портале',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Материал',
+        'keyword' => 'node',
+        'name' => 'entity:node',
+        'entity_id' => '615',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(),
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'zen_no_wrapper';
+  $display->layout_settings = array(
+    'main_classes' => '',
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'main' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'About';
+  $display->uuid = '4048d72f-6a81-46d9-8ad5-1758d8ba6381';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-f629c8af-1e01-434b-a45c-a262a7cfb880';
+    $pane->panel = 'main';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'node';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:node_1',
+      'override_title' => 0,
+      'override_title_text' => 'About portal',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'f629c8af-1e01-434b-a45c-a262a7cfb880';
+    $display->content['new-f629c8af-1e01-434b-a45c-a262a7cfb880'] = $pane;
+    $display->panels['main'][0] = 'new-f629c8af-1e01-434b-a45c-a262a7cfb880';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-f629c8af-1e01-434b-a45c-a262a7cfb880';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['about'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'activity_user';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Активность пользователя';
+  $page->admin_description = '';
+  $page->path = 'user/%user/activity';
+  $page->access = array(
+    'logic' => 'and',
+    'plugins' => array(
+      0 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => 'Активность',
+    'name' => 'navigation',
+    'weight' => '20',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_activity_user_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'activity_user';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_7',
+    'access' => array(
+      'plugins' => array(),
+      'logic' => 'and',
+    ),
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => array(
+        'panel_tab_id_pattern' => 'region',
+        'panel_tab_save_active_tab' => 1,
+      ),
+    ),
+    'middle' => array(
+      'style' => 'tabs',
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = 'af7030bf-7828-400a-9dc9-0772722e3e20';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-9e78a5df-67bc-4f82-8727-72bdaa0534a1';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'last_view_pages-list_last_views_materials';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '9e78a5df-67bc-4f82-8727-72bdaa0534a1';
+    $display->content['new-9e78a5df-67bc-4f82-8727-72bdaa0534a1'] = $pane;
+    $display->panels['middle'][0] = 'new-9e78a5df-67bc-4f82-8727-72bdaa0534a1';
+    $pane = new stdClass();
+    $pane->pid = 'new-493d7ed3-a1f9-455c-8a43-628ea9332fe3';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'blog_user-list_blogs_user';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '493d7ed3-a1f9-455c-8a43-628ea9332fe3';
+    $display->content['new-493d7ed3-a1f9-455c-8a43-628ea9332fe3'] = $pane;
+    $display->panels['middle'][1] = 'new-493d7ed3-a1f9-455c-8a43-628ea9332fe3';
+    $pane = new stdClass();
+    $pane->pid = 'new-2a10b959-dad8-4e63-8bcb-c0817696ed58';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'dataset-activity_datasets';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Последние добавленные наборы',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '2a10b959-dad8-4e63-8bcb-c0817696ed58';
+    $display->content['new-2a10b959-dad8-4e63-8bcb-c0817696ed58'] = $pane;
+    $display->panels['middle'][2] = 'new-2a10b959-dad8-4e63-8bcb-c0817696ed58';
+  $display->hide_title = PANELS_TITLE_PANE;
+  $display->title_pane = 'new-2a10b959-dad8-4e63-8bcb-c0817696ed58';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['activity_user'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'actualize_dataset';
+  $page->task = 'page';
+  $page->admin_title = 'Актуализация однотомного набора данных';
+  $page->admin_description = '';
+  $page->path = 'actualize-dataset';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 6,
+            1 => 5,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_actualize_dataset_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'actualize_dataset';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '.entity-entityform-type h2 {
+  display: none;
+}',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '10',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Actualize dataset';
+  $display->uuid = '434e986a-43c0-4c8e-bd17-6858e8c226aa';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-1527a959-b668-43c9-8896-2f4be713381e';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '1527a959-b668-43c9-8896-2f4be713381e';
+    $display->content['new-1527a959-b668-43c9-8896-2f4be713381e'] = $pane;
+    $display->panels['middle'][0] = 'new-1527a959-b668-43c9-8896-2f4be713381e';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['actualize_dataset'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'actualize_dataset_mv';
+  $page->task = 'page';
+  $page->admin_title = 'Актуализация многотомного набора данных';
+  $page->admin_description = '';
+  $page->path = 'actualize-dataset-mv';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 6,
+            1 => 5,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_actualize_dataset_mv_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'actualize_dataset_mv';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '.entity-entityform-type h2 {
+  display: none;
+}',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '14',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Actualize dataset';
+  $display->uuid = '434e986a-43c0-4c8e-bd17-6858e8c226aa';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-1527a959-b668-43c9-8896-2f4be713381e';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '1527a959-b668-43c9-8896-2f4be713381e';
+    $display->content['new-1527a959-b668-43c9-8896-2f4be713381e'] = $pane;
+    $display->panels['middle'][0] = 'new-1527a959-b668-43c9-8896-2f4be713381e';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['actualize_dataset_mv'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'add_app';
+  $page->task = 'page';
+  $page->admin_title = 'Добавление приложения';
+  $page->admin_description = '';
+  $page->path = 'add_app';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 2,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_add_app_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'add_app';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Добавление приложения',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '.entity-entityform-type h2 {
+  display: none;
+}
+
+.captcha span.fieldset-legend {
+  display: none;
+}',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '5',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'access' => array(
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Add application';
+  $display->uuid = '7ade3347-923b-474c-a3d5-39dc199beb68';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-3785abaf-0794-4855-a1ac-b23bb7f0cfcd';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '3785abaf-0794-4855-a1ac-b23bb7f0cfcd';
+    $display->content['new-3785abaf-0794-4855-a1ac-b23bb7f0cfcd'] = $pane;
+    $display->panels['middle'][0] = 'new-3785abaf-0794-4855-a1ac-b23bb7f0cfcd';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['add_app'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'add_idea';
+  $page->task = 'page';
+  $page->admin_title = 'Создание идеи для анонимов';
+  $page->admin_description = '';
+  $page->path = 'add-idea';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_add_idea_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'add_idea';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Создание идеи',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => 'div.entity-entityform-type h2 {
+  display: none;
+}
+span.fieldset-legend {
+  display: none;
+}',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '15',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Add idea';
+  $display->uuid = '90184649-0c4e-4aca-991e-cf493872467e';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-dbb44462-7522-474a-8160-c145b29885e3';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'dbb44462-7522-474a-8160-c145b29885e3';
+    $display->content['new-dbb44462-7522-474a-8160-c145b29885e3'] = $pane;
+    $display->panels['middle'][0] = 'new-dbb44462-7522-474a-8160-c145b29885e3';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['add_idea'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'add_material';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Создание материала';
+  $page->admin_description = '';
+  $page->path = 'user/%user/add-material';
+  $page->access = array(
+    'logic' => 'and',
+    'plugins' => array(
+      0 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 6,
+            1 => 3,
+            2 => 4,
+            3 => 5,
+          ),
+        ),
+        'context' => 'argument_entity_id:user_1',
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => 'Создание материала',
+    'name' => 'navigation',
+    'weight' => '15',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_add_material_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'add_material';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '4',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_7',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '5bb961eb-d42d-4384-b997-3feef2b227fd';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-539b7f77-3708-46a6-acd6-57c04599a6d1';
+    $pane->panel = 'middle';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Удалить после наполнения страницы',
+      'title' => '',
+      'body' => 'Тут будет форма создания нового материала. Уточнить какого именно.',
+      'format' => 'full_html',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '539b7f77-3708-46a6-acd6-57c04599a6d1';
+    $display->content['new-539b7f77-3708-46a6-acd6-57c04599a6d1'] = $pane;
+    $display->panels['middle'][0] = 'new-539b7f77-3708-46a6-acd6-57c04599a6d1';
+  $display->hide_title = PANELS_TITLE_PANE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['add_material'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'add_new_dataset';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Создание материала, пункт - Набор данных';
+  $page->admin_description = '';
+  $page->path = 'dataset-actions/add-new-dataset';
+  $page->access = array(
+    'logic' => 'and',
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 6,
+            1 => 5,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => 'Создание материала',
+    'name' => 'navigation',
+    'weight' => '15',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_add_new_dataset_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'add_new_dataset';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '4',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_3',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '975d0db8-da17-4d01-b376-a6690dc81b00';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-42fdaecc-3b62-4252-9777-aa6e47a33b6c';
+    $pane->panel = 'middle';
+    $pane->type = 'pane_messages';
+    $pane->subtype = 'pane_messages';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '42fdaecc-3b62-4252-9777-aa6e47a33b6c';
+    $display->content['new-42fdaecc-3b62-4252-9777-aa6e47a33b6c'] = $pane;
+    $display->panels['middle'][0] = 'new-42fdaecc-3b62-4252-9777-aa6e47a33b6c';
+    $pane = new stdClass();
+    $pane->pid = 'new-956db6c3-ce5a-482e-914e-86d224d6a940';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '956db6c3-ce5a-482e-914e-86d224d6a940';
+    $display->content['new-956db6c3-ce5a-482e-914e-86d224d6a940'] = $pane;
+    $display->panels['middle'][1] = 'new-956db6c3-ce5a-482e-914e-86d224d6a940';
+  $display->hide_title = PANELS_TITLE_PANE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['add_new_dataset'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'all_datasets_map';
+  $page->task = 'page';
+  $page->admin_title = 'Карта открытых данных';
+  $page->admin_description = '';
+  $page->path = 'datasets-map';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_all_datasets_map_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'all_datasets_map';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'zen_no_wrapper';
+  $display->layout_settings = array(
+    'main_classes' => '',
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'main' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Карта';
+  $display->uuid = '19343bf5-8592-4612-9adb-634a088f275b';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-32ea7eb0-0917-46dd-82a3-4750e94020f8';
+    $pane->panel = 'main';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => '',
+      'title' => '',
+      'body' => '<div class="custom-text-wrapper">
+На карте отображаются метки организаций, наборы открытых данных которых представлены на Портале. В настоящий момент Портал наполняется, и количество меток будет увеличиваться с ростом количества организаций, опубликовавших свои наборы открытых данных.
+</div>',
+      'format' => 'ds_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '32ea7eb0-0917-46dd-82a3-4750e94020f8';
+    $display->content['new-32ea7eb0-0917-46dd-82a3-4750e94020f8'] = $pane;
+    $display->panels['main'][0] = 'new-32ea7eb0-0917-46dd-82a3-4750e94020f8';
+    $pane = new stdClass();
+    $pane->pid = 'new-943cb2c9-f7ef-438d-8388-bb0881ad5c70';
+    $pane->panel = 'main';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Переключатель типов (джедайский код)',
+      'title' => '',
+      'body' => '<?php
+if (od_common_module(\'od_map_page\')) {
+  print render(od_common_module_od_map_page_render_selector());
+}
+
+?>',
+      'format' => 'ds_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '943cb2c9-f7ef-438d-8388-bb0881ad5c70';
+    $display->content['new-943cb2c9-f7ef-438d-8388-bb0881ad5c70'] = $pane;
+    $display->panels['main'][1] = 'new-943cb2c9-f7ef-438d-8388-bb0881ad5c70';
+    $pane = new stdClass();
+    $pane->pid = 'new-5dd6e00a-5060-4898-8d35-9a83ec81ce36';
+    $pane->panel = 'main';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'datasets_map-google_map';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '5dd6e00a-5060-4898-8d35-9a83ec81ce36';
+    $display->content['new-5dd6e00a-5060-4898-8d35-9a83ec81ce36'] = $pane;
+    $display->panels['main'][2] = 'new-5dd6e00a-5060-4898-8d35-9a83ec81ce36';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['all_datasets_map'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'apps';
+  $page->task = 'page';
+  $page->admin_title = 'Приложения';
+  $page->admin_description = '';
+  $page->path = 'apps';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_apps_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'apps';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Страница приложения',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 3,
+        ),
+        'parent' => 'canvas',
+      ),
+      3 => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 4,
+          1 => 5,
+        ),
+        'parent' => 'main',
+        'class' => '',
+      ),
+      4 => array(
+        'type' => 'column',
+        'width' => '13.595344306004204',
+        'width_type' => '%',
+        'parent' => '3',
+        'children' => array(
+          0 => 6,
+        ),
+        'class' => 'left-column',
+      ),
+      5 => array(
+        'type' => 'column',
+        'width' => '86.40465569399579',
+        'width_type' => '%',
+        'parent' => '3',
+        'children' => array(
+          0 => 9,
+          1 => 8,
+          2 => 7,
+        ),
+        'class' => 'right-column',
+      ),
+      6 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'facets',
+        ),
+        'parent' => '4',
+        'class' => '',
+      ),
+      'facets' => array(
+        'type' => 'region',
+        'title' => 'Facets',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '6',
+        'class' => 'facets-region',
+      ),
+      7 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'bottom',
+        ),
+        'parent' => '5',
+        'class' => '',
+      ),
+      'bottom' => array(
+        'type' => 'region',
+        'title' => 'Bottom',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '7',
+        'class' => 'right-bottom-region',
+      ),
+      8 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'middle_left',
+          1 => 'middle_right',
+        ),
+        'parent' => '5',
+        'class' => '',
+      ),
+      'middle_left' => array(
+        'type' => 'region',
+        'title' => 'New apps',
+        'width' => '50.15212364609955',
+        'width_type' => '%',
+        'parent' => '8',
+        'class' => 'midle-left-region new-apps',
+        'hide_empty' => 0,
+      ),
+      'middle_right' => array(
+        'type' => 'region',
+        'title' => 'Popular apps',
+        'width' => '49.84787635390045',
+        'width_type' => '%',
+        'parent' => '8',
+        'class' => 'middle-right-region popular-apps',
+        'hide_empty' => 0,
+      ),
+      9 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'search',
+        ),
+        'parent' => '5',
+        'class' => '',
+      ),
+      'search' => array(
+        'type' => 'region',
+        'title' => 'Search',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '9',
+        'class' => 'middle-search-region',
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'left_region' => NULL,
+      'right_region' => NULL,
+      'buttons' => NULL,
+      'facets' => NULL,
+      'bottom' => NULL,
+      'middle_left' => NULL,
+      'middle_right' => NULL,
+      'search' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Applications';
+  $display->uuid = '69cd47ca-43a2-4970-82a2-3cefc0a9ac6c';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-90c086d5-be7c-4b0a-92d7-d07c4dabfc14';
+    $pane->panel = 'bottom';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'apps_search_api-apps';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '90c086d5-be7c-4b0a-92d7-d07c4dabfc14';
+    $display->content['new-90c086d5-be7c-4b0a-92d7-d07c4dabfc14'] = $pane;
+    $display->panels['bottom'][0] = 'new-90c086d5-be7c-4b0a-92d7-d07c4dabfc14';
+    $pane = new stdClass();
+    $pane->pid = 'new-5cd18854-8119-4f70-ad33-34e45649c116';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-VGwRjQ9yo7CvvyJDxeEm3Pq1KG6knSEs';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Topic',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '5cd18854-8119-4f70-ad33-34e45649c116';
+    $display->content['new-5cd18854-8119-4f70-ad33-34e45649c116'] = $pane;
+    $display->panels['facets'][0] = 'new-5cd18854-8119-4f70-ad33-34e45649c116';
+    $pane = new stdClass();
+    $pane->pid = 'new-d2411d12-46a5-4889-a733-13907c01f151';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-HGYoGBnEsLiRm8mrAsh1t5BfzWxuzIgd';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Keyword',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'd2411d12-46a5-4889-a733-13907c01f151';
+    $display->content['new-d2411d12-46a5-4889-a733-13907c01f151'] = $pane;
+    $display->panels['facets'][1] = 'new-d2411d12-46a5-4889-a733-13907c01f151';
+    $pane = new stdClass();
+    $pane->pid = 'new-b1f3fd5a-633b-4c23-87f0-3d942782685a';
+    $pane->panel = 'middle_left';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'apps-10_latests_apps';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'New apps',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'b1f3fd5a-633b-4c23-87f0-3d942782685a';
+    $display->content['new-b1f3fd5a-633b-4c23-87f0-3d942782685a'] = $pane;
+    $display->panels['middle_left'][0] = 'new-b1f3fd5a-633b-4c23-87f0-3d942782685a';
+    $pane = new stdClass();
+    $pane->pid = 'new-0e8fa05c-b2f3-4657-8aee-1e67d25ac279';
+    $pane->panel = 'middle_right';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'apps-top_rated_apps';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Popular apps',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '0e8fa05c-b2f3-4657-8aee-1e67d25ac279';
+    $display->content['new-0e8fa05c-b2f3-4657-8aee-1e67d25ac279'] = $pane;
+    $display->panels['middle_right'][0] = 'new-0e8fa05c-b2f3-4657-8aee-1e67d25ac279';
+    $pane = new stdClass();
+    $pane->pid = 'new-c2a6fee4-788b-4983-bb80-360efb21a0bb';
+    $pane->panel = 'search';
+    $pane->type = 'block';
+    $pane->subtype = 'views--exp-apps_search_api-apps';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'inherit_path' => 1,
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'c2a6fee4-788b-4983-bb80-360efb21a0bb';
+    $display->content['new-c2a6fee4-788b-4983-bb80-360efb21a0bb'] = $pane;
+    $display->panels['search'][0] = 'new-c2a6fee4-788b-4983-bb80-360efb21a0bb';
+    $pane = new stdClass();
+    $pane->pid = 'new-87ab77c1-8af3-4fc8-8f5e-55f759830e29';
+    $pane->panel = 'search';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'role',
+          'settings' => array(
+            'rids' => array(
+              0 => 1,
+            ),
+          ),
+          'context' => 'logged-in-user',
+          'not' => FALSE,
+        ),
+      ),
+    );
+    $pane->configuration = array(
+      'admin_title' => 'Ссылка на добавление приложения (для анонимных пользователей)',
+      'title' => '',
+      'body' => '<a href="/user/login?destination=add_app">Авторизируйтесь перед добавлением приложения</a>',
+      'format' => 'html',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '87ab77c1-8af3-4fc8-8f5e-55f759830e29';
+    $display->content['new-87ab77c1-8af3-4fc8-8f5e-55f759830e29'] = $pane;
+    $display->panels['search'][1] = 'new-87ab77c1-8af3-4fc8-8f5e-55f759830e29';
+    $pane = new stdClass();
+    $pane->pid = 'new-c09fafb7-815a-4c7d-a638-a18dbbdefaff';
+    $pane->panel = 'search';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'role',
+          'settings' => array(
+            'rids' => array(
+              0 => 2,
+            ),
+          ),
+          'context' => 'logged-in-user',
+          'not' => FALSE,
+        ),
+      ),
+    );
+    $pane->configuration = array(
+      'admin_title' => 'Ссылка на добавление приложения (для зарегистрированных пользователей)',
+      'title' => '',
+      'body' => '<a href="/add_app" class="btn">Добавить приложение</a>',
+      'format' => 'full_html',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'pane-btn',
+    );
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = 'c09fafb7-815a-4c7d-a638-a18dbbdefaff';
+    $display->content['new-c09fafb7-815a-4c7d-a638-a18dbbdefaff'] = $pane;
+    $display->panels['search'][2] = 'new-c09fafb7-815a-4c7d-a638-a18dbbdefaff';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['apps'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'askopendata';
+  $page->task = 'page';
+  $page->admin_title = 'Запрос на данные';
+  $page->admin_description = '';
+  $page->path = 'askopendata';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_askopendata_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'askopendata';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Запрос на данные',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '.entity-entityform-type h2 {
+  display: none;
+}
+.captcha span.fieldset-legend {
+  display: none;
+}',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '1',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Request to open data';
+  $display->uuid = '48b110bd-a35d-4941-99c4-c9f52da306f2';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-f11e840a-c5cc-4323-b593-d0a6d209276d';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'f11e840a-c5cc-4323-b593-d0a6d209276d';
+    $display->content['new-f11e840a-c5cc-4323-b593-d0a6d209276d'] = $pane;
+    $display->panels['middle'][0] = 'new-f11e840a-c5cc-4323-b593-d0a6d209276d';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['askopendata'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'become_publisher';
+  $page->task = 'page';
+  $page->admin_title = 'Заявка на публикаторство';
+  $page->admin_description = '';
+  $page->path = 'become-a-publisher';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 2,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 6,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => TRUE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_become_publisher_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'become_publisher';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '.entity-entityform-type h2 {
+  display: none;
+}',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '13',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'access' => array(
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Publisher application';
+  $display->uuid = '6875c858-b143-4ca0-ab22-91d64fcb2004';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-b59b999f-e51c-4b65-beff-e983e7cea700';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'b59b999f-e51c-4b65-beff-e983e7cea700';
+    $display->content['new-b59b999f-e51c-4b65-beff-e983e7cea700'] = $pane;
+    $display->panels['middle'][0] = 'new-b59b999f-e51c-4b65-beff-e983e7cea700';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['become_publisher'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'blog_for_rubric';
+  $page->task = 'page';
+  $page->admin_title = 'Blog for rubric';
+  $page->admin_description = '';
+  $page->path = 'taxonomy/term/%taxonomy_term/blogs';
+  $page->access = array(
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array(
+    'taxonomy_term' => array(
+      'id' => 1,
+      'identifier' => 'Taxonomy term: ID',
+      'name' => 'term',
+      'settings' => array(
+        'input_form' => 'tid',
+        'vids' => array(
+          1 => 0,
+          4 => 0,
+          2 => 0,
+          3 => 0,
+          5 => 0,
+        ),
+        'breadcrumb' => 1,
+        'transform' => 0,
+      ),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_blog_for_rubric_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'blog_for_rubric';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_2',
+  );
+  $display = new panels_display();
+  $display->layout = 'zen_no_wrapper';
+  $display->layout_settings = array(
+    'main_classes' => '',
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'main' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Блог для рубрики %taxonomy_term:name';
+  $display->uuid = '60d832f0-5a94-48da-b298-24362e2627e4';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-97d653cd-55bf-4421-ad6a-8504e960d740';
+    $pane->panel = 'main';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'blogs-blogs_list';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'arguments' => array(
+        'field_rubric_tid' => '%taxonomy_term:tid',
+      ),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '97d653cd-55bf-4421-ad6a-8504e960d740';
+    $display->content['new-97d653cd-55bf-4421-ad6a-8504e960d740'] = $pane;
+    $display->panels['main'][0] = 'new-97d653cd-55bf-4421-ad6a-8504e960d740';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['blog_for_rubric'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'code_passport';
+  $page->task = 'page';
+  $page->admin_title = 'Код паспорта';
+  $page->admin_description = '';
+  $page->path = 'node/%node/code-passport';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_type',
+        'settings' => array(
+          'type' => array(
+            'dataset' => 'dataset',
+          ),
+        ),
+        'context' => 'argument_entity_id:node_1',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array(
+    'node' => array(
+      'id' => 1,
+      'identifier' => 'Материал: ID',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_code_passport_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'code_passport';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Код паспорта',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_type',
+          'settings' => array(
+            'type' => array(
+              'dataset' => 'dataset',
+            ),
+          ),
+          'context' => 'argument_entity_id:node_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+  );
+  $display = new panels_display();
+  $display->layout = 'zen_no_wrapper';
+  $display->layout_settings = array(
+    'main_classes' => '',
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'main' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = 'b0b70b68-e1af-4c20-baec-7199bed2f1da';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-9bcbaed2-df51-4bcb-aaa6-532c03e58fa4';
+    $pane->panel = 'main';
+    $pane->type = 'od_passport_html_pane';
+    $pane->subtype = 'od_passport_html_pane';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'context' => 'argument_entity_id:node_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '9bcbaed2-df51-4bcb-aaa6-532c03e58fa4';
+    $display->content['new-9bcbaed2-df51-4bcb-aaa6-532c03e58fa4'] = $pane;
+    $display->panels['main'][0] = 'new-9bcbaed2-df51-4bcb-aaa6-532c03e58fa4';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = 'new-9bcbaed2-df51-4bcb-aaa6-532c03e58fa4';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['code_passport'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'competitions';
+  $page->task = 'page';
+  $page->admin_title = 'Конкурсы';
+  $page->admin_description = '';
+  $page->path = 'competitions';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_competitions_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'competitions';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Competitions';
+  $display->uuid = '3e93fc06-c440-46e2-b6d9-c71317c6ef39';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-89f18697-0882-4a8a-b5c7-e2b12217a1b5';
+    $pane->panel = 'middle';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'role',
+          'settings' => array(
+            'rids' => array(
+              0 => 6,
+              1 => 3,
+              2 => 4,
+              3 => 5,
+            ),
+          ),
+          'context' => 'logged-in-user',
+          'not' => FALSE,
+        ),
+      ),
+    );
+    $pane->configuration = array(
+      'admin_title' => 'Ссылка на добавление конкурса',
+      'title' => '',
+      'body' => '<div class="view-organizations"><div class="pane-btn"><a class="btn" href="/node/add/competition?destination=competitions"><?php print t(\'Add competition\');?></a></div></div>',
+      'format' => 'ds_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'link-add',
+    );
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '89f18697-0882-4a8a-b5c7-e2b12217a1b5';
+    $display->content['new-89f18697-0882-4a8a-b5c7-e2b12217a1b5'] = $pane;
+    $display->panels['middle'][0] = 'new-89f18697-0882-4a8a-b5c7-e2b12217a1b5';
+    $pane = new stdClass();
+    $pane->pid = 'new-cc19e4bc-26bd-481f-a1cf-5da7845a1f61';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'competitions_for_rubrics-competitions';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'cc19e4bc-26bd-481f-a1cf-5da7845a1f61';
+    $display->content['new-cc19e4bc-26bd-481f-a1cf-5da7845a1f61'] = $pane;
+    $display->panels['middle'][1] = 'new-cc19e4bc-26bd-481f-a1cf-5da7845a1f61';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-cc19e4bc-26bd-481f-a1cf-5da7845a1f61';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['competitions'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'datasets';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Наборы данных';
+  $page->admin_description = '';
+  $page->path = 'user/%user/datasets';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 6,
+            1 => 5,
+          ),
+        ),
+        'context' => 'argument_entity_id:user_1',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_datasets_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'datasets';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Наборы данных',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_7',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Datasets';
+  $display->uuid = '2d3a68be-0d21-42f5-901b-23a2fae76c99';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-d461ef2e-06c9-47f0-b549-3877a9185013';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'dataset-datasets';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '',
+      'context' => array(
+        0 => 'argument_entity_id:user_1',
+      ),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'd461ef2e-06c9-47f0-b549-3877a9185013';
+    $display->content['new-d461ef2e-06c9-47f0-b549-3877a9185013'] = $pane;
+    $display->panels['middle'][0] = 'new-d461ef2e-06c9-47f0-b549-3877a9185013';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['datasets'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'datasets_map';
+  $page->task = 'page';
+  $page->admin_title = 'Карта открытых данных';
+  $page->admin_description = '';
+  $page->path = 'taxonomy/term/%taxonomy_term/map';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array(
+    'taxonomy_term' => array(
+      'id' => 1,
+      'identifier' => 'Taxonomy term: ID',
+      'name' => 'term',
+      'settings' => array(
+        'input_form' => 'tid',
+        'vids' => array(
+          3 => '3',
+          1 => 0,
+          4 => 0,
+          2 => 0,
+          5 => 0,
+        ),
+        'breadcrumb' => 0,
+        'transform' => 0,
+      ),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_datasets_map_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'datasets_map';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_2',
+  );
+  $display = new panels_display();
+  $display->layout = 'zen_no_wrapper';
+  $display->layout_settings = array(
+    'main_classes' => '',
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'main' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = 'a83a463c-c1bd-410a-abc7-0db490e7936d';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-0d977b92-fd3d-403a-bf48-cb0b59143ea2';
+    $pane->panel = 'main';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'datasets_map-rubric_map';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'context' => array(
+        0 => 'argument_term_1',
+      ),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '0d977b92-fd3d-403a-bf48-cb0b59143ea2';
+    $display->content['new-0d977b92-fd3d-403a-bf48-cb0b59143ea2'] = $pane;
+    $display->panels['main'][0] = 'new-0d977b92-fd3d-403a-bf48-cb0b59143ea2';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['datasets_map'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'datasets_search';
+  $page->task = 'page';
+  $page->admin_title = 'Поиск по наборам';
+  $page->admin_description = '';
+  $page->path = 'dataset';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_datasets_search_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'datasets_search';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Datasets Search',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => 'dataset',
+    'css' => '',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Поиск по наборам/Context',
+        'keyword' => 'view',
+        'name' => 'view:datasets_search-datasets_context',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+          1 => 'facets',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'Центр',
+        'width' => '25.0641495584679',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'region-facet',
+      ),
+      'facets' => array(
+        'type' => 'region',
+        'title' => 'Facets',
+        'width' => '74.93585044153211',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'dataset-search-facets',
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'facets' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Search datasets';
+  $display->uuid = 'dbc1551a-7b42-4a91-a691-e0e065364dda';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-05cb27eb-5480-40f8-b4fe-a6399873bfe1';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-yW6mJ3GaJF0LypnLPa433Bf9GI8QdWd9';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Format',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '05cb27eb-5480-40f8-b4fe-a6399873bfe1';
+    $display->content['new-05cb27eb-5480-40f8-b4fe-a6399873bfe1'] = $pane;
+    $display->panels['center'][0] = 'new-05cb27eb-5480-40f8-b4fe-a6399873bfe1';
+    $pane = new stdClass();
+    $pane->pid = 'new-f4b22130-2551-44fd-a6a1-799af6747fad';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-iqym2Kd38Mx18a15U2HvhA1fbXztUS1o';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Topic',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'f4b22130-2551-44fd-a6a1-799af6747fad';
+    $display->content['new-f4b22130-2551-44fd-a6a1-799af6747fad'] = $pane;
+    $display->panels['center'][1] = 'new-f4b22130-2551-44fd-a6a1-799af6747fad';
+    $pane = new stdClass();
+    $pane->pid = 'new-a47d2452-c66a-436e-8ae3-cbe36fac4b3a';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-dqCRnp6cKP1cSzAsNB6zqFtY9AVEa0mp';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Keyword',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = 'a47d2452-c66a-436e-8ae3-cbe36fac4b3a';
+    $display->content['new-a47d2452-c66a-436e-8ae3-cbe36fac4b3a'] = $pane;
+    $display->panels['center'][2] = 'new-a47d2452-c66a-436e-8ae3-cbe36fac4b3a';
+    $pane = new stdClass();
+    $pane->pid = 'new-4a089675-f040-4ac2-a9b2-9c7dcafd9b05';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-LT1CHHuJCKRVwclq3E04uVF8hXeMPA1X';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Popularity',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $pane->locks = array();
+    $pane->uuid = '4a089675-f040-4ac2-a9b2-9c7dcafd9b05';
+    $display->content['new-4a089675-f040-4ac2-a9b2-9c7dcafd9b05'] = $pane;
+    $display->panels['center'][3] = 'new-4a089675-f040-4ac2-a9b2-9c7dcafd9b05';
+    $pane = new stdClass();
+    $pane->pid = 'new-efab1748-9bc2-4256-a2de-c6e8dab08847';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-HE6muwnBOpuaBbTCC6rMplz09UV0Ej1g';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Organization type',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 4;
+    $pane->locks = array();
+    $pane->uuid = 'efab1748-9bc2-4256-a2de-c6e8dab08847';
+    $display->content['new-efab1748-9bc2-4256-a2de-c6e8dab08847'] = $pane;
+    $display->panels['center'][4] = 'new-efab1748-9bc2-4256-a2de-c6e8dab08847';
+    $pane = new stdClass();
+    $pane->pid = 'new-5df73e42-c82d-4901-992c-b33c6c812db7';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-Q0yeq2X95W7NRL6UUC9zrVVLNw5FrK4y';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Organization',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 5;
+    $pane->locks = array();
+    $pane->uuid = '5df73e42-c82d-4901-992c-b33c6c812db7';
+    $display->content['new-5df73e42-c82d-4901-992c-b33c6c812db7'] = $pane;
+    $display->panels['center'][5] = 'new-5df73e42-c82d-4901-992c-b33c6c812db7';
+    $pane = new stdClass();
+    $pane->pid = 'new-36e1b383-97fd-4886-806a-5f4660242be0';
+    $pane->panel = 'facets';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Экспорт реестра наборов',
+      'title' => '<none>',
+      'body' => '<div class="export-registry-wrapper">
+  <h2> <?php print t(\'Export registry\'); ?> </h2>
+<div class="export-registry">
+  <?php
+    print t(\'<a href="@url" class="csv">CSV</a>\', array(\'@url\' => url(\'export-csv\')));
+    print t(\'<a href="@url" class="xls">XLS</a>\', array(\'@url\' => url(\'export-xls\')));
+   ?>
+</div>
+</div>',
+      'format' => 'ds_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'dataset-export',
+    );
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '36e1b383-97fd-4886-806a-5f4660242be0';
+    $display->content['new-36e1b383-97fd-4886-806a-5f4660242be0'] = $pane;
+    $display->panels['facets'][0] = 'new-36e1b383-97fd-4886-806a-5f4660242be0';
+    $pane = new stdClass();
+    $pane->pid = 'new-a82af0f4-0274-4d84-adef-9597b232306e';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'search_api_sorts-search-sorts';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'a82af0f4-0274-4d84-adef-9597b232306e';
+    $display->content['new-a82af0f4-0274-4d84-adef-9597b232306e'] = $pane;
+    $display->panels['facets'][1] = 'new-a82af0f4-0274-4d84-adef-9597b232306e';
+    $pane = new stdClass();
+    $pane->pid = 'new-442876b0-7c95-4ea2-a19e-87e163765580';
+    $pane->panel = 'facets';
+    $pane->type = 'views';
+    $pane->subtype = 'dataset';
+    $pane->shown = FALSE;
+    $pane->access = array(
+      'plugins' => array(),
+    );
+    $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 0,
+      'nodes_per_page' => '5',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 0,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'standard_datasets',
+      'override_title' => 1,
+      'override_title_text' => 'Recommended datasets',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '442876b0-7c95-4ea2-a19e-87e163765580';
+    $display->content['new-442876b0-7c95-4ea2-a19e-87e163765580'] = $pane;
+    $display->panels['facets'][2] = 'new-442876b0-7c95-4ea2-a19e-87e163765580';
+    $pane = new stdClass();
+    $pane->pid = 'new-17adc011-4df8-4cb5-8dab-5e2e47a075b9';
+    $pane->panel = 'facets';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'datasets_search-dataset_search';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $pane->locks = array();
+    $pane->uuid = '17adc011-4df8-4cb5-8dab-5e2e47a075b9';
+    $display->content['new-17adc011-4df8-4cb5-8dab-5e2e47a075b9'] = $pane;
+    $display->panels['facets'][3] = 'new-17adc011-4df8-4cb5-8dab-5e2e47a075b9';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['datasets_search'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'developer_library';
+  $page->task = 'page';
+  $page->admin_title = 'Библиотека разработчиков';
+  $page->admin_description = '';
+  $page->path = 'library-developers';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_developer_library_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'developer_library';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => 'page-library',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'facets',
+          1 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'Центр',
+        'width' => '80.7477288609364',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'dataset-search-facets',
+        'hide_empty' => 0,
+      ),
+      'facets' => array(
+        'type' => 'region',
+        'title' => 'Facets',
+        'width' => '19.252271139063595',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'region-facet',
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+      'center' => NULL,
+      'facets' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Documents regulating the work with open data';
+  $display->uuid = '6afaf5c3-cca9-4803-96c8-3055316cb52c';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-ec160717-97c1-4cce-986d-246f8e2aec58';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'search_api_sorts-search-sorts';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'ec160717-97c1-4cce-986d-246f8e2aec58';
+    $display->content['new-ec160717-97c1-4cce-986d-246f8e2aec58'] = $pane;
+    $display->panels['center'][0] = 'new-ec160717-97c1-4cce-986d-246f8e2aec58';
+    $pane = new stdClass();
+    $pane->pid = 'new-d8acb088-fe3d-4c1a-94d2-45ee65d0f93e';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'documents_search-document_search';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'pane-datasets-search-dataset-search',
+    );
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'd8acb088-fe3d-4c1a-94d2-45ee65d0f93e';
+    $display->content['new-d8acb088-fe3d-4c1a-94d2-45ee65d0f93e'] = $pane;
+    $display->panels['center'][1] = 'new-d8acb088-fe3d-4c1a-94d2-45ee65d0f93e';
+    $pane = new stdClass();
+    $pane->pid = 'new-7675fb5c-bb10-46fe-8287-21b03edae265';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-hr6DjBRN3CSVW1xFrjnkTZSHOIcZ3hu0';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Type',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '7675fb5c-bb10-46fe-8287-21b03edae265';
+    $display->content['new-7675fb5c-bb10-46fe-8287-21b03edae265'] = $pane;
+    $display->panels['facets'][0] = 'new-7675fb5c-bb10-46fe-8287-21b03edae265';
+    $pane = new stdClass();
+    $pane->pid = 'new-54efd9b4-576e-494e-82f7-f41b095e509c';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-epHbEzIKUrnHwmcq6rIz0ktNO3yCeHCD';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Keyword',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '54efd9b4-576e-494e-82f7-f41b095e509c';
+    $display->content['new-54efd9b4-576e-494e-82f7-f41b095e509c'] = $pane;
+    $display->panels['facets'][1] = 'new-54efd9b4-576e-494e-82f7-f41b095e509c';
+    $pane = new stdClass();
+    $pane->pid = 'new-39d2b202-ad1e-4ee1-97dd-f538c4f0facb';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-a1eVmbH1sklZfWBPtHGJyKZjLAGRvaGE';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Topic',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '39d2b202-ad1e-4ee1-97dd-f538c4f0facb';
+    $display->content['new-39d2b202-ad1e-4ee1-97dd-f538c4f0facb'] = $pane;
+    $display->panels['facets'][2] = 'new-39d2b202-ad1e-4ee1-97dd-f538c4f0facb';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['developer_library'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'edit_profile';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Редактирование пользователя';
+  $page->admin_description = '';
+  $page->path = 'user/%user/edit-profile';
+  $page->access = array(
+    'logic' => 'and',
+    'plugins' => array(),
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => 'Мои идеи',
+    'name' => 'navigation',
+    'weight' => '5',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_edit_profile_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'edit_profile';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_3',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '3c3c22b6-9c65-4010-a32a-17efbd06e0bf';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-34fd81a4-ace5-4bb2-b6a9-b813143070e6';
+    $pane->panel = 'middle';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'удалить потом',
+      'title' => '',
+      'body' => 'тут будет редактирование профиля',
+      'format' => 'full_html',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '34fd81a4-ace5-4bb2-b6a9-b813143070e6';
+    $display->content['new-34fd81a4-ace5-4bb2-b6a9-b813143070e6'] = $pane;
+    $display->panels['middle'][0] = 'new-34fd81a4-ace5-4bb2-b6a9-b813143070e6';
+    $pane = new stdClass();
+    $pane->pid = 'new-30d2888a-c03e-40c9-9982-d0f35223412b';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_form_field';
+    $pane->subtype = 'user:field_user_name';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => '',
+      'formatter' => '',
+      'context' => 'argument_entity_id:user_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '30d2888a-c03e-40c9-9982-d0f35223412b';
+    $display->content['new-30d2888a-c03e-40c9-9982-d0f35223412b'] = $pane;
+    $display->panels['middle'][1] = 'new-30d2888a-c03e-40c9-9982-d0f35223412b';
+    $pane = new stdClass();
+    $pane->pid = 'new-b395373c-d359-402e-8165-c8139d44afd4';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_form_field';
+    $pane->subtype = 'user:field_user_last_name';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => '',
+      'formatter' => '',
+      'context' => 'argument_entity_id:user_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = 'b395373c-d359-402e-8165-c8139d44afd4';
+    $display->content['new-b395373c-d359-402e-8165-c8139d44afd4'] = $pane;
+    $display->panels['middle'][2] = 'new-b395373c-d359-402e-8165-c8139d44afd4';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['edit_profile'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'feedback';
+  $page->task = 'page';
+  $page->admin_title = 'Обратная связь';
+  $page->admin_description = '';
+  $page->path = 'feedback';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_feedback_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'feedback';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Обратная связь',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '.entity-entityform-type h2 {
+  display: none;
+}
+span.fieldset-legend {
+  display: none;
+}',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '8',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => '',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Feedback';
+  $display->uuid = '30281f09-cd16-4244-9d2e-618a137a4534';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-e1975613-20b3-44d7-a055-9aab9e86cd0d';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'e1975613-20b3-44d7-a055-9aab9e86cd0d';
+    $display->content['new-e1975613-20b3-44d7-a055-9aab9e86cd0d'] = $pane;
+    $display->panels['middle'][0] = 'new-e1975613-20b3-44d7-a055-9aab9e86cd0d';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['feedback'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'file_coverting_service';
+  $page->task = 'page';
+  $page->admin_title = 'Конвертация в машиночитаемые форматы';
+  $page->admin_description = '';
+  $page->path = 'file-coverting-service';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_file_coverting_service_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'file_coverting_service';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '.entity-entityform-type h2 {display: none}',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '12',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'File converting service';
+  $display->uuid = 'a816b6b9-7cb0-4584-9266-740b4c33d9ea';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-3ee27086-17fd-47a2-9f78-60537fe08cac';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '3ee27086-17fd-47a2-9f78-60537fe08cac';
+    $display->content['new-3ee27086-17fd-47a2-9f78-60537fe08cac'] = $pane;
+    $display->panels['middle'][0] = 'new-3ee27086-17fd-47a2-9f78-60537fe08cac';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['file_coverting_service'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'front_page';
+  $page->task = 'page';
+  $page->admin_title = 'Главная страница';
+  $page->admin_description = '';
+  $page->path = 'frontpage';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_front_page_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'front_page';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Главная страница',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'Центр',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'front-rubrics',
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '0fa18e23-79e8-40ce-a1d8-c3ca1e97e2fc';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-f36c9276-2ed9-4d48-b14a-1daf4ff9ea47';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'rubrics-rubrics_front';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'f36c9276-2ed9-4d48-b14a-1daf4ff9ea47';
+    $display->content['new-f36c9276-2ed9-4d48-b14a-1daf4ff9ea47'] = $pane;
+    $display->panels['center'][0] = 'new-f36c9276-2ed9-4d48-b14a-1daf4ff9ea47';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['front_page'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'ideas';
+  $page->task = 'page';
+  $page->admin_title = 'Идеи';
+  $page->admin_description = '';
+  $page->path = 'ideas';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_ideas_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'ideas';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Идеи',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Ideas';
+  $display->uuid = '326d6b51-534d-41b3-9f77-f2daddd1d247';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-7d4739f9-9b83-43ba-9c04-718542d6c4af';
+    $pane->panel = 'middle';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'perm',
+          'settings' => array(
+            'perm' => 'create idea content',
+          ),
+          'context' => 'logged-in-user',
+          'not' => FALSE,
+        ),
+      ),
+    );
+    $pane->configuration = array(
+      'admin_title' => 'CUSTOM LINK (Authorized users)',
+      'title' => '',
+      'body' => '<?php
+print t(\'<div class="view-organizations"><div class="pane-btn"><a class="btn" href="@url">Add idea</a></div></div>\', array(\'@url\' => url(\'node/add/idea\')));
+?>',
+      'format' => 'ds_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '7d4739f9-9b83-43ba-9c04-718542d6c4af';
+    $display->content['new-7d4739f9-9b83-43ba-9c04-718542d6c4af'] = $pane;
+    $display->panels['middle'][0] = 'new-7d4739f9-9b83-43ba-9c04-718542d6c4af';
+    $pane = new stdClass();
+    $pane->pid = 'new-217f3300-2a00-4bba-82ca-06ec1f0b50b5';
+    $pane->panel = 'middle';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'role',
+          'settings' => array(
+            'rids' => array(
+              0 => 1,
+            ),
+          ),
+          'context' => 'logged-in-user',
+          'not' => FALSE,
+        ),
+      ),
+    );
+    $pane->configuration = array(
+      'admin_title' => 'CUSTOM LINK (Anonymous user)',
+      'title' => '',
+      'body' => '<?php
+print t(\'<div class="view-organizations"><div class="pane-btn"><a class="btn" href="@url">Add idea</a></div></div>\', array(\'@url\' => url(\'add-idea\')));
+?>',
+      'format' => 'ds_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '217f3300-2a00-4bba-82ca-06ec1f0b50b5';
+    $display->content['new-217f3300-2a00-4bba-82ca-06ec1f0b50b5'] = $pane;
+    $display->panels['middle'][1] = 'new-217f3300-2a00-4bba-82ca-06ec1f0b50b5';
+    $pane = new stdClass();
+    $pane->pid = 'new-7f658de5-1856-40c7-84b0-831adb42e5ea';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'ideas-ideas_list';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '7f658de5-1856-40c7-84b0-831adb42e5ea';
+    $display->content['new-7f658de5-1856-40c7-84b0-831adb42e5ea'] = $pane;
+    $display->panels['middle'][2] = 'new-7f658de5-1856-40c7-84b0-831adb42e5ea';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-7f658de5-1856-40c7-84b0-831adb42e5ea';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['ideas'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'ideas_moderation';
+  $page->task = 'page';
+  $page->admin_title = 'Идеи для модератора';
+  $page->admin_description = '';
+  $page->path = 'admin/content/ideas';
+  $page->access = array();
+  $page->menu = array(
+    'type' => 'normal',
+    'title' => 'Идеи',
+    'name' => 'management',
+    'weight' => '0',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_ideas_moderation_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'ideas_moderation';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '31815c4b-5224-43b1-b5e8-a629830d7bce';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-8d8bfb37-cc92-49bc-a18b-f398bca83dd0';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'ideas-panel_pane_1';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '8d8bfb37-cc92-49bc-a18b-f398bca83dd0';
+    $display->content['new-8d8bfb37-cc92-49bc-a18b-f398bca83dd0'] = $pane;
+    $display->panels['middle'][0] = 'new-8d8bfb37-cc92-49bc-a18b-f398bca83dd0';
+  $display->hide_title = PANELS_TITLE_PANE;
+  $display->title_pane = 'new-8d8bfb37-cc92-49bc-a18b-f398bca83dd0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['ideas_moderation'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'info_for_developers';
+  $page->task = 'page';
+  $page->admin_title = 'Информация для разработчика';
+  $page->admin_description = '';
+  $page->path = 'node/1864';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_info_for_developers_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'info_for_developers';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Информация для разработчиков',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_5',
+  );
+  $display = new panels_display();
+  $display->layout = 'zen_no_wrapper';
+  $display->layout_settings = array(
+    'main_classes' => '',
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'main' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Developer resources';
+  $display->uuid = 'b81b2092-770a-4d93-981c-68b3627de884';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-fb63d424-a2b2-4e6b-88fb-077091431f34';
+    $pane->panel = 'main';
+    $pane->type = 'node';
+    $pane->subtype = 'node';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'nid' => '%1',
+      'links' => 0,
+      'leave_node_title' => 0,
+      'identifier' => '',
+      'build_mode' => 'full',
+      'link_node_title' => 0,
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'fb63d424-a2b2-4e6b-88fb-077091431f34';
+    $display->content['new-fb63d424-a2b2-4e6b-88fb-077091431f34'] = $pane;
+    $display->panels['main'][0] = 'new-fb63d424-a2b2-4e6b-88fb-077091431f34';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['info_for_developers'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'library';
+  $page->task = 'page';
+  $page->admin_title = 'Библиотека';
+  $page->admin_description = '';
+  $page->path = 'library';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_library_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'library';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Библиотека',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => 'page-library',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'facets',
+          1 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'Центр',
+        'width' => '79.92186011053936',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'dataset-search-facets',
+      ),
+      'facets' => array(
+        'type' => 'region',
+        'title' => 'Facets',
+        'width' => '20.078139889460644',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'region-facet',
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'facets' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Documents regulating the work with open data';
+  $display->uuid = '82a3ef94-8f8e-433c-8ba5-6bf993b1c310';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-093967e1-8843-4c56-b03a-7166de62bee8';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'search_api_sorts-search-sorts';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '093967e1-8843-4c56-b03a-7166de62bee8';
+    $display->content['new-093967e1-8843-4c56-b03a-7166de62bee8'] = $pane;
+    $display->panels['center'][0] = 'new-093967e1-8843-4c56-b03a-7166de62bee8';
+    $pane = new stdClass();
+    $pane->pid = 'new-d1679b34-7bcc-415d-bf4d-09be7bf2a74b';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'documents_search-document_search';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'pane-datasets-search-dataset-search',
+    );
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'd1679b34-7bcc-415d-bf4d-09be7bf2a74b';
+    $display->content['new-d1679b34-7bcc-415d-bf4d-09be7bf2a74b'] = $pane;
+    $display->panels['center'][1] = 'new-d1679b34-7bcc-415d-bf4d-09be7bf2a74b';
+    $pane = new stdClass();
+    $pane->pid = 'new-c52d204a-e19e-4507-8f21-3d04bd318957';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-hr6DjBRN3CSVW1xFrjnkTZSHOIcZ3hu0';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Type',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'c52d204a-e19e-4507-8f21-3d04bd318957';
+    $display->content['new-c52d204a-e19e-4507-8f21-3d04bd318957'] = $pane;
+    $display->panels['facets'][0] = 'new-c52d204a-e19e-4507-8f21-3d04bd318957';
+    $pane = new stdClass();
+    $pane->pid = 'new-f2511d9e-1b39-4a9b-91c6-99c05c167d58';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-a1eVmbH1sklZfWBPtHGJyKZjLAGRvaGE';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Topic',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'f2511d9e-1b39-4a9b-91c6-99c05c167d58';
+    $display->content['new-f2511d9e-1b39-4a9b-91c6-99c05c167d58'] = $pane;
+    $display->panels['facets'][1] = 'new-f2511d9e-1b39-4a9b-91c6-99c05c167d58';
+    $pane = new stdClass();
+    $pane->pid = 'new-4b522a8d-3f87-468d-ae3e-84be12bce861';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-epHbEzIKUrnHwmcq6rIz0ktNO3yCeHCD';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Keyword',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '4b522a8d-3f87-468d-ae3e-84be12bce861';
+    $display->content['new-4b522a8d-3f87-468d-ae3e-84be12bce861'] = $pane;
+    $display->panels['facets'][2] = 'new-4b522a8d-3f87-468d-ae3e-84be12bce861';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['library'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'moderation';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Модерация';
+  $page->admin_description = '';
+  $page->path = 'user/%user/moderation';
+  $page->access = array(
+    'logic' => 'and',
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 4,
+            1 => 5,
+          ),
+        ),
+        'context' => 'argument_entity_id:user_1',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => 'Активность',
+    'name' => 'navigation',
+    'weight' => '20',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+      'keyword' => 'user',
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_moderation_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'moderation';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 1,
+          1 => 'main-row',
+        ),
+        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+        'class' => 'moderation-tabs',
+        'hide_empty' => 0,
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'Центр',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+      ),
+      1 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'top_region',
+        ),
+        'parent' => 'main',
+        'class' => '',
+      ),
+      'top_region' => array(
+        'type' => 'region',
+        'title' => 'top region',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => 'pane-btn-grey',
+        'hide_empty' => 0,
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+      'center' => array(
+        'panel_tab_id_pattern' => 'region',
+      ),
+      'top_region' => NULL,
+    ),
+    'center' => array(
+      'style' => 'tabs',
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Moderation';
+  $display->uuid = '46f52b97-c5c4-414b-b729-900ff237d596';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-74ea7ba8-a6b5-43a4-ba3c-af8263b84fd3';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'moderation_users-moderation_list_users';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '74ea7ba8-a6b5-43a4-ba3c-af8263b84fd3';
+    $display->content['new-74ea7ba8-a6b5-43a4-ba3c-af8263b84fd3'] = $pane;
+    $display->panels['center'][0] = 'new-74ea7ba8-a6b5-43a4-ba3c-af8263b84fd3';
+    $pane = new stdClass();
+    $pane->pid = 'new-5f7719b1-604e-4a3e-881f-5de01e0a502e';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'comments-comments';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '5f7719b1-604e-4a3e-881f-5de01e0a502e';
+    $display->content['new-5f7719b1-604e-4a3e-881f-5de01e0a502e'] = $pane;
+    $display->panels['center'][1] = 'new-5f7719b1-604e-4a3e-881f-5de01e0a502e';
+    $pane = new stdClass();
+    $pane->pid = 'new-905d0056-6453-42a0-874b-0cc22e35b818';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'moderation_comments-moderation_list_comments';
+    $pane->shown = FALSE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '905d0056-6453-42a0-874b-0cc22e35b818';
+    $display->content['new-905d0056-6453-42a0-874b-0cc22e35b818'] = $pane;
+    $display->panels['center'][2] = 'new-905d0056-6453-42a0-874b-0cc22e35b818';
+    $pane = new stdClass();
+    $pane->pid = 'new-91e92518-68bb-4181-b6db-3cf1ac505c85';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'moderation_ideas-moderation_ideas';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $pane->locks = array();
+    $pane->uuid = '91e92518-68bb-4181-b6db-3cf1ac505c85';
+    $display->content['new-91e92518-68bb-4181-b6db-3cf1ac505c85'] = $pane;
+    $display->panels['center'][3] = 'new-91e92518-68bb-4181-b6db-3cf1ac505c85';
+    $pane = new stdClass();
+    $pane->pid = 'new-0809504a-a5c9-48f0-9d78-ebe693d5c589';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'competitions_for_rubrics-competitions_for_moderation';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Конкурсы',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 4;
+    $pane->locks = array();
+    $pane->uuid = '0809504a-a5c9-48f0-9d78-ebe693d5c589';
+    $display->content['new-0809504a-a5c9-48f0-9d78-ebe693d5c589'] = $pane;
+    $display->panels['center'][4] = 'new-0809504a-a5c9-48f0-9d78-ebe693d5c589';
+    $pane = new stdClass();
+    $pane->pid = 'new-31027937-686c-41d5-9a7c-76d8ae40f7a0';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'moderation_ideas-moderation_quick_facts';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 5;
+    $pane->locks = array();
+    $pane->uuid = '31027937-686c-41d5-9a7c-76d8ae40f7a0';
+    $display->content['new-31027937-686c-41d5-9a7c-76d8ae40f7a0'] = $pane;
+    $display->panels['center'][5] = 'new-31027937-686c-41d5-9a7c-76d8ae40f7a0';
+    $pane = new stdClass();
+    $pane->pid = 'new-7a6a07c6-85aa-479d-b532-b6e6514b25b8';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'moderation_ideas-moderation_app';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Приложения',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 6;
+    $pane->locks = array();
+    $pane->uuid = '7a6a07c6-85aa-479d-b532-b6e6514b25b8';
+    $display->content['new-7a6a07c6-85aa-479d-b532-b6e6514b25b8'] = $pane;
+    $display->panels['center'][6] = 'new-7a6a07c6-85aa-479d-b532-b6e6514b25b8';
+    $pane = new stdClass();
+    $pane->pid = 'new-9e282321-8fd9-468b-b7d3-3e14e22eaa3f';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'moderation_opendata_query-moderation_query';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 7;
+    $pane->locks = array();
+    $pane->uuid = '9e282321-8fd9-468b-b7d3-3e14e22eaa3f';
+    $display->content['new-9e282321-8fd9-468b-b7d3-3e14e22eaa3f'] = $pane;
+    $display->panels['center'][7] = 'new-9e282321-8fd9-468b-b7d3-3e14e22eaa3f';
+    $pane = new stdClass();
+    $pane->pid = 'new-5b20a7a5-afab-478a-b7a4-71a821ebe2ca';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'moderation_opendata_query-dataset_reports';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Обращения',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 8;
+    $pane->locks = array();
+    $pane->uuid = '5b20a7a5-afab-478a-b7a4-71a821ebe2ca';
+    $display->content['new-5b20a7a5-afab-478a-b7a4-71a821ebe2ca'] = $pane;
+    $display->panels['center'][8] = 'new-5b20a7a5-afab-478a-b7a4-71a821ebe2ca';
+    $pane = new stdClass();
+    $pane->pid = 'new-be49be5b-70c9-492f-a48a-5c10a264f36c';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'moderate_publisher_requests-moderate_publisher_requests';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 9;
+    $pane->locks = array();
+    $pane->uuid = 'be49be5b-70c9-492f-a48a-5c10a264f36c';
+    $display->content['new-be49be5b-70c9-492f-a48a-5c10a264f36c'] = $pane;
+    $display->panels['center'][9] = 'new-be49be5b-70c9-492f-a48a-5c10a264f36c';
+    $pane = new stdClass();
+    $pane->pid = 'new-847ff646-6488-4f0d-91d8-8a46abdd3074';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'entityform_submissions-feedback_submissions';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Обратная связь',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 10;
+    $pane->locks = array();
+    $pane->uuid = '847ff646-6488-4f0d-91d8-8a46abdd3074';
+    $display->content['new-847ff646-6488-4f0d-91d8-8a46abdd3074'] = $pane;
+    $display->panels['center'][10] = 'new-847ff646-6488-4f0d-91d8-8a46abdd3074';
+    $pane = new stdClass();
+    $pane->pid = 'new-859eae61-9951-4b73-860a-9bb00fba40d0';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'rubrics-rubricks_moderation';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Рубрики',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 11;
+    $pane->locks = array();
+    $pane->uuid = '859eae61-9951-4b73-860a-9bb00fba40d0';
+    $display->content['new-859eae61-9951-4b73-860a-9bb00fba40d0'] = $pane;
+    $display->panels['center'][11] = 'new-859eae61-9951-4b73-860a-9bb00fba40d0';
+    $pane = new stdClass();
+    $pane->pid = 'new-22a41f31-25c8-454d-8136-35830edba8e0';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'dataset-recommended_datasets';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Наборы данных',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 12;
+    $pane->locks = array();
+    $pane->uuid = '22a41f31-25c8-454d-8136-35830edba8e0';
+    $display->content['new-22a41f31-25c8-454d-8136-35830edba8e0'] = $pane;
+    $display->panels['center'][12] = 'new-22a41f31-25c8-454d-8136-35830edba8e0';
+    $pane = new stdClass();
+    $pane->pid = 'new-7c6c90f5-7a10-46e6-92bd-1a3e5e4934f1';
+    $pane->panel = 'top_region';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Ссылка - Добавить Организацию',
+      'title' => '',
+      'body' => '<a class="btn" href="/node/add/organization">Добавить Организацию</a>',
+      'format' => 'full_html',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '7c6c90f5-7a10-46e6-92bd-1a3e5e4934f1';
+    $display->content['new-7c6c90f5-7a10-46e6-92bd-1a3e5e4934f1'] = $pane;
+    $display->panels['top_region'][0] = 'new-7c6c90f5-7a10-46e6-92bd-1a3e5e4934f1';
+    $pane = new stdClass();
+    $pane->pid = 'new-e1d2fcc3-54f3-4f41-8500-55f770bf7006';
+    $pane->panel = 'top_region';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Ссылка - Запуск робота мониторинга',
+      'title' => '',
+      'body' => '<a class="btn" href="/opendata-import">Запуск робота мониторинга</a>',
+      'format' => 'full_html',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'e1d2fcc3-54f3-4f41-8500-55f770bf7006';
+    $display->content['new-e1d2fcc3-54f3-4f41-8500-55f770bf7006'] = $pane;
+    $display->panels['top_region'][1] = 'new-e1d2fcc3-54f3-4f41-8500-55f770bf7006';
+    $pane = new stdClass();
+    $pane->pid = 'new-488b46d5-f14c-49b3-b00f-beec85e3ea30';
+    $pane->panel = 'top_region';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Ссылка - Журнал робота мониторинга',
+      'title' => '',
+      'body' => '<a class="btn" href="/ru/opendata-log">Журнал робота мониторинга</a>',
+      'format' => 'full_html',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '488b46d5-f14c-49b3-b00f-beec85e3ea30';
+    $display->content['new-488b46d5-f14c-49b3-b00f-beec85e3ea30'] = $pane;
+    $display->panels['top_region'][2] = 'new-488b46d5-f14c-49b3-b00f-beec85e3ea30';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-488b46d5-f14c-49b3-b00f-beec85e3ea30';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['moderation'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'moderation_add_organization';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Модерация, создание Организации';
+  $page->admin_description = '';
+  $page->path = 'user/%user/add-organization';
+  $page->access = array(
+    'logic' => 'and',
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 4,
+            1 => 5,
+          ),
+        ),
+        'context' => 'argument_entity_id:user_1',
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => 'Создание материала',
+    'name' => 'navigation',
+    'weight' => '15',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_moderation_add_organization_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'moderation_add_organization';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Форма добавления материала',
+        'keyword' => 'node_add',
+        'name' => 'node_add_form',
+        'type' => 'organization',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_3',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '920acf9f-04af-463b-beee-a31a82fada54';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-a559c675-7b03-4a45-9a11-f340f0b0bcdf';
+    $pane->panel = 'middle';
+    $pane->type = 'form';
+    $pane->subtype = 'form';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'context' => 'context_node_add_form_1',
+      'override_title' => 1,
+      'override_title_text' => 'Добавить Организацию',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'a559c675-7b03-4a45-9a11-f340f0b0bcdf';
+    $display->content['new-a559c675-7b03-4a45-9a11-f340f0b0bcdf'] = $pane;
+    $display->panels['middle'][0] = 'new-a559c675-7b03-4a45-9a11-f340f0b0bcdf';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['moderation_add_organization'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'new_dataset';
+  $page->task = 'page';
+  $page->admin_title = 'Добавление набора данных';
+  $page->admin_description = '';
+  $page->path = 'new-dataset';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 6,
+            1 => 5,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_new_dataset_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'new_dataset';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '.entity-entityform-type h2 {display: none};',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Entityform Type',
+        'keyword' => 'entityform_type',
+        'name' => 'entity:entityform_type',
+        'entity_id' => '4',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Add dataset';
+  $display->uuid = '5d2dccfe-0aae-4b81-8534-bd9e24b59bea';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-c8f9f860-6506-4d20-b1bc-9ccbb1183e0e';
+    $pane->panel = 'middle';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'entityform_type';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'context_entity:entityform_type_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'c8f9f860-6506-4d20-b1bc-9ccbb1183e0e';
+    $display->content['new-c8f9f860-6506-4d20-b1bc-9ccbb1183e0e'] = $pane;
+    $display->panels['middle'][0] = 'new-c8f9f860-6506-4d20-b1bc-9ccbb1183e0e';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['new_dataset'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'news';
+  $page->task = 'page';
+  $page->admin_title = 'Новости';
+  $page->admin_description = '';
+  $page->path = 'taxonomy/term/%taxonomy_term/news';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array(
+    'taxonomy_term' => array(
+      'id' => 1,
+      'identifier' => 'Taxonomy term: ID',
+      'name' => 'term',
+      'settings' => array(
+        'input_form' => 'tid',
+        'vids' => array(
+          1 => 0,
+          4 => 0,
+          2 => 0,
+          3 => 0,
+          5 => 0,
+        ),
+        'breadcrumb' => 1,
+        'transform' => 0,
+      ),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_news_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'news';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Список новостей',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_2',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Список новостей';
+  $display->uuid = '79c51e07-b70d-4a36-b325-f8b4f31ab7cb';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-15e4e06f-26c9-403f-87e0-600aa82ed455';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'news-news';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'context' => array(
+        0 => 'argument_term_1',
+      ),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '15e4e06f-26c9-403f-87e0-600aa82ed455';
+    $display->content['new-15e4e06f-26c9-403f-87e0-600aa82ed455'] = $pane;
+    $display->panels['middle'][0] = 'new-15e4e06f-26c9-403f-87e0-600aa82ed455';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['news'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'next_resource';
+  $page->task = 'page';
+  $page->admin_title = 'Следующий ресурс';
+  $page->admin_description = '';
+  $page->path = 'node/%node/next';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_type',
+        'settings' => array(
+          'type' => array(
+            'resource' => 'resource',
+          ),
+        ),
+        'context' => 'argument_entity_id:node_1',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'rb_misc_conditions:rules_access_rule_dataset_is_multivolume',
+        'settings' => array(
+          'component_name' => 'rules_access_rule_dataset_is_multivolume',
+        ),
+        'context' => array(
+          0 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array(
+    'type' => 'tab',
+    'title' => 'Next volume',
+    'name' => 'navigation',
+    'weight' => '10',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'node' => array(
+      'id' => 1,
+      'identifier' => 'Материал: ID',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_next_resource_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'next_resource';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Следующий ресурс',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(
+      0 => array(
+        'identifier' => 'Материал from Материал (on Материал: Dataset [field_dataset_ref])',
+        'keyword' => 'node_2',
+        'name' => 'entity_from_field:field_dataset_ref-node-node',
+        'delta' => 0,
+        'context' => 'argument_entity_id:node_1',
+        'id' => 1,
+      ),
+    ),
+    'access' => array(
+      'plugins' => array(),
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+    'rb_misc_trigger' => 1,
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '0f18eda3-b0b1-4210-a3cb-3a8162486cea';
+  $display->content = array();
+  $display->panels = array();
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['next_resource'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'organizations';
+  $page->task = 'page';
+  $page->admin_title = 'Организации';
+  $page->admin_description = '';
+  $page->path = 'organizations';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_organizations_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'organizations';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Организации',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Organizations';
+  $display->uuid = 'e10b7097-9d4d-4282-aade-f2cf389426bf';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-54d38d22-fcf5-4d07-ab0f-7af1a7e9fc0c';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'organizations-organizations_list';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '54d38d22-fcf5-4d07-ab0f-7af1a7e9fc0c';
+    $display->content['new-54d38d22-fcf5-4d07-ab0f-7af1a7e9fc0c'] = $pane;
+    $display->panels['middle'][0] = 'new-54d38d22-fcf5-4d07-ab0f-7af1a7e9fc0c';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-54d38d22-fcf5-4d07-ab0f-7af1a7e9fc0c';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['organizations'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'piwik_statictics';
+  $page->task = 'page';
+  $page->admin_title = 'Piwik statictics';
+  $page->admin_description = '';
+  $page->path = 'site-usage';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_piwik_statictics_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'piwik_statictics';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Страница статистики',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 1,
+          1 => 'main-row',
+        ),
+        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+        'class' => 'stat-tabs',
+        'hide_empty' => 0,
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'Центр',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'moderation-tabs',
+        'hide_empty' => 0,
+      ),
+      1 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'date_filter',
+        ),
+        'parent' => 'main',
+        'class' => 'stat-filters',
+        'hide_empty' => 0,
+      ),
+      'date_filter' => array(
+        'type' => 'region',
+        'title' => 'Date filter',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => '',
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+      'center' => array(
+        'panel_tab_id_pattern' => 'region',
+        'panel_tab_save_active_tab' => 1,
+      ),
+      'date_filter' => NULL,
+    ),
+    'center' => array(
+      'style' => 'tabs',
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Site usage statistics';
+  $display->uuid = '8e6e3d7e-9827-48bc-96db-5f1ae70f5305';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-f686e6cf-3292-4d0c-9689-837e0f666dfa';
+    $pane->panel = 'center';
+    $pane->type = 'panels_mini';
+    $pane->subtype = 'overall_statistics';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'General statistics',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'f686e6cf-3292-4d0c-9689-837e0f666dfa';
+    $display->content['new-f686e6cf-3292-4d0c-9689-837e0f666dfa'] = $pane;
+    $display->panels['center'][0] = 'new-f686e6cf-3292-4d0c-9689-837e0f666dfa';
+    $pane = new stdClass();
+    $pane->pid = 'new-8618d7e2-8e34-454e-8b58-75bc0a09f8a8';
+    $pane->panel = 'center';
+    $pane->type = 'piwik_report_iframe';
+    $pane->subtype = 'piwik_report_iframe';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'report' => 'getConfiguration',
+      'override_title' => 1,
+      'override_title_text' => 'Browsers',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '8618d7e2-8e34-454e-8b58-75bc0a09f8a8';
+    $display->content['new-8618d7e2-8e34-454e-8b58-75bc0a09f8a8'] = $pane;
+    $display->panels['center'][1] = 'new-8618d7e2-8e34-454e-8b58-75bc0a09f8a8';
+    $pane = new stdClass();
+    $pane->pid = 'new-8f2ac76a-0493-4684-8396-08093a1d08a1';
+    $pane->panel = 'center';
+    $pane->type = 'piwik_report_iframe';
+    $pane->subtype = 'piwik_report_iframe';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'report' => 'getOS',
+      'override_title' => 1,
+      'override_title_text' => 'OS',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '8f2ac76a-0493-4684-8396-08093a1d08a1';
+    $display->content['new-8f2ac76a-0493-4684-8396-08093a1d08a1'] = $pane;
+    $display->panels['center'][2] = 'new-8f2ac76a-0493-4684-8396-08093a1d08a1';
+    $pane = new stdClass();
+    $pane->pid = 'new-ff9c912d-4861-4fe3-8e00-96c819c51ca9';
+    $pane->panel = 'center';
+    $pane->type = 'piwik_report_iframe';
+    $pane->subtype = 'piwik_report_iframe';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'report' => 'visitors_locations',
+      'override_title' => 1,
+      'override_title_text' => 'Countries',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $pane->locks = array();
+    $pane->uuid = 'ff9c912d-4861-4fe3-8e00-96c819c51ca9';
+    $display->content['new-ff9c912d-4861-4fe3-8e00-96c819c51ca9'] = $pane;
+    $display->panels['center'][3] = 'new-ff9c912d-4861-4fe3-8e00-96c819c51ca9';
+    $pane = new stdClass();
+    $pane->pid = 'new-5896806e-06f1-4e36-85bb-33f198b1e719';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'statistic-chart_datasets';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Datasets',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 4;
+    $pane->locks = array();
+    $pane->uuid = '5896806e-06f1-4e36-85bb-33f198b1e719';
+    $display->content['new-5896806e-06f1-4e36-85bb-33f198b1e719'] = $pane;
+    $display->panels['center'][4] = 'new-5896806e-06f1-4e36-85bb-33f198b1e719';
+    $pane = new stdClass();
+    $pane->pid = 'new-cb65836d-ee43-44f3-a99a-51d608cb4ffe';
+    $pane->panel = 'date_filter';
+    $pane->type = 'piwik_dateselect_form';
+    $pane->subtype = 'piwik_dateselect_form';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'report' => NULL,
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'cb65836d-ee43-44f3-a99a-51d608cb4ffe';
+    $display->content['new-cb65836d-ee43-44f3-a99a-51d608cb4ffe'] = $pane;
+    $display->panels['date_filter'][0] = 'new-cb65836d-ee43-44f3-a99a-51d608cb4ffe';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['piwik_statictics'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'previous_resource';
+  $page->task = 'page';
+  $page->admin_title = 'Предыдущий ресурс';
+  $page->admin_description = '';
+  $page->path = 'node/%node/previous';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_type',
+        'settings' => array(
+          'type' => array(
+            'resource' => 'resource',
+          ),
+        ),
+        'context' => 'argument_entity_id:node_1',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'rb_misc_conditions:rules_access_rule_dataset_is_multivolume',
+        'settings' => array(
+          'component_name' => 'rules_access_rule_dataset_is_multivolume',
+        ),
+        'context' => array(
+          0 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array(
+    'type' => 'tab',
+    'title' => 'Previous volume',
+    'name' => 'navigation',
+    'weight' => '7',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'node' => array(
+      'id' => 1,
+      'identifier' => 'Материал: ID',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_previous_resource_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'previous_resource';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Предыдущий ресурс',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(
+      0 => array(
+        'identifier' => 'Материал from Материал (on Материал: Dataset [field_dataset_ref])',
+        'keyword' => 'node_2',
+        'name' => 'entity_from_field:field_dataset_ref-node-node',
+        'delta' => 0,
+        'context' => 'argument_entity_id:node_1',
+        'id' => 1,
+      ),
+    ),
+    'access' => array(
+      'plugins' => array(),
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+    'rb_misc_trigger' => 1,
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '0f18eda3-b0b1-4210-a3cb-3a8162486cea';
+  $display->content = array();
+  $display->panels = array();
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['previous_resource'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'profile_add_new';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Создание материала, пункт - добавить Новость';
+  $page->admin_description = '';
+  $page->path = 'user/%user/add-new';
+  $page->access = array(
+    'logic' => 'and',
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => 'Создание материала',
+    'name' => 'navigation',
+    'weight' => '15',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_profile_add_new_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'profile_add_new';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(
+      0 => array(
+        'identifier' => 'Форма добавления материала',
+        'keyword' => 'node_add',
+        'name' => 'node_add_form',
+        'type' => 'news',
+        'id' => 1,
+      ),
+    ),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_3',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '6aa70996-4998-4fa9-8f7f-14aadf5e90d6';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-6fbb4244-53f6-48bd-9044-59900d7e8fe3';
+    $pane->panel = 'middle';
+    $pane->type = 'form';
+    $pane->subtype = 'form';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'context' => 'context_node_add_form_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '6fbb4244-53f6-48bd-9044-59900d7e8fe3';
+    $display->content['new-6fbb4244-53f6-48bd-9044-59900d7e8fe3'] = $pane;
+    $display->panels['middle'][0] = 'new-6fbb4244-53f6-48bd-9044-59900d7e8fe3';
+  $display->hide_title = PANELS_TITLE_PANE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['profile_add_new'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'quick_facts';
+  $page->task = 'page';
+  $page->admin_title = 'Быстрые факты';
+  $page->admin_description = '';
+  $page->path = 'user/%user/facts';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'argument_entity_id:user_1',
+          1 => 'logged-in-user',
+        ),
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'create quick_fact content',
+        ),
+        'context' => 'argument_entity_id:user_1',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array(
+    'type' => 'tab',
+    'title' => 'Быстрые факты',
+    'name' => 'navigation',
+    'weight' => '10',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_quick_facts_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'quick_facts';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Быстрые факты',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(),
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_7',
+  );
+  $display = new panels_display();
+  $display->layout = 'zen_no_wrapper';
+  $display->layout_settings = array(
+    'main_classes' => '',
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'main' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'User profile';
+  $display->uuid = '6537b06b-6e9f-4a7e-9f99-3b118b03b540';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-52b21fca-a607-4a45-b471-76f17354be49';
+    $pane->panel = 'main';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'quick_facts-quick_facts';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '52b21fca-a607-4a45-b471-76f17354be49';
+    $display->content['new-52b21fca-a607-4a45-b471-76f17354be49'] = $pane;
+    $display->panels['main'][0] = 'new-52b21fca-a607-4a45-b471-76f17354be49';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['quick_facts'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'redaction';
+  $page->task = 'page';
+  $page->admin_title = 'Редакция';
+  $page->admin_description = '';
+  $page->path = 'user/%user/redaction';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 3,
+            1 => 5,
+          ),
+        ),
+        'context' => 'argument_entity_id:user_1',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array();
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+      'keyword' => 'user',
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_redaction_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'redaction';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Страница редактора',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(),
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_7',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Redaction';
+  $display->uuid = '2c3c28ca-11f9-4db4-ab79-de0c343e4a70';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-681598ca-1989-4531-82e6-e6ea36dfbdbf';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'news-news_redaction';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '681598ca-1989-4531-82e6-e6ea36dfbdbf';
+    $display->content['new-681598ca-1989-4531-82e6-e6ea36dfbdbf'] = $pane;
+    $display->panels['middle'][0] = 'new-681598ca-1989-4531-82e6-e6ea36dfbdbf';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['redaction'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'rubric_competitions';
+  $page->task = 'page';
+  $page->admin_title = 'Рубрика - закладка Конкурсы';
+  $page->admin_description = '';
+  $page->path = 'taxonomy/term/%taxonomy_term/competition';
+  $page->access = array(
+    'logic' => 'and',
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => '',
+    'name' => 'navigation',
+    'weight' => '0',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'taxonomy_term' => array(
+      'id' => 1,
+      'identifier' => 'Taxonomy term: ID',
+      'name' => 'term',
+      'settings' => array(
+        'input_form' => 'tid',
+        'vids' => array(
+          3 => '3',
+          1 => 0,
+          4 => 0,
+          2 => 0,
+          5 => 0,
+        ),
+        'breadcrumb' => 1,
+        'transform' => 0,
+      ),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_rubric_competitions_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'rubric_competitions';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'logic' => 'and',
+    ),
+    'panels_everywhere_site_template' => 'site_template_panel_context_2',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '6ef410d9-37a6-4a35-9887-fa24085052d7';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-ea20c951-d2ab-4363-94a6-d20e5240ccc6';
+    $pane->panel = 'center';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'role',
+          'settings' => array(
+            'rids' => array(
+              0 => 6,
+              1 => 3,
+              2 => 4,
+              3 => 5,
+            ),
+          ),
+          'context' => 'logged-in-user',
+          'not' => FALSE,
+        ),
+      ),
+    );
+    $pane->configuration = array(
+      'admin_title' => 'Ссылка на добавление конкурса',
+      'title' => '',
+      'body' => '<div class="view-organizations"><div class="pane-btn"><a class="btn" href="/node/add/competition?destination=taxonomy/term/%taxonomy_term:tid/competition&field_competition_rubric=%taxonomy_term:tid"><?php print t(\'Add competition\');?></a></div></div>',
+      'format' => 'ds_code',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'ea20c951-d2ab-4363-94a6-d20e5240ccc6';
+    $display->content['new-ea20c951-d2ab-4363-94a6-d20e5240ccc6'] = $pane;
+    $display->panels['center'][0] = 'new-ea20c951-d2ab-4363-94a6-d20e5240ccc6';
+    $pane = new stdClass();
+    $pane->pid = 'new-a0d938f0-8a21-4323-9db0-3bca5dbc61e0';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'competitions_for_rubrics-competitions_for_rubric';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'arguments' => array(
+        'tid' => '%taxonomy_term:tid',
+      ),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'a0d938f0-8a21-4323-9db0-3bca5dbc61e0';
+    $display->content['new-a0d938f0-8a21-4323-9db0-3bca5dbc61e0'] = $pane;
+    $display->panels['center'][1] = 'new-a0d938f0-8a21-4323-9db0-3bca5dbc61e0';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['rubric_competitions'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'rules_and_recommendations';
+  $page->task = 'page';
+  $page->admin_title = 'Правила и рекомендации';
+  $page->admin_description = '';
+  $page->path = 'node/1863';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_rules_and_recommendations_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'rules_and_recommendations';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_5',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Rules and Recommendations';
+  $display->uuid = 'b7af63a7-7600-4581-b7a3-185aa1056d49';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-ed631167-6bbe-49a7-8c8a-05b37a636d23';
+    $pane->panel = 'middle';
+    $pane->type = 'node';
+    $pane->subtype = 'node';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'nid' => '%1',
+      'links' => 0,
+      'leave_node_title' => 0,
+      'identifier' => '',
+      'build_mode' => 'full',
+      'link_node_title' => 0,
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'ed631167-6bbe-49a7-8c8a-05b37a636d23';
+    $display->content['new-ed631167-6bbe-49a7-8c8a-05b37a636d23'] = $pane;
+    $display->panels['middle'][0] = 'new-ed631167-6bbe-49a7-8c8a-05b37a636d23';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-ed631167-6bbe-49a7-8c8a-05b37a636d23';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['rules_and_recommendations'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'search';
+  $page->task = 'page';
+  $page->admin_title = 'Поиск по сайту';
+  $page->admin_description = '';
+  $page->path = 'search';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_search_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'search';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Поиск по сайту',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => '',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'facets',
+          1 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'Центр',
+        'width' => '79.79480337970904',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'dataset-search-facets',
+      ),
+      'facets' => array(
+        'type' => 'region',
+        'title' => 'Facets',
+        'width' => '20.20519662029096',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'region-facet',
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'facets' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Поиск по сайту';
+  $display->uuid = 'ab89aa29-909a-4370-b0b4-b78d3467d3f8';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-d1b7431a-be60-4ae3-bc80-3a781e2f19ca';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'search_api_sorts-search-sorts';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'pane-datasets-search-dataset-search',
+    );
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'd1b7431a-be60-4ae3-bc80-3a781e2f19ca';
+    $display->content['new-d1b7431a-be60-4ae3-bc80-3a781e2f19ca'] = $pane;
+    $display->panels['center'][0] = 'new-d1b7431a-be60-4ae3-bc80-3a781e2f19ca';
+    $pane = new stdClass();
+    $pane->pid = 'new-f0ad601a-3098-4741-98d3-359556fc75a4';
+    $pane->panel = 'center';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'content_search-content_search';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'pane-datasets-search-dataset-search',
+    );
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'f0ad601a-3098-4741-98d3-359556fc75a4';
+    $display->content['new-f0ad601a-3098-4741-98d3-359556fc75a4'] = $pane;
+    $display->panels['center'][1] = 'new-f0ad601a-3098-4741-98d3-359556fc75a4';
+    $pane = new stdClass();
+    $pane->pid = 'new-02aae54e-6eb6-4954-8463-2f4a04f1b965';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-hgpfKHcnFK4kkcAT02ie13K5fYeRqEzY';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Тип материала',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '02aae54e-6eb6-4954-8463-2f4a04f1b965';
+    $display->content['new-02aae54e-6eb6-4954-8463-2f4a04f1b965'] = $pane;
+    $display->panels['facets'][0] = 'new-02aae54e-6eb6-4954-8463-2f4a04f1b965';
+    $pane = new stdClass();
+    $pane->pid = 'new-cbe6f93a-3b4b-4fd2-8421-65d65b928576';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-0AS8w8q1RfUr7pHIljRDYijNAojodBMF';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Рубрика',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'cbe6f93a-3b4b-4fd2-8421-65d65b928576';
+    $display->content['new-cbe6f93a-3b4b-4fd2-8421-65d65b928576'] = $pane;
+    $display->panels['facets'][1] = 'new-cbe6f93a-3b4b-4fd2-8421-65d65b928576';
+    $pane = new stdClass();
+    $pane->pid = 'new-0ea85f9c-eba9-4a91-8f12-74d4f2ba363f';
+    $pane->panel = 'facets';
+    $pane->type = 'block';
+    $pane->subtype = 'facetapi-bEI7sfj0GE5kGkDqVUF1lL0c1U7dQXVq';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Ключевые слова',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '0ea85f9c-eba9-4a91-8f12-74d4f2ba363f';
+    $display->content['new-0ea85f9c-eba9-4a91-8f12-74d4f2ba363f'] = $pane;
+    $display->panels['facets'][2] = 'new-0ea85f9c-eba9-4a91-8f12-74d4f2ba363f';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['search'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'success';
+  $page->task = 'page';
+  $page->admin_title = 'Операция успешно проведена';
+  $page->admin_description = '';
+  $page->path = 'success';
+  $page->access = array();
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_success_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'success';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_9',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Congratulation';
+  $display->uuid = 'ce6a4c4f-cf8a-438f-92c9-cfad5356f37e';
+  $display->content = array();
+  $display->panels = array();
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['success'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'user_ideas';
+  $page->task = 'page';
+  $page->admin_title = 'Профиль - закладка Идеи пользователя';
+  $page->admin_description = '';
+  $page->path = 'user/%user/ideas';
+  $page->access = array(
+    'logic' => 'and',
+    'plugins' => array(
+      0 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $page->menu = array(
+    'type' => 'none',
+    'title' => 'Мои идеи',
+    'name' => 'navigation',
+    'weight' => '5',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array(
+    'user' => array(
+      'id' => 1,
+      'identifier' => 'Пользователь: ID',
+      'name' => 'entity_id:user',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_user_ideas_panel_context';
+  $handler->task = 'page';
+  $handler->subtask = 'user_ideas';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Панель',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'panels_everywhere_site_template' => 'site_template_panel_context_7',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'My ideas';
+  $display->uuid = 'b02f0636-1395-4d22-9872-ee369060a668';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-1aab1aeb-0181-40dd-a625-f674107c845c';
+    $pane->panel = 'middle';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Ссылка - добавить идею',
+      'title' => '',
+      'body' => '<a href="/node/add/idea">Добавить идею</a>',
+      'format' => 'full_html',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '1aab1aeb-0181-40dd-a625-f674107c845c';
+    $display->content['new-1aab1aeb-0181-40dd-a625-f674107c845c'] = $pane;
+    $display->panels['middle'][0] = 'new-1aab1aeb-0181-40dd-a625-f674107c845c';
+    $pane = new stdClass();
+    $pane->pid = 'new-e0d10a88-8de8-4db4-9820-a8e94c389318';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'ideas-panel_pane_2';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'e0d10a88-8de8-4db4-9820-a8e94c389318';
+    $display->content['new-e0d10a88-8de8-4db4-9820-a8e94c389318'] = $pane;
+    $display->panels['middle'][1] = 'new-e0d10a88-8de8-4db4-9820-a8e94c389318';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-e0d10a88-8de8-4db4-9820-a8e94c389318';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['user_ideas'] = $page;
+
+  return $pages;
+
+}

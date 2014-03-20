@@ -12,28 +12,6 @@ function nodes_breadcrumbs_pm_pages_path_breadcrumbs_settings_info() {
 
   $path_breadcrumb = new stdClass();
   $path_breadcrumb->api_version = 1;
-  $path_breadcrumb->machine_name = '123';
-  $path_breadcrumb->name = 'Заявка на публикаторство';
-  $path_breadcrumb->path = 'become-a-publisher';
-  $path_breadcrumb->data = array(
-    'titles' => array(
-      0 => 'Organizations',
-      1 => '!page_title',
-    ),
-    'paths' => array(
-      0 => 'organizations',
-      1 => '<none>',
-    ),
-    'home' => 1,
-    'translatable' => 1,
-    'arguments' => array(),
-    'access' => array(),
-  );
-  $path_breadcrumb->weight = 0;
-  $export['123'] = $path_breadcrumb;
-
-  $path_breadcrumb = new stdClass();
-  $path_breadcrumb->api_version = 1;
   $path_breadcrumb->machine_name = 'about';
   $path_breadcrumb->name = 'О портале';
   $path_breadcrumb->path = 'about';
