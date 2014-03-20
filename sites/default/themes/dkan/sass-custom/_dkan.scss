@@ -5880,6 +5880,31 @@ div.fivestar-widget .star {
   }
   .view-based-map {
     border: 3px solid #fff;
+    
+    
+    #ip-geoloc-map-of-view-datasets_map-rubric_map {
+      height: 680px !important;
+    }
+  }
+}
+
+/**
+ * page-sparql
+ */
+.page-sparql {
+  .intro {
+    padding: 20px;
+    width: 50%;
+    text-align: center;
+    font-size: 16px;
+    line-height: 22px;
+    color: #666;
+    background: #fff;
+    margin: 0 auto 20px;
+    
+    p {
+      margin: 0 0 10px;
+    }
   }
 }
 
