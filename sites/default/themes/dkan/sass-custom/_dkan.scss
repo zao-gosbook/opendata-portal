@@ -4077,26 +4077,7 @@ table {
   }
 }
 
-/**
- * frontpage notice
- */
-div.frontpage-important-info-block {
-  float: none; 
-  clear: both; 
-  left: auto; 
-  width: 25%;
-  font-size: 15px;
-  color: #ffffff;
-  margin-bottom: 0; 
-  top: auto; 
-  margin-top: 0; 
-  position: absolute;
-  bottom: -47px;
-  right: 20px;
-  line-height: 1.15;
-  background-color: rgba(0,0,0,.45);
-  padding: 15px;
-}
+
 
 /**
  * widget up-down
@@ -5904,6 +5885,27 @@ div.fivestar-widget .star {
     
     p {
       margin: 0 0 10px;
+    }
+  }
+  #sparql-form {
+    font-size: 16px;
+    color: #666;
+    padding: 20px;
+    @include clearfix;
+    background: #fff;
+    
+    #query {
+      float: left;
+      width: 45%;
+    }
+    .options,
+    .options-2 {
+      margin: 0 0 0 55%;
+    }
+    .form-buttons {
+      clear: both;
+      text-align: center;
+      padding-top: 20px;
     }
   }
 }
