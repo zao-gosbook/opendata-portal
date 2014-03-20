@@ -5731,8 +5731,80 @@ div.fivestar-widget .star {
 /**
  * map
  */ 
+.page-datasets-map {
+  background-color: #fff;  
+  
+  .custom-text-wrapper {
+    text-align: center;
+    font-size: 16px;
+    padding: 20px 0;
+  }
+  
+  /* filters */
+  .od-map-page-switcher-wrapper {
+    padding: 0 0 20px;    
+    @include clearfix;
+    
+    .form-item {
+      margin: 0;
+    }
+    .form-type-radios > label {
+      height: 54px;
+      line-height: 58px; 
+      padding-right: 30px;
+      float: left;
+    }
+    .field-prefix {
+      display: none;
+    }
+    .form-radios {
+      float: left;
+    }
+    .form-type-radio {
+      float: left;
+      margin-right: 0; 
+      position: relative;
+      margin: 0;
+      
+      input {
+        position: absolute;
+        left: -10000px;
+      }
+      label {
+        padding: 0 18px;
+        height: 54px;
+        line-height: 54px;
+        background: #efefef;
+        font-size: 16px;
+        display: block;
+        cursor: pointer;
+        color: #0c87e8;
+        margin-right: 1px;
+      }
+      &.active-element label {
+        color: #fff;
+        background: #8a8a8a;
+        font-size: 20px;
+      }
+      &.active-element:before {
+        display: block;
+        content: '';
+        position: absolute;
+        bottom: -11px;
+        left: 50%;
+        margin-left: -7px;
+        width: 13px;
+        height: 11px;
+        background: url("../images/arr-bottom-grey.png") no-repeat 0 0;
+      }
+    }  
+  }
+}
+
+
 .view-datasets-map {
   
+
   .views-exposed-widgets {
     margin-bottom: 3.2em;
   }
@@ -5867,6 +5939,9 @@ div.fivestar-widget .star {
       height: 680px !important;
     }
   }
+  #ip-geoloc-map-of-view-datasets_map-google_map {
+    height: 680px !important;
+  }
 }
 
 /**
@@ -5894,18 +5969,59 @@ div.fivestar-widget .star {
     @include clearfix;
     background: #fff;
     
+    h3 {
+      font-size: 22px;
+      margin: 0 0 20px;
+      line-height: 22px;
+    }
     #query {
       float: left;
-      width: 45%;
+      width: 48%;
     }
-    .options,
+    .options {
+      margin: 0 0 0 52%;
+    }
     .options-2 {
-      margin: 0 0 0 55%;
+      color: #000;
+      padding-top: 20px;
+      clear: both;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    dt {
+      text-transform: uppercase;
+      padding-bottom: 5px;
+    }
+    dd {
+      margin: 0 0 15px;
+      
+      input [type="text"]{
+        width: 50%;
+      }
+      select {
+        width: 50%;
+      }
     }
     .form-buttons {
       clear: both;
       text-align: center;
       padding-top: 20px;
+      
+      input {
+        padding: 1.25em 1.25em;
+        border: 0;
+        color: #fff;
+        font-size: 1.05em;
+        background: #0c87e8;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: inline-block; 
+        margin: 0 2px;
+        
+        &[type="reset"]{
+          background: #878984;
+        }
+      }
     }
   }
 }
