@@ -5,9 +5,11 @@
         var $wrapper = $(this);
 
         var $radios = $wrapper.find('input');
+        var nameAtrr = $radios.eq(0).attr('name');
+        var cookieName = nameAtrr;
         $radios.bind('click', function() {
           var $this = $(this);
-          var val = $wrapper.find('input[name="' + $this.attr('name') + '"]').val();
+          var val = $(this).val(); //$wrapper.find('input[name="' + nameAtrr + '"]').val();
 
           var $exposedBlock = $('.views-exposed-widgets');
           var $targets = {
@@ -23,9 +25,16 @@
           }
 
           $targets[val].show();
+          $.cookie(cookieName, val);
         });
 
-        $wrapper.find('input:checked').trigger('click');
+        var val = $.cookie(cookieName);
+        if (!isNaN(val)) {
+          $radios.filter('[value="'+val+'"]').click();
+        }
+        else {
+          $radios.filter('input:checked').click();
+        }
       });
     }
   }
