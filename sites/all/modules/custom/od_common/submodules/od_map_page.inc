@@ -12,7 +12,7 @@ function od_common_module_od_map_page_render_selector() {
     '#title' => t('Search by'),
     '#options' => array(
       '0' => t('Organization name'),
-      '1' => t('Location'),
+      '1' => t('location'),
     ),
     '#default_value' => 0,
     '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
