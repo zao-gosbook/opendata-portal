@@ -53,7 +53,7 @@
 
         setTimeout(function() {
           msnry.layout();
-        }, 1);
+        }, 1000);
       });
     }
   }
