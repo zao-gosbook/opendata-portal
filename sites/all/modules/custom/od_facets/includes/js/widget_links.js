@@ -2,6 +2,17 @@
 
   Drupal.behaviors.odFacetsWidgetLinks = {
     attach: function (context, settings) {
+      //Handle loading animation. Depends on jquery_loadinganimation module.
+      if (Drupal.behaviors.jquery_loadinganimation) {
+        Drupal.behaviors.jquery_loadinganimation.Loadinganimation.hide();
+
+        if (Drupal.ajax_facets.beforeAjaxCallbacks.freeze === undefined) {
+          Drupal.ajax_facets.beforeAjaxCallbacks.freeze = function(context, settings, element) {
+            Drupal.behaviors.jquery_loadinganimation.Loadinganimation.show();
+          }
+        }
+      }
+
       // Identify "opendata ajax links" facet for "apps" index.
       var opendataAjaxLinksFacet = $('.opendata-ajax-links-facet', context);
 

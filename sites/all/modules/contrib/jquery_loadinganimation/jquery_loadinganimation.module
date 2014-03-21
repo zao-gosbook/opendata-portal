@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * Initialization of jquery_loadinganimation (on each page).
+ */
+function jquery_loadinganimation_init() {
+  $module_path = drupal_get_path('module', 'jquery_loadinganimation');
+  $js_settings = _jquery_loadinganimation_get_settings();
+  $path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
+  if (!drupal_match_path($path, $js_settings['jquery_loadinganimation_path_match_exclude'])) {
+    drupal_add_js(array('jquery_loadinganimation' => $js_settings), 'setting');
+    drupal_add_js($module_path . '/jquery_loadinganimation.js');
+    drupal_add_css($module_path . '/jquery_loadinganimation.css');
+  }
+}
+
+/**
+ * Implements hook_help().
+ */
+function jquery_loadinganimation_help($path, $arg) {
+  switch ($path) {
+    // Main module help for the block module
+    case 'admin/help#jquery_loadinganimation':
+    case 'admin/config/user-interface/jquery_loadinganimation':
+      return '<p>' . t(
+              'JQuery loadinganimation module shows a loading layer on page loading events.	These may be triggered by form submission, clicking a hyperlink or executing an AJAX call.
+      	Hyperlinks may be excluded from trigger by adding a ".noLoadingAnimation" class.
+      	Further "javascript" and "#" hyperlinks are excluded.');
+  }
+}
+
+/**
+ * Implements hook_load_menu().
+ */
+function jquery_loadinganimation_menu() {
+  $items['admin/config/user-interface/jquery_loadinganimation'] = array(
+    'title' => 'JQuery Loadinganimation',
+    'description' => 'Configure JQuery loadinganimation settings.',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jquery_loadinganimation_settings_form'),
+    'file' => 'jquery_loadinganimation.admin.inc');
+  return $items;
+}
+
+/**
+ * Specifies the commerce_powl AJAX Settings.
+ *
+ * @return array
+ *   Array of configuration variables to be made available in JavaScript.
+ */
+function _jquery_loadinganimation_get_settings() {
+  $module_path = drupal_get_path('module', 'jquery_loadinganimation');
+  return array(
+    'module_path' => $module_path,
+    'img_src' => variable_get('jquery_loadinganimation_img_src', $module_path . '/images/ajax-loader.gif'),
+    'show_on_ajax' => variable_get('jquery_loadinganimation_show_on_ajax', FALSE),
+    'show_on_href' => variable_get('jquery_loadinganimation_show_on_href', TRUE),
+    'show_on_form_submit' => variable_get('jquery_loadinganimation_show_on_form_submit', TRUE),
+    'close_on_click' => variable_get('jquery_loadinganimation_close_on_click', TRUE),
+    'close_on_esc' => variable_get('jquery_loadinganimation_close_on_esc', TRUE),
+    'jquery_loadinganimation_path_match_exclude' => variable_get('jquery_loadinganimation_path_match_exclude', 'admin/*'),
+    'subselector' => variable_get('jquery_loadinganimation_subselector', ''));
+}

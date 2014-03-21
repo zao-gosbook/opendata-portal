@@ -1,0 +1,85 @@
+# $Id$
+# German translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+# jquery_loadinganimation/jquery_loadinganimation.admin.inc: n/a
+# jquery_loadinganimation/jquery_loadinganimation.module: n/a
+# jquery_loadinganimation/jquery_loadinganimation.info: n/a
+# jquery_loadinganimation/jquery_loadinganimation.js: n/a
+# None <None>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2011-12-17 20:03+0100\n"
+"PO-Revision-Date: 2011-12-17 20:05+0200\n"
+"Last-Translator: None <None>\n"
+"Language-Team: Anybody\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.0\n"
+
+#: jquery_loadinganimation/jquery_loadinganimation.admin.inc:15
+msgid "Loading animation spinner path"
+msgstr "Pfad zur Ladegrafik"
+
+#: jquery_loadinganimation/jquery_loadinganimation.admin.inc:16
+msgid "The loading animation spinner path to use."
+msgstr "Der zu verwendende Pfad zur Ladeanimation-Grafik"
+
+#: jquery_loadinganimation/jquery_loadinganimation.admin.inc:22
+msgid "Show during AJAX requests"
+msgstr "Während AJAX-Anfragen anzeigen"
+
+#: jquery_loadinganimation/jquery_loadinganimation.admin.inc:23
+msgid "Display the loading animation during AJAX requests too."
+msgstr "Die Ladeanimation auch während laufenden AJAX-Anfragen anzeigen."
+
+#: jquery_loadinganimation/jquery_loadinganimation.admin.inc:29
+msgid "JQuery subselector"
+msgstr "JQuery Subselektor"
+
+#: jquery_loadinganimation/jquery_loadinganimation.admin.inc:30
+msgid "You may optionally use this subselector to reduce the DOM context which to register loading animation to."
+msgstr ""
+"Optional kann ein Subselektor angegeben werden, um die gewählten DOM "
+"Elemente weiter einzuschränken, auf die ein Ladeanimation-Trigger gesetzt "
+"wird."
+
+#: jquery_loadinganimation/jquery_loadinganimation.module:22
+msgid "JQuery loadinganimation module shows a loading layer on page loading events.\tThese may be triggered by form submission, clicking a hyperlink or executing an AJAX call.\n      \tHyperlinks may be excluded from trigger by adding a \".noLoadingAnimation\" class.\n      \tFurther \"javascript\" and \"#\" hyperlinks are excluded."
+msgstr ""
+"Das JQuery Loadinganaimation Modul zeigt einen Lade-Layer auf der Seite, "
+"wenn ein Inhalt geladen wird. Dies kann durch die Verwendung von Formularen, "
+"Klick auf einen Link oder eine AJAX-Anfrage geschehen.\n"
+"Hyperlinks können vom Trigger ausgeschlossen werden, indem sie eine Klasse "
+"\".noLoadingAnimation\" erhalten. Des Weiteren werden \"javascript\" und \"#\" "
+"Hyperlinks nicht mit einer Ladeanimation versehen."
+
+#: jquery_loadinganimation/jquery_loadinganimation.module:34
+msgid "JQuery Loadinganimation"
+msgstr "JQuery Ladeanimation"
+
+#: jquery_loadinganimation/jquery_loadinganimation.module:35
+msgid "Configure JQuery loadinganimation settings."
+msgstr "JQuery Ladeanimation konfigurieren."
+
+#: jquery_loadinganimation/jquery_loadinganimation.info:0
+msgid "JQuery Loading Animation"
+msgstr "JQuery Ladeanimation"
+
+#: jquery_loadinganimation/jquery_loadinganimation.info:0
+msgid "Shows a (configurable) loading animation layer on page loads."
+msgstr ""
+"Blendet eine (konfigurierbare) Ladeanimation als Layer über die Seite ein, "
+"wenn Inhalte geladen werden."
+
+#: jquery_loadinganimation/jquery_loadinganimation.info:0
+msgid "User interface"
+msgstr "Benutzeroberfläche"
+
+#: jquery_loadinganimation/jquery_loadinganimation.js:0;0;0;0
+msgid "Loading"
+msgstr "Wird geladen"
