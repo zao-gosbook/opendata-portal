@@ -34,16 +34,17 @@ h4 {
 
 h1, h2, h3, h4 {
   font-weight: normal;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .pane-page-title {
   
   h1 {
     color: #000000;
-    font-size: 24px;
+    font-size: 34px;
     line-height: 30px;
-    margin: 0 0 8px;
+    margin: 0 0 28px;
+    text-transform: uppercase;
   }
 }
 
@@ -70,7 +71,7 @@ div.legend {
   line-height: 1.5em;
   padding-bottom: .2em;
   font-weight: normal;
-  text-transform: uppercase;
+  text-transform: none;
 }
 label.option {
   font-size: 18px;
@@ -242,7 +243,7 @@ div.horizontal-tabs .form-text {
       font-size: 24px;
       text-align: left;
       line-height: 24px;
-      text-transform: uppercase;
+      text-transform: none;
       font-weight: normal;
       padding: 0 0 20px 86px; 
       color: #ffa200;
@@ -343,6 +344,7 @@ div.horizontal-tabs .form-text {
     margin-top: -4px;
     position: relative;
     z-index: 2;     
+    text-transform: uppercase;
     
     h1 {
       display: block;
@@ -371,14 +373,14 @@ div.horizontal-tabs .form-text {
   .header__site-slogan {
     margin: -7px 0 0 0;
     font-size: 12px;
-    text-transform: uppercase;
+    text-transform: none;
     color: #0c87e8;
     letter-spacing: 0.87px;
   }
   .pane-system-main-menu {
     padding-left: 10%;
     padding-top: 22px;
-    
+    text-transform: uppercase;
     
     > ul {
       margin: 0;
@@ -459,7 +461,7 @@ div.horizontal-tabs .form-text {
                 background-color: #fff;
                 background-repeat: no-repeat;
                 background-position: 8px 50%;
-                background-size: 55px auto;
+                @include background-size(55px auto);
                 display: block;
                 padding-left: 64px;
                 color: #0c87e8;
@@ -564,6 +566,7 @@ div.horizontal-tabs .form-text {
       margin: 0;
       padding: 0;
       float: left;
+      text-transform: uppercase;
       
       li {
         list-style: none;
@@ -675,13 +678,13 @@ div.horizontal-tabs .form-text {
         font-size: 12px;
         text-decoration: none;
         @include transition(padding 0.3s ease);
-        text-transform: uppercase;
+        text-transform: none;
         overflow: hidden;
         text-indent: -1000px;
         
         &.question {
           background-position: 0 0;
-          padding-top: 12px;
+          padding-top: 20px;
           height: 43px;  
           
           &:hover {
@@ -758,7 +761,7 @@ div.horizontal-tabs .form-text {
         font-size: 35px;
         line-height: 34px;
         width: 485px;
-        text-transform: uppercase;
+        text-transform: none;
         padding-left: 15px;
         
         p {
@@ -878,7 +881,7 @@ div.horizontal-tabs .form-text {
   .pane-dataset-datasets-total-count,
   .pane-dataset-datasets-total-count-for-guest  {
     @include clearfix;
-    text-transform: uppercase;
+    text-transform: none;
     
     h2 {
       color: #fff;
@@ -888,6 +891,7 @@ div.horizontal-tabs .form-text {
       height: 75px;
       line-height: 75px;
       margin: 0;
+      text-transform: uppercase;
     }
     .view {
       float: right;
@@ -901,7 +905,7 @@ div.horizontal-tabs .form-text {
       span {
         font-size: 60px;
         height: 75px;
-        line-height: 77px;
+        line-height: 72px;
         display: block;
         
         a {
@@ -939,7 +943,7 @@ div.horizontal-tabs .form-text {
       color: #fff;
       text-decoration: none;
       font-size: 18px;
-      text-transform: uppercase;
+      text-transform: none;
       background: #0c87e8;
       text-align: center;
     }
@@ -979,7 +983,7 @@ div.horizontal-tabs .form-text {
   }
   .show-hide-toggle-wrapper {
     padding: 20px;
-    text-transform: uppercase;
+    text-transform: none;
     text-align: center;
     
     a  {
@@ -1046,7 +1050,7 @@ div.horizontal-tabs .form-text {
         line-height: 26px;
         margin: 0;
         padding: 0;
-        text-transform: uppercase;
+        text-transform: none;
         
         a {
           position: absolute;
@@ -1233,7 +1237,7 @@ div.horizontal-tabs .form-text {
     padding: 165px 0 0 20%;
     color: #fff;
     font-size: 46px;
-    text-transform: uppercase;
+    text-transform: none;
     line-height: 49px;
     
     span {
@@ -1243,7 +1247,7 @@ div.horizontal-tabs .form-text {
   }
   .opportunity-wrapper {
     @include clearfix;
-    text-transform: uppercase;
+    text-transform: none;
     background: #ffa200;
     
     .title {
@@ -1330,7 +1334,7 @@ div.horizontal-tabs .form-text {
         padding: .5em 1.75em;
         background-color: #b9b9b9;
         color: #fff;
-        text-transform: uppercase;
+        text-transform: none;
         text-decoration: none;
         
         &:hover,
@@ -1396,7 +1400,7 @@ div.horizontal-tabs .form-text {
           padding: .5em 1em;
           background-color: #0c87e8;
           color: #fff;
-          text-transform: uppercase;
+          text-transform: none;
           text-decoration: none;
           
           &:hover,
@@ -1432,7 +1436,7 @@ div.horizontal-tabs .form-text {
     width: 100%;
     
     th, td {
-      text-transform: uppercase;
+      text-transform: none;
       vertical-align: top;
       padding: 10px 20px;
       font-size: 14px;
@@ -1527,7 +1531,7 @@ div.horizontal-tabs .form-text {
     color: #666;
     font-size: 16px;
     line-height: 1.3em;
-    text-transform: uppercase;
+    text-transform: none;
     
     h2 {
       font-size: 16px;
@@ -1640,7 +1644,7 @@ div.horizontal-tabs .form-text {
           display: block;
           background: #0c87e7;
           color: #fff;
-          text-transform: uppercase;
+          text-transform: none;
           text-decoration: none;
           text-align: center;
           font-size: 13px;
@@ -1791,7 +1795,7 @@ div.horizontal-tabs .form-text {
       font-size: 1.25em;
       line-height: 1.35em;
       text-decoration: none;
-      text-transform: uppercase;
+      text-transform: none;
       color: #000;
     }
     .search-api-sort-active {
@@ -1949,7 +1953,7 @@ div.horizontal-tabs .form-text {
       @include box-sizing(border-box);/**/
       width: 100%;
       margin: 0;
-      text-transform: uppercase;
+      text-transform: none;
     }
     .views-submit-button .form-submit {
       position: absolute;
@@ -2015,7 +2019,7 @@ div.horizontal-tabs .form-text {
       margin: 0 0 1px 0;
       padding: 0;
       text-align: right;
-      text-transform: uppercase;
+      text-transform: none;
       color: #3d9fed;
       border: 0;
       
@@ -2047,7 +2051,7 @@ div.horizontal-tabs .form-text {
       margin: 0 0 1px 0;
       padding: 0;
       text-align: right;
-      text-transform: uppercase;
+      text-transform: none;
       color: #3d9fed;
       
       input {
@@ -2069,7 +2073,7 @@ div.horizontal-tabs .form-text {
         @include transition(padding-left 0.5s ease);
         overflow: hidden;  
         cursor: pointer;
-        text-transform: uppercase;
+        text-transform: none;
         
         &:before {
           content: '';
@@ -2163,7 +2167,7 @@ div.horizontal-tabs .form-text {
     }
     &.node-teaser {
       border-right: 5px solid #bfbfbf;
-      padding-right: 4%;
+      padding-right: 25px;
       margin-bottom: 4.5em;
       
       h2 {
@@ -2193,7 +2197,10 @@ div.horizontal-tabs .form-text {
         background: #ffa200;
         text-decoration: none;
         font-size: 1.2em;
-        text-transform: uppercase;        
+        text-transform: none;      
+        position: absolute;
+        top: -10px;
+        right: -25px;
       }
       .data-and-resources {
         .form-item {
@@ -2217,7 +2224,7 @@ div.horizontal-tabs .form-text {
               background: #ffa200;
               text-decoration: none;
               font-size: 1.2em;
-              text-transform: uppercase;
+              text-transform: none;
             }
           }
           .count-resource {
@@ -2232,8 +2239,8 @@ div.horizontal-tabs .form-text {
   }
   .views-row {
     border-right: 5px solid #bfbfbf;
-    padding-right: 4%;
-    margin-bottom: 4.5em;
+    padding-right: 25px;
+    margin-bottom: 10px;
     padding-bottom: 10px;
     padding-top: 10px;
     
@@ -2241,7 +2248,7 @@ div.horizontal-tabs .form-text {
       background-color: #fffada;
       
       .node-dataset .field-type-taxonomy-term-reference .field-type-image img {
-        top: 23px;
+        top: 19px;
       }
     }
     
@@ -2313,8 +2320,8 @@ div.horizontal-tabs .form-text {
         
         img {
           position: absolute;
-          top: -4px;
-          left: 0;
+          top: -6px;
+          left: 13px;
         }
       }
       .field-name-title {
@@ -2335,7 +2342,7 @@ div.horizontal-tabs .form-text {
     .field-name-field-owner {
       font-size: 16px;
       color: #b5b5b5;
-      text-transform: uppercase;
+      text-transform: none;
       margin-bottom: 5px;
       margin-top: 5px;
     }
@@ -2363,7 +2370,7 @@ div.horizontal-tabs .form-text {
       margin: 0 0 1px 0;
       padding: 0;
       text-align: right;
-      text-transform: uppercase;
+      text-transform: none;
       color: #3d9fed;
       border: 0;
       
@@ -2470,20 +2477,20 @@ div.horizontal-tabs .form-text {
       font-size: 2.1em;
       line-height: 1.1em;
       margin: 0 0 40px;
-      text-transform: uppercase;
+      text-transform: none;
     }
     h3 {
       font-size: 1.8em;
       line-height: 1.1em;
       margin: 0 0 40px;
-      text-transform: uppercase;      
+      text-transform: none;      
     }
   }
   .social-nets {
     padding-left: 60px;
     height: 46px;
     line-height: 46px;
-    text-transform: uppercase;
+    text-transform: none;
     font-size: 1.85em;
     text-decoration: none;
     background: url("../images/ico-fb.png") no-repeat 0 0;
@@ -2528,7 +2535,7 @@ div.horizontal-tabs .form-text {
     color: #4C4C4C;
     font-size: 16px;
     margin-bottom: 4px;
-    text-transform: uppercase;
+    text-transform: none;
     
     a {
       color: #4C4C4C;
@@ -2543,7 +2550,7 @@ div.horizontal-tabs .form-text {
       font-size: 16px;
       line-height: 22px;
       color: #b5b5b5;
-      text-transform: uppercase;
+      text-transform: none;
       padding-right: 5px;
     }
     a {
@@ -2573,7 +2580,7 @@ div.horizontal-tabs .form-text {
   }
   .flag-wrapper {
     font-size: 16px;
-    text-transform: uppercase;
+    text-transform: none;
     
     a {
       text-decoration: none;
@@ -2625,7 +2632,7 @@ div.horizontal-tabs .form-text {
     font-size: 1.3em;
     line-height: 1.55em;
     padding: 0 20px;
-    text-transform: uppercase;
+    text-transform: none;
     position: relative;
     top: -45px;
     
@@ -2697,7 +2704,7 @@ div.horizontal-tabs .form-text {
     color: #4C4C4C;
     font-size: 16px;
     margin-bottom: 6px;
-    text-transform: uppercase;
+    text-transform: none;
     
     a {
       color: #4C4C4C;
@@ -2728,7 +2735,7 @@ div.horizontal-tabs .form-text {
         padding: 0.75em 1.6em;
         position: relative;
         text-decoration: none;
-        text-transform: uppercase;
+        text-transform: none;
           
       }
     }
@@ -2754,7 +2761,7 @@ div.horizontal-tabs .form-text {
     .panel-pane {
       padding-bottom: 14px;
       font-size: 16px;
-      text-transform: uppercase;
+      text-transform: none;
       color: #666;
       
       a {
@@ -2781,7 +2788,7 @@ div.horizontal-tabs .form-text {
     .pane-node-created {
       padding-bottom: 8px;
       font-size: 16px;
-      text-transform: uppercase;
+      text-transform: none;
       color: #b5b5b5;     
        
       h2 {
@@ -2838,7 +2845,7 @@ div.horizontal-tabs .form-text {
     .pane-node-field-rubric {
       color: #7a7a7a;
       font-size: 16px;
-      text-transform: uppercase; 
+      text-transform: none; 
       padding-left: 76px; 
       padding-bottom: 5px;
 
@@ -2851,7 +2858,7 @@ div.horizontal-tabs .form-text {
       color: #7a7a7a;
       font-size: 16px;
       line-height: 22px;
-      text-transform: uppercase;
+      text-transform: none;
       padding-left: 76px; 
       
       a {
@@ -2900,7 +2907,7 @@ div.horizontal-tabs .form-text {
       margin-left: 136px;
       color: #7a7a7a;
       font-size: 16px;
-      text-transform: uppercase; 
+      text-transform: none; 
       position: relative;
       padding-left: 76px;
       
@@ -2927,7 +2934,7 @@ div.horizontal-tabs .form-text {
       color: #7a7a7a;
       font-size: 16px;
       line-height: 22px;
-      text-transform: uppercase;
+      text-transform: none;
       
       .label {
         color: #bababa;
@@ -3004,7 +3011,7 @@ div.horizontal-tabs .form-text {
     .field-name-author    {
       color: #666;
       font-size: 1.25em;
-      text-transform: uppercase;
+      text-transform: none;
       
       .field-label {
         color: #b5b5b5;
@@ -3022,20 +3029,20 @@ div.horizontal-tabs .form-text {
     .field-name-node-link {
       a {
         font-size: 1.25em;
-        text-transform: uppercase;    
+        text-transform: none;    
         text-decoration: none;
       }
     }
     .field-name-field-rubric {
       font-size: 1.35em;
-      text-transform: uppercase;          
+      text-transform: none;          
     }
     /*.field-name-field-comments-count {
       background: url("../images/ico-view.png") no-repeat scroll 50% 0 transparent;
       color: #777777;
       font-size: 18px;
       padding-top: 45px;
-      text-transform: uppercase;
+      text-transform: none;
       text-align: center;
       
       a {
@@ -3063,7 +3070,7 @@ div.horizontal-tabs .form-text {
           font-size: 16px;
           padding-top: 45px;
           padding-right: 0;
-          text-transform: uppercase;
+          text-transform: none;
           text-align: center;          
         }
       }
@@ -3078,7 +3085,7 @@ div.horizontal-tabs .form-text {
         padding: 0.75em 1.6em;
         position: relative;
         text-decoration: none;
-        text-transform: uppercase;
+        text-transform: none;
       }
     }
   }
@@ -3099,7 +3106,7 @@ div.horizontal-tabs .form-text {
       line-height: 1em;
       padding: 0.8em 1.6em;
       text-decoration: none;
-      text-transform: uppercase;
+      text-transform: none;
       margin-bottom: 20px;
     }    
   }
@@ -3190,7 +3197,7 @@ div.horizontal-tabs .form-text {
       margin-left: 70px;
       height: 50px;
       line-height: 50px;  
-      text-transform: uppercase;
+      text-transform: none;
     }
   }
   > ul > li > a {
@@ -3261,6 +3268,12 @@ div.horizontal-tabs .form-text {
           &.active,
           &:hover {
             background: #fff;
+          }
+          &[href*="dataset"],
+          &[href*="apps"],
+          &[href*="dataset"]:hover,
+          &[href*="apps"]:hover {
+            background: #fec157;
           }
         }      
       }
@@ -3423,7 +3436,7 @@ body {
       h2 {
         font-size: 1.4em;
         line-height: 1.5em;
-        text-transform: uppercase;
+        text-transform: none;
         padding: 0 0 1.1em;
         margin: 0;
         clear: both;
@@ -3467,7 +3480,7 @@ body {
       }
       .field-name-author {
         padding-top: 43px;
-        text-transform: uppercase;
+        text-transform: none;
         color: #b5b5b5;
         font-size: 16px;
         
@@ -3575,7 +3588,7 @@ body {
       line-height: 1.5em;
       padding-bottom: .2em;
       font-weight: normal;
-      text-transform: uppercase;    
+      text-transform: none;    
       
       span {
         position: absolute;
@@ -3662,7 +3675,7 @@ body {
           line-height: 3em;
           color: #fff;
           background: #b9b9b9;
-          text-transform: uppercase;
+          text-transform: none;
           margin: 0;
           border: 0;
           
@@ -3815,7 +3828,7 @@ html.js input.form-autocomplete {
       line-height: 25px;
       font-size: 16px;
       color: #666666;
-      text-transform: uppercase;
+      text-transform: none;
     }
     td:first-child {
       width: 84px;
@@ -3947,7 +3960,7 @@ html.js input.form-autocomplete {
     color: #4d4d4d;
   }  
   th {
-    text-transform: uppercase;
+    text-transform: none;
     font-weight: normal;
   }
   td {
@@ -3990,7 +4003,7 @@ table {
     vertical-align: top;
     
     &.views-field-title a {
-      font-size: 2em;
+      font-size: 24px;
       line-height: 1.4em;
       
       a {
@@ -4024,7 +4037,7 @@ table {
       line-height: 1em;
       padding: 0.8em 1.6em;
       text-decoration: none;
-      text-transform: uppercase;
+      text-transform: none;
       margin-bottom: 20px;
     }     
   }
@@ -4033,7 +4046,7 @@ table {
     margin-bottom: 28px;
     border-bottom: 1px solid #e5e5e5;
     overflow: hidden;
-    text-transform: uppercase;
+    text-transform: none;
   }
   .views-field-field-rubric-image {
     img {
@@ -4081,7 +4094,7 @@ table {
     font-size: 16px;
     line-height: 22px;
     color: #666;
-    text-transform: uppercase;
+    text-transform: none;
     
     .views-label {
       color: #b5b5b5;
@@ -4219,7 +4232,7 @@ div.fivestar-widget .star {
       margin-top: .2em;
       font-size: 16px;
       line-height: 1.4em;
-      text-transform: uppercase;
+      text-transform: none;
       height: 4.2em;
       @include box-sizing(padding-box);
       overflow: hidden;
@@ -4246,7 +4259,7 @@ div.fivestar-widget .star {
     }
     .views-field-title {
       font-size: 16px;
-      text-transform: uppercase;
+      text-transform: none;
       padding-bottom: 4px;
       
       a {
@@ -4257,7 +4270,7 @@ div.fivestar-widget .star {
       color: #b9b9b9;
       font-size: 14px;
       padding-bottom: 4px;
-      text-transform: uppercase;
+      text-transform: none;
     }
   }
 }
@@ -4270,7 +4283,7 @@ div.fivestar-widget .star {
     font-size: 14px;
     line-height: 1em;
     color: #fff;
-    text-transform: uppercase;
+    text-transform: none;
     background: #0c87e8;
     text-decoration: none;
   }  
@@ -4353,7 +4366,7 @@ div.fivestar-widget .star {
     display: inline-block;
     color: #b5b5b5;
     font-size: 16px;
-    text-transform: uppercase;
+    text-transform: none;
   }
   .pane-node-field-rubric a {
     text-decoration: none;
@@ -4395,7 +4408,7 @@ div.fivestar-widget .star {
     line-height: 1em;
     color: #fff;
     margin-left: 10px;
-    text-transform: uppercase;
+    text-transform: none;
     background: #0c87e8;
     text-decoration: none;       
   }
@@ -4418,7 +4431,7 @@ div.fivestar-widget .star {
       line-height: 1em;
       color: #fff;
       text-decoration: none;
-      text-transform: uppercase;
+      text-transform: none;
       background: #0c87e8 url("../images/arr-down-white.png") no-repeat 86% 50%;
       text-decoration: none;   
       position: relative;
@@ -4470,7 +4483,7 @@ div.fivestar-widget .star {
       text-align: center;
       color: #777;
       line-height: 65px;
-      text-transform: uppercase;
+      text-transform: none;
       font-size: 18px;
     }
   }
@@ -4480,7 +4493,7 @@ div.fivestar-widget .star {
     a {
       color: #777777;
       font-size: 18px;
-      text-transform: uppercase;
+      text-transform: none;
       text-decoration: none;
       display: block;
       position: relative;
@@ -4495,7 +4508,7 @@ div.fivestar-widget .star {
     margin-right: 20px;
     color: #777777;
     font-size: 18px;
-    text-transform: uppercase;
+    text-transform: none;
     text-decoration: none;
     display: block;
     position: relative;
@@ -4521,7 +4534,7 @@ div.fivestar-widget .star {
         display: block;
         text-indent: 0;
         color: #777;
-        text-transform: uppercase;
+        text-transform: none;
         font-size: 18px;   
         padding-left: 5px;
       }
@@ -4534,7 +4547,7 @@ div.fivestar-widget .star {
     background: url("../images/ico-view.png") no-repeat 0 50%;
     line-height: 35px;
     color: #777;
-    text-transform: uppercase;
+    text-transform: none;
     font-size: 18px;
   }
 }
@@ -4594,7 +4607,7 @@ div.fivestar-widget .star {
         text-align: center;
         color: #777;
         line-height: 65px;
-        text-transform: uppercase;
+        text-transform: none;
         height: 56px;
         background: url("../images/ico-filetype.png") no-repeat;        
       }
@@ -4608,7 +4621,7 @@ div.fivestar-widget .star {
       padding: 0.75em 1.6em;
       position: relative;
       text-decoration: none;
-      text-transform: uppercase;
+      text-transform: none;
       margin-bottom: .75em;
     }    
     .panel-col-last {
@@ -4618,7 +4631,7 @@ div.fivestar-widget .star {
       float: none;
 
       .views-field-title {
-        text-transform: uppercase;
+        text-transform: none;
         font-size: 24px;
         line-height: 30px;
       }
@@ -4653,7 +4666,7 @@ div.fivestar-widget .star {
       th, td {
         background: #112b4c;
         color: #fff;
-        text-transform: uppercase;
+        text-transform: none;
       }      
     }
   }
@@ -4740,7 +4753,7 @@ div.fivestar-widget .star {
     }
     li {
       padding: 3px 0;
-      text-transform: uppercase;
+      text-transform: none;
     }
   }
   tr.odd {
@@ -4765,7 +4778,7 @@ div.fivestar-widget .star {
     
     .field {
       font-size: 15px;
-      text-transform: uppercase;
+      text-transform: none;
     }
     .field-name-field-upload-structure,
     .field-name-field-provenance,
@@ -4787,7 +4800,7 @@ div.fivestar-widget .star {
       line-height: 1em;
       padding: 0.9em 1.6em .9em 45px;
       text-decoration: none;
-      text-transform: uppercase;
+      text-transform: none;
       margin-bottom: 20px;
     }
     /* bootstrap navigation */
@@ -4853,7 +4866,7 @@ div.fivestar-widget .star {
   .field {
     font-size: 16px;
     line-height: 22px;
-    text-transform: uppercase;
+    text-transform: none;
     @include clearfix;
     padding-bottom: 17px;   
     color: #666;
@@ -4889,13 +4902,13 @@ div.fivestar-widget .star {
     margin-bottom: 22px;
     border-bottom: 1px solid #e5e5e5;
     @include clearfix;
-    text-transform: uppercase;
+    text-transform: none;
     
     .views-field-field-rubric-image {
       float: left;
       width: 106px;
       text-align: center;
-      text-transform: uppercase;
+      text-transform: none;
     }
     .views-field-field-rubric {
       font-size: 16px;
@@ -4926,7 +4939,7 @@ div.fivestar-widget .star {
   .field {
     font-size: 16px;
     line-height: 25px;
-    text-transform: uppercase;
+    text-transform: none;
     @include clearfix;
     padding-bottom: 4px;      
   }
@@ -4963,7 +4976,7 @@ div.fivestar-widget .star {
   .panel-pane {
     color: #666;
     font-size: 16px;
-    text-transform: uppercase;
+    text-transform: none;
     line-height: 22px;
     padding-bottom: 2px;
     clear: left;
@@ -5107,7 +5120,7 @@ div.fivestar-widget .star {
 .node-document.view-mode-full  {
   .field {
     font-size: 15px;
-    text-transform: uppercase;
+    text-transform: none;
     @include clearfix;
     padding-bottom: 15px;      
   }
@@ -5156,7 +5169,7 @@ div.fivestar-widget .star {
         line-height: 1em;
         padding: 0.8em 1.6em;
         text-decoration: none;
-        text-transform: uppercase;
+        text-transform: none;
       }    
     }
   }
@@ -5210,7 +5223,7 @@ div.fivestar-widget .star {
     line-height: 1em;
     padding: 0.8em 1.6em;
     text-decoration: none;
-    text-transform: uppercase;
+    text-transform: none;
   }
 }
 .page-messages-view .privatemsg-message {
@@ -5272,7 +5285,7 @@ div.fivestar-widget .star {
       line-height: 1.5em;
       margin: 0;
       padding: 0 0 1.1em;
-      text-transform: uppercase;
+      text-transform: none;
       
       a {
         text-decoration: none;
@@ -5294,14 +5307,14 @@ div.fivestar-widget .star {
     .field-type-datetime {
       font-size: 16px;
       color: #b5b5b5;
-      text-transform: uppercase;
+      text-transform: none;
       padding-bottom: .3em;
     }
     .field-type-list-text {
       font-size: 16px;
       color: #4c4c4c;
       margin-bottom: 6px;
-      text-transform: uppercase;
+      text-transform: none;
     }
     .field-type-text {
       font-size: 1.3em;
@@ -5344,7 +5357,7 @@ div.fivestar-widget .star {
     text-decoration: none;
     background-color: #0c87e8;
     font-size: 14px;
-    text-transform: uppercase;
+    text-transform: none;
   }
 }
 .node-type-competition {
@@ -5355,10 +5368,10 @@ div.fivestar-widget .star {
     padding-bottom: 9px;
     font-size: 16px;
     color: #666;
-    text-transform: uppercase;
+    text-transform: none;
     
     .field-label {
-      text-transform: uppercase;
+      text-transform: none;
       font-weight: normal;
       color: #b5b5b5;
     }
@@ -5390,7 +5403,7 @@ div.fivestar-widget .star {
   .details-1,  
   .details-2,  
   .details-3  {
-    text-transform: uppercase;
+    text-transform: none;
     color: #666666;
     
     .field-label {
@@ -5454,7 +5467,7 @@ div.fivestar-widget .star {
     }
   }
   .field-name-field-competition-rubric {
-    text-transform: uppercase;
+    text-transform: none;
     
     a {
       color: #777;
@@ -5490,7 +5503,7 @@ div.fivestar-widget .star {
   font-size: 14px;
   line-height: 1em;
   color: #fff;
-  text-transform: uppercase;
+  text-transform: none;
   background: #0c87e8;
   text-decoration: none;
 }
@@ -5623,7 +5636,7 @@ div.fivestar-widget .star {
           font-size: 14px;
           line-height: 1em;
           color: #fff;
-          text-transform: uppercase;
+          text-transform: none;
           background: #0c87e8;
           text-decoration: none;
         }
@@ -5638,7 +5651,7 @@ div.fivestar-widget .star {
   padding: 1px 0 2px 16px;
   
   b {
-    text-transform: uppercase;
+    text-transform: none;
     margin-bottom: 4px;
     color: #bfbfbf;
   }
@@ -5725,7 +5738,7 @@ div.fivestar-widget .star {
     @include clearfix;
     font-size: 16px;
     color: #666;
-    text-transform: uppercase;
+    text-transform: none;
     line-height: 1.5em;
     padding-bottom: 1.35em;
     
@@ -5954,7 +5967,7 @@ div.fivestar-widget .star {
       margin: 10px auto 0;
       padding: 1.25em;
       text-align: center;
-      text-transform: uppercase;
+      text-transform: none;
       width: 160px;
     }
     .geolocation-client-location {
@@ -5964,7 +5977,7 @@ div.fivestar-widget .star {
       margin: 10px 0 0;
       padding: 1.25em 0 1.25em 4.7em;
       text-align: left;
-      text-transform: uppercase;
+      text-transform: none;
       color: #0c87e8;
       border: 2px solid #0c87e8;
       width: 155px;
@@ -5980,7 +5993,7 @@ div.fivestar-widget .star {
     margin-top: 0;
     padding: 1.1em 1.2em;
     text-align: center;
-    text-transform: uppercase;
+    text-transform: none;
     color: #666;
   }
   .geolocation-help, .geolocation-map {
@@ -6065,10 +6078,10 @@ div.fivestar-widget .star {
       padding-top: 20px;
       clear: both;
       text-align: center;
-      text-transform: uppercase;
+      text-transform: none;
     }
     dt {
-      text-transform: uppercase;
+      text-transform: none;
       padding-bottom: 5px;
     }
     dd {
@@ -6092,7 +6105,7 @@ div.fivestar-widget .star {
         color: #fff;
         font-size: 1.05em;
         background: #0c87e8;
-        text-transform: uppercase;
+        text-transform: none;
         text-decoration: none;
         display: inline-block; 
         margin: 0 2px;
@@ -6165,7 +6178,7 @@ div.fivestar-widget .star {
       margin-left: 380px;
       
       .field-label {
-        text-transform: uppercase;
+        text-transform: none;
       }
       
       .field-name-title,
@@ -6240,7 +6253,7 @@ div.fivestar-widget .star {
     .field {
       font-size: 16px;
       line-height: 25px;
-      text-transform: uppercase;
+      text-transform: none;
       padding-top: 0;
       color: #666;
       
@@ -6258,7 +6271,7 @@ div.fivestar-widget .star {
     }
 
     .field-name-title h2 {
-      text-transform: uppercase;
+      text-transform: none;
       font-size: 24px;
       line-height: 28px;
       display: block;
@@ -6336,7 +6349,7 @@ div.fivestar-widget .star {
       span {
         font-size: 26px;
         line-height: 24px;
-        text-transform: uppercase;
+        text-transform: none;
         @include transition(all 0.4s ease);
       }
       a:hover {
@@ -6439,7 +6452,7 @@ div.fivestar-widget .star {
       line-height: 1em;
       padding: 0 0 0 60px;
       float: left;
-      text-transform: uppercase;
+      text-transform: none;
       
       a {
         color: #fff;
@@ -6684,7 +6697,7 @@ div.fivestar-widget .star {
       display: inline-block;
       line-height: 1em;
       color: #fff;
-      text-transform: uppercase;
+      text-transform: none;
       background: #0c87e8;
       text-decoration: none;      
       font-size: 18px;
@@ -6737,7 +6750,7 @@ div.fivestar-widget .star {
           line-height: 50px;
           background: url("../images/checkbox.png") no-repeat 0 0px;
           font-size: 15px;
-          text-transform: uppercase;
+          text-transform: none;
           display: block;
           cursor: pointer;
           color: #4c4c4c;
@@ -6778,7 +6791,7 @@ div.fivestar-widget .star {
           line-height: 24px;
           margin: 0 0 30px;
           color: #4c4c4c;  
-          text-transform: uppercase;
+          text-transform: none;
           height: 24px;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -6799,11 +6812,12 @@ div.fivestar-widget .star {
         .group-right {
           width: 100%;
           margin-left: -100px;
+          padding-top: 16px;
           
 
           .field {
             font-size: 15px;
-            text-transform: uppercase;
+            text-transform: none;
             color: #c8b9bf;
             margin-left: 100px;
             
@@ -6812,7 +6826,7 @@ div.fivestar-widget .star {
             }
           }
           .field h2 {
-            font-size: 16px;
+            font-size: 24px;
             line-height: 22px;   
             margin: -2px 0 3px;
             height: 22px;
@@ -6896,7 +6910,7 @@ div.fivestar-widget .star {
       @include box-sizing(border-box);/**/
       width: 100%;
       margin: 0;
-      text-transform: uppercase;
+      text-transform: none;
     }
     .views-submit-button .form-submit {
       position: absolute;
@@ -6945,7 +6959,7 @@ div.fivestar-widget .star {
   font-weight: normal;
   color: #666;
   text-align: left;
-  text-transform: uppercase;
+  text-transform: none;
   font-size: 14px;
   
   a {
@@ -6972,10 +6986,28 @@ div.fivestar-widget .star {
 .forum-table td.views-field-title,
 .forum-table td.views-field-last-updated {
   color: #b5b5b5;
-  text-transform: uppercase;
+  text-transform: none;
   
   a {
     text-decoration: none;
+    font-size: 15px;
+  }
+}
+.view-advanced-forum-unanswered-topics .views-exposed-form {
+  label {
+    float: left;
+    font-size: 17px;
+    padding-right: 15px;
+    padding-top: 15px;
+  }
+  .views-widget {
+    float: left;
+  }
+  .form-submit {
+    margin-top: 8px;
+  }
+  .form-select {
+    width: auto;
   }
 }
 td.forum-number-topics,
@@ -7080,7 +7112,7 @@ tr.odd td.forum-list-icon-new-posts .forum-list-icon-wrapper span,
 }
 .forum-name  {
   font-size: 1em;
-  text-transform: uppercase;
+  text-transform: none;
   
   a {
     text-decoration: none;
@@ -7175,7 +7207,7 @@ tr.odd td.forum-list-icon-new-posts .forum-list-icon-wrapper span,
     padding: 0 14px;
     background: #0c87e8;
     color: #fff;
-    text-transform: uppercase;
+    text-transform: none;
   }
 }
 .forum-topic-header .topic-reply-link, 
@@ -7256,7 +7288,7 @@ div.forum-post {
   }
   .username {
     font-size: 14px;
-    text-transform: uppercase;
+    text-transform: none;
     line-height: 22px;
     text-decoration: none;
   }
