@@ -22,24 +22,24 @@
     }
   } 
   
-  Drupal.behaviors.TaxonomyColumns = {
-    attach: function (context) {      
-      $('.section-rubriki .view-rubric-nodes .view-content, .section-rubrics .view-rubric-nodes .view-content', context).once('massontry', function() {
-        var massontry = $(this);
-        $('<div class="view-header"></div>').prependTo(massontry);
-        var container = document.querySelector('.view-rubric-nodes .view-content');
-        var msnry = new Masonry( container, {
-          // options
-          //columnWidth: 200,
-          itemSelector: '.views-row'/**/,
-          gutter: '.view-rubric-nodes .view-content .view-header'
-        });         
-      });
-    }
-  }
-  
+//  Drupal.behaviors.TaxonomyColumns = {
+//    attach: function (context) {
+//      $('.section-rubriki .view-rubric-nodes .view-content, .section-rubrics .view-rubric-nodes .view-content', context).once('massontry', function() {
+//        var massontry = $(this);
+//        $('<div class="view-header"></div>').prependTo(massontry);
+//        var $container = $('.view-rubric-nodes .view-content');
+//        var msnry = new Masonry( $container.get(0), {
+//          // options
+//          //columnWidth: 200,
+//          itemSelector: '.views-row'/**/,
+//          gutter: '.view-rubric-nodes .view-content .view-header'
+//        });
+//      });
+//    }
+//  }
+
   Drupal.behaviors.TaxonomyColumnsRubric = {
-    attach: function (context) {      
+    attach: function (context) {
       $('.page-taxonomy-term .rubric-content .view .view-content', context).once('massontry', function() {
         var massontry = $(this);
         $('<div class="view-header"></div>').prependTo(massontry);
@@ -49,12 +49,16 @@
           //columnWidth: 200,
           itemSelector: '.views-row'/**/,
           gutter: '.page-taxonomy-term .rubric-content .view .view-content .view-header'
-        });         
+        });
+
+        setTimeout(function() {
+          msnry.layout();
+        }, 1);
       });
     }
-  }   
-  
-  
+  }
+
+
   Drupal.behaviors.ActiveElement = {
     attach: function (context, settings) {
 
@@ -114,7 +118,7 @@
           });
           var margin = -item/2 + half_link_width;
           ul.css({
-            width: item,
+            width: item
             //"margin-left": margin
           }); 
           // кастомное положение блоков
@@ -259,7 +263,6 @@
    */
   Drupal.behaviors.showHideElementsFront = {
     attach: function(context, settings) {
-      window.resize();
       var showHideToggleEl = $(context).find('.view:not(.processed-showHideElementsFront) div.show-hide-toggle-wrapper>span>a');
       var view = showHideToggleEl.parents('.view:eq(0)');
       var viewContent = view.find('.view-content');
@@ -318,5 +321,4 @@
       }
     }
   }
-  
 })(jQuery, Drupal, this, this.document);
