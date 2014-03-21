@@ -595,6 +595,15 @@ div.horizontal-tabs .form-text {
         &.last a {
           border: 0;
         }
+        .messages-count {
+          margin-left: 3px;
+          display: inline-block;
+          height: 13px;
+          line-height: 14px;
+          color: #fff;
+          padding: 0 3px;
+          background: #ef1c22;
+        }
       }
     }    
   }
@@ -3453,11 +3462,18 @@ body {
           float: left;
           margin-right: 20px;
           margin-bottom: 20px;
-          @include border-radius(100%);
+          border: 10px solid #e6e4e5;
         }
       }
       .field-name-author {
-        padding-top: 20px;
+        padding-top: 43px;
+        text-transform: uppercase;
+        color: #b5b5b5;
+        font-size: 16px;
+        
+        .field-label {
+          font-weight: normal;
+        }
       }
       .field-name-field-date-created {
         float: left;

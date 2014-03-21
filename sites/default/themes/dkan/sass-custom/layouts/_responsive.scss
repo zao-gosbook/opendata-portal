@@ -190,7 +190,7 @@ $zen-auto-include-item-base: false;
       
       > ul li a {
         text-indent: -10000px;  
-        overflow: hidden;
+        /*overflow: hidden;*/
         background-color: #FFFFFF;
         background-image: url("../images/ico-set-ui.png");
         background-repeat: no-repeat;
@@ -214,6 +214,19 @@ $zen-auto-include-item-base: false;
       }
       > ul li a[href$="/messages"] {
         background-position: -349px -48px;
+        position: relative;
+        
+        .messages-count {
+          margin-left: 3px;
+          font-size: 10px;
+          height: 12px;
+          line-height: 13px;
+          padding: 0 3px;
+          position: absolute;
+          top: -7px;
+          left: 50%;
+          text-indent: 0;
+        }
       }
       > ul li a[href$="/user/logout"] {
         background-position: -119px -10px;
@@ -861,7 +874,6 @@ $zen-auto-include-item-base: false;
       
       > ul li a {
         text-indent: -10000px;  
-        overflow: hidden;
         background-color: #FFFFFF;
         background-image: url("../images/ico-set-ui.png");
         background-repeat: no-repeat;
@@ -885,6 +897,19 @@ $zen-auto-include-item-base: false;
       }
       > ul li a[href$="/messages"] {
         background-position: -349px -48px;
+        position: relative;
+        
+        .messages-count {
+          margin-left: 3px;
+          font-size: 10px;
+          height: 12px;
+          line-height: 13px;
+          padding: 0 3px;
+          position: absolute;
+          top: -7px;
+          left: 50%;
+          text-indent: 0;
+        }        
       }
       > ul li a[href$="/user/logout"] {
         background-position: -119px -10px;
