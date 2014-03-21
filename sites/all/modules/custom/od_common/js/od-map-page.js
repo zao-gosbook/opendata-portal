@@ -36,7 +36,7 @@
         });
 
         var val = $.cookie(cookieName);
-        if (isNaN(val)) {
+        if (val === null || isNaN(val)) {
           val = 0; //Default
         }
 
