@@ -216,7 +216,7 @@ function _bbcode_filter_process(&$body, $settings) {
     '#\[abbr=([\w\s-,\.]+)(?::\w+)?\](.*?)\[/abbr(?::\w+)?\]#si' => '<abbr title="\\1">\\2</abbr>',
     // Quoting with or without specifying the source
     '#\[quote(?::\w+)?\]#i' => '<div class="bb-quote">' . $quote_text . '<blockquote class="bb-quote-body">',
-    '#\[quote=(?:&quot;|"|\')?(.*?)["\']?(?:&quot;|"|\')?\]#i' => '<div class="bb-quote"><b>' . $quote_user . '</b><blockquote class="bb-quote-body">',
+    //'#\[quote=(?:&quot;|"|\')?(.*?)["\']?(?:&quot;|"|\')?\]#i' => '<div class="bb-quote"><b>' . $quote_user . '</b><blockquote class="bb-quote-body">',
     '#\[/quote(?::\w+)?\]#si' => '</blockquote></div>',
     // PHP code blocks (syntax highlighted)
     '#\[php(?::\w+)?\](?:[\r\n])*(.*?)\[/php(?::\w+)?\]#sie' => '_bbcode_php_tag(\'\\1\')',
@@ -236,6 +236,17 @@ function _bbcode_filter_process(&$body, $settings) {
     '#<table(.+?)><br />#si' => '<table\\1>',
   );
   $body = preg_replace(array_keys($preg), array_values($preg), $body);
+
+  /* @fixme: HACK begin */
+  $body = preg_replace_callback('#\[quote=(?:&quot;|"|\')?(.*?)["\']?(?:&quot;|"|\')?\]#i',function($matches) {
+    $replace = t('\\1 wrote:');
+    if (($user = user_load_by_name($matches[1])) && isset($user->realname)) {
+      $replace = $user->realname;
+    }
+
+    return '<div class="bb-quote"><b>' . $replace . '</b><blockquote class="bb-quote-body">';
+  }, $body);
+  /* @fixme: HACK end */
 
   // Simple replacements (str_replace is faster than preg_replace)
   $str = array(
