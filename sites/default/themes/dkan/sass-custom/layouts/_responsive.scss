@@ -189,7 +189,7 @@ $zen-auto-include-item-base: false;
     clear: both;
     
     .panel-display {
-      padding: 0 10px 0 0;
+      padding: 14px 10px 0 10px;
     }
     .pane-gb-search-pane {
       margin: 0;
@@ -210,6 +210,7 @@ $zen-auto-include-item-base: false;
       margin-top: -3px;
       padding-right: 11px;
       width: 51px;
+      margin-left: 9px;
     }
     #name-and-slogan h1:before {
       top: -8px;
@@ -221,10 +222,20 @@ $zen-auto-include-item-base: false;
       margin-top: -4px;
       padding-top: 7px;
     }
+    
+    /* search */
+    .pane-gb-search-pane .form-item-field-select {
+      display: none;
+    }
+    .pane-gb-search-pane .form-submit {
+      width: 52px;
+    }
+    
+    /* main menu */
     .pane-system-main-menu {
       clear: left;
-      padding-left: 15px;
-      padding-top: 5px;
+      padding-left: 10px;
+      padding-top: 13px;
       
       .sf-clone-parent {
         display: none;
@@ -2025,7 +2036,8 @@ $zen-auto-include-item-base: false;
   }  
 }
 
-@media all and (max-width: 2400px) and (min-width: 1500px) {
+@media all and (max-width: 10000px) and (min-width: 1500px) {
+  
   .pane-rubrics-rubrics-front .views-row:nth-child(3n+1) {
     clear: none;
   }  
@@ -2038,5 +2050,23 @@ $zen-auto-include-item-base: false;
   }
   .pane-rubrics-rubrics-front .views-row .taxonomy-term h2 a   {
     padding-top: 60%;
+  }
+}
+
+@media all and (max-width: 10000px) and (min-width: 1700px) {
+  
+  .pane-rubrics-rubrics-front {
+    width: 1435px;
+    margin: 0 auto;
+  }
+  .not-front .region-content,
+  .breadcrumb  {
+    padding-left: 0;
+    padding-right: 0;
+    width: 1435px;
+    margin: 0 auto;    
+  }
+  .breadcrumb  {  
+    padding-left: 21px;
   }
 }
