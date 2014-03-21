@@ -71,7 +71,8 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
           );
 
           $anchor_attributes = array(
-            'data-facet-target' => "{$facet_info['name']}:{$item['#indexed_value']}",
+            'data-facet-name' => urlencode($facet_info['name']),
+            'data-facet-value' => $item['#indexed_value'],
             'href' => '#',
           );
 
