@@ -28,7 +28,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -256,7 +256,7 @@ function views_menus_and_rules_views_default_views() {
   $translatables['apps'] = array(
     t('Master'),
     t('ещё'),
-    t('Submit'),
+    t('Отправить'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -299,7 +299,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -379,7 +379,7 @@ function views_menus_and_rules_views_default_views() {
   $translatables['apps_search_api'] = array(
     t('Master'),
     t('ещё'),
-    t('Submit'),
+    t('Отправить'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -423,7 +423,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -535,7 +535,7 @@ function views_menus_and_rules_views_default_views() {
     t('Master'),
     t('Блог'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -573,7 +573,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -770,7 +770,7 @@ function views_menus_and_rules_views_default_views() {
   $translatables['blogs'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -819,7 +819,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
@@ -1190,7 +1190,7 @@ function views_menus_and_rules_views_default_views() {
     t('Defaults'),
     t('Комментарии'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -1235,7 +1235,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -1365,7 +1365,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['exposed_form'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -1777,7 +1777,7 @@ function views_menus_and_rules_views_default_views() {
   $translatables['competitions_for_rubrics'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -1799,11 +1799,12 @@ function views_menus_and_rules_views_default_views() {
     t('Представления-Фрагменты'),
     t('Модерация конкурсов'),
     t('Вывод конкурсов для модерации (закладка Модерация) в профиле пользователя.'),
-    t('Submit'),
+    t('Отправить'),
     t('Статус конкурса'),
     t('статус не указан'),
     t('Конкурсы'),
     t('Вывод конкурсов на странице /competitions'),
+    t('Применить'),
     t('Конкурсы в выбранной рубрике отсутствуют.'),
   );
   $export['competitions_for_rubrics'] = $view;
@@ -1826,7 +1827,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -1891,7 +1892,7 @@ function views_menus_and_rules_views_default_views() {
   $translatables['content_search'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -1934,7 +1935,7 @@ function views_menus_and_rules_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -2258,7 +2259,7 @@ return l($row->nid, \'dataset\');
   $handler->display->display_options['fields']['view_1']['id'] = 'view_1';
   $handler->display->display_options['fields']['view_1']['table'] = 'views';
   $handler->display->display_options['fields']['view_1']['field'] = 'view';
-  $handler->display->display_options['fields']['view_1']['label'] = 'Формат данных';
+  $handler->display->display_options['fields']['view_1']['label'] = 'Data format';
   $handler->display->display_options['fields']['view_1']['empty'] = 'нет информации';
   $handler->display->display_options['fields']['view_1']['view'] = 'resources';
   $handler->display->display_options['fields']['view_1']['display'] = 'actual_resource_format';
@@ -3420,7 +3421,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $translatables['dataset'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -3454,7 +3455,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
     t('Ответственное лицо'),
     t('Адрес электронной почты ответственного лица'),
     t('Гиперссылка (URL) на набор'),
-    t('Формат данных'),
+    t('Data format'),
     t('Описание структуры набора данных'),
     t('информации нет'),
     t('Дата первой публикации набора данных'),
@@ -3539,7 +3540,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -3881,7 +3882,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $translatables['datasets_map'] = array(
     t('Master'),
     t('ещё'),
-    t('Submit'),
+    t('Отправить'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -3921,7 +3922,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -4185,7 +4186,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $translatables['datasets_rest'] = array(
     t('Master'),
     t('ещё'),
-    t('Submit'),
+    t('Отправить'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -4230,7 +4231,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -4353,7 +4354,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $translatables['datasets_revisions'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -4389,7 +4390,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'better_exposed_filters';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
@@ -4487,7 +4488,7 @@ print url(\'node/\'. $row->nid, array(\'absolute\' => TRUE));
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['exposed_form'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'better_exposed_filters';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['expose_sort_order'] = FALSE;
@@ -4611,7 +4612,7 @@ print format_plural($view->total_rows, \'1 dataset\', \'@count datasets\');
   $translatables['datasets_search'] = array(
     t('Master'),
     t('ещё'),
-    t('Submit'),
+    t('Отправить'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -4654,7 +4655,7 @@ print format_plural($view->total_rows, \'1 dataset\', \'@count datasets\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -4787,7 +4788,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $translatables['documents_search'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -4830,7 +4831,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -4921,7 +4922,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $translatables['entityform_submissions'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -4961,7 +4962,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -5143,7 +5144,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $translatables['er_'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -5189,7 +5190,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -5522,7 +5523,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Топик / Автору топика';
+  $handler->display->display_options['fields']['title']['label'] = 'Топик';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['text'] = '<span class="forum-topic-title">[title]</span> ';
   $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
@@ -5626,7 +5627,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Defaults'),
     t('Forum Name'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -5669,6 +5670,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Все'),
     t('Темы форума'),
     t('Вывод тем форума на странице Форума'),
+    t('Топик'),
     t('Количество просмотров'),
     t('Представления-Фрагменты'),
   );
@@ -5693,7 +5695,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -5766,7 +5768,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Master'),
     t('Календарь'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -5801,7 +5803,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['pure_distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -6367,7 +6369,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $translatables['ideas'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -6420,7 +6422,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -6589,7 +6591,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Master'),
     t('Последние просмотры'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -6629,7 +6631,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -6796,7 +6798,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Master'),
     t('Заявки на публикаторство'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -6843,7 +6845,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -7062,7 +7064,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Master'),
     t('Комментарии'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -7105,7 +7107,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -7619,7 +7621,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Master'),
     t('Идеи'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -7671,7 +7673,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -8317,7 +8319,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Master'),
     t('Запросы'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -8372,7 +8374,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -8476,7 +8478,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
     t('Master'),
     t('Пользователи'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -8516,7 +8518,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
@@ -8572,7 +8574,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['display_description'] = 'Вывод на странице Рубрики в разделе Новости';
   $handler->display->display_options['defaults']['exposed_form'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -8904,7 +8906,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $translatables['news'] = array(
     t('Master'),
     t('ещё'),
-    t('Submit'),
+    t('Отправить'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -8952,7 +8954,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -9048,7 +9050,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['exposed_form'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'better_exposed_filters';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['expose_sort_order'] = FALSE;
@@ -9390,7 +9392,7 @@ if (!user_is_anonymous()) print l(\'Стать публикатором\', \'bec
       'allow_secondary' => 0,
       'secondary_label' => 'Дополнительные настройки',
     ),
-    'field_organization_type_tid' => array(
+    'term_node_tid_depth' => array(
       'bef_format' => 'default',
       'more_options' => array(
         'bef_select_all_none' => FALSE,
@@ -9416,6 +9418,54 @@ if (!user_is_anonymous()) print l(\'Стать публикатором\', \'bec
       ),
     ),
   );
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'counter' => 'counter',
+    'title' => 'title',
+    'field_organization_type' => 'field_organization_type',
+    'field_organization_inn' => 'field_organization_inn',
+    'field_site_url' => 'field_site_url',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'counter' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_organization_type' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_organization_inn' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_site_url' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Шапка: Глобальный: PHP */
   $handler->display->display_options['header']['php']['id'] = 'php';
@@ -9449,9 +9499,17 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Поле: Содержимое: Тип */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'node';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['field_organization_type']['id'] = 'field_organization_type';
+  $handler->display->display_options['fields']['field_organization_type']['table'] = 'field_data_field_organization_type';
+  $handler->display->display_options['fields']['field_organization_type']['field'] = 'field_organization_type';
+  $handler->display->display_options['fields']['field_organization_type']['type'] = 'i18n_taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_organization_type']['settings'] = array(
+    'conditions' => array(
+      0 => array(
+        'condition' => '',
+      ),
+    ),
+  );
   /* Поле: Содержимое: ИНН */
   $handler->display->display_options['fields']['field_organization_inn']['id'] = 'field_organization_inn';
   $handler->display->display_options['fields']['field_organization_inn']['table'] = 'field_data_field_organization_inn';
@@ -9552,7 +9610,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
     t('Master'),
     t('Организации'),
     t('ещё'),
-    t('Submit'),
+    t('Отправить'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -9606,7 +9664,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -9869,7 +9927,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $translatables['quick_facts'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -9917,7 +9975,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -10173,7 +10231,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['fields']['field_format']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_format']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_format']['type'] = 'i18n_taxonomy_term_reference_plain';
-  $handler->display->display_options['pane_title'] = 'Data format';
+  $handler->display->display_options['pane_title'] = 'Формат данных';
   $handler->display->display_options['pane_description'] = 'Вывод на странице Набора данных в таблице, через Dynamic field.';
   $handler->display->display_options['pane_category']['name'] = 'Представления-Фрагменты';
   $handler->display->display_options['argument_input'] = array(
@@ -10525,7 +10583,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $translatables['resources'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -10549,7 +10607,6 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
     t('Гиперссылка (URL) на набор'),
     t('Вывод на странице Набора данных в таблице, через Dynamic field.'),
     t('Формат данных'),
-    t('Data format'),
     t('Описание структуры набора данных'),
     t('Ресурс RULES'),
     t('Используется для получения Ресурса Набора в правиле "Актуализация набора" и Публикация набора/Снятие с публикации'),
@@ -10579,7 +10636,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -10983,7 +11040,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $translatables['revisions'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -11031,7 +11088,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -11162,7 +11219,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $translatables['rubric_nodes'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -11201,7 +11258,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -11247,7 +11304,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['defaults']['exposed_form'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Отправить';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
@@ -11430,7 +11487,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $translatables['rubrics'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
@@ -11438,7 +11495,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
     t('Материалы'),
     t('Рубрики на главной'),
     t('Вывод рубрик со связанными материалами на главной.'),
-    t('Submit'),
+    t('Отправить'),
     t('Заголовок'),
     t('<div class="title"><?php print t(\'or select a topic\'); ?></div>'),
     t('.'),
@@ -11473,7 +11530,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Применить';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Submit';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Сбросить';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Сортировать по';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'По возрастанию';
@@ -11568,7 +11625,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
   $translatables['statistic'] = array(
     t('Master'),
     t('ещё'),
-    t('Применить'),
+    t('Submit'),
     t('Сбросить'),
     t('Сортировать по'),
     t('По возрастанию'),
