@@ -295,16 +295,9 @@ function _quote_filter_process_callback($matches) {
     $index = 0;
   }
 
-<<<<<<< HEAD
   $quote_author = trim(drupal_substr($matches[1], 6));
-  if ($user = user_load_by_name($quote_author)) {
-    $quote_author = $user->name;
-  }
-
-=======
-  $quote_author = trim(drupal_substr($matches[1], 6)); dpm($quote_author, 'Author!');
->>>>>>> dev
   $quote_content = _quote_filter_process($matches[2]);
+
   $quote_output = theme('quote', array('quote_content' => $quote_content, 'quote_author' => $quote_author, 'nest' => $nest));
 
   return $quote_output;
@@ -360,9 +353,6 @@ function _quote_get_quoted_data($nid, $cid = NULL) {
  */
 function theme_quote($vars) {
   extract($vars);
-  if (($user = user_load_by_name($quote_author)) && isset($user->realname)) {
-    $quote_author = $user->realname;
-  }
 
   $zebra = $nest & 1 ? 'odd' : 'even';
   $quote_output = '<blockquote class="quote-msg quote-nest-' . $nest . ' ' . $zebra . '">';
