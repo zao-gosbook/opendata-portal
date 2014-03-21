@@ -350,10 +350,10 @@ function _quote_get_quoted_data($nid, $cid = NULL) {
  * @return $quote_output
  *   Themed quote.
  */
-function theme_quote($vars) { die('test');
+function theme_quote($vars) {
   extract($vars);
-  if ($user = user_load_by_name($quote_author)) {
-    $quote_author = $user->uid;
+  if (($user = user_load_by_name($quote_author)) && isset($user->realname)) {
+    $quote_author = $user->realname;
   }
 
   $zebra = $nest & 1 ? 'odd' : 'even';
@@ -364,7 +364,7 @@ function theme_quote($vars) { die('test');
   else {
     $quote_author = t('Quote:');
   }
-  $quote_author = '<div class="quote-author">' . 'Да блин что за фигня' . '</div>';
+  $quote_author = '<div class="quote-author">' . $quote_author . '</div>';
   $quote_output .= $quote_author . $quote_content . '</blockquote>';
 
   return $quote_output;
