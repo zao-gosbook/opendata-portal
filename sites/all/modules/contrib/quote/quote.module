@@ -296,8 +296,11 @@ function _quote_filter_process_callback($matches) {
   }
 
   $quote_author = trim(drupal_substr($matches[1], 6));
-  $quote_content = _quote_filter_process($matches[2]);
+  if ($user = user_load_by_name($quote_author)) {
+    $quote_author = $user->name;
+  }
 
+  $quote_content = _quote_filter_process($matches[2]);
   $quote_output = theme('quote', array('quote_content' => $quote_content, 'quote_author' => $quote_author, 'nest' => $nest));
 
   return $quote_output;
