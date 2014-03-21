@@ -100,7 +100,7 @@ function views_menus_and_rules_default_rules_configuration() {
             "new_dataset" : [ "new_dataset" ]
           }
         },
-        { "component_rules_actualize_dataset_one_volume_without_convert" : {
+        { "component_rules_upload_file_actualization__one_volume_no_convert" : {
             "enitityform_submission" : [ "entity" ],
             "new_dataset" : [ "new_dataset" ]
           }
@@ -589,7 +589,7 @@ function views_menus_and_rules_default_rules_configuration() {
       "PLUGIN" : "rule",
       "OWNER" : "rules",
       "TAGS" : [ "entity_rules_validation" ],
-      "REQUIRES" : [ "rules", "rules_conditional", "rules_dev_comments" ],
+      "REQUIRES" : [ "rules", "rules_conditional" ],
       "USES VARIABLES" : {
         "entity" : { "label" : "Entity", "type" : "node" },
         "entity_is_validate" : { "label" : "Entity Validates", "type" : "boolean" }
@@ -598,7 +598,6 @@ function views_menus_and_rules_default_rules_configuration() {
         { "node_is_of_type" : { "node" : [ "entity" ], "type" : { "value" : { "app" : "app" } } } }
       ],
       "DO" : [
-        { "DO" : [] },
         { "data_set" : { "data" : [ "entity-is-validate" ], "value" : 0 } },
         { "CONDITIONAL" : [
             {
@@ -1981,7 +1980,7 @@ function views_menus_and_rules_default_rules_configuration() {
       "LABEL" : "\\u041e\\u0442\\u043f\\u0440\\u0430\\u0432\\u043a\\u0430 \\u0443\\u0432\\u0435\\u0434\\u043e\\u043c\\u043b\\u0435\\u043d\\u0438\\u044f \\u041a\\u0443\\u0440\\u0430\\u0442\\u043e\\u0440\\u0430\\u043c \\u043e\\u0440\\u0433\\u0430\\u043d\\u0438\\u0437\\u0430\\u0446\\u0438\\u0438 \\u043e \\u043d\\u043e\\u0432\\u043e\\u043c \\u043e\\u0431\\u0440\\u0430\\u0449\\u0435\\u043d\\u0438\\u0438",
       "PLUGIN" : "rule",
       "OWNER" : "rules",
-      "REQUIRES" : [ "rules", "rules_conditional", "rules_dev_comments", "privatemsg_rules" ],
+      "REQUIRES" : [ "rules", "privatemsg_rules" ],
       "ACCESS_EXPOSED" : "1",
       "USES VARIABLES" : { "entityform_submission" : { "label" : "entityform_submission", "type" : "entityform" } },
       "IF" : [
@@ -2009,7 +2008,6 @@ function views_menus_and_rules_default_rules_configuration() {
         }
       ],
       "DO" : [
-        { "DO" : [] },
         { "variable_add" : {
             "USING" : {
               "type" : "node",
@@ -3156,6 +3154,129 @@ function views_menus_and_rules_default_rules_configuration() {
       ]
     }
   }');
+  $items['rules_upload_file_actualization__one_volume_no_convert'] = entity_import('rules_config', '{ "rules_upload_file_actualization__one_volume_no_convert" : {
+      "LABEL" : "\\u0410\\u043a\\u0442\\u0443\\u0430\\u043b\\u0438\\u0437\\u0430\\u0446\\u0438\\u044f \\u0440\\u0435\\u0441\\u0443\\u0440\\u0441\\u043e\\u0432 - \\u0417\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044c \\u0444\\u0430\\u0439\\u043b (\\u0431\\u0435\\u0437 \\u043a\\u043e\\u043d\\u0432\\u0435\\u0440\\u0442\\u0430\\u0446\\u0438\\u0438)(\\u041e\\u0434\\u043d\\u043e\\u0442\\u043e\\u043c\\u043d\\u044b\\u0439)",
+      "PLUGIN" : "rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "entity_rules_entityform_submission" ],
+      "REQUIRES" : [
+        "rules",
+        "od_file_process",
+        "rules_conditional",
+        "file_rules",
+        "od_common"
+      ],
+      "USES VARIABLES" : {
+        "enitityform_submission" : { "label" : "enitityform submission", "type" : "entityform" },
+        "new_dataset" : { "label" : "new_dataset", "type" : "node" }
+      },
+      "IF" : [
+        { "data_is" : {
+            "data" : [ "enitityform-submission:type" ],
+            "value" : "dataset_actualization"
+          }
+        },
+        { "data_is" : {
+            "data" : [ "enitityform-submission:field-dataset-variant" ],
+            "value" : "upload"
+          }
+        },
+        { "data_is" : { "data" : [ "new-dataset:type" ], "value" : "dataset" } },
+        { "data_is" : {
+            "data" : [ "enitityform-submission:field-dataset-convert" ],
+            "value" : 0
+          }
+        },
+        { "data_is" : { "data" : [ "new-dataset:field-multivolume" ], "value" : 0 } }
+      ],
+      "DO" : [
+        { "LOOP" : {
+            "USING" : { "list" : [ "new-dataset:field-resources" ] },
+            "ITEM" : { "resource" : "resource" },
+            "DO" : [
+              { "od_file_process_rule_callback_get_files" : {
+                  "USING" : {
+                    "file_2process" : [ "enitityform-submission:field-od-wizard-upload-file" ],
+                    "can_expire" : 1
+                  },
+                  "PROVIDE" : {
+                    "created_files" : { "upload_files_list" : "upload_files_list" },
+                    "created_structure" : { "created_structure" : "Created structure file" },
+                    "created_structure_media" : { "created_structure_media" : "Created structure file (field_item_file)" },
+                    "structure_meta" : { "structure_meta" : "Structure record as universal_data_storage entity" }
+                  }
+                }
+              },
+              { "CONDITIONAL" : [
+                  {
+                    "IF" : { "data_is" : { "data" : [ "resource:type" ], "value" : "resource" } },
+                    "DO" : [
+                      { "file_rules_copy_file" : {
+                          "source_entity" : [ "enitityform-submission" ],
+                          "source_field" : "field_od_wizard_upload_file",
+                          "destination_entity" : [ "resource" ],
+                          "destination_field" : "field_upload_original",
+                          "remove_source" : "0"
+                        }
+                      },
+                      { "data_set" : {
+                          "data" : [ "resource:field-provenance" ],
+                          "value" : [ "enitityform-submission:field-content-last-change" ]
+                        }
+                      },
+                      { "data_set" : {
+                          "data" : [ "resource:field-upload" ],
+                          "value" : [ "upload-files-list:0" ]
+                        }
+                      },
+                      { "od_common_file_get_extension_term" : {
+                          "USING" : { "file" : [ "upload-files-list:0" ], "vocabulary" : "format" },
+                          "PROVIDE" : { "extension_term" : { "file_extension" : "file_extension" } }
+                        }
+                      },
+                      { "data_set" : { "data" : [ "resource:field-format" ], "value" : [ "file-extension" ] } },
+                      { "CONDITIONAL" : [
+                          {
+                            "IF" : { "data_is" : {
+                                "data" : [ "enitityform-submission:field-dataset-convert" ],
+                                "value" : 0
+                              }
+                            },
+                            "DO" : [
+                              { "file_rules_copy_file" : {
+                                  "source_entity" : [ "enitityform-submission" ],
+                                  "source_field" : "field_od_wizard_upload_structure",
+                                  "destination_entity" : [ "resource" ],
+                                  "destination_field" : "field_upload_structure",
+                                  "remove_source" : "0"
+                                }
+                              }
+                            ]
+                          },
+                          { "ELSE" : [
+                              { "data_set" : {
+                                  "data" : [ "resource:field-upload-structure" ],
+                                  "value" : [ "created-structure-media" ]
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      { "data_set" : { "data" : [ "resource:field-link-api" ], "value" : [ "" ] } },
+                      { "data_set" : { "data" : [ "resource:field-link-remote-file" ], "value" : [ "" ] } },
+                      { "data_set" : { "data" : [ "resource:field-link-structure-file" ], "value" : [ "" ] } }
+                    ]
+                  }
+                ]
+              },
+              { "data_set" : { "data" : [ "resource:revision" ], "value" : 1 } }
+            ]
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_upload_file_actualization_multivolume'] = entity_import('rules_config', '{ "rules_upload_file_actualization_multivolume" : {
       "LABEL" : "\\u0410\\u043a\\u0442\\u0443\\u0430\\u043b\\u0438\\u0437\\u0430\\u0446\\u0438\\u044f \\u0440\\u0435\\u0441\\u0443\\u0440\\u0441\\u043e\\u0432 - \\u0417\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044c \\u0444\\u0430\\u0439\\u043b (\\u0441 \\u043a\\u043e\\u043d\\u0432\\u0435\\u0440\\u0442\\u0430\\u0446\\u0438\\u0435\\u0439) (\\u041c\\u043d\\u043e\\u0433\\u043e\\u0442\\u043e\\u043c\\u043d\\u044b\\u0439) ",
       "PLUGIN" : "rule",
@@ -3315,7 +3436,7 @@ function views_menus_and_rules_default_rules_configuration() {
       "PLUGIN" : "rule",
       "OWNER" : "rules",
       "TAGS" : [ "entity_rules_validation" ],
-      "REQUIRES" : [ "rules", "rules_conditional", "rules_dev_comments" ],
+      "REQUIRES" : [ "rules", "rules_conditional" ],
       "USES VARIABLES" : {
         "entity" : { "label" : "Entity", "type" : "entityform" },
         "entity_is_validate" : { "label" : "Entity Validates", "type" : "boolean" }
@@ -3328,7 +3449,6 @@ function views_menus_and_rules_default_rules_configuration() {
         }
       ],
       "DO" : [
-        { "DO" : [] },
         { "CONDITIONAL" : [
             {
               "IF" : { "data_is_empty" : { "data" : [ "entity:field-link-api:url" ] } },
