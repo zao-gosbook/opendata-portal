@@ -37,6 +37,10 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
       $facets_to_proceed[] = $facet['name'];
     }
 
+    if (isset($enabled_facets['field_resources:field_format'])) {
+      $enabled_facets['field_resources:field_format']['label'] = t('Format');
+    }
+
     $filters = array();
     $wrapper_classes = array('selected-filters-wrapper');
     $adapter->buildRealm($realm_name);
