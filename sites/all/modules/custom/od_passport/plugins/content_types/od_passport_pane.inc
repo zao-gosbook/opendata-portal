@@ -184,9 +184,9 @@ function _passport_table_rows($nid) {
     if ($field_link_remote_file = $resource->field_link_remote_file->value()) {
     $url_datasets[] = $field_link_remote_file['uri'];
     }
-    
+
     if ($field_link_api = $resource->field_link_api->value()) {  
-    $url_datasets[] = $field_link_api['uri'];
+    $url_datasets[] = $field_link_api['url'];
     }
     
     if ($field_link_upload = $resource->field_upload) {
@@ -307,7 +307,7 @@ function _passport_table_rows($nid) {
         }
       
         if ($field_link_api = $revision_object->field_link_api->value()) {  
-          $url_datasets_revisions[] = $field_link_api['uri'];
+          $url_datasets_revisions[] = $field_link_api['url'];
         }
       
         if ($field_link_upload = $revision_object->field_upload) {
@@ -396,7 +396,7 @@ function _passport_structured_description($nid) {
       }
     
       if ($field_link_api = $revision_object->field_link_api->value()) {  
-        $url_datasets_revisions[$key]['uri'] = $field_link_api['uri'];
+        $url_datasets_revisions[$key]['uri'] = $field_link_api['url'];
       }
     
       if ($field_link_upload = $revision_object->field_upload) {
