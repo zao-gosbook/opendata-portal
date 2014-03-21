@@ -216,7 +216,7 @@ function _bbcode_filter_process(&$body, $settings) {
     '#\[abbr=([\w\s-,\.]+)(?::\w+)?\](.*?)\[/abbr(?::\w+)?\]#si' => '<abbr title="\\1">\\2</abbr>',
     // Quoting with or without specifying the source
     '#\[quote(?::\w+)?\]#i' => '<div class="bb-quote">' . $quote_text . '<blockquote class="bb-quote-body">',
-    '#\[quote=(?:&quot;|"|\')?(.*?)["\']?(?:&quot;|"|\')?\]#i' => '<div class="bb-quote"><b>' . $quote_user . '</b><blockquote class="bb-quote-body">',
+    '#\[quote=(?:&quot;|"|\')?(.*?)["\']?(?:&quot;|"|\')?\]#i' => '<div class="bb-quote"><b>' . (user_load_by_name($quote_user) ? user_load_by_name($quote_user)->realname : $quote_user) . '</b><blockquote class="bb-quote-body">',
     '#\[/quote(?::\w+)?\]#si' => '</blockquote></div>',
     // PHP code blocks (syntax highlighted)
     '#\[php(?::\w+)?\](?:[\r\n])*(.*?)\[/php(?::\w+)?\]#sie' => '_bbcode_php_tag(\'\\1\')',
