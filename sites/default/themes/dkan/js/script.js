@@ -259,6 +259,7 @@
    */
   Drupal.behaviors.showHideElementsFront = {
     attach: function(context, settings) {
+      window.resize();
       var showHideToggleEl = $(context).find('.view:not(.processed-showHideElementsFront) div.show-hide-toggle-wrapper>span>a');
       var view = showHideToggleEl.parents('.view:eq(0)');
       var viewContent = view.find('.view-content');
