@@ -5634,11 +5634,13 @@ div.fivestar-widget .star {
 .bb-quote {
   border-left: 6px solid #0C87E8;
   color: #666666;
-  margin: 0 0 2px;
+  margin: 0 0 13px;
   padding: 1px 0 2px 16px;
   
   b {
     text-transform: uppercase;
+    margin-bottom: 4px;
+    color: #bfbfbf;
   }
   
   .bb-quote-body {
@@ -6903,7 +6905,8 @@ div.fivestar-widget .star {
       width: 52px;
       height: 52px;
       top: 0;
-      background: url("../images/icon-search-big.png") no-repeat scroll 0 0 / cover transparent;
+      background: url("../images/icon-search-big.png") no-repeat scroll 0 0;
+      @include background-size(cover);
       border: 0 none;
       overflow: hidden;
       text-indent: -10000px;
