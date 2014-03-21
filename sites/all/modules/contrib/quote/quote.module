@@ -350,7 +350,7 @@ function _quote_get_quoted_data($nid, $cid = NULL) {
  * @return $quote_output
  *   Themed quote.
  */
-function theme_quote($vars) {
+function theme_quote($vars) { die('test');
   extract($vars);
   if ($user = user_load_by_name($quote_author)) {
     $quote_author = $user->uid;
