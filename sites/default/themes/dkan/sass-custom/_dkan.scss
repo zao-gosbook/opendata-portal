@@ -5316,7 +5316,8 @@ div.fivestar-widget .star {
     }
   }
 }
-.section-library {
+.section-library,
+.section-library-developers {
   .pane-datasets-search-dataset-search .view-content {
     padding-top: 6.4em;
   }
@@ -5628,6 +5629,20 @@ div.fivestar-widget .star {
         }
       }
     }
+  }
+}
+.bb-quote {
+  border-left: 6px solid #0C87E8;
+  color: #666666;
+  margin: 0 0 2px;
+  padding: 1px 0 2px 16px;
+  
+  b {
+    text-transform: uppercase;
+  }
+  
+  .bb-quote-body {
+    margin: 5px 0 0;
   }
 }
 

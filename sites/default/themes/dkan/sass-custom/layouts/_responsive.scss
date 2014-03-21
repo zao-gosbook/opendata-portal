@@ -410,6 +410,9 @@ $zen-auto-include-item-base: false;
       margin-botton: 15px;
     }
   }
+  .pane-datasets-search-dataset-search form .form-text {
+    font-size: .65em;
+  }
   .breadcrumb {
     padding: 40px 21px 10px;
   }
@@ -675,6 +678,11 @@ $zen-auto-include-item-base: false;
     }
   } 
   
+  /* dataset */
+  .data-row-links .main-download-link-wrapper a {
+    top: 0;
+  }
+  
   /* table title */
   table td.views-field-title a {
     font-size: 1.25em;
@@ -770,6 +778,7 @@ $zen-auto-include-item-base: false;
       } 
       .pane-node-total-count {
         float: left;
+        clear: left;
         padding-left: 54px;
         margin-right: 15px;
         @include background-size(45px auto);
@@ -805,6 +814,15 @@ $zen-auto-include-item-base: false;
   .data-row-passport table td {
     font-size: 14px;
     padding: .55em .8em;
+    
+    a {
+      display: block;
+      height: 20px;
+      width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
   .data-row-developers .pane-content {
     font-size: 14px;
