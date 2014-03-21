@@ -26,9 +26,11 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
   public function buildListItems($build) {
     $items = parent::buildListItems($build);
 
-    foreach (array_values($build) as $index => $build_item) {
+    // Try to run it a little faster
+    $index = 0;
+    foreach ($build as $build_item) {
       if ($build_item['#active']) {
-        $items[$index]['class'][] = 'facetapi-active';
+        $items[$index++]['class'][] = 'facetapi-active';
       }
     }
 
