@@ -364,7 +364,7 @@ function theme_quote($vars) {
   else {
     $quote_author = t('Quote:');
   }
-  $quote_author = '<div class="quote-author">' . $quote_author . '</div>';
+  $quote_author = '<div class="quote-author">' . 'Да блин что за фигня' . '</div>';
   $quote_output .= $quote_author . $quote_content . '</blockquote>';
 
   return $quote_output;
