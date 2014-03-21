@@ -1279,7 +1279,7 @@ div.horizontal-tabs .form-text {
       padding: .4em 1em;
       @include background-image(linear-gradient(#0c87e8, #3d9fed));
       color: #fff;
-      text-transform: none;
+      text-transform: uppercase;
       text-shadow: none;
       margin: 0 3px;
       
@@ -3268,6 +3268,12 @@ div.horizontal-tabs .form-text {
           &.active,
           &:hover {
             background: #fff;
+          }
+          &[href*="dataset"],
+          &[href*="apps"],
+          &[href*="dataset"]:hover,
+          &[href*="apps"]:hover {
+            background: #fec157;
           }
         }      
       }
@@ -6806,6 +6812,7 @@ div.fivestar-widget .star {
         .group-right {
           width: 100%;
           margin-left: -100px;
+          padding-top: 16px;
           
 
           .field {
@@ -6983,6 +6990,24 @@ div.fivestar-widget .star {
   
   a {
     text-decoration: none;
+    font-size: 15px;
+  }
+}
+.view-advanced-forum-unanswered-topics .views-exposed-form {
+  label {
+    float: left;
+    font-size: 17px;
+    padding-right: 15px;
+    padding-top: 15px;
+  }
+  .views-widget {
+    float: left;
+  }
+  .form-submit {
+    margin-top: 8px;
+  }
+  .form-select {
+    width: auto;
   }
 }
 td.forum-number-topics,
