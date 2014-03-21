@@ -295,7 +295,7 @@ function _quote_filter_process_callback($matches) {
     $index = 0;
   }
 
-  $quote_author = trim(drupal_substr($matches[1], 6));
+  $quote_author = trim(drupal_substr($matches[1], 6)); dpm($quote_author, 'Author!');
   if ($user = user_load_by_name($quote_author)) {
     dpm($user);
     $quote_author = $user->name;
