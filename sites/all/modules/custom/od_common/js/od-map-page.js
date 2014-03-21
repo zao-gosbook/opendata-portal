@@ -36,12 +36,11 @@
         });
 
         var val = $.cookie(cookieName);
-        if (!isNaN(val)) {
-          $radios.filter('[value="'+val+'"]').click();
+        if (isNaN(val)) {
+          val = 0; //Default
         }
-        else {
-          $radios.filter('input:checked').click();
-        }
+
+        $radios.filter('[value="'+val+'"]').click();
       });
     }
   }
