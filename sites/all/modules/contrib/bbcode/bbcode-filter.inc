@@ -237,6 +237,7 @@ function _bbcode_filter_process(&$body, $settings) {
   );
   $body = preg_replace(array_keys($preg), array_values($preg), $body);
 
+  /* @fixme: HACK begin */
   $body = preg_replace_callback('#\[quote=(?:&quot;|"|\')?(.*?)["\']?(?:&quot;|"|\')?\]#i',function($matches) {
     $replace = t('\\1 wrote:');
     if (($user = user_load_by_name($matches[1])) && isset($user->realname)) {
@@ -245,6 +246,7 @@ function _bbcode_filter_process(&$body, $settings) {
 
     return '<div class="bb-quote"><b>' . $replace . '</b><blockquote class="bb-quote-body">';
   }, $body);
+  /* @fixme: HACK end */
 
   // Simple replacements (str_replace is faster than preg_replace)
   $str = array(
