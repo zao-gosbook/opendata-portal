@@ -337,8 +337,10 @@ class ODStoreEndPoint extends ARC2_StoreEndpoint {
       </div>
       <div class="options-2">' .
         t('Change HTTP method:') . '
-            <a href="javascript:;" onclick="javascript:document.getElementById(\'sparql-form\').method=\'get\'">GET</a>
-            <a href="javascript:;" onclick="javascript:document.getElementById(\'sparql-form\').method=\'post\'">POST</a>
+        <div class="method-wrapper">
+            <input name="method_selector" value="get" type="radio" onclick="javascript:document.getElementById(\'sparql-form\').method=\'get\'" '. ($_SERVER['REQUEST_METHOD'] == 'GET' ? "checked" : "") .'>GET</input>
+            <input name="method_selector" value="post" type="radio" onclick="javascript:document.getElementById(\'sparql-form\').method=\'post\'" '. ($_SERVER['REQUEST_METHOD'] == 'POST' ? "checked" : "") .'>POST</input>
+        </div>
        </div>
     ';
   }
