@@ -4,12 +4,11 @@ description = Provides integration with <a href="http://www.zurb.com/playground/
 package = Context
 core = 7.x
 dependencies[] = context
-dependencies[] = context_ui
 dependencies[] = libraries (>=7.x-2.0)
 
-; Information added by drupal.org packaging script on 2013-08-14
-version = "7.x-1.0-alpha3"
+; Information added by Drupal.org packaging script on 2014-02-15
+version = "7.x-1.0-alpha3+3-dev"
 core = "7.x"
 project = "joyride"
-datestamp = "1376521894"
+datestamp = "1392470018"
 
