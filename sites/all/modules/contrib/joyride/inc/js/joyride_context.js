@@ -11,7 +11,7 @@
 
       if ($('ol#joyride-tips-content').length > 0) $('ol#joyride-tips-content').remove();
 
-      $('body', context).append(tips_content);
+      $('body', context).once().append(tips_content);
 
       var joyride_options = {};
 

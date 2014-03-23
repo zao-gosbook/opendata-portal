@@ -123,13 +123,15 @@ function od_dataset_download_file_page_callback($file) {
     // @fixme: Check if encoding is valid before converting
     if ($detector->convertFile($file->uri, $out_file, $target_encoding)) {
       od_dataset_download_file($out_file, $file->filename);
+      drupal_exit();
     }
   }
   else {
     od_dataset_download_file($file->uri, $file->filename);
+    drupal_exit();
   }
 
-  drupal_exit();
+  drupal_not_found();
 }
 
 function od_dataset_download_file($path, $filename = NULL) {
