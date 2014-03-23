@@ -385,7 +385,9 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
           }
         }
         catch (Exception $e) {
-          throw $e;
+          // @fixme: prevent errors here.
+          watchdog_exception('od_common', $e);
+          //throw $e;
         }
 
         $element[$delta]['links_container'] = array(
@@ -405,7 +407,12 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
           'data' => drupal_get_path('module', 'od_common'). '/js/multi-download-links.js',
         );
 
-        foreach (array(ODDetectEncoding::ENC_CP1251, ODDetectEncoding::ENC_UTF8) as $target_encoding) {
+        static $encodings_map = array(
+          ODDetectEncoding::ENC_CP1251 => 'Windows-1251',
+          ODDetectEncoding::ENC_UTF8 => 'Unicode (UTF-8)'
+        );
+
+        foreach ($encodings_map as $target_encoding => $encoding_label) {
           $options = array();
           $options['query']['encoding'] = $target_encoding;
           $options['html'] = TRUE;

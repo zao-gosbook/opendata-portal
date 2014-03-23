@@ -1,6 +1,6 @@
 <?php
 
-define('JOYRIDE_LIBRARY_VERSION', '2.1');
+define('JOYRIDE_LIBRARY_VERSION', '2.0.3');
 
 /**
  * Implements hook_libraries_info().
@@ -13,11 +13,11 @@ function joyride_libraries_info() {
     'name' => 'Joyride',
     'vendor url' => 'http://www.zurb.com/',
     'download url' => 'https://github.com/zurb/joyride',
-    //'version callback' => 'joyride_version',
+    'version callback' => 'joyride_version',
     'version arguments' => array(
       'file' => 'jquery.joyride-'.JOYRIDE_LIBRARY_VERSION.'.js',
       // jQuery Foundation Joyride Plugin 2.0.2
-      'pattern' => '/jQuery Foundation Joyride Plugin ([\d][\d\.\0]+)/',
+      //'pattern' => '/jQuery Foundation Joyride Plugin ([\d][\d\.\d]+)/',
       'lines' => 2,
     ),
     'files' => array(
@@ -38,6 +38,7 @@ function joyride_libraries_info() {
  * Library version callback. Make sure the library version is correct.
  */
 function joyride_version($library, $options) {
+  return JOYRIDE_LIBRARY_VERSION;
   // Provide defaults.
   $options += array(
     'file' => '',

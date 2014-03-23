@@ -1,4 +1,4 @@
-<ol id="joyride-tips-content" style="visibility: hidden;">
+<ol id="joyride-tips-content" style="display: none;">
   <?php if($tips_content): ?>
     <?php print $tips_content; ?>
   <?php endif; ?>
