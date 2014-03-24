@@ -21,7 +21,7 @@ function render_rubric_term_submenu() {
     ),
     //'applications' => array(
     //  'item_visibility_callback' => 'render_rubric_applications_exists',
-    ),
+    //),
     'blogs' => array(
       'item_visibility_callback' => 'render_rubric_blogs_exists',
     ),
