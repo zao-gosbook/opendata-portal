@@ -247,6 +247,7 @@ function od_common_menu_alter(&$items) {
   unset($items['node/%node/track']);
   unset($items['node/%node/activity']);
   unset($items['node/%node/resource']);
+  unset($items['node/%node/api']);
 }
 
 function od_common_view_tab_title($node) {
