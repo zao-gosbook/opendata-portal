@@ -3301,6 +3301,12 @@ div.horizontal-tabs .form-text {
           &[href*="apps"]:hover {
             background: #fec157;
           }
+          &[href*="dataset"].active,
+          &[href*="apps"].active,
+          &[href*="dataset"].active:hover,
+          &[href*="apps"].active:hover {
+            background: #fff;
+          }          
         }      
       }
       ul li:last-child a.active,
@@ -5300,6 +5306,10 @@ div.fivestar-widget .star {
 .section-taxonomy {
   background: #fff;  
   
+  &.page-taxonomy-term-datasets {
+    background: #E5E5E5; 
+  }
+  
   .pane-page-content .views-row {
     border-right: 5px solid #bfbfbf;
     padding-right: 4%;
@@ -6464,6 +6474,7 @@ div.fivestar-widget .star {
       line-height: 43px;     
       padding: 0 19px;
       display: inline-block;
+      background: #fff;
       
       &:hover {
         text-decoration: none;
