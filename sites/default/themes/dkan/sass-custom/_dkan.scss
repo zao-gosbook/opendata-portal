@@ -3303,10 +3303,12 @@ div.horizontal-tabs .form-text {
             background: #fff;
           }
           &[href*="dataset"],
-          &[href*="apps"],
+          &[href*="apps"] {
+            background: #fec157;
+          }
           &[href*="dataset"]:hover,
           &[href*="apps"]:hover {
-            background: #fec157;
+            background: #fff;
           }
           &[href*="dataset"].active,
           &[href*="apps"].active,
@@ -3866,7 +3868,14 @@ html.js input.form-autocomplete {
     &.field-name-field-od-query-type {
       padding-left: 0;
     }
+    
+    &.captcha {
+      padding-top: 0;
+      padding-left: 0;
+      margin-top: -20px;
+    }    
   }
+
   .field-name-field-od-query-mark-next {
     padding-bottom: 30px;
     
@@ -4850,6 +4859,62 @@ div.fivestar-widget .star {
     }
   }
 }
+
+/* node-type-publisher-request */
+.node-type-publisher-request {
+  background: #fff;
+}
+.node-publisher-request {
+  font-size: 16px;
+  line-height: 22px;
+  color: #666;
+  
+  .user-picture {
+    
+    img {
+      margin-right: 20px;
+      margin-bottom: 20px;
+      border: 10px solid #e6e4e5;
+      vertical-align: middle;
+    }
+  }
+  header {
+    color: #b5b5b5;
+    font-size: 16px;  
+    
+    p {
+      margin: 0;
+    }
+  }
+  .rules-link-wrapper {
+    display: inline-block;
+  }
+  .rules-link-reject_publisher_request a {
+    color: red;
+    padding-right: 10px;
+  }
+  .field-name-field-pubreq-organization-exists {
+    padding-top: 20px;
+  }
+  .field {
+    @include clearfix;
+    padding-bottom: 7px;
+    
+    .field-label {
+      float: left;
+      width: 200px;
+      color: #000;
+      font-weight: normal;
+    }
+    .field-items {
+      margin-left: 200px;
+    }
+  }
+  .links {
+    display: none;
+  }
+}
+
 /* change info */
 .pane-dataset-dataset-changes-info {
   
