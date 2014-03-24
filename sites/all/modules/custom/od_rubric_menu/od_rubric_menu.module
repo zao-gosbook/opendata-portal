@@ -19,8 +19,8 @@ function render_rubric_term_submenu() {
     'competitions' => array(
       'item_visibility_callback' => 'render_rubric_competitions_exists',
     ),
-    'applications' => array(
-      'item_visibility_callback' => 'render_rubric_applications_exists',
+    //'applications' => array(
+    //  'item_visibility_callback' => 'render_rubric_applications_exists',
     ),
     'blogs' => array(
       'item_visibility_callback' => 'render_rubric_blogs_exists',
@@ -61,7 +61,7 @@ function render_rubric_term_submenu() {
               $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
               break;
             case 'data':
-              $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. '<a href="' . url('dataset') . '?f[0]=field_rubric%3A' . $term->tid  . '" rel="nofollow">' . t('Data') . '</a>'. '</li>';
+              $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Data'), 'taxonomy/term/'. $term->tid . '/datasets') . '</li>';
               break;
             case 'competitions':
               $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('Contests'), 'taxonomy/term/'. $term->tid . '/competition') . '</li>';
