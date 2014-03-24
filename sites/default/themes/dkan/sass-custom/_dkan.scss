@@ -1998,7 +1998,24 @@ div.horizontal-tabs .form-text {
   padding-top: 20px;
 }
 
+.page-apps,
+.page-library {
+  .region-facet:before {
+    bottom: 31px;
+  }
+}
 .region-facet {
+  position: relative;
+  
+  &:before {
+    border-left: 1px solid #CCCCCC;
+    bottom: 49px;
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 36px;
+    z-index: 100;
+  }  
   
   > .inside {
     padding-right: 0;
@@ -4204,12 +4221,6 @@ div.fivestar-widget .star {
 .page-apps .pane-page-content .panels-flexible-region {
   width: 100%;
   
-  h2 {
-    margin: 0 0 .5em;
-    font-size: 24px;
-    line-height: 1em;
-    color: #4d4d4d;
-  }
 } 
 .pane-apps-top-3-apps {
   padding: 0 0 1.6%;
@@ -4305,7 +4316,7 @@ div.fivestar-widget .star {
 .node-type-dataset {
   background: #fff;
 }
-.page-dataset .pane-page-content {
+/*.page-dataset .pane-page-content {
   position: relative;
   
   &:before {
@@ -4316,7 +4327,7 @@ div.fivestar-widget .star {
     left: 24.8135%;
     position: absolute;
   }
-}
+}*/
 .addtoany_list.a2a_kit_size_32 {
   a {
     span {
@@ -6764,13 +6775,7 @@ div.fivestar-widget .star {
     
     .left-column {
       width: 26.6%;
-      
-      h2 {
-        font-size: 24px;
-        line-height: 24px;
-        margin: 0 0 12px;
-        color: #4c4c4c;
-      }
+
       /*ul {
         background: #e5e5e5;
         padding: 0;
