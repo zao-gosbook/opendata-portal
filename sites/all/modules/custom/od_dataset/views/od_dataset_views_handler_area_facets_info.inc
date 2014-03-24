@@ -8,6 +8,8 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
   function option_definition() {
     $options = parent::option_definition();
 
+    $options['search_index']['default'] = NULL;
+
     return $options;
   }
   /**
@@ -17,6 +19,27 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
    */
   function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
+
+    $form['search_index'] = array(
+      '#type' => 'select',
+      '#title' => t('Search index'),
+      '#options' => array(),
+      '#default_value' => isset($this->options['search_index']) ? $this->options['search_index'] : NULL,
+    );
+
+    // Get all indexes
+    /**
+     * @var $index SearchApiIndex
+     */
+    $options = &$form['search_index']['#options'];
+    foreach (search_api_index_load_multiple(FALSE) as $index) {
+      $server_name = "{$index->server()->name} ({$index->server()->machine_name})";
+      $options[$server_name][$index->machine_name] = "{$index->name} ({$index->machine_name})";
+    }
+
+    unset($options);
+
+    $a=1;
   }
 
   /**
@@ -24,11 +47,17 @@ class od_dataset_views_handler_area_facets_info extends views_handler_area {
    */
   function render($empty = FALSE) {
     $realm_name = 'block';
-    $searcher = 'search_api@' . 'datasets';
+    if (!($index = search_api_index_load_multiple(FALSE, array('machine_name' => $this->options['search_index'])))) {
+      return 'Can\'t load search index named "' . $this->options['search_index'] . '"';
+    }
+
+    $index = reset($index);
+
+    $searcher = "search_api@{$index->machine_name}";
     $adapter = facetapi_adapter_load($searcher);
 
     if (!$adapter) {
-      return '';
+      return 'Cat\'t load searcher named "' . $searcher . '"';
     }
 
     $facets_to_proceed = array();
