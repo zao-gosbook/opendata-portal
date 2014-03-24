@@ -31,6 +31,7 @@
           $form.removeClass('active-tab-0').removeClass('active-tab-1').addClass('active-tab-' + val);
 
           $radios.parent().removeClass('active-element');
+          $radios.removeAttr('checked');
           $this.parent().addClass('active-element');
           $.cookie(cookieName, val);
         });
@@ -40,7 +41,7 @@
           val = 0; //Default
         }
 
-        $radios.filter('[value="'+val+'"]').click();
+        $radios.filter('[value="'+val+'"]').trigger('click');
       });
     }
   }
