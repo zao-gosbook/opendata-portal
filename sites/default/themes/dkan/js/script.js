@@ -40,7 +40,7 @@
 
   Drupal.behaviors.TaxonomyColumnsRubric = {
     attach: function (context) {
-      $('.page-taxonomy-term .rubric-content .view .view-content', context).once('massontry', function() {
+      $('.page-taxonomy-term .rubric-content .view .view-content', context).not('.page-taxonomy-term-datasets .rubric-content .view .view-content').once('massontry', function() {
         var massontry = $(this);
         $('<div class="view-header"></div>').prependTo(massontry);
         var container = document.querySelector('.page-taxonomy-term .rubric-content .view .view-content');

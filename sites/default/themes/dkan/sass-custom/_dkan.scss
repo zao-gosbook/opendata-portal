@@ -47,6 +47,9 @@ h1, h2, h3, h4 {
     text-transform: uppercase;
   }
 }
+.node-type-resource .pane-page-title h1 {
+  text-transform: none;
+}
 
 .view-empty {
   font-size: 16px;
@@ -1282,6 +1285,9 @@ div.horizontal-tabs .form-text {
       text-transform: uppercase;
       text-shadow: none;
       margin: 0 3px;
+      @include box-shadow(none);
+      border: 1px solid transparent;
+      border-bottom: 0;      
       
       &.is-active,
       &:hover {
@@ -1289,6 +1295,7 @@ div.horizontal-tabs .form-text {
         color: #3d9fed;
         padding: .4em 1em;
         border-color: #ccc;
+        border-bottom: 0;
       }
       &.is-active {
         margin: 0;
@@ -3459,7 +3466,7 @@ body {
       padding-right: 0;
       border: 0;
       /*padding: 1.1em;*/
-      margin-bottom: 2.2em;
+      margin-bottom: 20px;
       /**/width: 49%;
       
       .node {
@@ -3547,9 +3554,38 @@ body {
         font-size: 1.25em;
       }
     }
-  }
-  
+  } 
 }
+.page-taxonomy-term-datasets.page-taxonomy-term {
+  
+  .view-rubric-nodes .view-content {
+    height: auto;
+  }
+  .view-rubric-nodes .views-row {
+    width: 100%;
+    @include box-sizing(padding-box);
+    border-right: 5px solid #BFBFBF;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding-right: 25px;
+    padding-left: 20px;
+    padding-top: 10px;
+    font-size: 16px;
+    line-height: 22px;
+    
+    .dataset-header a {
+      font-size: 24px;
+      line-height: 1.1em;
+      margin: 0 0 0.15em;
+      text-decoration: none;
+      display: block;
+    }
+    .dataset-owner {
+      color: #B5B5B5;
+    }
+  }
+}
+
 
 /**
  * Passport
@@ -4379,6 +4415,17 @@ div.fivestar-widget .star {
     padding-left: 85px;
     background: url("../images/ico-subscribe.png") no-repeat 0 50%;
   }
+  .flag-message {
+    font-size: 16px;
+    text-decoration: none;
+    display: block;
+    height: 56px;
+    display: table-cell;
+    width: 100%;
+    vertical-align: middle;
+    padding-left: 85px;
+    background: url("../images/ico-subscribe.png") no-repeat 0 50%;    
+  }
   .field-name-field-spatial,
   .field-name-field-geolocation {
     border: 10px solid #e5e5e5;
@@ -4564,6 +4611,10 @@ div.fivestar-widget .star {
       height: 60px;
       line-height: 60px;
       background: url("../images/arr-down.png") no-repeat 100% 50%;      
+      
+      &:hover {
+        color: #0C87E8;
+      }
     }
   }
   .od-common-pubdlcnt-count-wrapper {
@@ -4799,6 +4850,50 @@ div.fivestar-widget .star {
     }
   }
 }
+/* change info */
+.pane-dataset-dataset-changes-info {
+  
+  .view-content > div {
+    padding: 40px 260px 27px 67px;
+    border-bottom: 1px solid #b2b2b2;
+    background: url("../images/icon-data-log.png") no-repeat 0 40px;
+    position: relative;
+    
+    &:first-child {
+      border-top: 1px solid #b2b2b2;
+    }
+    .views-field-field-body {
+      font-size: 16px;
+      color: #666;
+      line-height: 22px;
+      
+      p {
+        margin: 0;
+      }
+      .field-content {
+      }
+    }
+    .views-field-name {
+      color: #b2b2b2;
+      font-size: 16px;
+      line-height: 22px;      
+    }
+    .views-field-field-date-update {
+      position: absolute;
+      right: 0;
+      top: 34px;
+      font-size: 22px;
+      line-height: 25px;
+      text-align: right;
+      color: #666;
+      
+      .views-label {
+        color: #b2b2b2;
+      }
+    }
+  }
+}
+
 
 /**
  * opendata-import
