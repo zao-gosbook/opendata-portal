@@ -319,6 +319,12 @@ function od_common_field_formatter_info() {
     'description' => t('Displays file as a link.'),
   );
 
+  $info['od_common_recline_link_formatter_multivolume_from_resource'] = array(
+    'label' => t('Recline link from resource (for multivolume and not)'),
+    'field types' => array('recline_field', 'file'),
+    'description' => t('Displays file as a link.'),
+  );
+
   if (module_exists('od_pubdlcnt')) {
     $info['od_common_file_dlcnt'] = array(
       'label' => t('Download counts of a file'),
@@ -374,9 +380,13 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
 
       break;
     case 'od_common_recline_link_formatter_multivolume':
-      // @fixme Create submodule
       od_common_module('od_common_recline_link_formatter_multivolume');
       od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $items, $display);
+      break;
+    case 'od_common_recline_link_formatter_multivolume_from_resource':
+
+      od_common_module('od_common_recline_link_formatter_multivolume');
+      od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $resources, $display);
       break;
   }
 
