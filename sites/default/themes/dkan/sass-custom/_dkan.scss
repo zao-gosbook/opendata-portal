@@ -2000,6 +2000,10 @@ div.horizontal-tabs .form-text {
 
 .region-facet {
   
+  > .inside {
+    padding-right: 0;
+  }
+  
   .pane-title {
     color: #4c4c4c;
     margin: 0;
@@ -2190,17 +2194,20 @@ div.horizontal-tabs .form-text {
           margin: 0;
         }
       }
-      .views-field-field-format {
-        display: inline-block;
-        padding: .4em .6em;
-        color: #fff;
-        background: #ffa200;
-        text-decoration: none;
-        font-size: 1.2em;
+      .field-name-resource-format {
         text-transform: none;      
         position: absolute;
         top: -10px;
         right: -25px;
+        
+        .views-field-field-format {
+          display: inline-block;
+          padding: .4em .6em;
+          color: #fff;
+          background: #ffa200;
+          text-decoration: none;
+          font-size: 1.2em;          
+        }
       }
       .data-and-resources {
         .form-item {
@@ -2290,6 +2297,7 @@ div.horizontal-tabs .form-text {
       }
     }
     .field-name-body,
+    .field-name-field-teaser,
     .views-field-body    {
       font-size: 1.3em;
       line-height: 1.55em;
@@ -2300,6 +2308,7 @@ div.horizontal-tabs .form-text {
         margin: 0;
       }
     }
+    .field-name-post-date,
     .field-name-post-date,
     .views-field-changed,
     .views-field-field-document-status,
@@ -4296,6 +4305,18 @@ div.fivestar-widget .star {
 .node-type-dataset {
   background: #fff;
 }
+.page-dataset .pane-page-content {
+  position: relative;
+  
+  &:before {
+    border-left: 1px solid #ccc;
+    content : '';
+    top: 36px;
+    bottom: 0;
+    left: 24.8135%;
+    position: absolute;
+  }
+}
 .addtoany_list.a2a_kit_size_32 {
   a {
     span {
@@ -4382,15 +4403,20 @@ div.fivestar-widget .star {
     color: #666;
     margin: 0;
   }
-    
+   
+  .pane-node-title h1 {
+    margin-top: -15px;
+  }
   h3,
+  h1,
+  h2,
   .data-row-developers h2.pane-title,
   .data-row-comments h2,
   .group_additional label,
   .view-header  h2 {
     font-size: 30px;
     line-height: 1.3;
-    margin: 2.7em 0 .2em;
+    margin: 20px 0 .2em;
     color: #666;
   }
 }
@@ -4420,6 +4446,23 @@ div.fivestar-widget .star {
   .panel-pane, 
   .views-field {
     float: left;
+  }
+  .download {
+    margin-right: 20px;
+    
+    a {
+      display: inline-block;
+      padding: .75em 1.6em .75em 1.6em;
+      font-size: 18px;
+      line-height: 1em;
+      color: #fff;
+      text-decoration: none;
+      text-transform: none;
+      background: #0c87e8;
+      text-decoration: none;   
+      position: relative;
+      top: 10px;
+    }  
   }
   .main-download-link-wrapper {
     margin-right: 20px;
@@ -4474,17 +4517,19 @@ div.fivestar-widget .star {
     }
   }
   .views-field-field-format {
-    width: 60px;
-    height: 56px;
-    background: url("../images/ico-filetype.png") no-repeat;
+    width: 40px;
+    height: 38px;
+    background: url("../images/icon-resource.png") no-repeat;
     margin-right: 20px;
+    position: relative;
+    top: 10px;
     
     .field-content {
       text-align: center;
-      color: #777;
-      line-height: 65px;
-      text-transform: none;
-      font-size: 18px;
+      color: #676767;
+      line-height: 47px;
+      text-transform: uppercase;
+      font-size: 14px;
     }
   }
   .views-field-title {
@@ -4602,14 +4647,16 @@ div.fivestar-widget .star {
       width: 70px;
       float: left;
       border: 0;
-      
+    
       .field-content {
         text-align: center;
-        color: #777;
-        line-height: 65px;
-        text-transform: none;
-        height: 56px;
-        background: url("../images/ico-filetype.png") no-repeat;        
+        width: 40px;
+        height: 38px;
+        background: url("../images/icon-resource.png") no-repeat 0 -38px;
+        color: #676767;
+        line-height: 47px;
+        text-transform: uppercase;
+        font-size: 14px;
       }
     }
     .download a {
@@ -4626,7 +4673,7 @@ div.fivestar-widget .star {
     }    
     .panel-col-last {
       width: auto;
-      margin: 0 208px 0 78px;    
+      margin: 0 208px 0 70px;    
       border: 0;  
       float: none;
 

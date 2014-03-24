@@ -1706,6 +1706,12 @@ $zen-auto-include-item-base: false;
   .data-row-links .main-download-link-wrapper a {
     top: 0;
   }
+  .page-dataset .pane-page-content {
+    
+    &:before {
+      top: 29px;
+    }
+  }  
   
   /* table title */
   table td.views-field-title a {
