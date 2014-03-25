@@ -74,7 +74,7 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
     return $preprocessors;
   }
 
-  function addPreprocessor($key, callable $callback) {
+  function addPreprocessor($key, $callback) {
     $this->preprocessors_store[$key] = $callback;
   }
 
