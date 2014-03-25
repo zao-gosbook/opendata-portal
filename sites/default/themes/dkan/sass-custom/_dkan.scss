@@ -1848,7 +1848,8 @@ div.horizontal-tabs .form-text {
 }
 
 /* only dataset */
-.page-dataset {
+.page-dataset,
+.page-search {
   .pane-datasets-search-dataset-search form {
     width: 100%;
     margin: 0 0 20px;
@@ -1981,7 +1982,7 @@ div.horizontal-tabs .form-text {
     }
   }
   .view-content {
-    clear: none;
+    clear: both;
     padding-top: 1.4em;
     
     .view-content {
@@ -2341,6 +2342,40 @@ div.horizontal-tabs .form-text {
       line-height: 1.55em;      
     }
   }
+  /* search */
+  .view-content-search .views-row {
+    padding-left: 90px !important;
+    position: relative;
+    
+    .views-field-field-rubric-image {
+      img {
+        position: absolute;
+        top: 26px;
+        left: 13px;
+      }      
+    }
+    .views-field-rendered-entity {
+      font-size: 16px;
+      color: #4C4C4C;
+      text-transform: none;
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
+    .views-field-type {
+      color: #b5b5b5;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    .views-field-created {
+      text-align: right;
+    }
+    .views-field-body {
+      p {
+        margin: 0;
+      }
+    }
+  }
+  
   .node-dataset { 
     padding-left: 90px !important;
     position: relative;
@@ -4520,7 +4555,7 @@ div.fivestar-widget .star {
   .views-field {
     float: left;
   }
-  .download {
+  div.download {
     margin-right: 20px;
     
     a {
@@ -4564,6 +4599,9 @@ div.fivestar-widget .star {
       border: 1px solid #b3b3b3;
       width: 265px;
       
+      .download {
+        margin: 0;
+      }
       a {
         display: block;
         padding: 0 0 0 42px;
@@ -4573,6 +4611,9 @@ div.fivestar-widget .star {
         font-size: 14px;
         background: url("../images/ico-downloads.png") no-repeat scroll 17px 50% transparent;
         text-decoration: none;
+        margin: 0;
+        top: 0;
+        color: #0C87E8;
         
         em {
           color: #777;
@@ -4696,7 +4737,61 @@ div.fivestar-widget .star {
     padding-bottom: 12px;
   }
 }
-.data-row-versions {
+.data-row-versions {  
+  .main-download-link-wrapper a {
+    background: url("../images/arr-down-white.png") no-repeat scroll 86% 50% #0C87E8;
+    color: #FFFFFF;
+    display: inline-block;
+    font-size: 18px;
+    line-height: 1em;
+    padding: 0.75em 2.6em 0.75em 1.6em;
+    text-decoration: none;
+    text-transform: none;  
+  }
+  .multi-download-link-wrapper {
+    position: relative;
+    
+    .dropdown-links {
+      position: absolute;
+      top: 56px;
+      background: #fff;
+      border: 1px solid #b3b3b3;
+      width: 265px;
+      z-index: 100;
+      top: 46px;
+      left: 9px;
+      
+      .download {
+        margin: 0;
+      }
+      a {
+        display: block;
+        padding: 0 0 0 42px;
+        height: 45px;
+        line-height: 45px;
+        text-transform: none;
+        font-size: 14px;
+        background: url("../images/ico-downloads.png") no-repeat scroll 17px 50% transparent;
+        text-decoration: none;
+        margin: 0;
+        top: 0;
+        color: #0C87E8;
+        
+        em {
+          color: #777;
+          font-style: normal;
+        }
+        &:hover {
+          background-color: #0C87E8;
+          color: #fff;
+          
+          em {
+            color: #000;
+          }
+        }
+      }
+    }
+  }   
   
   .view-header {
     padding-bottom: 12px;
@@ -4736,7 +4831,7 @@ div.fivestar-widget .star {
         font-size: 14px;
       }
     }
-    .download a {
+    /*.download a {
       background: none repeat scroll 0 0 #0C87E8;
       color: #FFFFFF;
       display: block;
@@ -4747,7 +4842,7 @@ div.fivestar-widget .star {
       text-decoration: none;
       text-transform: none;
       margin-bottom: .75em;
-    }    
+    }    */
     .panel-col-last {
       width: auto;
       margin: 0 208px 0 70px;    
@@ -4989,6 +5084,19 @@ div.fivestar-widget .star {
   }
   td {
     padding: 10px 15px;
+  }
+}
+
+.custom-text-wrapper {
+  color: #9D9D9D;
+  font-size: 1.2em;
+  line-height: 1.1em;
+  font-family: $gill;
+  padding-bottom: 20px;
+  
+  p {
+    margin: 0;
+    font-family: $gill;
   }
 }
 
@@ -5560,7 +5668,7 @@ div.fivestar-widget .star {
 .section-library,
 .section-library-developers {
   .pane-datasets-search-dataset-search .view-content {
-    padding-top: 6.4em;
+    padding-top: 2.4em;
   }
   .pane-datasets-search-dataset-search .view-header {
     top: -7px;
@@ -6008,8 +6116,6 @@ div.fivestar-widget .star {
   background-color: #fff;  
   
   .custom-text-wrapper {
-    text-align: center;
-    font-size: 16px;
     padding: 20px 0;
   }
   

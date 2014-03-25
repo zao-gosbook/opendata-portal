@@ -154,6 +154,58 @@ $zen-auto-include-item-base: false;
   
   /* mobile screen */
   
+  /* underconstruction */
+  body.page-nomobileversion {
+    background: url("../images/header.jpg") no-repeat scroll 50% 0 #081325;
+    @include background-size(auto 100%);
+    margin-top: 0 !important;
+    
+    .region-header {
+      position: relative;
+      background: transparent;
+      
+      &:before {
+        display: none;
+      }
+    }
+    .pane-search-block,
+    .pane-system-main-menu,
+    .feedback-block,
+    .breadcrumbs,
+    #admin-menu,
+    .footer-region,
+    .pane-system-user-menu {
+      display: none;
+    }
+    .region-content {
+      padding: 0;
+    }
+    .info-wrapper {
+      position: fixed;
+      color: #fff;
+      top: 50%;
+      padding: 0 30px;
+      margin-top: -20px;
+      left: 0;
+      right: 0;
+      font-size: 15px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .info-wrapper-footer {
+      position: fixed;
+      color: #fff;
+      bottom: 0;
+      padding: 15px 30px;
+      left: 0;
+      right: 0;
+      font-size: 15px;
+      text-transform: uppercase;
+      text-align: center;
+      background: #ffa200;
+    }
+  }
+  
   /* element form */
   label, div.legend {
     font-size: 1.1em;
