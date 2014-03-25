@@ -484,13 +484,18 @@ function od_common_user_delete($account) {
   }
 }
 
+function od_common_core_user_is_admin($account = NULL) {
+  //$account = $account === NULL ? $_GET['user'] : $account;
+  return user_access('administer', $account);
+}
+
 /**
  * Implements hook_js_alter().
  * Hides js links 'show row weights' in forms.
  */
 function od_common_js_alter(&$javascript) {
   global $user;
-  if (!in_array('administrator', $user->roles) && isset($javascript['misc/tabledrag.js'])) {
+  if (!od_common_core_user_is_admin($user) && isset($javascript['misc/tabledrag.js'])) {
     /**
      * Find next after modal.js element to get his weight property.
      */
@@ -515,6 +520,25 @@ function od_common_js_alter(&$javascript) {
       );
     }
   }
+
+//  foreach ($javascript['settings']['data'] as $_index => &$_list) {
+//    foreach ($_list as $_modulename => &$_settings) {
+//      switch ($_modulename) {
+//        case 'superfish':
+//          foreach ($_settings as &$_sf) {
+//            $_sf['sf']['onBeforeShow'] = 'function(ul) { Drupal.superFish.onBeforeShow(); }';
+//          }
+//
+//          unset ($_sf);
+//          break;
+//      }
+//    }
+//
+//    unset($_settings);
+//  }
+//
+//  // Prevent reference re-using further.
+//  unset($_list);
 }
 
 /**
