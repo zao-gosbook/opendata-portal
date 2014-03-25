@@ -649,7 +649,7 @@ function od_common_entity_load($entities, $type) {
       'workflow_state_changed',
     );
 
-    $old_states = $conf['rules_empty_sets'];
+    $old_states = isset($conf['rules_empty_sets']) ? $conf['rules_empty_sets'] : array();
     foreach ($events as $event) {
       $conf['rules_empty_sets'][$event] = TRUE;
     }
