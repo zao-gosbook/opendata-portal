@@ -629,44 +629,48 @@ function od_common_views_api() {
   );
 }
 
-/**
- * Implements hook_entity_load()
- * @param $entities
- * @param $type
- */
-function od_common_entity_load($entities, $type) {
-  static $processed = array();
-  if ($type == 'node') {
-    global $conf;
+///**
+// * Implements hook_entity_load()
+// * @param $entities
+// * @param $type
+// */
+//function od_common_entity_load($entities, $type) {
+//  static $processed = array();
+//  if ($type == 'node') {
+//    global $conf;
+//
+//    // Block rule events
+//    $events = array(
+//      'node_insert' ,
+//      'node_update',
+//      'node_presave',
+//      'privatemsg_insert',
+//      'privatemsg_update',
+//      'workflow_state_changed',
+//    );
+//
+//    $old_states = isset($conf['rules_empty_sets']) ? $conf['rules_empty_sets'] : array();
+//    foreach ($events as $event) {
+//      $conf['rules_empty_sets'][$event] = TRUE;
+//    }
+//
+//    foreach ($entities as $entity) {
+//      if (isset($entity->field_rubric) && !isset($processed[$entity->nid]) && (!isset($entity->field_rubric[LANGUAGE_NONE]) || count($entity->field_rubric) > 1)) {
+//        // Mark as processed
+//        $processed[$entity->nid] = TRUE;
+//        $right_value = isset($entity->field_rubric[LANGUAGE_NONE]) ? $entity->field_rubric[LANGUAGE_NONE] : reset($entity->field_rubric);
+//        $entity->field_rubric = array(
+//          LANGUAGE_NONE => $right_value,
+//        );
+//
+//        entity_save($type, $entity);
+//      }
+//    }
+//
+//    $conf['rules_empty_sets'] = $old_states;
+//  }
+//}
 
-    // Block rule events
-    $events = array(
-      'node_insert' ,
-      'node_update',
-      'node_presave',
-      'privatemsg_insert',
-      'privatemsg_update',
-      'workflow_state_changed',
-    );
-
-    $old_states = isset($conf['rules_empty_sets']) ? $conf['rules_empty_sets'] : array();
-    foreach ($events as $event) {
-      $conf['rules_empty_sets'][$event] = TRUE;
-    }
-
-    foreach ($entities as $entity) {
-      if (isset($entity->field_rubric) && !isset($processed[$entity->nid]) && (!isset($entity->field_rubric[LANGUAGE_NONE]) || count($entity->field_rubric) > 1)) {
-        // Mark as processed
-        $processed[$entity->nid] = TRUE;
-        $right_value = isset($entity->field_rubric[LANGUAGE_NONE]) ? $entity->field_rubric[LANGUAGE_NONE] : reset($entity->field_rubric);
-        $entity->field_rubric = array(
-          LANGUAGE_NONE => $right_value,
-        );
-
-        entity_save($type, $entity);
-      }
-    }
-
-    $conf['rules_empty_sets'] = $old_states;
-  }
-}
+//function od_common_views_query_alter(&$view, &$query) {
+//  $a=1;
+//}
