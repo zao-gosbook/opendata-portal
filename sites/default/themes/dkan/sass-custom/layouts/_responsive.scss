@@ -1473,7 +1473,88 @@ $zen-auto-include-item-base: false;
   .view-datasets-map .views-widget-filter-field_organization_target_id .views-widget {
     margin-left: 254px;
   }  
+  
+  /**
+   * widgets on front
+   */
+
+  .feedback-block {
+    
+    ul {
+    
+      li {
+        list-style: none;
+        margin: 0;
+        padding: 0 0 5px 0;
+      
+        a {
+          display: block;
+          width: 51px;
+          height: 55px;
+          line-height: 16px;
+          vertical-align: middle;
+          background-image: url("../images/front-menu-help.png");
+          background-position: 0 -1000px;
+          background-repeat: no-repeat;
+          background-color: rgba(255, 255, 255, .55);
+          font-size: 12px;
+          text-decoration: none;
+          @include transition(padding 0.3s ease);
+          text-transform: none;
+          overflow: hidden;
+          text-indent: -1000px;
+          @include border-radius(0 28px 28px 0);
+          
+          &.question {
+            background-position: 0 0px;
+            padding-top: 20px;
+            height: 35px;  
+            
+            &:hover {
+              background-position: -50px -55px;
+            }
+          }
+          &.idea {
+            background-position: 0 -110px;
+            padding-top: 12px;
+            height: 43px;          
+            
+            &:hover {
+              background-position: -50px -165px;
+            }          
+          }
+          &.discuss {
+            background-position: 0 -220px;
+            padding-top: 20px;
+            height: 35px;            
+            
+            &:hover {
+              background-position: -50px -275px;
+            }           
+          }
+          &:hover {
+            width: 77px;
+            padding-right: 20px;    
+            padding-left: 55px;    
+            text-indent: 0;
+            background-color: #0c87e8;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+  .front .feedback-block ul li a {
+    background-color: rgba(255, 255, 255, .55);
+    
+    &:hover {
+      background-color: #0c87e8;
+    }
+  }
+ 
 }
+
+
 /**
  * only ipad hacks
  */
@@ -1909,7 +1990,7 @@ $zen-auto-include-item-base: false;
 /**
  * user menu
  */
-@media all and (max-width: 1360px) and (min-width: 1026px) {
+@media all and (max-width: 1580px) and (min-width: 1026px) {
   
   .region-header {
     
@@ -1973,6 +2054,19 @@ $zen-auto-include-item-base: false;
       }
     }      
   }
+}
+@media all and (max-width: 1580px) and (min-width: 1361px) {
+  .region-header {
+    
+    .pane-system-user-menu {
+      left: auto;
+      right: 20px;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 26px;
+    }
+  }      
 }
  
 /**
