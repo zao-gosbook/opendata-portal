@@ -628,3 +628,26 @@ function od_common_views_api() {
     'path' => drupal_get_path('module', 'od_common') . '/views',
   );
 }
+
+/**
+ * Implements hook_entity_load()
+ * @param $entities
+ * @param $type
+ */
+function od_common_entity_load($entities, $type) {
+  static $processed = array();
+  if ($type == 'node') {
+    foreach ($entities as $entity) {
+      if (!isset($processed[$entity->nid]) && (!isset($entity->field_rubric[LANGUAGE_NONE]) || count($entity->field_rubric) > 1)) {
+        // Mark as processed
+        $processed[$entity->nid] = TRUE;
+        $right_value = isset($entity->field_rubric[LANGUAGE_NONE]) ? $entity->field_rubric[LANGUAGE_NONE] : reset($entity->field_rubric);
+        $entity->field_rubric = array(
+          LANGUAGE_NONE => $right_value,
+        );
+
+        entity_save($type, $entity);
+      }
+    }
+  }
+}
