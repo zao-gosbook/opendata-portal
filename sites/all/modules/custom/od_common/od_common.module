@@ -655,7 +655,7 @@ function od_common_entity_load($entities, $type) {
     }
 
     foreach ($entities as $entity) {
-      if (!isset($processed[$entity->nid]) && (!isset($entity->field_rubric[LANGUAGE_NONE]) || count($entity->field_rubric) > 1)) {
+      if (isset($entity->field_rubric) && !isset($processed[$entity->nid]) && (!isset($entity->field_rubric[LANGUAGE_NONE]) || count($entity->field_rubric) > 1)) {
         // Mark as processed
         $processed[$entity->nid] = TRUE;
         $right_value = isset($entity->field_rubric[LANGUAGE_NONE]) ? $entity->field_rubric[LANGUAGE_NONE] : reset($entity->field_rubric);
