@@ -59,6 +59,8 @@
   }
 
 
+
+
   Drupal.behaviors.ActiveElement = {
     attach: function (context, settings) {
 
@@ -179,7 +181,8 @@
   
   Drupal.behaviors.preventClickHrefUserMenu = {
     attach: function(context, settings) {
-      $('.region-header .pane-system-main-menu > ul > li > a').click(function(e) {
+      //$('.region-header .pane-system-main-menu > ul > li > a').click(function(e) {
+      var handler = function(e) {
         if(!$(this).parent("li").hasClass("sf-item-2")){
           $(".region-header").addClass("active-region");
           var half_link_width = $(this).width()/2;
@@ -248,7 +251,10 @@
         else {
           $(".region-header").removeClass("active-region");
         }
-      });
+      }
+
+      // Add our custom callback to superfish
+      $('.sf-main-menu').superfish('option', 'onBeforeShow', handler);
     }
   }
   

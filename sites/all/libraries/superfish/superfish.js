@@ -14,15 +14,15 @@
  */
 
 (function($){
-  $.fn.superfish = function(op){
+  $.fn.superfish = function(op, opName, opValue) {
     var sf = $.fn.superfish,
       c = sf.c,
       $arrow = $(['<span class="',c.arrowClass,'"> &#187;</span>'].join('')),
       over = function(){
         var $$ = $(this), menu = getMenu($$);
         clearTimeout(menu.sfTimer);
-        //$$.showSuperfishUl().siblings().hideSuperfishUl();
-        $$.click(function() {$(this).showSuperfishUl().siblings().hideSuperfishUl(); });
+        $$.showSuperfishUl().siblings().hideSuperfishUl();
+        //$$.click(function() {$(this).showSuperfishUl().siblings().hideSuperfishUl(); });
       },
       out = function(){
         if (o && o.delay >= 0) {
@@ -42,38 +42,52 @@
       },
       addArrow = function($a){ $a.addClass(c.anchorClass).append($arrow.clone()); };
 
-    return this.each(function() {
-      var s = this.serial = sf.o.length;
-      var o = $.extend({},sf.defaults,op);
-      o.$path = $('li.'+o.pathClass,this).slice(0,o.pathLevels),
-      p = o.$path;
-      for (var l = 0; l < p.length; l++){
-        p.eq(l).addClass([o.hoverClass,c.bcClass].join(' ')).filter('li:has(ul)').removeClass(o.pathClass);
+    if (op == 'option') {
+      if (opName !== undefined && opName) {
+        if (opValue !== undefined) {
+          sf.op[opName] = opValue;
+        }
+
+        return sf.op[opName];
       }
-      sf.o[s] = sf.op = o;
+      else {
+        return sf.op;
+      }
+    }
+    else {
+      return this.each(function() {
+        var s = this.serial = sf.o.length;
+        var o = $.extend({},sf.defaults,op);
+        o.$path = $('li.'+o.pathClass,this).slice(0,o.pathLevels),
+        p = o.$path;
+        for (var l = 0; l < p.length; l++){
+          p.eq(l).addClass([o.hoverClass,c.bcClass].join(' ')).filter('li:has(ul)').removeClass(o.pathClass);
+        }
+        sf.o[s] = sf.op = o;
 
-      $('li:has(ul)',this)[($.fn.hoverIntent && !o.disableHI) ? 'hoverIntent' : 'hover'](over,out).each(function() {
-        if (o.autoArrows) addArrow( $(this).children('a:first-child, span.nolink:first-child') );
-      })
-      .not('.'+c.bcClass)
-        .hideSuperfishUl();
+        $('li:has(ul)',this)[($.fn.hoverIntent && !o.disableHI) ? 'hoverIntent' : 'hover'](over,out).each(function() {
+          if (o.autoArrows) addArrow( $(this).children('a:first-child, span.nolink:first-child') );
+        })
+        .not('.'+c.bcClass)
+          .hideSuperfishUl();
 
-      var $a = $('a, span.nolink',this);
-      $a.each(function(i){
-        var $li = $a.eq(i).parents('li');
-        $a.eq(i).focus(function(){over.call($li);}).blur(function(){out.call($li);});
+        var $a = $('a, span.nolink',this);
+        $a.each(function(i){
+          var $li = $a.eq(i).parents('li');
+          $a.eq(i).focus(function(){over.call($li);}).blur(function(){out.call($li);});
+        });
+        o.onInit.call(this);
+
+      }).each(function() {
+        var menuClasses = [c.menuClass];
+        if (sf.op.dropShadows  && !($.browser.msie && $.browser.version < 7)) menuClasses.push(c.shadowClass);
+        $(this).addClass(menuClasses.join(' '));
       });
-      o.onInit.call(this);
-
-    }).each(function() {
-      var menuClasses = [c.menuClass];
-      if (sf.op.dropShadows  && !($.browser.msie && $.browser.version < 7)) menuClasses.push(c.shadowClass);
-      $(this).addClass(menuClasses.join(' '));
-    });
+    }
   };
 
   var sf = $.fn.superfish;
-  sf.o = [];
+  sf.o = []
   sf.op = {};
   sf.IE7fix = function(){
     var o = sf.op;
