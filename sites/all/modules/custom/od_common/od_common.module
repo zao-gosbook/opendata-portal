@@ -637,6 +637,23 @@ function od_common_views_api() {
 function od_common_entity_load($entities, $type) {
   static $processed = array();
   if ($type == 'node') {
+    global $conf;
+
+    // Block rule events
+    $events = array(
+      'node_insert' ,
+      'node_update',
+      'node_presave',
+      'privatemsg_insert',
+      'privatemsg_update',
+      'workflow_state_changed',
+    );
+
+    $old_states = $conf['rules_empty_sets'];
+    foreach ($events as $event) {
+      $conf['rules_empty_sets'][$event] = TRUE;
+    }
+
     foreach ($entities as $entity) {
       if (!isset($processed[$entity->nid]) && (!isset($entity->field_rubric[LANGUAGE_NONE]) || count($entity->field_rubric) > 1)) {
         // Mark as processed
@@ -649,5 +666,7 @@ function od_common_entity_load($entities, $type) {
         entity_save($type, $entity);
       }
     }
+
+    $conf['rules_empty_sets'] = $old_states;
   }
 }
