@@ -14,11 +14,13 @@
 
   Drupal.behaviors.HintFormElemements = {
     attach: function (context) {
-      if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
-        $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
-        $('.pane-datasets-search-dataset-search .view-filters .form-text').attr("placeholder", Drupal.t("Search for data"));
-        //$('input[placeholder], textarea[placeholder]').inputHints();
-      }
+      $('body.page-dataset .exposed-search-form .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for datasets'));
+      $('body.page-apps .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for applications'));
+//      if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
+//        $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
+//        $('.pane-datasets-search-dataset-search .view-filters .form-text').attr("placeholder", Drupal.t("Search for data"));
+//        //$('input[placeholder], textarea[placeholder]').inputHints();
+//      }
     }
   } 
   
