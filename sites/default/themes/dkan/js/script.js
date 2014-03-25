@@ -12,6 +12,19 @@
 // - http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth
 (function ($, Drupal, window, document, undefined) {
 
+  /**
+   * Редирект на страницу "нет мобильной версии"
+   * @type {{attach: attach}}
+   * @fixme: Убрать
+   */
+  Drupal.behaviors.nomobileversion = {
+    attach: function (context) {
+      if (String(location.href).indexOf('nomobileversion') == -1 && $(window).width() <= 640 && $(window).height() <= 480) {
+        location.href = '/nomobileversion';
+      }
+    }
+  }
+
   Drupal.behaviors.HintFormElemements = {
     attach: function (context) {
       $('body.page-dataset .exposed-search-form .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for datasets'));
