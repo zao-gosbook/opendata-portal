@@ -14,11 +14,13 @@
 
   Drupal.behaviors.HintFormElemements = {
     attach: function (context) {
-      if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
-        $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
-        $('.pane-datasets-search-dataset-search .view-filters .form-text').attr("placeholder", Drupal.t("Search for data"));
-        //$('input[placeholder], textarea[placeholder]').inputHints();
-      }
+      $('body.page-dataset .exposed-search-form .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for datasets'));
+      $('body.page-apps .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for applications'));
+//      if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
+//        $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
+//        $('.pane-datasets-search-dataset-search .view-filters .form-text').attr("placeholder", Drupal.t("Search for data"));
+//        //$('input[placeholder], textarea[placeholder]').inputHints();
+//      }
     }
   } 
   
@@ -40,7 +42,7 @@
 
   Drupal.behaviors.TaxonomyColumnsRubric = {
     attach: function (context) {
-      $('.page-taxonomy-term .rubric-content .view .view-content', context).once('massontry', function() {
+      $('.page-taxonomy-term .rubric-content .view .view-content', context).not('.page-taxonomy-term-datasets .rubric-content .view .view-content').once('massontry', function() {
         var massontry = $(this);
         $('<div class="view-header"></div>').prependTo(massontry);
         var container = document.querySelector('.page-taxonomy-term .rubric-content .view .view-content');
@@ -57,6 +59,8 @@
       });
     }
   }
+
+
 
 
   Drupal.behaviors.ActiveElement = {
@@ -179,7 +183,8 @@
   
   Drupal.behaviors.preventClickHrefUserMenu = {
     attach: function(context, settings) {
-      $('.region-header .pane-system-main-menu > ul > li > a').click(function(e) {
+      //$('.region-header .pane-system-main-menu > ul > li > a').click(function(e) {
+      var handler = function(e) {
         if(!$(this).parent("li").hasClass("sf-item-2")){
           $(".region-header").addClass("active-region");
           var half_link_width = $(this).width()/2;
@@ -248,7 +253,10 @@
         else {
           $(".region-header").removeClass("active-region");
         }
-      });
+      }
+
+      // Add our custom callback to superfish
+      $('.sf-main-menu').superfish('option', 'onBeforeShow', handler);
     }
   }
   
