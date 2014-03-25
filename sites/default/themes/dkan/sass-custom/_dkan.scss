@@ -1848,7 +1848,8 @@ div.horizontal-tabs .form-text {
 }
 
 /* only dataset */
-.page-dataset {
+.page-dataset,
+.page-search {
   .pane-datasets-search-dataset-search form {
     width: 100%;
     margin: 0 0 20px;
@@ -2341,6 +2342,40 @@ div.horizontal-tabs .form-text {
       line-height: 1.55em;      
     }
   }
+  /* search */
+  .view-content-search .views-row {
+    padding-left: 90px !important;
+    position: relative;
+    
+    .views-field-field-rubric-image {
+      img {
+        position: absolute;
+        top: 26px;
+        left: 13px;
+      }      
+    }
+    .views-field-rendered-entity {
+      font-size: 16px;
+      color: #4C4C4C;
+      text-transform: none;
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
+    .views-field-type {
+      color: #b5b5b5;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    .views-field-created {
+      text-align: right;
+    }
+    .views-field-body {
+      p {
+        margin: 0;
+      }
+    }
+  }
+  
   .node-dataset { 
     padding-left: 90px !important;
     position: relative;
@@ -4564,6 +4599,9 @@ div.fivestar-widget .star {
       border: 1px solid #b3b3b3;
       width: 265px;
       
+      .download {
+        margin: 0;
+      }
       a {
         display: block;
         padding: 0 0 0 42px;
@@ -4573,6 +4611,9 @@ div.fivestar-widget .star {
         font-size: 14px;
         background: url("../images/ico-downloads.png") no-repeat scroll 17px 50% transparent;
         text-decoration: none;
+        margin: 0;
+        top: 0;
+        color: #0C87E8;
         
         em {
           color: #777;
