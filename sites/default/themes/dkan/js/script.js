@@ -61,7 +61,6 @@
         return;
       }
 
-      console.log(context);
       // In this we should use context and don't use once()
       $('.view-content', context).not('.page-taxonomy-term-datasets .rubric-content .view .view-content').once('massontry', function() {
         var massontry = $(this);
