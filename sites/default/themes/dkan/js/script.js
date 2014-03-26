@@ -56,20 +56,29 @@
 
   Drupal.behaviors.TaxonomyColumnsRubric = {
     attach: function (context) {
-      $('.page-taxonomy-term .rubric-content .view .view-content', context).not('.page-taxonomy-term-datasets .rubric-content .view .view-content').once('massontry', function() {
+      // Do not apply to other pages
+      if ($('.page-taxonomy-term .rubric-content .view').length == 0) {
+        return;
+      }
+
+      console.log(context);
+      // In this we should use context and don't use once()
+      $('.view-content', context).not('.page-taxonomy-term-datasets .rubric-content .view .view-content').once('massontry', function() {
         var massontry = $(this);
         $('<div class="view-header"></div>').prependTo(massontry);
         var container = document.querySelector('.page-taxonomy-term .rubric-content .view .view-content');
         var msnry = new Masonry( container, {
           // options
           //columnWidth: 200,
-          itemSelector: '.views-row'/**/,
+          itemSelector: '.views-row',
           gutter: '.page-taxonomy-term .rubric-content .view .view-content .view-header'
         });
 
+        window.msnry = msnry;
+
         setTimeout(function() {
           msnry.layout();
-        }, 300);
+        }, 50);
       });
     }
   }
