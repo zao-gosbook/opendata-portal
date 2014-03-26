@@ -2642,7 +2642,8 @@ div.horizontal-tabs .form-text {
     line-height: 22px;
     color: #b5b5b5;    
   }
-  .field-name-field-idea-vote-up-down {
+  .field-name-field-idea-vote-up-down,
+  .pane-node-field-od-query-vote-up-down  {
     float: right;
     margin: 0 0 15px 20px;
   }
@@ -2681,6 +2682,46 @@ div.horizontal-tabs .form-text {
     display: none;
   }
 }
+
+/* node-type-opendata-query */
+.node-type-opendata-query {
+  .panels-flexible-row.idea-row-white .idea-info {
+    > .inside {
+      padding-left: 0;
+    }      
+    .panel-pane {
+        font-size: 16px;
+        line-height: 22px;
+      }
+    .field-name-field-od-query-data-rubrics .field-item  {
+      display: inline;
+      
+      &:after {
+        content: ',';
+      }
+      &:last-child:after {
+        content: '';
+      }
+    }
+    .pane-node-field-od-query-data-name {
+      color: #4D4D4D;
+      font-size: 24px;
+      line-height: 30px;
+      margin: 0 0 4px;    
+    }
+    .pane-node-field-od-query-data-description {
+      color: #666;
+      padding-top: 20px;
+    }
+    .pane-node-field-od-query-data-holder,
+    .pane-node-field-od-query-data-organization {
+      color: #B5B5B5;
+      font-size: 16px;
+      line-height: 22px;
+    }
+  } 
+}
+
 .node.node-news.view-mode-full {
   background: #fff;
   padding: 20px;
@@ -4180,6 +4221,8 @@ table {
     border-bottom: 1px solid #e5e5e5;
     overflow: hidden;
     text-transform: none;
+    line-height: 22px;
+    font-size: 1.1em;    
   }
   .views-field-field-rubric-image {
     img {
@@ -4245,9 +4288,12 @@ table {
 .view-opendata-query {
   .views-field {
     margin-left: 0;
-    line-height: 22px;
-    color: #666;
     text-transform: none;    
+  }
+  .views-field-field-od-query-data-description,
+  .views-field-field-od-query-data-holder,
+  .views-field-field-od-query-data-organization {
+    font-size: 16px;
   }
 }
 
