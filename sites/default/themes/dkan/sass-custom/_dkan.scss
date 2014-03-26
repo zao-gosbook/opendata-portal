@@ -217,6 +217,15 @@ div.horizontal-tabs .form-text {
   display: none;
 }
 
+/**
+ * table
+ */
+.view-opendata-log {
+  table th {
+    padding-top: 14px;
+  }
+}
+
 
 /**
  * error 404
@@ -1794,7 +1803,8 @@ div.horizontal-tabs .form-text {
       padding-right: 7px;
       list-style: none;
       
-      &.first {
+      &.first,
+      &.last {
         display: none;
       }
     }
@@ -1908,7 +1918,8 @@ div.horizontal-tabs .form-text {
 }
 
 
-.page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.first {
+.page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.first,
+.page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.last {
   display: block;
 }
 .pane-datasets-search-dataset-search {
@@ -4023,6 +4034,15 @@ html.js input.form-autocomplete {
   }
 }
 
+/**
+ * page-user-edit
+ */
+.page-user-edit .pane-page-content {
+  .form-select {
+    font-size: 17px;
+  }
+}
+
 
 /**
  * view-organizations
@@ -4955,7 +4975,7 @@ div.fivestar-widget .star {
   }
 }
 
-/* node-type-publisher-request */
+/* node-type-publisher-request  pane-search-api-sorts-search-sorts*/
 .node-type-publisher-request {
   background: #fff;
 }
