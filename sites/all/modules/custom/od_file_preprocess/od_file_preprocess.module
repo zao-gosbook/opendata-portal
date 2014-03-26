@@ -111,6 +111,7 @@ function od_file_preprocess_file_element_set_identity($element, &$form_state) {
           ),
           '#identity' => 'delimiter_change',
           '#ajax' => $element['upload_button']['#ajax'],
+          '#default_value' => ';',
         );
         break;
     }
