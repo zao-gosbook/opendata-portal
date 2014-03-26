@@ -1,0 +1,79 @@
+diff --git a/modules/field/modules/options/options.module b/modules/field/modules/options/options.module
+index 3862ba7..6152924 100644
+--- a/modules/field/modules/options/options.module
++++ b/modules/field/modules/options/options.module
+@@ -183,8 +183,7 @@ function options_field_widget_validate($element, &$form_state) {
+  */
+ function _options_properties($type, $multiple, $required, $has_value) {
+   $base = array(
+-    'filter_xss' => FALSE,
+-    'strip_tags' => FALSE,
++    'html' => FALSE,
+     'empty_option' => FALSE,
+     'optgroups' => FALSE,
+   );
+@@ -195,7 +194,7 @@ function _options_properties($type, $multiple, $required, $has_value) {
+     case 'select':
+       $properties = array(
+         // Select boxes do not support any HTML tag.
+-        'strip_tags' => TRUE,
++        'html' => FALSE,
+         'optgroups' => TRUE,
+       );
+       if ($multiple) {
+@@ -219,7 +218,7 @@ function _options_properties($type, $multiple, $required, $has_value) {
+ 
+     case 'buttons':
+       $properties = array(
+-        'filter_xss' => TRUE,
++        'html' => TRUE,
+       );
+       // Add a 'none' option for non-required radio buttons.
+       if (!$required && !$multiple) {
+@@ -229,7 +228,7 @@ function _options_properties($type, $multiple, $required, $has_value) {
+ 
+     case 'onoff':
+       $properties = array(
+-        'filter_xss' => TRUE,
++        'html' => TRUE,
+       );
+       break;
+   }
+@@ -271,12 +270,12 @@ function _options_prepare_options(&$options, $properties) {
+       _options_prepare_options($options[$value], $properties);
+     }
+     else {
+-      if ($properties['strip_tags']) {
+-        $options[$value] = strip_tags($label);
+-      }
+-      if ($properties['filter_xss']) {
++      if ($properties['html']) {
+         $options[$value] = field_filter_xss($label);
+       }
++      else {
++        $options[$value] = decode_entities(strip_tags($label));
++      }
+     }
+   }
+ }
+diff --git a/modules/field/modules/options/options.test b/modules/field/modules/options/options.test
+index 7183311..0239067 100644
+--- a/modules/field/modules/options/options.test
++++ b/modules/field/modules/options/options.test
+@@ -24,7 +24,7 @@ class OptionsWidgetsTestCase extends FieldTestCase {
+       'cardinality' => 1,
+       'settings' => array(
+         // Make sure that 0 works as an option.
+-        'allowed_values' => array(0 => 'Zero', 1 => 'One', 2 => 'Some <script>dangerous</script> & unescaped <strong>markup</strong>'),
++        'allowed_values' => array(0 => 'Zero', 1 => 'One', 2 => 'Some <script>dangerous</script> & unescaped <strong>markup</strong>',  3 => 'Some HTML encoded markup with &lt; &amp; &gt;'),
+       ),
+     );
+     $this->card_1 = field_create_field($this->card_1);
+@@ -233,6 +233,7 @@ class OptionsWidgetsTestCase extends FieldTestCase {
+     $this->assertNoOptionSelected("edit-card-1-$langcode", 1);
+     $this->assertNoOptionSelected("edit-card-1-$langcode", 2);
+     $this->assertRaw('Some dangerous &amp; unescaped markup', 'Option text was properly filtered.');
++    $this->assertRaw('Some HTML encoded markup with &lt; &amp; &gt;');
+ 
+     // Submit form: select invalid 'none' option.
+     $edit = array("card_1[$langcode]" => '_none');
