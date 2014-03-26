@@ -4155,7 +4155,8 @@ table {
 .section-ideas .region-content {
   padding-top: 30px;
 }
-.page-ideas {
+.page-ideas,
+.page-opendata-query {
   background-color: #fff;
 }
 
@@ -4186,13 +4187,15 @@ table {
       margin-top: -6px;
     }
   }
-  .views-field-field-rubric {
+  .views-field-field-rubric,
+  .views-field-field-od-query-data-rubrics  {
     color: #4d4d4d;
     font-size: 1.2em;
     padding-bottom: .35em;
     margin-left: 70px;
   }
-  .views-field-title {
+  .views-field-title,
+  .views-field-field-od-query-data-name  {
     font-size: 2em;
     line-height: 1.4em;
     padding-bottom: 3px;
@@ -4215,7 +4218,8 @@ table {
       background: #b9b9b9;
     }
   }
-  .views-field-field-idea-vote-up-down {
+  .views-field-field-idea-vote-up-down,
+  .views-field-field-od-query-vote-up-down  {
     float: right;
     padding: 0 0 17px 30px;
     border-left: 5px solid #bfbfbf;
@@ -4237,6 +4241,15 @@ table {
   }
 }
 
+/* opendata query */
+.view-opendata-query {
+  .views-field {
+    margin-left: 0;
+    line-height: 22px;
+    color: #666;
+    text-transform: none;    
+  }
+}
 
 
 /**
@@ -4498,7 +4511,11 @@ div.fivestar-widget .star {
       width: 100% !important;
       margin: 0;
     }    
-  } 
+  }
+  .pane-node-field-geolocation h2 {
+    font-size: 18px;
+    padding-top: 5px;
+  }
 }
 .dataset-right-col {
   width: 65%;
