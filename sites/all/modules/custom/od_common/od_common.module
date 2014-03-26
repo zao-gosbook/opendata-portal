@@ -194,6 +194,19 @@ function od_common_preprocess_date_combo(&$vars) {
 }
 
 /**
+ * Preprocess function whose runs before template_preprocess_views_exposed_form.
+ *
+ *  In order to fix translations of exposed form's buttons.
+ */
+function _od_common_template_preprocess_views_exposed_form(&$vars) {
+  // Translate all submit button's text
+  // @fixme: It's just a warkaround
+  if (isset($vars['form']['submit']['#type']) && $vars['form']['submit']['#type'] == 'submit') {
+    $vars['form']['submit']['#value'] = t($vars['form']['submit']['#value']);
+  }
+}
+
+/**
  * Implements hook_preprcess_THEMEHOOK()
  *
  * Adds id and class .ctools-collapsible-remember to ctools elements if they don't have them.
@@ -227,6 +240,16 @@ function od_common_theme() {
   );
 
   return $themes;
+}
+
+function od_common_theme_registry_alter(&$theme_registry) {
+  if (isset($theme_registry['views_exposed_form'])) {
+    if (!isset($theme_registry['views_exposed_form']['preprocess functions'])) {
+      $theme_registry['views_exposed_form']['preprocess functions'] = array();
+    }
+
+    array_unshift($theme_registry['views_exposed_form']['preprocess functions'], '_od_common_template_preprocess_views_exposed_form');
+  }
 }
 
 /**
