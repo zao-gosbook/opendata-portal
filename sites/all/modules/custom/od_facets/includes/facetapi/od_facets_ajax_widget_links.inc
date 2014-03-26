@@ -21,6 +21,9 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
 
     // Add default class for facet block.
     $this->build['#attributes']['class'][] = 'opendata-ajax-links-facet';
+    //$this->build['#attributes']['id'] = 'ajax-facets-checkboxes-' . str_replace(array('_', ' ', ':'), '-', $this->key);
+
+    //$this->build['#attributes']['class'] = array_unique($this->build['#attributes']['class']);
   }
 
 
@@ -191,5 +194,39 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
     }
 	
     return $items;
+  }
+
+  /**
+   * Implements FacetapiWidget::execute().
+   *
+   * Transforms the render array into something that can be themed by
+   * theme_item_list().
+   *
+   * @see FacetapiWidgetLinks::setThemeHooks()
+   * @see FacetapiWidgetLinks::buildListItems()
+   */
+  public function _execute() {
+    $element = &$this->build[$this->facet['field alias']];
+
+    // Sets each item's theme hook, builds item list.
+    $this->setThemeHooks($element);
+    $item_list = array(
+      '#theme' => 'item_list',
+      '#items' => $this->buildListItems($element),
+      '#attributes' => $this->build['#attributes'],
+    );
+
+    $reset_link = '';
+    if (!empty($this->settings->settings['show_reset_link']) && $this->settings->settings['show_reset_link']) {
+      $reset_link = '<a class="reset-link" href="#">' . t('Reset filter') . '</a>';
+    }
+
+    $identity_class = 'ajax-facets-checkboxes-' . str_replace(array('_', ' ', ':'), '-', $this->key);
+    $element = array(
+      '#markup' => '<div class="facet-wrapper-checkboxes ' . $identity_class . '">'
+        . $reset_link
+        . render($item_list)
+        . '</div>'
+    );
   }
 }

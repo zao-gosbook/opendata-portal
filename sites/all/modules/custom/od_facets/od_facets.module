@@ -20,3 +20,13 @@ function od_facets_facetapi_widgets() {
 
   return $items;
 }
+
+function od_facets_facetapi_searcher_info_alter(&$searcher_info) {
+  $a = 1;
+}
+
+function od_facets_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'facetapi' && $plugin_type == 'empty_behavior') {
+    return 'includes/facetapi/empty_behaviors';
+  }
+}
