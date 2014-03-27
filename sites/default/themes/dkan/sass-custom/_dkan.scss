@@ -3701,9 +3701,15 @@ body {
         border: 1px solid #bfbfbf;
         @include border-radius(7px);
       }
-      img {
-        @include border-radius(5px);
+      .crop {
+        width: 220px;
+        height: 124px;
+        overflow: hidden;
         margin: 0 auto 10px;
+        @include border-radius(5px);
+        display: block;
+      }
+      img {
         display: block;
       }
       a {
