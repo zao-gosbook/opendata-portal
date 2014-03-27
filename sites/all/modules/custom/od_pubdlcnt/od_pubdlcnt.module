@@ -4,6 +4,21 @@
  */
 
 function od_pubdlcnt_stream_wrappers_mod_get_external_url_alter(&$sandbox, StreamWrappersModInterface $wrapper) {
+  static $mime_prohibited = array(
+    'image/*',
+  );
+
+  // Glue it only once
+  if (is_array($mime_prohibited)) {
+    $mime_prohibited = implode("\n", $mime_prohibited);
+  }
+
+  // Do not apply to images
+  $mime = $wrapper->getMimeType($wrapper->getUri());
+  if (drupal_match_path($mime, $mime_prohibited)) {
+    return;
+  }
+
   static $alter = TRUE;
   if (!$alter || !($fid = od_pubdlcnt_fid_by_uri($wrapper->getUri()))) {
     return;
