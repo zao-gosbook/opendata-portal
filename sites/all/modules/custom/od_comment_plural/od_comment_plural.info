@@ -1,0 +1,4 @@
+name = Comment Plural
+description = Provides extrafield with comments count string. Using format-plural.
+package = Gosbook
+core = 7.x

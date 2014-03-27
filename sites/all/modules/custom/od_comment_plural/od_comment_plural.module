@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function od_comment_plural_field_extra_fields() {
+  $settings = array();
+  $node_types_obj =  node_type_get_types();
+  foreach ($node_types_obj as $node_type_obj) {
+    $settings['node'][$node_type_obj->type] = array(
+      'display' => array(
+        'comment_count_field' => array(
+          'label' => t('Comments count string'),
+          'weight' => 0,
+        ),
+      ),
+    );
+  }
+return $settings;
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function od_comment_plural_node_view($node, $view_mode, $langcode) {
+  $extra_fields = field_extra_fields_get_display('node', $node->type, $view_mode);
+  if (isset($extra_fields['comment_count_field']) && $extra_fields['comment_count_field']['visible']) {
+    $node->content['comment_count_field'] = array(
+      '#prefix' => '<div class="comments-count-string">',
+      '#markup' => od_coment_plural_comment_count_field_content($node->comment_count),
+      '#suffix' => '</div>',
+    );
+  }
+}
+
+/**
+ * Comment count field
+ */
+function od_coment_plural_comment_count_field_content($comment_count = NULL) {
+  return format_plural($comment_count, '1 comment', '@count comments');
+}
