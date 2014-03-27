@@ -3676,6 +3676,43 @@ body {
   }
 }
 
+/**
+ * presentation
+ */
+.section-chto-takoe-otkrytye-dannye {
+  .node.view-mode-full {
+    padding: 20px;
+    background: #fff;
+    font-size: 16px;
+    line-height: 22px;
+    
+    p {
+      margin: 0 0 15px;
+    }
+    .presentation-item {
+      float: left;
+      width: 50%;
+      text-align: center;
+      padding-bottom: 20px;
+      
+      .wrapper {
+        margin: 0 20px;
+        padding: 15px;
+        border: 1px solid #bfbfbf;
+        @include border-radius(7px);
+      }
+      img {
+        @include border-radius(5px);
+        margin: 0 auto 10px;
+        display: block;
+      }
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
 
 /**
  * Passport
