@@ -10,9 +10,11 @@
  *
  * Links make it easy for users to narrow down their search results by clicking
  * on them. The render arrays use theme_item_list() to generate the HTML markup.
+ * @todo: Create common abstract class for this
  */
 class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
   protected $preprocessors_store = array();
+
   public function init() {
     parent::init();
 
@@ -21,9 +23,10 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
 
     // Add default class for facet block.
     $this->build['#attributes']['class'][] = 'opendata-ajax-links-facet';
-    //$this->build['#attributes']['id'] = 'ajax-facets-checkboxes-' . str_replace(array('_', ' ', ':'), '-', $this->key);
 
-    //$this->build['#attributes']['class'] = array_unique($this->build['#attributes']['class']);
+    // Set identity by unique class
+    $this->build['#identity_class'] = $this->settings->settings['shared_settings']['widget']['identity_class'];
+    //$this->build['#attributes']['class'][] = $this->build['#identity_class'];
   }
 
 
@@ -85,6 +88,10 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
     $settings = parent::getDefaultSettings();
 
     $settings['preprocessors'] = array();
+    $settings['shared_settings']['widget'] = array(
+      'identity_class' => drupal_html_class("identity-{$this->settings->searcher}-{$this->settings->facet}"),
+    );
+
     return $settings;
   }
 
@@ -205,7 +212,7 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
    * @see FacetapiWidgetLinks::setThemeHooks()
    * @see FacetapiWidgetLinks::buildListItems()
    */
-  public function _execute() {
+  public function execute() {
     $element = &$this->build[$this->facet['field alias']];
 
     // Sets each item's theme hook, builds item list.
@@ -221,9 +228,17 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
       $reset_link = '<a class="reset-link" href="#">' . t('Reset filter') . '</a>';
     }
 
-    $identity_class = 'ajax-facets-checkboxes-' . str_replace(array('_', ' ', ':'), '-', $this->key);
+    $identity_class = $this->settings->settings['shared_settings']['widget']['identity_class'];
+    $attributes = array(
+      'class' => array(
+        'facet-wrapper-checkboxes',
+        $this->build['#attributes']['id'],
+        $identity_class,
+      ),
+    );
+
     $element = array(
-      '#markup' => '<div class="facet-wrapper-checkboxes ' . $identity_class . '">'
+      '#markup' => '<div '.drupal_attributes($attributes).'>'
         . $reset_link
         . render($item_list)
         . '</div>'

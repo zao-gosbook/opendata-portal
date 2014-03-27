@@ -1296,7 +1296,7 @@ class FacetapiFacet implements ArrayAccess {
     }
     else {
       // Instantiate the empty behavior plugin.
-      $id = 'od_facets_empty_behavior'; $settings->settings['empty_behavior'];
+      $id = $settings->settings['empty_behavior'];
       $class = ctools_plugin_load_class('facetapi', 'empty_behaviors', $id, 'handler');
       $empty_plugin = new $class($settings);
       // Execute the empty behavior plugin.
