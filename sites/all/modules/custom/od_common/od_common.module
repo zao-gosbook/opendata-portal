@@ -243,13 +243,13 @@ function od_common_theme() {
 }
 
 function od_common_theme_registry_alter(&$theme_registry) {
-  if (isset($theme_registry['views_exposed_form'])) {
-    if (!isset($theme_registry['views_exposed_form']['preprocess functions'])) {
-      $theme_registry['views_exposed_form']['preprocess functions'] = array();
-    }
-
-    array_unshift($theme_registry['views_exposed_form']['preprocess functions'], '_od_common_template_preprocess_views_exposed_form');
-  }
+//  if (isset($theme_registry['views_exposed_form'])) {
+//    if (!isset($theme_registry['views_exposed_form']['preprocess functions'])) {
+//      $theme_registry['views_exposed_form']['preprocess functions'] = array();
+//    }
+//
+//    array_unshift($theme_registry['views_exposed_form']['preprocess functions'], '_od_common_template_preprocess_views_exposed_form');
+//  }
 }
 
 /**
