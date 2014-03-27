@@ -41,7 +41,6 @@ class OdFacetsEmptyBehavior extends FacetapiEmptyBehavior {
    * @return bool
    */
   public function check() {
-    return false;
     return isset($this->settings['shared_settings']['widget']['identity_class']);
   }
 
@@ -51,8 +50,8 @@ class OdFacetsEmptyBehavior extends FacetapiEmptyBehavior {
   public function settingsForm(&$form, &$form_state) {
     if (!$this->check()) {
       //$form['widget']['empty']['od_facets_empty_behavior']['#type'] = 'fieldset';
-      $form['widget']['empty']['od_facets_empty_behavior']['#prefix'] = '<div class="">';
-      $form['widget']['empty']['od_facets_empty_behavior'][''];
+      $form['widget']['empty']['od_facets_empty_behavior']['#prefix'] = '<div class="empty-behaviour-error messages warning">';
+      $form['widget']['empty']['od_facets_empty_behavior']['#suffix'] = '</div>';
       $form['widget']['empty']['od_facets_empty_behavior']['html']['#markup'] = 'Opendata AJAX Facet Empty behaviour will work only with FacetapiOdFacetsAjaxWidgetLinks';
       $form['widget']['empty']['od_facets_empty_behavior']['#states'] = array(
         'visible' => array(

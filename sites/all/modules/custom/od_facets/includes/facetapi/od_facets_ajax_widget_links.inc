@@ -71,6 +71,7 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
    */
   function settingsForm(&$form, &$form_state) {
     parent::settingsForm($form, $form_state);
+    unset($form['widget']['widget_settings']['links'][$this->id]['wrapper_container']);
 
     $form['widget']['widget_settings']['links'][$this->id]['preprocessors'] = array(
       '#type' => 'checkboxes',
@@ -88,6 +89,7 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
     $settings = parent::getDefaultSettings();
 
     $settings['preprocessors'] = array();
+    $settings['empty_behavior'] = 'od_facets_empty_behavior';
     $settings['shared_settings']['widget'] = array(
       'identity_class' => drupal_html_class("identity-{$this->settings->searcher}-{$this->settings->facet}"),
     );
