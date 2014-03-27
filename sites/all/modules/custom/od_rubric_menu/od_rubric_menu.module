@@ -46,6 +46,7 @@ function render_rubric_term_submenu() {
       $build_menu[$term->tid] = array(
         '#prefix' =>  "<li class='$list_class'>",
         '#suffix' => '</li>',
+        '#weight' => arg(2) == $term->tid ? -500 : NULL,
       );
       $build_menu[$term->tid]['menu'] = array(
         '#markup' => $output,
