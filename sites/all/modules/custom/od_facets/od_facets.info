@@ -4,5 +4,6 @@ dependencies[] = ajax_facets
 package = Gosbook
 core = 7.x
 
-; files[] = includes/facetapi/od_facets_ajax_widget_links.inc
+files[] = includes/facetapi/od_facets_ajax_widget_links.inc
+files[] = includes/facetapi/empty_behaviors/od_facets_empty_behavior.inc
 

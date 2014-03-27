@@ -21,12 +21,26 @@ function od_facets_facetapi_widgets() {
   return $items;
 }
 
-function od_facets_facetapi_searcher_info_alter(&$searcher_info) {
-  $a = 1;
+//function od_facets_facetapi_searcher_info_alter(&$searcher_info) {
+//  $a = 1;
+//}
+
+/**
+ * Implements hook_facetapi_empty_behaviors().
+ */
+function od_facets_facetapi_empty_behaviors() {
+  return array(
+    'od_facets_empty_behavior' => array(
+      'handler' => array(
+        'label' => t('Opendata AJAX Empty Facet'),
+        'class' => 'OdFacetsEmptyBehavior',
+      ),
+    ),
+  );
 }
 
 function od_facets_ctools_plugin_directory($owner, $plugin_type) {
-  if ($owner == 'facetapi' && $plugin_type == 'empty_behavior') {
+  if ($owner == 'facetapi' && $plugin_type == 'empty_behaviors') {
     return 'includes/facetapi/empty_behaviors';
   }
 }

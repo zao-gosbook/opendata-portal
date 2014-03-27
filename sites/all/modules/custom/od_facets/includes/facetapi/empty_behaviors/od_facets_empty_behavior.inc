@@ -6,10 +6,8 @@
  */
 
 $plugin = array(
-  'label' => '',
-  'handler' => array(
-    'class' => 'OdFacetsEmptyBehavior',
-  ),
+  'title' => t('Opendata AJAX Facet Empty behaviour'),
+  'class' => t('OdFacetsEmptyBehavior'),
 );
 
 /**
