@@ -2514,10 +2514,23 @@ div.horizontal-tabs .form-text {
     color: #666;
     
     p {
-      font-size: 1.2em;
-      line-height: 1.8em;
-      margin: 0 0 2.8em;
+      font-size: 1.3em;
+      line-height: 1.5em;
+      margin: 0 0 20px;
     }
+    ul {
+      margin: 0 0 15px;
+      padding: 0;
+      
+      li {
+        margin: 0 0 5px 40px;
+        padding: 0;
+        font-size: 1.3em;
+        line-height: 1.5em;
+        color: #333;
+      }
+    }
+    /*
     ul.portal-info {
       display: table;
       width: 70%;
@@ -2551,17 +2564,17 @@ div.horizontal-tabs .form-text {
           }
         }
       }      
-    }
+    }*/
     h2 {
       font-size: 2.1em;
       line-height: 1.1em;
-      margin: 0 0 40px;
+      margin: 0 0 30px;
       text-transform: none;
     }
     h3 {
       font-size: 1.8em;
       line-height: 1.1em;
-      margin: 0 0 40px;
+      margin: 30px 0 20px;
       text-transform: none;      
     }
   }
