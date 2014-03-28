@@ -161,10 +161,6 @@ function _od_rubric_menu_item_visibility_callback($options) {
   return $is_visible;
 }
 
-function render_rubric_maps_exists($term) {
-  if (render_rubric_data_exists($term)) return TRUE;
-}
-
 function od_rubric_menu_block_view($delta = '') {
   /*
    * @todo: Сделать небольшой рефакторинг кода
