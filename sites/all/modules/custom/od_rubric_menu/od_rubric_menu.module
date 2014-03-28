@@ -127,42 +127,38 @@ function _od_rubric_menu_render_rubric_image($term) {
 function _od_rubric_menu_item_visibility_callback($options) {
   $is_visible = FALSE;
   switch ($options['submenu_key']) {
-    case 'data':
-      $query_datasets = new EntityFieldQuery;
-  //  $result_datasets = $query_datasets->entityCondition('entity_type', 'node')
-  //    ->entityCondition('bundle', 'dataset')
-  //    ->propertyCondition('status', 1)
-  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-  //    ->execute();
-  //  if (count($result_datasets))
-      break;
-    case 'applications':
-      $query = new EntityFieldQuery;
-  //  $result = $query->entityCondition('entity_type', 'node')
-  //    ->entityCondition('bundle', 'app')
-  //    ->propertyCondition('status', 1)
-  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-  //    ->execute();
-  //  if (count($result))
-      break;
-    case 'blogs':
-      $query = new EntityFieldQuery;
-  //  $result = $query->entityCondition('entity_type', 'node')
-  //    ->entityCondition('bundle', 'blog')
-  //    ->propertyCondition('status', 1)
-  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-  //    ->execute(); //@fixme: Might be better to execute view here? or it's fine? View can be cached.
-  //  if (count($result))
-      break;
+//    case 'data':
+//      $query_datasets = new EntityFieldQuery;
+//  //  $result_datasets = $query_datasets->entityCondition('entity_type', 'node')
+//  //    ->entityCondition('bundle', 'dataset')
+//  //    ->propertyCondition('status', 1)
+//  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+//  //    ->execute();
+//  //  if (count($result_datasets))
+//      break;
+//    case 'applications':
+//      $query = new EntityFieldQuery;
+//  //  $result = $query->entityCondition('entity_type', 'node')
+//  //    ->entityCondition('bundle', 'app')
+//  //    ->propertyCondition('status', 1)
+//  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+//  //    ->execute();
+//  //  if (count($result))
+//      break;
+//    case 'blogs':
+//      $query = new EntityFieldQuery;
+//  //  $result = $query->entityCondition('entity_type', 'node')
+//  //    ->entityCondition('bundle', 'blog')
+//  //    ->propertyCondition('status', 1)
+//  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+//  //    ->execute(); //@fixme: Might be better to execute view here? or it's fine? View can be cached.
+//  //  if (count($result))
+//      break;
     default:
       $is_visible = TRUE;
   }
 
   return $is_visible;
-}
-
-function render_rubric_maps_exists($term) {
-  if (render_rubric_data_exists($term)) return TRUE;
 }
 
 function od_rubric_menu_block_view($delta = '') {
