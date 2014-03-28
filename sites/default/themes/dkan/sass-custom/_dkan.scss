@@ -5054,12 +5054,22 @@ div.fivestar-widget .star {
   font-size: 16px;
   line-height: 1.15em;
   color: #666;
-  padding: .85em .65em;
+  padding: .85em .85em;
   background-color: #d5d5d5;
   border-bottom: 1px solid #fff;
   
   &.odd{
     background-color: #eeeeee;
+  }
+  .submitted {
+    margin: 0 0 15px;
+    
+    img {
+      vertical-align: middle;
+      border: 10px solid #e5e5e5;
+      background: #fff;
+      margin-right: 5px;
+    }
   }
   
   .group-left {
@@ -5092,6 +5102,11 @@ div.fivestar-widget .star {
     p {
       margin: 0;
     }
+  }
+  .links {
+    display: inline-block;
+    padding: 0;
+    margin: 15px 0 0;
   }
 }
 
