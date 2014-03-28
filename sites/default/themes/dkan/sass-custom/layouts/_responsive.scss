@@ -664,35 +664,46 @@ $zen-auto-include-item-base: false;
   .region-orange .pane-dataset-datasets-total-count-for-guest  {
   
     h2 {
-      font-size: 17px;
-      padding: 1.2% 10px 3px 10px;
+      font-size: 18px;
+      line-height: 24px;
+      padding: 2px 0;
       text-align: center;
       float: none;
+      height: auto;
     }  
     .view {
       font-size: 13px;
-      padding: 1.1% 10px 0.8% 10px;    
+      padding: 2px 0;    
       text-align: center;
-      float: none;      
+      float: none;    
+      width: auto;
+      height: auto;
       
       &:after {
-          background: url("../images/arr-orange-left.png") no-repeat scroll 0 0 transparent;
-          content: "";
-          height: 22px;
-          left: -50%;
-          margin-top: 0;
-          margin-left: -8px;
-          position: absolute;
-          top: -16px;
-          width: 16px;
-          @include transform(rotate(90deg));
-      }      
-      
-      span {
-        font-size: 20px;
+        display: none;
       }
-    }
+      span {
+        font-size: 22px;
+        height: auto;
+        line-height: 1.1;
+      }
+    }   
   }
+  .region-orange .pane-2 {
+    position: static;
+    text-align: center;
+    padding: 0 0 8px;
+    background: #ff8a00;
+    
+    a {
+      margin: 0 auto;
+      display: inline-block;
+      padding: 0 14px;
+      height: 35px;
+      line-height: 35px;
+      width: auto;
+    }
+  }   
   .view-quick-facts {
     padding-top: 115px;
     padding-bottom: 24%;
