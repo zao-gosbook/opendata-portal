@@ -349,8 +349,14 @@ $zen-auto-include-item-base: false;
             font-size: 15px;
             float: none;
           }
-          &.sfHover:after {
-            display: none;
+          &.sfHover {
+            &:after {
+              display: none;
+            }
+            
+            > ul {
+              position: static;
+            }
           }
           &.sf-expanded {
             border-bottom: 0;
@@ -379,8 +385,9 @@ $zen-auto-include-item-base: false;
           > ul {
             width: 100% !important;
             float: none;
-            
+            top: 0 !important;
             margin: 0 !important;
+            overflow: hidden;
             
             > li {
               float: none;
@@ -466,6 +473,12 @@ $zen-auto-include-item-base: false;
         font-size: 11px;
       }
     }
+  }
+  
+  .not-front .region-header {
+    @include background-size(175px auto);
+    min-height: 175px;
+    height: auto;
   }
   .page-taxonomy-term .region-header {
     @include background-size(cover);
