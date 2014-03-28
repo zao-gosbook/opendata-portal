@@ -366,6 +366,10 @@ $zen-auto-include-item-base: false;
             
             li {
               width: 50%;
+              
+              a {
+                text-align: left;
+              }
             }
           }          
           > ul {
