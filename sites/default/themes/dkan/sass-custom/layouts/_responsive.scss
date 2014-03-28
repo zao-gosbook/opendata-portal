@@ -349,6 +349,9 @@ $zen-auto-include-item-base: false;
             font-size: 15px;
             float: none;
           }
+          &.sfHover:after {
+            display: none;
+          }
           &.sf-expanded {
             border-bottom: 0;
             
@@ -363,6 +366,7 @@ $zen-auto-include-item-base: false;
             padding-top: 0;
             padding-bottom: 0;
             margin-left: 0 !important;
+            overflow: hidden;
             
             li {
               width: 50%;
@@ -375,6 +379,8 @@ $zen-auto-include-item-base: false;
           > ul {
             width: 100% !important;
             float: none;
+            
+            margin: 0 !important;
             
             > li {
               float: none;
@@ -891,7 +897,15 @@ $zen-auto-include-item-base: false;
       
       li {
         font-size: 11px;
-        padding: 0 30px 0 0;
+        padding: 0 10px 0 0;
+        border-right: 1px solid #fff;
+        margin-right: 10px;
+        
+        &.last {
+          border-right: 0;
+          margin: 0;
+          padding: 0;
+        }
       }
     }
   }
@@ -924,7 +938,7 @@ $zen-auto-include-item-base: false;
           margin-bottom: 0;
         }      
         h2 {
-          font-size: 13px;
+          font-size: 16px;
           line-height: 26px;
           
           a {
