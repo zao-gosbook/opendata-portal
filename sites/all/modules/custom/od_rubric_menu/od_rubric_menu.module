@@ -1,4 +1,14 @@
 <?php
+/**
+ * @return array
+ */
+
+// Taxonomy vocabulary machine name containing rubrics.
+define('OD_RUBRIC_MENU_RUBRICS_VOCABULARY', 'rubrics');
+
+/**
+ * Implements hook_block_info();
+ */
 function od_rubric_menu_block_info() {
   return array(
     'block_rubric_menu' => array(
@@ -8,27 +18,21 @@ function od_rubric_menu_block_info() {
   );
 }
 
-function render_rubric_term_submenu() {
+/**
+ * Renders submenus for all rubrics
+ */
+function _od_rubrics_menu_render_rubric_term_submenu() {
   $render_info = array(
-    'news' => array(
-      'item_visibility_callback' => 'render_rubric_news_exists',
-    ),
-    'data' => array(
-      'item_visibility_callback' => 'render_rubric_data_exists',
-    ),
-    'competitions' => array(
-      'item_visibility_callback' => 'render_rubric_competitions_exists',
-    ),
-    //'applications' => array(
-    //  'item_visibility_callback' => 'render_rubric_applications_exists',
-    //),
-    'blogs' => array(
-      'item_visibility_callback' => 'render_rubric_blogs_exists',
-    ),
-    'maps' => array(
-      'item_visibility_callback' => 'render_rubric_maps_exists',
-    ),
+    'news' => array(),
+    'data' => array(),
+    'competitions' => array(),
+    //'applications' => array(),
+    'blogs' => array(),
+    'maps' => array(),
+  );
 
+  $defaults = array(
+    'item_visibility_callback' => '_od_rubric_menu_item_visibility_callback',
   );
 
   $build_menu = array(
@@ -36,11 +40,11 @@ function render_rubric_term_submenu() {
     '#suffix' => '</ul>',
   );
 
-  $tree = taxonomy_get_tree(3); //rubrics
+  $tree = taxonomy_get_tree(taxonomy_vocabulary_machine_name_load(OD_RUBRIC_MENU_RUBRICS_VOCABULARY)->vid); //rubrics
   foreach ($tree as $term) {
-    $tw = entity_metadata_wrapper('taxonomy_term', taxonomy_term_load($term->tid));
+    $tw = entity_metadata_wrapper('taxonomy_term', $term->tid);
     if ($tw->field_show_front_page->value() == 1) { //если рубрика показывается на главной странице
-      $output = render_rubric_image($term);
+      $output = _od_rubric_menu_render_rubric_image($tw);
       $output .= l(i18n_taxonomy_term_name($term), "taxonomy/term/{$term->tid}");
       $list_class = arg(2) == $term->tid? 'expanded' : 'collapsed';
       $build_menu[$term->tid] = array(
@@ -56,7 +60,17 @@ function render_rubric_term_submenu() {
         '#suffix' => '</ul>',
       );
       foreach ($render_info as $submenu_key => $info) {
-        if ($info['item_visibility_callback']($term)) {
+        // Merge defaults
+        $info += $defaults;
+
+        // Check item's visibility via callback
+        $is_visible = call_user_func($info['item_visibility_callback'], array(
+                        'term' => $term,
+                        'submenu_key' => $submenu_key,
+                        'info' => $info
+                      ));
+
+        if ($is_visible) {
           switch ($submenu_key) {
             case 'news':
               $build_menu[$term->tid]['children'][$submenu_key]['#markup'] = '<li>'. l(t('News'), "taxonomy/term/{$term->tid}/news") . '</li>';
@@ -85,64 +99,66 @@ function render_rubric_term_submenu() {
   return $build_menu;
 }
 
-function render_rubric_image($term) {
-  $term_new = taxonomy_term_load($term->tid);
-  $term_wrapper = entity_metadata_wrapper('taxonomy_term', $term_new);
-  $output = '';
-  if (isset($term_wrapper)) {
-    try {
+/**
+ * @param $term EntityDrupalWrapper|stdClass|integer
+ * @return bool|string
+ * @todo: Move to od_common_core
+ */
+function _od_rubric_menu_render_rubric_image($term) {
+  $output = FALSE;
+  try {
+    if (($term_wrapper = entity_metadata_wrapper('taxonomy_term', $term)) && $term_wrapper->value()) {
       //Check if we have image for this term
       if ($image = $term_wrapper->field_rubric_image->value()) {
-        $output .= '<div class="menu-icon"><img src="' .  image_style_url('thumbnail', file_uri_target($image['uri'])) .  '"></div>';
+        $output .= '<div class="menu-icon"><img src="' .  image_style_url('thumbnail', $image['uri']) .  '"></div>';
       }
     }
-    catch (EntityMetadataWrapperException $e) {
-      //Silence
-      //dpm($e);
-    }
   }
+  catch (EntityMetadataWrapperException $e) {
+    // Just log the exception
+    watchdog_exception('od_rubric_menu', $e);
+    $output = FALSE;
+  }
+
   return $output;
 }
 
-function render_rubric_news_exists($term) {
-  return TRUE;
-}
 
-function render_rubric_data_exists($term) {
-//  $query_datasets = new EntityFieldQuery;
-//  $result_datasets = $query_datasets->entityCondition('entity_type', 'node')
-//    ->entityCondition('bundle', 'dataset')
-//    ->propertyCondition('status', 1)
-//    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-//    ->execute();
-//  if (count($result_datasets))
-  return TRUE;
-}
+function _od_rubric_menu_item_visibility_callback($options) {
+  $is_visible = FALSE;
+  switch ($options['submenu_key']) {
+    case 'data':
+      $query_datasets = new EntityFieldQuery;
+  //  $result_datasets = $query_datasets->entityCondition('entity_type', 'node')
+  //    ->entityCondition('bundle', 'dataset')
+  //    ->propertyCondition('status', 1)
+  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+  //    ->execute();
+  //  if (count($result_datasets))
+      break;
+    case 'applications':
+      $query = new EntityFieldQuery;
+  //  $result = $query->entityCondition('entity_type', 'node')
+  //    ->entityCondition('bundle', 'app')
+  //    ->propertyCondition('status', 1)
+  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+  //    ->execute();
+  //  if (count($result))
+      break;
+    case 'blogs':
+      $query = new EntityFieldQuery;
+  //  $result = $query->entityCondition('entity_type', 'node')
+  //    ->entityCondition('bundle', 'blog')
+  //    ->propertyCondition('status', 1)
+  //    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
+  //    ->execute(); //@fixme: Might be better to execute view here? or it's fine? View can be cached.
+  //  if (count($result))
+      break;
+    default:
+      $is_visible = TRUE;
+  }
 
-function render_rubric_competitions_exists($term) {
-  return TRUE;
-}
-
-function render_rubric_applications_exists($term) {
-//  $query = new EntityFieldQuery;
-//  $result = $query->entityCondition('entity_type', 'node')
-//    ->entityCondition('bundle', 'app')
-//    ->propertyCondition('status', 1)
-//    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-//    ->execute();
-//  if (count($result))
-  return TRUE;
-}
-
-function render_rubric_blogs_exists($term) {
-//  $query = new EntityFieldQuery;
-//  $result = $query->entityCondition('entity_type', 'node')
-//    ->entityCondition('bundle', 'blog')
-//    ->propertyCondition('status', 1)
-//    ->fieldCondition('field_rubric', 'tid', $term->tid, '=')
-//    ->execute(); //@fixme: Might be better to execute view here? or it's fine? View can be cached.
-//  if (count($result))
-  return TRUE;
+  return $is_visible;
 }
 
 function render_rubric_maps_exists($term) {
@@ -160,6 +176,8 @@ function od_rubric_menu_block_view($delta = '') {
   if ($delta != 'block_rubric_menu') {
     return;
   }
-  $block['content'] = render(render_rubric_term_submenu());
+
+  $html = _od_rubrics_menu_render_rubric_term_submenu();
+  $block['content'] = render($html);
   return $block;
 }

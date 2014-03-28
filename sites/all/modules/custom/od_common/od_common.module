@@ -194,20 +194,7 @@ function od_common_preprocess_date_combo(&$vars) {
 }
 
 /**
- * Preprocess function whose runs before template_preprocess_views_exposed_form.
- *
- *  In order to fix translations of exposed form's buttons.
- */
-function _od_common_template_preprocess_views_exposed_form(&$vars) {
-  // Translate all submit button's text
-  // @fixme: It's just a warkaround
-  if (isset($vars['form']['submit']['#type']) && $vars['form']['submit']['#type'] == 'submit') {
-    $vars['form']['submit']['#value'] = t($vars['form']['submit']['#value']);
-  }
-}
-
-/**
- * Implements hook_preprocess_THEMEHOOK()
+ * Implements hook_preprcess_THEMEHOOK()
  *
  * Adds id and class .ctools-collapsible-remember to ctools elements if they don't have them.
  */
@@ -243,16 +230,6 @@ function od_common_theme() {
   );
 
   return $themes;
-}
-
-function od_common_theme_registry_alter(&$theme_registry) {
-  if (isset($theme_registry['views_exposed_form'])) {
-    if (!isset($theme_registry['views_exposed_form']['preprocess functions'])) {
-      $theme_registry['views_exposed_form']['preprocess functions'] = array();
-    }
-
-    array_unshift($theme_registry['views_exposed_form']['preprocess functions'], '_od_common_template_preprocess_views_exposed_form');
-  }
 }
 
 /**
@@ -346,12 +323,6 @@ function od_common_field_formatter_info() {
     'description' => t('Displays file as a link.'),
   );
 
-  $info['od_common_recline_link_formatter_multivolume_from_resource'] = array(
-    'label' => t('Recline link from resource (for multivolume and not)'),
-    'field types' => array('recline_field', 'file'),
-    'description' => t('Displays file as a link.'),
-  );
-
   if (module_exists('od_pubdlcnt')) {
     $info['od_common_file_dlcnt'] = array(
       'label' => t('Download counts of a file'),
@@ -411,7 +382,6 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
       od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $items, $display);
       break;
     case 'od_common_recline_link_formatter_multivolume_from_resource':
-
       od_common_module('od_common_recline_link_formatter_multivolume');
       od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $resources, $display);
       break;
@@ -546,25 +516,6 @@ function od_common_js_alter(&$javascript) {
       );
     }
   }
-
-//  foreach ($javascript['settings']['data'] as $_index => &$_list) {
-//    foreach ($_list as $_modulename => &$_settings) {
-//      switch ($_modulename) {
-//        case 'superfish':
-//          foreach ($_settings as &$_sf) {
-//            $_sf['sf']['onBeforeShow'] = 'function(ul) { Drupal.superFish.onBeforeShow(); }';
-//          }
-//
-//          unset ($_sf);
-//          break;
-//      }
-//    }
-//
-//    unset($_settings);
-//  }
-//
-//  // Prevent reference re-using further.
-//  unset($_list);
 }
 
 /**
@@ -585,42 +536,18 @@ function od_common_node_access($node, $op, $account) {
   return NODE_ACCESS_IGNORE;
 }
 
-/**
- * Implements hook_preprocess_THEMEHOOK().
- */
+
 function od_common_preprocess_privatemsg_view(&$vars) {
   $message = $vars['message'];
   $vars['message_timestamp'] = _od_common_privatemsg_format_date($message->timestamp);
 }
 
-/**
- * Implements hook_preprocess_THEMEHOOK().
- */
 function od_common_preprocess_privatemsg_recipients(&$vars) {
   $vars['participants'] = ''; // assign a default empty value
   if (isset($vars['thread']['participants'])) {
     $vars['participants'] = _od_common_privatemsg_format_participants($vars['thread']['participants']);
   }
 }
-
-/**
- * Implements hook_preprocess_THEMEHOOK().
- */
-function od_common_preprocess_privatemsg_list_field__last_updated(&$vars) {
-  $vars['theme_hook_suggestions'] = array('od_common_privatemsg_list_field__last_updated');
-}
-
-/**
- * Custom theme function for privatemsg module.
- */
-function theme_od_common_privatemsg_list_field__last_updated($variables) {
-  $thread = $variables['thread'];
-  $field['data'] = _od_common_privatemsg_format_date($thread['last_updated']);
-  $field['class'][] = 'privatemsg-list-date';
-  return $field;
-}
-
-
 
 /**
  * Formats a timestamp according to the defines rules.
