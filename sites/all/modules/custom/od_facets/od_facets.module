@@ -139,4 +139,55 @@ function od_facets_ajax_facets_process_facet_blocks($searcher, $realm_name = 'bl
   }
 }
 
+/**
+ * Implementation of hook_views_ajax_data_alter()
+ */
+function od_facets_views_ajax_data_alter(&$commands, $view) {
+  ajax_facets_views_ajax_data_alter($commands, $view);
+//  // As long as we're on a search api index view
+//  if (strpos($view->base_table, 'search_api_index') !== FALSE) {
+//    // We can get the index ID from the view base table
+//    $index_id = str_replace('search_api_index_', '', $view->base_table);
+//    // Create the searcher name
+//    $searcher = 'search_api@' . $index_id;
+//    // Get our facet blocks
+//    $blocks = ajax_facets_process_facet_blocks($searcher);
+//    // Create commands to replace each block
+//    foreach ($blocks['facet_blocks'] as $class => $content) {
+//      $commands[] = ajax_command_replace('.' . $class, $content);
+//    }
+//    // Show all blocks
+//    $commands[] = ajax_command_invoke('div.block-facetapi:not(:visible)', 'show');
+//    // Hide empty blocks
+//    foreach ($blocks['hide_blocks'] as $block_id) {
+//      $commands[] = ajax_command_invoke('#' . $block_id, 'hide');
+//    }
+//    // Update the views ajax path with the facet query so that exposed filter
+//    // page requests knows which facets are enabled
+//    $facet_query = !empty($_GET['f']) ? $_GET['f'] : '';
+//    if ($facet_query) {
+//      $settings = array(
+//        'views' => array(
+//          'ajax_path' => url('views/ajax', array('query' => array('f' => $facet_query))),
+//        ),
+//      );
+//      // We need to put this at the head of the commands so that it runs before
+//      // the views commands. This is because ajax_render() in ajax.inc prepends
+//      // it's own settings command to the commands array which will change
+//      // views ajax_path back to views/ajax. If we don't fix this before views
+//      // runs it's ajax commands, the views ajax event won't get the facets in
+//      // the path and they'll be reset on exposed filter input.
+//      array_unshift($commands, ajax_command_settings($settings, TRUE));
+//    }
+//  }
+}
+
+/**
+ * Implements hook_module_implements_alter()
+ */
+function od_facets_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'views_ajax_data_alter' && isset($implementations['ajax_facets'])) {
+    unset($implementations['ajax_facets']);
+  }
+}
 
