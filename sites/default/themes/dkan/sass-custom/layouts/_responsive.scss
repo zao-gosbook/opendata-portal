@@ -703,7 +703,70 @@ $zen-auto-include-item-base: false;
       line-height: 35px;
       width: auto;
     }
-  }   
+  }  
+
+  /**
+   * menu help
+   */
+  .feedback-block {
+    position: static;
+    margin-top: 0;
+    
+    ul {
+      margin: 0;
+      padding: 10px 0;
+      background: #e5e5e5;
+      text-align: center;
+    
+      li {
+        list-style: none;
+        margin: 0;
+        padding: 0 7px;
+      
+        a {
+          display: block;
+          width: 51px;
+          height: 55px;
+          line-height: 16px;
+          
+          &.question {
+            background-position: 0 0;
+            padding-top: 0;
+            height: 55px;  
+            
+            &:hover {
+              background-position: -50px -55px;
+            }
+          }
+          &.idea {
+            background-position: 0 -110px;
+            padding-top: 00;
+            height: 55px;          
+            
+            &:hover {
+              background-position: -50px -165px;
+            }          
+          }
+          &.discuss {
+            background-position: 0 -220px;
+            padding-top: 0;
+            height: 55px;            
+            
+            &:hover {
+              background-position: -50px -275px;
+            }           
+          }
+          &:hover {
+            width: 51px;
+            padding-right: 0;    
+            padding-left: 0;    
+            text-indent: -10000px;
+            background-color: #0c87e8;
+          }
+        }
+      }
+    }
+  }  
   .view-quick-facts {
     padding-top: 115px;
     padding-bottom: 24%;
