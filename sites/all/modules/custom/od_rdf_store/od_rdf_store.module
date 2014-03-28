@@ -294,6 +294,11 @@ class ODStoreEndPoint extends ARC2_StoreEndpoint {
     	</div>
     ';
   }
+
+  function getFeatures() {
+    return array('select');
+  }
+
   function getHTMLDocOptions() {
     $sel = $this->p('output');
     $sel_code = ' selected="selected"';
