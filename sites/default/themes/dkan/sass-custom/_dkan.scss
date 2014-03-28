@@ -217,6 +217,15 @@ div.horizontal-tabs .form-text {
   display: none;
 }
 
+/**
+ * table
+ */
+.view-opendata-log {
+  table th {
+    padding-top: 14px;
+  }
+}
+
 
 /**
  * error 404
@@ -1794,7 +1803,8 @@ div.horizontal-tabs .form-text {
       padding-right: 7px;
       list-style: none;
       
-      &.first {
+      &.first,
+      &.last {
         display: none;
       }
     }
@@ -1908,7 +1918,8 @@ div.horizontal-tabs .form-text {
 }
 
 
-.page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.first {
+.page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.first,
+.page-library .pane-search-api-sorts-search-sorts .search-api-sorts li.last {
   display: block;
 }
 .pane-datasets-search-dataset-search {
@@ -2644,7 +2655,8 @@ div.horizontal-tabs .form-text {
     line-height: 22px;
     color: #b5b5b5;    
   }
-  .field-name-field-idea-vote-up-down {
+  .field-name-field-idea-vote-up-down,
+  .pane-node-field-od-query-vote-up-down  {
     float: right;
     margin: 0 0 15px 20px;
   }
@@ -2683,6 +2695,46 @@ div.horizontal-tabs .form-text {
     display: none;
   }
 }
+
+/* node-type-opendata-query */
+.node-type-opendata-query {
+  .panels-flexible-row.idea-row-white .idea-info {
+    > .inside {
+      padding-left: 0;
+    }      
+    .panel-pane {
+        font-size: 16px;
+        line-height: 22px;
+      }
+    .field-name-field-od-query-data-rubrics .field-item  {
+      display: inline;
+      
+      &:after {
+        content: ',';
+      }
+      &:last-child:after {
+        content: '';
+      }
+    }
+    .pane-node-field-od-query-data-name {
+      color: #4D4D4D;
+      font-size: 24px;
+      line-height: 30px;
+      margin: 0 0 4px;    
+    }
+    .pane-node-field-od-query-data-description {
+      color: #666;
+      padding-top: 20px;
+    }
+    .pane-node-field-od-query-data-holder,
+    .pane-node-field-od-query-data-organization {
+      color: #B5B5B5;
+      font-size: 16px;
+      line-height: 22px;
+    }
+  } 
+}
+
 .node.node-news.view-mode-full {
   background: #fff;
   padding: 20px;
@@ -3582,7 +3634,8 @@ body {
         color: #b5b5b5;
         font-size: 1.25em;
       }
-      .field-name-field-comments-count {
+      .field-name-field-comments-count,
+      .comments-count-string      {
         float: right;
         padding-left: 25px;
         font-size: 1.25em;
@@ -3632,6 +3685,49 @@ body {
     }
     .dataset-owner {
       color: #B5B5B5;
+    }
+  }
+}
+
+/**
+ * presentation
+ */
+.section-chto-takoe-otkrytye-dannye {
+  .node.view-mode-full {
+    padding: 20px;
+    background: #fff;
+    font-size: 16px;
+    line-height: 22px;
+    
+    p {
+      margin: 0 0 15px;
+    }
+    .presentation-item {
+      float: left;
+      width: 50%;
+      text-align: center;
+      padding-bottom: 20px;
+      
+      .wrapper {
+        margin: 0 20px;
+        padding: 15px;
+        border: 1px solid #bfbfbf;
+        @include border-radius(7px);
+      }
+      .crop {
+        width: 220px;
+        height: 124px;
+        overflow: hidden;
+        margin: 0 auto 10px;
+        @include border-radius(5px);
+        display: block;
+      }
+      img {
+        display: block;
+      }
+      a {
+        text-decoration: none;
+      }
     }
   }
 }
@@ -4036,6 +4132,15 @@ html.js input.form-autocomplete {
   }
 }
 
+/**
+ * page-user-edit
+ */
+.page-user-edit .pane-page-content {
+  .form-select {
+    font-size: 17px;
+  }
+}
+
 
 /**
  * view-organizations
@@ -4148,7 +4253,8 @@ table {
 .section-ideas .region-content {
   padding-top: 30px;
 }
-.page-ideas {
+.page-ideas,
+.page-opendata-query {
   background-color: #fff;
 }
 
@@ -4172,6 +4278,8 @@ table {
     border-bottom: 1px solid #e5e5e5;
     overflow: hidden;
     text-transform: none;
+    line-height: 22px;
+    font-size: 1.1em;    
   }
   .views-field-field-rubric-image {
     img {
@@ -4179,13 +4287,15 @@ table {
       margin-top: -6px;
     }
   }
-  .views-field-field-rubric {
+  .views-field-field-rubric,
+  .views-field-field-od-query-data-rubrics  {
     color: #4d4d4d;
     font-size: 1.2em;
     padding-bottom: .35em;
     margin-left: 70px;
   }
-  .views-field-title {
+  .views-field-title,
+  .views-field-field-od-query-data-name  {
     font-size: 2em;
     line-height: 1.4em;
     padding-bottom: 3px;
@@ -4208,7 +4318,8 @@ table {
       background: #b9b9b9;
     }
   }
-  .views-field-field-idea-vote-up-down {
+  .views-field-field-idea-vote-up-down,
+  .views-field-field-od-query-vote-up-down  {
     float: right;
     padding: 0 0 17px 30px;
     border-left: 5px solid #bfbfbf;
@@ -4230,6 +4341,18 @@ table {
   }
 }
 
+/* opendata query */
+.view-opendata-query {
+  .views-field {
+    margin-left: 0;
+    text-transform: none;    
+  }
+  .views-field-field-od-query-data-description,
+  .views-field-field-od-query-data-holder,
+  .views-field-field-od-query-data-organization {
+    font-size: 16px;
+  }
+}
 
 
 /**
@@ -4491,7 +4614,11 @@ div.fivestar-widget .star {
       width: 100% !important;
       margin: 0;
     }    
-  } 
+  }
+  .pane-node-field-geolocation h2 {
+    font-size: 18px;
+    padding-top: 5px;
+  }
 }
 .dataset-right-col {
   width: 65%;
@@ -4968,7 +5095,7 @@ div.fivestar-widget .star {
   }
 }
 
-/* node-type-publisher-request */
+/* node-type-publisher-request  pane-search-api-sorts-search-sorts*/
 .node-type-publisher-request {
   background: #fff;
 }
