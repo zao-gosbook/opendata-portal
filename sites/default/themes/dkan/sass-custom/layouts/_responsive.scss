@@ -349,6 +349,15 @@ $zen-auto-include-item-base: false;
             font-size: 15px;
             float: none;
           }
+          &.sfHover {
+            &:after {
+              display: none;
+            }
+            
+            > ul {
+              position: static;
+            }
+          }
           &.sf-expanded {
             border-bottom: 0;
             
@@ -363,6 +372,7 @@ $zen-auto-include-item-base: false;
             padding-top: 0;
             padding-bottom: 0;
             margin-left: 0 !important;
+            overflow: hidden;
             
             li {
               width: 50%;
@@ -375,6 +385,9 @@ $zen-auto-include-item-base: false;
           > ul {
             width: 100% !important;
             float: none;
+            top: 0 !important;
+            margin: 0 !important;
+            overflow: hidden;
             
             > li {
               float: none;
@@ -461,6 +474,12 @@ $zen-auto-include-item-base: false;
       }
     }
   }
+  
+  .not-front .region-header {
+    @include background-size(175px auto);
+    min-height: 175px;
+    height: auto;
+  }
   .page-taxonomy-term .region-header {
     @include background-size(cover);
   }
@@ -468,8 +487,8 @@ $zen-auto-include-item-base: false;
   
   /* heading */
   .pane-page-title {
-    padding-left: 24px;
-    padding-right: 10px;
+    padding-left: 0;
+    padding-right: 0;
   }
   .pane-page-title h1 {
     margin: .2em 0 .6em;
@@ -505,6 +524,16 @@ $zen-auto-include-item-base: false;
   }
   .tabs-primary li a.is-active {
     border: 0;
+  }
+  
+  /* breadcrumbs */
+  .breadcrumbs {
+    .panels-flexible-region {
+      width: 100%;
+    }
+    .breadcrumb {
+      padding: 14px 12px 0;
+    }  
   }
   
   /* statistics */
@@ -783,6 +812,14 @@ $zen-auto-include-item-base: false;
       }
     }
   }  
+  .not-front .feedback-block ul li a {
+    background-color: #fff;
+    
+    &:hover {
+      background-color: #0c87e8;
+    }
+  }
+  
   .view-quick-facts {
     padding-top: 115px;
     padding-bottom: 24%;
@@ -877,6 +914,7 @@ $zen-auto-include-item-base: false;
   .not-front .region-content {
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 0;
   }
   .inside .footer-region {
     
@@ -891,7 +929,15 @@ $zen-auto-include-item-base: false;
       
       li {
         font-size: 11px;
-        padding: 0 30px 0 0;
+        padding: 0 10px 0 0;
+        border-right: 1px solid #fff;
+        margin-right: 10px;
+        
+        &.last {
+          border-right: 0;
+          margin: 0;
+          padding: 0;
+        }
       }
     }
   }
@@ -924,7 +970,7 @@ $zen-auto-include-item-base: false;
           margin-bottom: 0;
         }      
         h2 {
-          font-size: 13px;
+          font-size: 16px;
           line-height: 26px;
           
           a {
