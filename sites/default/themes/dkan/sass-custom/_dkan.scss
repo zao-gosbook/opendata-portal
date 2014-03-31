@@ -663,7 +663,6 @@ div.horizontal-tabs .form-text {
 /**
  * menu help
  */
- 
 .feedback-block {
   position: fixed;
   left: 0;
@@ -2021,6 +2020,68 @@ div.horizontal-tabs .form-text {
 .page-library {
   .region-facet:before {
     bottom: 31px;
+  }
+}
+/* mobile show columns */
+.dataset-mobile-change {
+  display: none;
+  margin: 0 -12px 0 -10px !important;
+  background: #e5e5e5;
+  border-bottom: 1px solid #fff;
+  padding: 10px 12px 10px 10px !important;
+  overflow: hidden;
+  
+  .region-mobile-change {
+    width: 100%;
+  }
+  .show-result {
+    float: right;
+    height: 28px;
+    line-height: 28px;
+    background: #fff url("../images/mobile-col.png") no-repeat 100% 50%;
+    cursor: pointer;
+    padding: 0 38px 0 10px;
+    border: 2px solid #0c87e8;
+    border-right: 0;
+    color: #676767;
+    font-size: 16px;
+    margin-right: 11px;
+    position: relative;
+    
+    &:before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      right: -11px;
+      width: 11px;
+      height: 32px;
+      background: url("../images/mobile-col-corner.png") no-repeat 0 0;
+    }
+  }
+  .hide-result {
+    display: none;
+    position: relative;
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    background: #fff url("../images/mobile-col.png") no-repeat 0% 50%;
+    cursor: pointer;
+    padding: 0 10px 0 38px;
+    border: 2px solid #0c87e8;
+    border-left: 0;
+    color: #676767;
+    font-size: 16px;
+    margin-left: 11px;
+    
+    &:before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -11px;
+      width: 11px;
+      height: 32px;
+      background: url("../images/mobile-col-corner.png") no-repeat 0 -32px;
+    }
   }
 }
 .region-facet {
@@ -5054,22 +5115,12 @@ div.fivestar-widget .star {
   font-size: 16px;
   line-height: 1.15em;
   color: #666;
-  padding: .85em .85em;
+  padding: .85em .65em;
   background-color: #d5d5d5;
   border-bottom: 1px solid #fff;
   
   &.odd{
     background-color: #eeeeee;
-  }
-  .submitted {
-    margin: 0 0 15px;
-    
-    img {
-      vertical-align: middle;
-      border: 10px solid #e5e5e5;
-      background: #fff;
-      margin-right: 5px;
-    }
   }
   
   .group-left {
@@ -5102,11 +5153,6 @@ div.fivestar-widget .star {
     p {
       margin: 0;
     }
-  }
-  .links {
-    display: inline-block;
-    padding: 0;
-    margin: 15px 0 0;
   }
 }
 
