@@ -54,6 +54,21 @@
 //    }
 //  }
 
+  Drupal.behaviors.MobileDatasetColumns = {
+    attach: function (context) {
+      $('.dataset-mobile-change .show-result').click(function(){
+        $('.region-facet, .show-result').hide();
+        $('.hide-result, .dataset-search-facets').show();
+        return false;
+      });
+      $('.dataset-mobile-change .hide-result').click(function(){
+        $('.hide-result, .dataset-search-facets').hide();
+        $('.region-facet, .show-result').show();
+        return false;
+      });
+    }
+  }
+
   Drupal.behaviors.TaxonomyColumnsRubric = {
     attach: function (context) {
       // Do not apply to other pages
