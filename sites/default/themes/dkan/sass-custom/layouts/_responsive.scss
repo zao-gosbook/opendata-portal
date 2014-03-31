@@ -491,7 +491,7 @@ $zen-auto-include-item-base: false;
     padding-right: 0;
   }
   .pane-page-title h1 {
-    margin: .2em 0 .6em;
+    margin: .2em 0 .4em;
     font-size: 17px;
   }
   h3 {
@@ -915,6 +915,10 @@ $zen-auto-include-item-base: false;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 0;
+    
+    > .inside > div {
+      width: 100%;
+    } 
   }
   .inside .footer-region {
     
@@ -980,6 +984,53 @@ $zen-auto-include-item-base: false;
       }      
     }
   }
+  
+  /* datasets */
+  .dataset-mobile-change {
+    display: block;
+  }
+  .region-facet {
+    width: 100%;
+    
+    &:before {
+      display: none;
+    }
+    > .inside {
+      margin: 0 -10px 0 -10px;
+      background: #e5e5e5;
+      padding: 10px;
+    }
+    .facetapi-limit-link {
+      display: block;
+      padding: 10px 0;
+      width: 100px;
+      font-size: 15px;
+      text-align: center;
+      color: #fff;
+      text-decoration: none;
+      margin: 10px auto 0;
+      background: #0c87e8;
+    }
+  }
+  .region-facet .facetapi-facetapi-links li a, 
+  .region-facet .facetapi-facetapi-links li label, 
+  .region-facet .facetapi-od-facetapi-ajax-links li a, 
+  .region-facet .facetapi-od-facetapi-ajax-links li label, 
+  .region-facet .facetapi-facetapi-checkbox-links li a, 
+  .region-facet .facetapi-facetapi-checkbox-links li label  {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #fff;
+  }
+  .region-facet .pane-block, 
+  .region-facet .view-dataset  {
+    padding-bottom: 14px;
+  }
+  .dataset-search-facets {
+    width: 100%;
+    display: none;
+  }
+  
   /**
    * page rubric
    */
@@ -1703,7 +1754,7 @@ $zen-auto-include-item-base: false;
   .page-dataset {
     .pane-page-title h1 {
       margin-top: -30px;
-      margin-botton: 15px;
+      margin-bottom: 15px;
     }
   }
   .pane-datasets-search-dataset-search form .form-text {
