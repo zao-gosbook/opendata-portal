@@ -663,7 +663,6 @@ div.horizontal-tabs .form-text {
 /**
  * menu help
  */
- 
 .feedback-block {
   position: fixed;
   left: 0;
@@ -1880,6 +1879,7 @@ div.horizontal-tabs .form-text {
   padding: 20px 20px 11px;
   margin: 0 0 30px;
   @include clearfix;
+  clear: both;
   color: #666;
   
   &.empty {
@@ -2021,6 +2021,68 @@ div.horizontal-tabs .form-text {
 .page-library {
   .region-facet:before {
     bottom: 31px;
+  }
+}
+/* mobile show columns */
+.dataset-mobile-change {
+  display: none;
+  margin: 0 -12px 0 -10px !important;
+  background: #e5e5e5;
+  border-bottom: 1px solid #fff;
+  padding: 10px 12px 10px 10px !important;
+  overflow: hidden;
+  
+  .region-mobile-change {
+    width: 100%;
+  }
+  .show-result {
+    float: right;
+    height: 28px;
+    line-height: 28px;
+    background: #fff url("../images/mobile-col.png") no-repeat 100% 50%;
+    cursor: pointer;
+    padding: 0 38px 0 10px;
+    border: 2px solid #0c87e8;
+    border-right: 0;
+    color: #676767;
+    font-size: 16px;
+    margin-right: 11px;
+    position: relative;
+    
+    &:before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      right: -11px;
+      width: 11px;
+      height: 32px;
+      background: url("../images/mobile-col-corner.png") no-repeat 0 0;
+    }
+  }
+  .hide-result {
+    display: none;
+    position: relative;
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    background: #fff url("../images/mobile-col.png") no-repeat 0% 50%;
+    cursor: pointer;
+    padding: 0 10px 0 38px;
+    border: 2px solid #0c87e8;
+    border-left: 0;
+    color: #676767;
+    font-size: 16px;
+    margin-left: 11px;
+    
+    &:before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -11px;
+      width: 11px;
+      height: 32px;
+      background: url("../images/mobile-col-corner.png") no-repeat 0 -32px;
+    }
   }
 }
 .region-facet {
@@ -4143,6 +4205,11 @@ html.js input.form-autocomplete {
 
 
 /**
+ * additional-info
+ */
+
+
+/**
  * view-organizations
  */
 .page-organizations {
@@ -4154,11 +4221,24 @@ html.js input.form-autocomplete {
     padding: 20px;
     background: #e5e5e5;
     margin-bottom: 30px;
+    display: table;
+    width: 100%;
     
     a.btn {
       font-size: 18px;
-      padding: 1em 2.6em
+      padding: 1em 0;
+      display: table-cell;
+      text-align: center;
+      white-space: nowrap;
+      margin-right: 20px;
+      width: 190px;
     }
+    .additional-info {
+      display: table-cell;
+      vertical-align: middle;
+      padding-left: 20px;
+      font-size: 15px;
+    }    
   }
   
   .view-filters {
@@ -5054,22 +5134,12 @@ div.fivestar-widget .star {
   font-size: 16px;
   line-height: 1.15em;
   color: #666;
-  padding: .85em .85em;
+  padding: .85em .65em;
   background-color: #d5d5d5;
   border-bottom: 1px solid #fff;
   
   &.odd{
     background-color: #eeeeee;
-  }
-  .submitted {
-    margin: 0 0 15px;
-    
-    img {
-      vertical-align: middle;
-      border: 10px solid #e5e5e5;
-      background: #fff;
-      margin-right: 5px;
-    }
   }
   
   .group-left {
@@ -5102,11 +5172,6 @@ div.fivestar-widget .star {
     p {
       margin: 0;
     }
-  }
-  .links {
-    display: inline-block;
-    padding: 0;
-    margin: 15px 0 0;
   }
 }
 
@@ -5162,6 +5227,73 @@ div.fivestar-widget .star {
   }
   .links {
     display: none;
+  }
+}
+
+/* request panel */
+.node-type-opendata-query {
+  background: #fff;  
+}
+.node-type-opendata-query .pane-page-content {
+  font-size: 16px;
+  line-height: 22px;
+  color: #666;
+
+  .pane-node-field-od-query-vote-up-down {
+    float: right;
+    margin-left: 0 0 20px 20px;
+  }
+  .panel-pane {
+    @include clearfix;
+    padding-bottom: 10px;
+    
+    h2 {
+      float: left;
+      width: 200px;
+      color: #000;
+      font-weight: normal;
+      margin: 0;
+      font-size: 16px;
+      line-height: 22px; 
+    }
+    .field-items,
+    .view {
+      margin-left: 200px;
+    }
+  }  
+  .pane-rubric-nodes-query-od-rubrics {
+    .views-row {
+      img {
+        vertical-align: middle;
+        margin-left: -6px;
+      }
+      span {
+        position: relative;
+        top: -4px;
+      }
+    }
+  } 
+  .pane-node-field-od-query-data-holder,
+  .pane-node-field-od-query-data-organization,
+  .pane-node-field-od-query-data-trouble,
+  .pane-node-field-od-query-data-trbl-reason,
+  .pane-node-field-od-query-data-use,
+  .pane-node-field-od-query-data-benefits,
+  .pane-node-field-od-query-data-profit {
+    h2 {
+      float: none;
+      width: auto;
+    }
+  }
+  .pane-node-comment-form {
+    h2 {
+      color: #000000;
+      float: none;
+      font-size: 30px;
+      line-height: 1.4em;
+      margin: 1em 0;
+      width: auto;
+    }
   }
 }
 
@@ -5373,6 +5505,13 @@ div.fivestar-widget .star {
       text-indent: -10000px;
       background: url("../images/icon-direct.png");
     }
+  }
+  .comments-count-string {
+    color: #666666;
+    font-size: 16px;
+    line-height: 22px;
+    margin-left: 400px;    
+    padding-bottom: 17px; 
   }
 }
 .node-type-organization  .pane-organizations-organization-datasets {
