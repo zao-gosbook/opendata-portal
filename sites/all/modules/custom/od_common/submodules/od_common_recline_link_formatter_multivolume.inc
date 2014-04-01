@@ -5,6 +5,7 @@
 
 function od_common_module__recline_link_formatter_multivolume(&$element, $entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   foreach ($items as $delta => $item) {
+    //@fixme: Use od_dataset_download_path()
     // Change download callback to od_dataset's callback to support encodings
     $download_uri = 'dataset-actions/download_file/'. $item['fid'];
     try {
