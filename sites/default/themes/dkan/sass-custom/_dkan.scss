@@ -5234,21 +5234,37 @@ div.fivestar-widget .star {
 .node-type-opendata-query {
   /*background: #fff;  */
   .opendata-query-info {
-    padding: 20px;
+    padding: 20px 20px 0;
     background: #fff;
   }  
+  .query-author-info {
+    padding: 0 20px 20px;
+    background: #fff;
+    float: none;
+    width: auto;
+  }
 }
 
 .node-type-opendata-query .pane-page-content {
   font-size: 16px;
   line-height: 22px;
   color: #666;
-
+  
+  .form-select,
+  .form-submit {
+    font-size: 16px;
+  }
   .pane-node-field-od-query-vote-up-down {
     float: right;
     margin-left: 0 0 20px 20px;
     padding-left: 30px;
     border-left: 5px solid #DADADA;
+    padding-bottom: 0;
+    
+    .field .field-items {
+      margin: 0;
+      font-size: 13px;
+    }
   }
   .panel-pane {
     @include clearfix;
