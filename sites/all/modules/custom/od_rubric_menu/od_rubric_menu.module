@@ -45,8 +45,17 @@ function _od_rubrics_menu_render_rubric_term_submenu() {
     $tw = entity_metadata_wrapper('taxonomy_term', $term->tid);
     if ($tw->field_show_front_page->value() == 1) { //если рубрика показывается на главной странице
       $output = _od_rubric_menu_render_rubric_image($tw);
-      $output .= l(i18n_taxonomy_term_name($term), "taxonomy/term/{$term->tid}");
-      $list_class = arg(2) == $term->tid? 'expanded' : 'collapsed';
+
+      $context = array(
+        'entity' => $tw->value(),
+      );
+
+      od_entity_label_translate_factory::inst()
+        ->getTranslator('taxonomy_term', $context)
+        ->triggerEvent('entity_translate');
+
+      $output .= l($tw->name->value(), "taxonomy/term/{$term->tid}");
+      $list_class = arg(2) == $term->tid ? 'expanded' : 'collapsed';
       $build_menu[$term->tid] = array(
         '#prefix' =>  "<li class='$list_class'>",
         '#suffix' => '</li>',

@@ -18,12 +18,15 @@ class od_entity_label_translate_class_taxonomy_term extends od_entity_label_tran
     $this->context['build']['#term']->name = $this->translate($this->context['build']['#term']);
   }
 
+  /**
+   * @fixme: Doesn't work with views....
+   */
   function on_field_attach_view() {
     //dpm($this->context); die();
     $key = key($this->context);
     if (isset($this->context[$key]['#formatter']) && $this->context[$key]['#formatter'] == 'taxonomy_term_reference_link') {
       foreach ($this->context[$key]['#items'] as $delta => $item) {
-        $this->context[$key][$delta]['#title'] = 123; //$this->translate($item['taxonomy_term']);
+        $this->context[$key][$delta]['#title'] = $this->translate($item['taxonomy_term']);
       }
     }
   }
@@ -42,5 +45,9 @@ class od_entity_label_translate_class_taxonomy_term extends od_entity_label_tran
 
   function on_pseudo_entity_load() {
     $this->context['entity']->name = $this->translate($this->context['entity']);
+  }
+
+  function on_entity_translate() {
+    $this->on_pseudo_entity_load();
   }
 }
