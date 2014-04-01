@@ -7368,7 +7368,6 @@ div.fivestar-widget .star {
   .pane-page-content {
     
     .left-column {
-      width: 26.6%;
 
       /*ul {
         background: #e5e5e5;
@@ -7407,11 +7406,8 @@ div.fivestar-widget .star {
       }*/
     }
     .right-column {
-      width: 100%;
-      margin-left: -26.6%;
       
       > .inside {
-        margin-left: 26.6%;
         padding-left: 30px;
       }
       .pane-btn {

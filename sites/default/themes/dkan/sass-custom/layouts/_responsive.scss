@@ -1004,6 +1004,7 @@ $zen-auto-include-item-base: false;
       margin: 0 -10px 0 -10px;
       background: #e5e5e5;
       padding: 10px;
+      overflow: hidden;
     }
     .facetapi-limit-link {
       display: block;
@@ -1031,13 +1032,17 @@ $zen-auto-include-item-base: false;
   .region-facet .view-dataset  {
     padding-bottom: 14px;
   }
-  .dataset-search-facets {
+  .dataset-search-facets,
+  .right-column-apps  {
     width: 100%;
     display: none;
     
     .panels-flexible-region-inside {
       padding-left: 0;
     }
+  }
+  .page-apps .pane-page-content .right-column > .inside {
+    padding-left: 0;
   }
   .pane-search-api-sorts-search-sorts .search-api-sorts li {
     padding-right: 0;
@@ -1052,6 +1057,13 @@ $zen-auto-include-item-base: false;
   }
   .selected-filters-wrapper {
     margin-bottom: 0;
+  }
+  .dataset-search-facets .views-row .views-field-title .field-content {
+    font-size: 18px;
+  }
+  .section-library .pane-datasets-search-dataset-search > .view > .view-header, 
+  .section-library-developers .pane-datasets-search-dataset-search > .view > .view-header {
+    font-size: 30px;
   }
   
   /* map */
