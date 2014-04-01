@@ -1066,6 +1066,58 @@ $zen-auto-include-item-base: false;
     font-size: 30px;
   }
   
+  /* apps */
+  .pane-btn a.btn {
+    font-size: 17px;
+    padding: .6em 1.1em;  
+  }
+  .page-apps .pane-page-content .right-column .pane-btn {
+    text-align: center;
+    
+    a.btn  {
+      font-size: 17px;
+      padding: .6em 1.1em;
+    }    
+  } 
+  .right-column-apps {
+    margin-top: 15px;
+  }
+  .page-apps .pane-page-content .right-column .new-apps h2.pane-title, 
+  .page-apps .pane-page-content .right-column .new-apps .view-header, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps h2.pane-title, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .view-header, 
+  .page-apps .pane-page-content .right-column .popular-apps h2.pane-title, 
+  .page-apps .pane-page-content .right-column .popular-apps .view-header {
+    font-size: 17px;
+    line-height: 16px;
+    margin: 0 0 6px;
+    height: 16px;
+  } 
+  .page-apps .pane-page-content .right-column .new-apps .group-right .field h2, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .group-right .field h2, 
+  .page-apps .pane-page-content .right-column .popular-apps .group-right .field h2 {
+    font-size: 17px;
+    line-height: 16px;
+    height: 16px;  
+  }  
+  .page-apps .pane-page-content .right-column .new-apps .group-left .field-name-field-app-image img, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .group-left .field-name-field-app-image img, 
+  .page-apps .pane-page-content .right-column .popular-apps .group-left .field-name-field-app-image img {
+    width: 50px;
+    height: 50px;
+  }  
+  .page-apps .pane-page-content .right-column .new-apps .group-right .field, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .group-right .field, 
+  .page-apps .pane-page-content .right-column .popular-apps .group-right .field {
+    margin-left: 70px;
+  }
+  .page-apps .pane-page-content .right-column .new-apps .group-right, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .group-right, 
+  .page-apps .pane-page-content .right-column .popular-apps .group-right {
+    padding-top: 5px;
+  }
+  
+  
   /* map */
   .page-datasets-map .custom-text-wrapper {
     padding: 0 0 20px;
