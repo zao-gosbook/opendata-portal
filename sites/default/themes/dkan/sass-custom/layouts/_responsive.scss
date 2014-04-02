@@ -239,6 +239,7 @@ $zen-auto-include-item-base: false;
   .pane-search-block {
     display: table;
     clear: both;
+    width: 100%;
     
     .panel-display {
       padding: 14px 10px 0 10px;
@@ -250,6 +251,10 @@ $zen-auto-include-item-base: false;
     }
   }
   .region-header {
+    
+    &.panels-flexible-row {
+      padding-bottom: 0;
+    }
     
     &:before {
       display: none;
@@ -276,24 +281,129 @@ $zen-auto-include-item-base: false;
     }
     
     /* search */
-    .pane-gb-search-pane .form-item-field-select {
-      display: none;
-    }
-    .pane-gb-search-pane .form-submit {
-      width: 52px;
-    }
+    .pane-gb-search-pane {
+      margin-left: 1px;
+      margin-right: 10px;
+      
+      .form-text {
+        font-size: 15px;
+        line-height: 18px;
+        padding-right: 35px;    
+        padding-left: 12px;        
+      }   
+      .form-item-field-select {
+        display: none;
+      }
+      .form-submit {
+        width: 52px;
+        height: 52px;
+        top: -8px;
+        right: -5px;
+        background-image: url("../images/icon-search-big.png");
+        @include background-size(cover);
+      }      
+    }    
     
     /* main menu */
+    .panels-flexible-new .panels-flexible-row {
+      padding: 0 0 0 0;
+    }    
+    .sf-accordion-toggle {
+      padding: 20px 0 0 20px;
+      
+      span {
+        width: 36px;
+        height: 30px;
+        background-image: url("../images/icon-mobile-menu.png");
+        margin-bottom: 20px;
+      } 
+      .sf-expanded {
+        span {
+          background-position: 0 -30px;
+        }
+      }
+    }  
     .pane-system-main-menu {
       clear: left;
-      padding-left: 10px;
-      padding-top: 13px;
+      padding-left: 0;
+      padding-top: 0;
+      margin-left: -10px;
+      margin-right: -10px;      
       
       .sf-clone-parent {
         display: none;
       }
-      > ul > li ul {
-        width: 21em !important;
+      > ul {
+        float: none;
+        
+        > li {
+          float: none;
+          border: 0;
+          border-bottom: 1px solid #fff;
+          
+          > a {
+            padding: 0;
+            height: 38px;
+            line-height: 38px;
+            text-align: center;
+            font-size: 15px;
+            float: none;
+          }
+          &.sfHover {
+            &:after {
+              display: none;
+            }
+            
+            > ul {
+              position: static;
+            }
+          }
+          &.sf-expanded {
+            border-bottom: 0;
+            
+            > a {
+              color: #ffea00;
+              border-bottom: 1px solid #fff;
+            }            
+          }
+          &.sf-item-2 > ul {
+            width: 100% !important;
+            background: #fff;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-left: 0 !important;
+            overflow: hidden;
+            
+            li {
+              width: 50%;
+              
+              a {
+                text-align: left;
+              }
+            }
+          }          
+          > ul {
+            width: 100% !important;
+            float: none;
+            top: 0 !important;
+            margin: 0 !important;
+            overflow: hidden;
+            
+            > li {
+              float: none;
+              border: 0;
+              border-bottom: 1px solid #000;  
+
+              a {
+                text-align: center;
+                padding: 0;
+                height: 38px;
+                line-height: 38px;
+                float: none;
+              }
+            }
+          }          
+        }
       }
     }
     .pane-system-user-menu {
@@ -305,7 +415,6 @@ $zen-auto-include-item-base: false;
       
       > ul li a {
         text-indent: -10000px;  
-        overflow: hidden;
         background-color: #FFFFFF;
         background-image: url("../images/ico-set-ui.png");
         background-repeat: no-repeat;
@@ -321,11 +430,27 @@ $zen-auto-include-item-base: false;
         background: #fff url("../images/ico-set-ui.png") no-repeat -539px -353px;
         padding-left: 0;
       }
+      > ul li a[href*="users"] {
+        background-position: -387px -353px;
+      }
       > ul li a[href$="/user"] {
         background-position: -387px -353px;
       }
       > ul li a[href$="/messages"] {
         background-position: -349px -48px;
+        position: relative;
+        
+        .messages-count {
+          margin-left: 3px;
+          font-size: 10px;
+          height: 12px;
+          line-height: 13px;
+          padding: 0 3px;
+          position: absolute;
+          top: -7px;
+          left: 50%;
+          text-indent: 0;
+        }
       }
       > ul li a[href$="/user/logout"] {
         background-position: -119px -10px;
@@ -333,7 +458,11 @@ $zen-auto-include-item-base: false;
       > ul li a[href$="/user/register"] {
         background-position: -387px -314px;
       }
+      > ul li a[href*="moderation"] {
+        background-position: -159px -48px;
+      }
     } 
+    
     
     .region-header .pane-locale-language {
       position: absolute;
@@ -344,14 +473,12 @@ $zen-auto-include-item-base: false;
         font-size: 11px;
       }
     }
-    .pane-system-main-menu ul li a,
-    .pane-system-user-menu > ul li a  {
-      font-size: .8em;
-      margin-bottom: 1px;
-    }  
-    .pane-system-main-menu ul li {
-      width: auto;
-    }
+  }
+  
+  .not-front .region-header {
+    @include background-size(175px auto);
+    min-height: 175px;
+    height: auto;
   }
   .page-taxonomy-term .region-header {
     @include background-size(cover);
@@ -360,11 +487,11 @@ $zen-auto-include-item-base: false;
   
   /* heading */
   .pane-page-title {
-    padding-left: 24px;
-    padding-right: 10px;
+    padding-left: 0;
+    padding-right: 0;
   }
   .pane-page-title h1 {
-    margin: .2em 0 .6em;
+    margin: .2em 0 .4em;
     font-size: 17px;
   }
   h3 {
@@ -397,6 +524,16 @@ $zen-auto-include-item-base: false;
   }
   .tabs-primary li a.is-active {
     border: 0;
+  }
+  
+  /* breadcrumbs */
+  .breadcrumbs {
+    .panels-flexible-region {
+      width: 100%;
+    }
+    .breadcrumb {
+      padding: 14px 12px 0;
+    }  
   }
   
   /* statistics */
@@ -564,39 +701,125 @@ $zen-auto-include-item-base: false;
     margin-right: 3%;
   }
   
-  
+  .region-orange {
+    margin-top: -0.5em;
+  }
   .region-orange .pane-dataset-datasets-total-count,
   .region-orange .pane-dataset-datasets-total-count-for-guest  {
+  
     h2 {
-      font-size: 17px;
-      padding: 1.2% 10px 3px 10px;
+      font-size: 18px;
+      line-height: 24px;
+      padding: 2px 0;
       text-align: center;
       float: none;
+      height: auto;
     }  
     .view {
       font-size: 13px;
-      padding: 1.1% 10px 0.8% 10px;    
+      padding: 2px 0;    
       text-align: center;
-      float: none;      
+      float: none;    
+      width: auto;
+      height: auto;
       
       &:after {
-          background: url("../images/arr-orange-left.png") no-repeat scroll 0 0 transparent;
-          content: "";
-          height: 22px;
-          left: -50%;
-          margin-top: 0;
-          margin-left: -8px;
-          position: absolute;
-          top: -16px;
-          width: 16px;
-          @include transform(rotate(90deg));
-      }      
-      
+        display: none;
+      }
       span {
-        font-size: 20px;
+        font-size: 22px;
+        height: auto;
+        line-height: 1.1;
+      }
+    }   
+  }
+  .region-orange .pane-2 {
+    position: static;
+    text-align: center;
+    padding: 0 0 8px;
+    background: #ff8a00;
+    
+    a {
+      margin: 0 auto;
+      display: inline-block;
+      padding: 0 14px;
+      height: 35px;
+      line-height: 35px;
+      width: auto;
+    }
+  }  
+
+  /**
+   * menu help
+   */
+  .feedback-block {
+    position: static;
+    margin-top: 0;
+    
+    ul {
+      margin: 0;
+      padding: 10px 0;
+      background: #e5e5e5;
+      text-align: center;
+    
+      li {
+        list-style: none;
+        margin: 0;
+        padding: 0 7px;
+        display: inline-block;
+      
+        a {
+          display: inline-block;
+          width: 51px;
+          height: 55px;
+          line-height: 16px;
+          
+          &.question {
+            background-position: 0 0;
+            padding-top: 0;
+            height: 55px;  
+            
+            &:hover {
+              background-position: -50px -55px;
+            }
+          }
+          &.idea {
+            background-position: 0 -110px;
+            padding-top: 00;
+            height: 55px;          
+            
+            &:hover {
+              background-position: -50px -165px;
+            }          
+          }
+          &.discuss {
+            background-position: 0 -220px;
+            padding-top: 0;
+            height: 55px;            
+            
+            &:hover {
+              background-position: -50px -275px;
+            }           
+          }
+          &:hover {
+            width: 51px;
+            padding-right: 0;    
+            padding-left: 0;    
+            text-indent: -10000px;
+            background-color: #0c87e8;
+          }
+        }
       }
     }
+  }  
+  .not-front .feedback-block ul li a {
+    background-color: #fff;
+    
+    &:hover {
+      background-color: #0c87e8;
+    }
   }
+  
   .view-quick-facts {
     padding-top: 115px;
     padding-bottom: 24%;
@@ -691,6 +914,11 @@ $zen-auto-include-item-base: false;
   .not-front .region-content {
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 0;
+    
+    > .inside > div {
+      width: 100%;
+    } 
   }
   .inside .footer-region {
     
@@ -705,18 +933,17 @@ $zen-auto-include-item-base: false;
       
       li {
         font-size: 11px;
-        padding: 0 30px 0 0;
+        padding: 0 10px 0 0;
+        border-right: 1px solid #fff;
+        margin-right: 10px;
+        
+        &.last {
+          border-right: 0;
+          margin: 0;
+          padding: 0;
+        }
       }
     }
-  }
-  .pane-gb-search-pane {
-    margin-left: 10px;
-    margin-right: 10px;
-    
-    .form-text {
-      font-size: 18px;
-      line-height: 18px;
-    }   
   }
   .region-header .header__site-slogan {
     color: #0C87E8;
@@ -747,7 +974,7 @@ $zen-auto-include-item-base: false;
           margin-bottom: 0;
         }      
         h2 {
-          font-size: 13px;
+          font-size: 16px;
           line-height: 26px;
           
           a {
@@ -757,6 +984,97 @@ $zen-auto-include-item-base: false;
       }      
     }
   }
+  
+  /* pane-page-content */
+  .not-front .pane-page-content {
+    padding-bottom: 10px;
+  }
+  
+  /* datasets */
+  .dataset-mobile-change {
+    display: block;
+  }
+  .region-facet {
+    width: 100%;
+    
+    &:before {
+      display: none;
+    }
+    > .inside {
+      margin: 0 -10px 0 -10px;
+      background: #e5e5e5;
+      padding: 10px;
+    }
+    .facetapi-limit-link {
+      display: block;
+      padding: 10px 0;
+      width: 100px;
+      font-size: 15px;
+      text-align: center;
+      color: #fff;
+      text-decoration: none;
+      margin: 10px auto 0;
+      background: #0c87e8;
+    }
+  }
+  .region-facet .facetapi-facetapi-links li a, 
+  .region-facet .facetapi-facetapi-links li label, 
+  .region-facet .facetapi-od-facetapi-ajax-links li a, 
+  .region-facet .facetapi-od-facetapi-ajax-links li label, 
+  .region-facet .facetapi-facetapi-checkbox-links li a, 
+  .region-facet .facetapi-facetapi-checkbox-links li label  {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #fff;
+  }
+  .region-facet .pane-block, 
+  .region-facet .view-dataset  {
+    padding-bottom: 14px;
+  }
+  .dataset-search-facets {
+    width: 100%;
+    display: none;
+    
+    .panels-flexible-region-inside {
+      padding-left: 0;
+    }
+  }
+  .pane-search-api-sorts-search-sorts .search-api-sorts li {
+    padding-right: 0;
+    padding-left: 7px;
+  }
+  .pane-search-api-sorts-search-sorts h2 {
+    padding-right: 0;
+  }
+  .dataset-search-facets .node.node-teaser h2,
+  .dataset-search-facets .views-row h2  {
+    font-size: 18px;
+  }
+  .selected-filters-wrapper {
+    margin-bottom: 0;
+  }
+  
+  /* map */
+  .page-datasets-map .custom-text-wrapper {
+    padding: 0 0 20px;
+  }
+  .page-datasets-map .od-map-page-switcher-wrapper .form-type-radio label {
+    padding: 0 9px;
+    height: 43px;
+    line-height: 43px;
+    font-size: 15px; 
+  }
+  .page-datasets-map .od-map-page-switcher-wrapper .form-type-radio.active-element label {
+    font-size: 15px; 
+  }
+  .page-datasets-map .od-map-page-switcher-wrapper .form-type-radios > label {
+    height: 22px;
+    line-height: 22px;
+    padding-right: 30px;
+    float: none;
+    font-size: 18px;
+  }
+  
   /**
    * page rubric
    */
@@ -933,121 +1251,7 @@ $zen-auto-include-item-base: false;
   /**
    * map
    */ 
-  .view-datasets-map {
-    
-    .views-exposed-widgets {
-      margin-bottom: 2.2em;
-    }
-    .views-widget-filter-field_organization_target_id {
-      label {
-        float: none;
-        width: auto;
-      }
-      .views-widget {
-        margin-left: 0;
-      }
-    }
-    .geolocation-address .form-type-textfield {
-      float: none;
-      
-      .form-text {
-        width: 100%;
-      }
-    }
-    .field-widget-geolocation-googlemap {
-      
-      label {
-        width: auto;
-        float: none;
-      }
-      .form-item-field-geolocation-distance-googlemap-address-field {
-        margin-left: 0;
-        float: none;
-      }
-    }
-    .geolocation-lat-item,
-    .geolocation-lng-item {
-      overflow: visible;
-      clear: left;
-      float: left;
-      width: 250px;
-      
-      label {
-        width: 91px;
-        float: left;
-        padding-top: 6px;
-      }
-      span {
-        float: left;
-        color: #0c87e8;
-        font-size: 2em;
-        font-weight: normal;
-        line-height: 1.5em;
-        padding-top: 0px;
-        text-transform: uppercase;
-        width: 107px;
-      }
-    }  
-    .geolocation-address {
 
-    }
-    .geolocation-help {
-      margin: 0 0 0 0; 
-      font-size: 12px;
-      
-      .geolocation-address-geocode, 
-      .geolocation-remove span {
-        background-color: #96BC44;
-        display: block;
-        font-size: 0.85em;
-        margin: 10px auto 0;
-        padding: 1.25em;
-        text-align: center;
-        text-transform: uppercase;
-        width: 160px;
-      }
-      .geolocation-client-location {
-        background-position: 8px 50%;
-        display: block;
-        font-size: 0.95em;
-        padding: 1.05em 0 1.05em 3.7em;
-        width: 146px;
-      }
-    }
-    .geolocation-remove span {
-      padding: 0.9em 1.0em;
-      font-size: 13px;
-    }
-    .chzn-container {
-      width: 100% !important;
-    }
-    .form-item-field-geolocation-distance-search-distance {
-      padding-bottom: 8px;
-      
-      label {
-        float: left;
-        padding-top: 6px;
-        padding-right: 10px;
-      }
-      .form-text {
-        width: 77px;
-      }
-    }
-    .geolocation-remove {
-      
-    }
-    .views-submit-button {
-      float: right;
-      padding: 0 5px 0 0;
-      
-      .form-submit {
-        margin: 0;
-      }
-    }
-    .view-based-map {
-      border: 3px solid #fff;
-    }
-  }
   
   /**
    * Organization
@@ -1480,7 +1684,7 @@ $zen-auto-include-item-base: false;
   .page-dataset {
     .pane-page-title h1 {
       margin-top: -30px;
-      margin-botton: 15px;
+      margin-bottom: 15px;
     }
   }
   .pane-datasets-search-dataset-search form .form-text {
