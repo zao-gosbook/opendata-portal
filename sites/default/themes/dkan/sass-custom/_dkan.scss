@@ -3799,7 +3799,7 @@ body {
  * Passport
  */
 .entityform {
-  padding-top: 2em;
+  padding-top: 0;
  
   #entityform_od_preprocess_wizard_form_group_div {
     background: none repeat scroll 0 0 #FFFFFF;
@@ -4081,6 +4081,17 @@ html.js input.form-autocomplete {
       margin-top: -20px;
     }    
   }
+  .description,
+  .fieldset-description {
+    clear: both;
+    color: #9D9D9D;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    margin: -5px 0 20px;
+  }
+  .fieldset-description {
+    margin-bottom: 0;
+  }
 
   .field-name-field-od-query-mark-next {
     padding-bottom: 30px;
@@ -4092,6 +4103,12 @@ html.js input.form-autocomplete {
     }
     
   }
+}
+.pre-intructions {
+  color: #9D9D9D;
+  font-size: 1.2em;
+  line-height: 1.2em;
+  margin: 0 0 20px;
 }
 
 /**
