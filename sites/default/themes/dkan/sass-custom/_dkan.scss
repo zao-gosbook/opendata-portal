@@ -2025,6 +2025,7 @@ div.horizontal-tabs .form-text {
 }
 
 /* mobile show columns */
+.section-taxonomy,
 .section-rubriki {
   .region-mobile-change {
     width: auto;
@@ -2048,6 +2049,8 @@ div.horizontal-tabs .form-text {
   .region-mobile-change {
     width: 100%;
   }
+}
+.region-mobile-change {  
   .show-result {
     float: right;
     height: 28px;
@@ -3016,16 +3019,6 @@ div.horizontal-tabs .form-text {
 .node-type-blog {
   background-color: #fff;  
   
-  .pane-page-title {
-    padding: 0;
-    
-    h1 {
-      color: #000;
-      margin: 0 0 8px 0;
-      line-height: 30px;
-      font-size: 24px;      
-    }
-  }
   .author-avatar {
     width: auto;
     margin: 0 30px 20px 0;
