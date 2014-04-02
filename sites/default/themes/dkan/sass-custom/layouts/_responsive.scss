@@ -1138,6 +1138,17 @@ $zen-auto-include-item-base: false;
     float: none;
     font-size: 18px;
   }
+  .view-datasets-map .views-widget-filter-field_organization_target_id label {
+    float: none;
+    width: auto;
+    padding-top: 0;
+  }  
+  .view-datasets-map .views-widget-filter-field_organization_target_id .views-widget {
+    margin-right: 0;
+    margin-left: 0;
+  }  
+  
+  
   
   /**
    * page rubric
