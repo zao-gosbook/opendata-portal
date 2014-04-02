@@ -1,0 +1,7 @@
+name = Opendata map
+description = "Provides MAPS!"
+package = "Gosbook"
+core = 7.x
+; dependencies[] = node
+; dependencies[] = od_common
+; depencencies[] = modal_entityform
