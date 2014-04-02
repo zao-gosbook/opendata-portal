@@ -992,8 +992,17 @@ $zen-auto-include-item-base: false;
   }
   
   /* datasets */
-  .dataset-mobile-change {
+  .dataset-mobile-change,
+  .section-taxonomy  .region-mobile-change,
+  .section-rubriki  .region-mobile-change {
     display: block;
+  }
+  .section-taxonomy,
+  .section-rubriki  {
+    .rubric-menu,
+    .rubric-content  {
+      margin-top: 15px;
+    }  
   }
   .region-facet {
     width: 100%;
@@ -1034,6 +1043,7 @@ $zen-auto-include-item-base: false;
     padding-bottom: 14px;
   }
   .dataset-search-facets,
+  .rubric-content,
   .right-column-apps  {
     width: 100%;
     display: none;
@@ -1196,6 +1206,9 @@ $zen-auto-include-item-base: false;
   /**
    * page rubric
    */
+  .pane-od-rubric-menu-block-rubric-menu > ul > li > a {
+    line-height: 54px;
+  } 
   .pane-od-rubric-menu-block-rubric-menu {
     
     .menu-icon {
@@ -1262,7 +1275,7 @@ $zen-auto-include-item-base: false;
     font-size: 9px;
   }
   .rubric-content {
-    margin: 0;
+    margin-left: 0;
     /*display: none;*/
     
     > .inside {
@@ -1275,6 +1288,53 @@ $zen-auto-include-item-base: false;
     }    
   }
   
+  /* blogs */
+  .page-blog .views-row .views-field-title h3 {
+    margin: 11px 0 8px 140px;
+    line-height: 20px;
+    font-size: 19px;
+  }
+  .page-blog .views-row .views-field-field-rubric-image {
+    margin-left: 136px;
+    padding-left: 52px;
+    padding-top: 2px;    
+  }  
+  .page-blog .views-row .views-field-body {
+    font-size: 14px;
+    line-height: 19px;
+  }  
+  
+  /* blog */
+  .node-type-blog .blog-info .pane-node-field-rubric,
+  .node-type-blog .blog-info .pane-1,
+  .node-type-blog .blog-info .pane-node-created  {
+    padding-left: 53px;
+  }
+  .node-type-blog .pane-node-body {
+    font-size: 14px;
+    line-height: 19px;
+  }    
+  
+  /* ideas */
+  .view-ideas .views-field-title, 
+  .view-ideas .views-field-field-od-query-data-name,
+  .panels-flexible-row.idea-row-white h1  {
+    font-size: 18px;
+    line-height: 1.3em;
+    padding-right: 6px;
+  }
+  .panels-flexible-row.idea-row-white .field-name-field-idea-vote-up-down {
+    margin: 0;
+  }
+  .idea-content {
+    width: 100%;
+  }
+  .panels-flexible-row.idea-row-white .field-name-body {
+    font-size: 14px;
+  }
+  .pane-node-comment-form {
+    padding-top: 10px;
+  }
   
   /* import data */
   .view-opendata-import td {

@@ -56,14 +56,14 @@
 
   Drupal.behaviors.MobileDatasetColumns = {
     attach: function (context) {
-      $('.dataset-mobile-change .show-result').click(function(){
-        $('.region-facet, .show-result').animate({left: -8000}).hide();
-        $('.hide-result, .dataset-search-facets, .right-column-apps').show().animate({right: 0});
+      $('.region-mobile-change .show-result').click(function(){
+        $('.region-facet, .rubric-menu, .show-result').animate({left: -8000}).hide();
+        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').show().animate({right: 0});
         return false;
       });
-      $('.dataset-mobile-change .hide-result').click(function(){
-        $('.hide-result, .dataset-search-facets, .right-column-apps').animate({right: -8000}).hide();
-        $('.region-facet, .show-result').animate({left: 0}).show();
+      $('.region-mobile-change .hide-result').click(function(){
+        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').animate({right: -8000}).hide();
+        $('.region-facet, .show-result, .rubric-menu').animate({left: 0}).show();
         return false;
       });
     }
