@@ -46,8 +46,8 @@ function od_dataset_download_path($node_dataset, $revision_id = NULL) {
   $download_uri = 'not_implemented_yet/stay_cool/it_will_be_ok';
   try {
     $wrapper = od_dataset_get_wrapper($node_dataset, $revision_id);
-    if (($dataset = $wrapper->field_dataset_ref->value()) && ($wrapper->field_dataset_ref->field_multivolume->raw() == TRUE)) {
-      $download_uri = 'dataset-actions/download_package/' . $dataset->nid;
+    if ($wrapper->field_multivolume->raw() == TRUE) {
+      $download_uri = 'dataset-actions/download_package/' . $node_dataset->nid->value();
     }
   }
   catch (Exception $e) {
