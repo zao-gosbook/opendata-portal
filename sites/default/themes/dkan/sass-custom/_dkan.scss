@@ -4411,6 +4411,20 @@ table {
     line-height: 22px;
     font-size: 1.1em;    
   }
+  .views-field-field-od-query-id {
+    font-size: 18px;
+    text-decoration: underline;
+  }
+  .views-field-field-query-state {
+    @include clearfix;
+    font-size: 16px;
+    color: #666;
+    
+    span {
+      float: left;
+      padding-right: 7px;
+    }
+  }
   .views-field-field-rubric-image {
     img {
       float: left;
@@ -5300,6 +5314,9 @@ div.fivestar-widget .star {
   line-height: 22px;
   color: #666;
   
+  div[class*='-comments']{
+    width: 100%;
+  }
   .form-select,
   .form-submit {
     font-size: 16px;
@@ -5330,10 +5347,15 @@ div.fivestar-widget .star {
       line-height: 22px; 
     }
     .field-items,
+    .addtoany_list,
     .view {
       margin-left: 200px;
+      display: block;
     }
   }  
+  .pane-node-field-query-state {
+    text-transform: uppercase;
+  }
   .pane-rubric-nodes-query-od-rubrics {
     .views-row {
       img {
@@ -5569,6 +5591,7 @@ div.fivestar-widget .star {
     float: left;
   }
   .field-name-field-site-url,
+  .field-name-field-org-site-od-section,
   .field-name-field-opendata-portal-url {
     a {
       display: block;
