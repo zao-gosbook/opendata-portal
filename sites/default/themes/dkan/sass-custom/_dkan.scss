@@ -2023,7 +2023,21 @@ div.horizontal-tabs .form-text {
     bottom: 31px;
   }
 }
+
 /* mobile show columns */
+.section-taxonomy,
+.section-rubriki {
+  .region-mobile-change {
+    width: auto;
+    float: none;
+    display: none;
+    margin: 0 -12px 0 -10px !important;
+    background: #e5e5e5;
+    border-bottom: 1px solid #fff;
+    padding: 10px 12px 10px 10px !important;
+    overflow: hidden;    
+  }  
+}
 .dataset-mobile-change {
   display: none;
   margin: 0 -12px 0 -10px !important;
@@ -2035,6 +2049,8 @@ div.horizontal-tabs .form-text {
   .region-mobile-change {
     width: 100%;
   }
+}
+.region-mobile-change {  
   .show-result {
     float: right;
     height: 28px;
@@ -3003,16 +3019,6 @@ div.horizontal-tabs .form-text {
 .node-type-blog {
   background-color: #fff;  
   
-  .pane-page-title {
-    padding: 0;
-    
-    h1 {
-      color: #000;
-      margin: 0 0 8px 0;
-      line-height: 30px;
-      font-size: 24px;      
-    }
-  }
   .author-avatar {
     width: auto;
     margin: 0 30px 20px 0;
@@ -4258,15 +4264,26 @@ html.js input.form-autocomplete {
     }    
   }
   
-  .view-filters {
+  .view-filters,
+  .view-header  {
+    overflow: hidden;
     
     label {
       float: left;
+      margin: 0;
       padding: 8px 15px 0 0;    
     }
     .form-select,
     .form-text {
       width: 100%;
+      height: 48px;
+      line-height: 48px;
+      font-size: 14px;
+    }
+    .form-submit {
+      height: 48px;
+      line-height: 48px;    
+      padding-top: 0;      
     }
     .views-widget {
       float: left;
@@ -4274,7 +4291,23 @@ html.js input.form-autocomplete {
     .views-exposed-form .views-exposed-widget .form-submit {
       margin-top: 0;
     }
-
+    .exposed-search-form {
+      float: left;
+    }
+    a.btn {
+      padding: 0 1.25em;
+      height: 48px;
+      line-height: 48px;
+      border: 0;
+      color: #fff;
+      font-size: 1.05em;
+      background: #0c87e8;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;  
+      text-decoration: none;
+      margin-top: 6px;
+    }
   }
   tr.odd {
     background: #f4f4f4;
