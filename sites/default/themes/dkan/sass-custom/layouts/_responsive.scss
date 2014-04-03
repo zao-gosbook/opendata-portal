@@ -1537,11 +1537,47 @@ $zen-auto-include-item-base: false;
         width: 136px;
       }
     }
-  }   
+  } 
+  
   /**
-   * map
+   * ask query
    */ 
+  .entityform .form-wrapper, 
+  .entityform .field-group-htabs {
+    padding-bottom: 1em;
+  } 
+  .entityform .form-text, 
+  .entityform .form-select,
+  .entityform .form-textarea-wrapper {
+    width: 90%;
+  }  
+  .entityform {
+    label, div.legend {
+      font-size: 16px;
+      color: #000;
+    }
+  }
+  .entityform label.option {
+    font-size: 15px;
+    color: #666;
+  }
+  .entitytype-opendata_query-form .field-name-field-od-query-data-rubrics .form-checkboxes {
+    width: 100%;
+  }
+  .entitytype-opendata_query-form .field-name-field-od-query-mark-next p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 19px;
+    padding-left: 27px;
+  }  
 
+  /**
+   * converter
+   */  
+  form.entitytype-file_converting_service-form {
+    width: 80%;
+    padding-top: 20px;
+  }
   
   /**
    * Organization
