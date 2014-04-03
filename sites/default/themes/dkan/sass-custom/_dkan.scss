@@ -2023,7 +2023,21 @@ div.horizontal-tabs .form-text {
     bottom: 31px;
   }
 }
+
 /* mobile show columns */
+.section-taxonomy,
+.section-rubriki {
+  .region-mobile-change {
+    width: auto;
+    float: none;
+    display: none;
+    margin: 0 -12px 0 -10px !important;
+    background: #e5e5e5;
+    border-bottom: 1px solid #fff;
+    padding: 10px 12px 10px 10px !important;
+    overflow: hidden;    
+  }  
+}
 .dataset-mobile-change {
   display: none;
   margin: 0 -12px 0 -10px !important;
@@ -2035,6 +2049,8 @@ div.horizontal-tabs .form-text {
   .region-mobile-change {
     width: 100%;
   }
+}
+.region-mobile-change {  
   .show-result {
     float: right;
     height: 28px;
@@ -3003,16 +3019,6 @@ div.horizontal-tabs .form-text {
 .node-type-blog {
   background-color: #fff;  
   
-  .pane-page-title {
-    padding: 0;
-    
-    h1 {
-      color: #000;
-      margin: 0 0 8px 0;
-      line-height: 30px;
-      font-size: 24px;      
-    }
-  }
   .author-avatar {
     width: auto;
     margin: 0 30px 20px 0;
@@ -3799,7 +3805,7 @@ body {
  * Passport
  */
 .entityform {
-  padding-top: 2em;
+  padding-top: 0;
  
   #entityform_od_preprocess_wizard_form_group_div {
     background: none repeat scroll 0 0 #FFFFFF;
@@ -4081,6 +4087,17 @@ html.js input.form-autocomplete {
       margin-top: -20px;
     }    
   }
+  .description,
+  .fieldset-description {
+    clear: both;
+    color: #9D9D9D;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    margin: -5px 0 20px;
+  }
+  .fieldset-description {
+    margin-bottom: 0;
+  }
 
   .field-name-field-od-query-mark-next {
     padding-bottom: 30px;
@@ -4092,6 +4109,12 @@ html.js input.form-autocomplete {
     }
     
   }
+}
+.pre-intructions {
+  color: #9D9D9D;
+  font-size: 1.2em;
+  line-height: 1.2em;
+  margin: 0 0 20px;
 }
 
 /**
@@ -4241,15 +4264,26 @@ html.js input.form-autocomplete {
     }    
   }
   
-  .view-filters {
+  .view-filters,
+  .view-header  {
+    overflow: hidden;
     
     label {
       float: left;
+      margin: 0;
       padding: 8px 15px 0 0;    
     }
     .form-select,
     .form-text {
       width: 100%;
+      height: 48px;
+      line-height: 48px;
+      font-size: 14px;
+    }
+    .form-submit {
+      height: 48px;
+      line-height: 48px;    
+      padding-top: 0;      
     }
     .views-widget {
       float: left;
@@ -4257,7 +4291,23 @@ html.js input.form-autocomplete {
     .views-exposed-form .views-exposed-widget .form-submit {
       margin-top: 0;
     }
-
+    .exposed-search-form {
+      float: left;
+    }
+    a.btn {
+      padding: 0 1.25em;
+      height: 48px;
+      line-height: 48px;
+      border: 0;
+      color: #fff;
+      font-size: 1.05em;
+      background: #0c87e8;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;  
+      text-decoration: none;
+      margin-top: 6px;
+    }
   }
   tr.odd {
     background: #f4f4f4;
@@ -4360,6 +4410,20 @@ table {
     text-transform: none;
     line-height: 22px;
     font-size: 1.1em;    
+  }
+  .views-field-field-od-query-id {
+    font-size: 18px;
+    text-decoration: underline;
+  }
+  .views-field-field-query-state {
+    @include clearfix;
+    font-size: 16px;
+    color: #666;
+    
+    span {
+      float: left;
+      padding-right: 7px;
+    }
   }
   .views-field-field-rubric-image {
     img {
@@ -5232,16 +5296,42 @@ div.fivestar-widget .star {
 
 /* request panel */
 .node-type-opendata-query {
-  background: #fff;  
+  /*background: #fff;  */
+  .opendata-query-info {
+    padding: 20px 20px 0;
+    background: #fff;
+  }  
+  .query-author-info {
+    padding: 0 20px 20px;
+    background: #fff;
+    float: none;
+    width: auto;
+  }
 }
+
 .node-type-opendata-query .pane-page-content {
   font-size: 16px;
   line-height: 22px;
   color: #666;
-
+  
+  div[class*='-comments']{
+    width: 100%;
+  }
+  .form-select,
+  .form-submit {
+    font-size: 16px;
+  }
   .pane-node-field-od-query-vote-up-down {
     float: right;
     margin-left: 0 0 20px 20px;
+    padding-left: 30px;
+    border-left: 5px solid #DADADA;
+    padding-bottom: 0;
+    
+    .field .field-items {
+      margin: 0;
+      font-size: 13px;
+    }
   }
   .panel-pane {
     @include clearfix;
@@ -5257,10 +5347,15 @@ div.fivestar-widget .star {
       line-height: 22px; 
     }
     .field-items,
+    .addtoany_list,
     .view {
       margin-left: 200px;
+      display: block;
     }
   }  
+  .pane-node-field-query-state {
+    text-transform: uppercase;
+  }
   .pane-rubric-nodes-query-od-rubrics {
     .views-row {
       img {
@@ -5496,6 +5591,7 @@ div.fivestar-widget .star {
     float: left;
   }
   .field-name-field-site-url,
+  .field-name-field-org-site-od-section,
   .field-name-field-opendata-portal-url {
     a {
       display: block;
@@ -7345,7 +7441,6 @@ div.fivestar-widget .star {
   .pane-page-content {
     
     .left-column {
-      width: 26.6%;
 
       /*ul {
         background: #e5e5e5;
@@ -7384,11 +7479,8 @@ div.fivestar-widget .star {
       }*/
     }
     .right-column {
-      width: 100%;
-      margin-left: -26.6%;
       
       > .inside {
-        margin-left: 26.6%;
         padding-left: 30px;
       }
       .pane-btn {

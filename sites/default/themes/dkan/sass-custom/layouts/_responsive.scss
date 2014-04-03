@@ -493,6 +493,7 @@ $zen-auto-include-item-base: false;
   .pane-page-title h1 {
     margin: .2em 0 .4em;
     font-size: 17px;
+    line-height: 1.4;
   }
   h3 {
     font-size: 20px;
@@ -511,9 +512,16 @@ $zen-auto-include-item-base: false;
     padding: 0;
     clear: both;
     margin-top: 0;
+    @include background-image(none);
   }  
   .tabs-primary li a {
-    font-size: 11px;
+    font-size: 12px;
+    @include border-radius(4px);
+    margin-bottom: 2px;
+    
+    &:hover {
+      border: 1px solid #e9e9e9;
+    }
   }
   .tabs-primary li {
     width: 100%;
@@ -532,7 +540,7 @@ $zen-auto-include-item-base: false;
       width: 100%;
     }
     .breadcrumb {
-      padding: 14px 12px 0;
+      padding: 14px 12px 7px;
     }  
   }
   
@@ -991,8 +999,17 @@ $zen-auto-include-item-base: false;
   }
   
   /* datasets */
-  .dataset-mobile-change {
+  .dataset-mobile-change,
+  .section-taxonomy  .region-mobile-change,
+  .section-rubriki  .region-mobile-change {
     display: block;
+  }
+  .section-taxonomy,
+  .section-rubriki  {
+    .rubric-menu,
+    .rubric-content  {
+      margin-top: 15px;
+    }  
   }
   .region-facet {
     width: 100%;
@@ -1004,6 +1021,7 @@ $zen-auto-include-item-base: false;
       margin: 0 -10px 0 -10px;
       background: #e5e5e5;
       padding: 10px;
+      overflow: hidden;
     }
     .facetapi-limit-link {
       display: block;
@@ -1031,13 +1049,18 @@ $zen-auto-include-item-base: false;
   .region-facet .view-dataset  {
     padding-bottom: 14px;
   }
-  .dataset-search-facets {
+  .dataset-search-facets,
+  .rubric-content,
+  .right-column-apps  {
     width: 100%;
     display: none;
     
     .panels-flexible-region-inside {
       padding-left: 0;
     }
+  }
+  .page-apps .pane-page-content .right-column > .inside {
+    padding-left: 0;
   }
   .pane-search-api-sorts-search-sorts .search-api-sorts li {
     padding-right: 0;
@@ -1053,6 +1076,65 @@ $zen-auto-include-item-base: false;
   .selected-filters-wrapper {
     margin-bottom: 0;
   }
+  .dataset-search-facets .views-row .views-field-title .field-content {
+    font-size: 18px;
+  }
+  .section-library .pane-datasets-search-dataset-search > .view > .view-header, 
+  .section-library-developers .pane-datasets-search-dataset-search > .view > .view-header {
+    font-size: 30px;
+  }
+  
+  /* apps */
+  .pane-btn a.btn {
+    font-size: 17px;
+    padding: .6em 1.1em;  
+  }
+  .page-apps .pane-page-content .right-column .pane-btn {
+    text-align: center;
+    
+    a.btn  {
+      font-size: 17px;
+      padding: .6em 1.1em;
+    }    
+  } 
+  .right-column-apps {
+    margin-top: 15px;
+  }
+  .page-apps .pane-page-content .right-column .new-apps h2.pane-title, 
+  .page-apps .pane-page-content .right-column .new-apps .view-header, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps h2.pane-title, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .view-header, 
+  .page-apps .pane-page-content .right-column .popular-apps h2.pane-title, 
+  .page-apps .pane-page-content .right-column .popular-apps .view-header {
+    font-size: 17px;
+    line-height: 16px;
+    margin: 0 0 6px;
+    height: 16px;
+  } 
+  .page-apps .pane-page-content .right-column .new-apps .group-right .field h2, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .group-right .field h2, 
+  .page-apps .pane-page-content .right-column .popular-apps .group-right .field h2 {
+    font-size: 17px;
+    line-height: 16px;
+    height: 16px;  
+  }  
+  .page-apps .pane-page-content .right-column .new-apps .group-left .field-name-field-app-image img, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .group-left .field-name-field-app-image img, 
+  .page-apps .pane-page-content .right-column .popular-apps .group-left .field-name-field-app-image img {
+    width: 50px;
+    height: 50px;
+  }  
+  .page-apps .pane-page-content .right-column .new-apps .group-right .field, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .group-right .field, 
+  .page-apps .pane-page-content .right-column .popular-apps .group-right .field {
+    margin-left: 70px;
+  }
+  .page-apps .pane-page-content .right-column .new-apps .group-right, 
+  .page-apps .pane-page-content .right-column .pane-apps-search-api-apps .group-right, 
+  .page-apps .pane-page-content .right-column .popular-apps .group-right {
+    padding-top: 5px;
+  }
+  
   
   /* map */
   .page-datasets-map .custom-text-wrapper {
@@ -1074,10 +1156,66 @@ $zen-auto-include-item-base: false;
     float: none;
     font-size: 18px;
   }
+  .view-datasets-map .views-widget-filter-field_organization_target_id label {
+    float: none;
+    width: auto;
+    padding-top: 0;
+  }  
+  .view-datasets-map .views-widget-filter-field_organization_target_id .views-widget {
+    margin-right: 0;
+    margin-left: 0;
+  }  
+  .view-datasets-map .views-widget-filter-field_organization_target_id .form-select {
+    padding-left: 0;
+    padding-right: 0;
+    display: block;
+    width: 100%;
+  }
+  .view-datasets-map .views-submit-button {
+    clear: both;
+    padding: 15px 0 20px 0;
+  }  
+  .view-datasets-map .form-item-field-geolocation-distance-search-distance label {
+    float: none;
+    width: auto;
+  } 
+  .view-datasets-map .field-widget-geolocation-googlemap .form-item-field-geolocation-distance-googlemap-address-field,
+  .view-datasets-map .geolocation-lat-item,
+  .view-datasets-map .geolocation-help {
+    margin: 0;
+    clear: both;
+  }
+  .view-datasets-map .geolocation-help .geolocation-client-location {
+    position: static;
+    font-size: 13px;
+  }
+  .view-datasets-map .geolocation-remove {
+    float: left;
+    
+    span {
+      padding: .8em 1.2em;
+      border: 1px solid #ccc;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-top: 2px;
+      margin-left: 0;
+    }
+  }
+  .view-datasets-map .geolocation-lng-item {
+    float: left;
+  }
+  .view-datasets-map .views-submit-button {
+    float: left;
+  }
+  
+  
   
   /**
    * page rubric
    */
+  .pane-od-rubric-menu-block-rubric-menu > ul > li > a {
+    line-height: 54px;
+  } 
   .pane-od-rubric-menu-block-rubric-menu {
     
     .menu-icon {
@@ -1102,6 +1240,8 @@ $zen-auto-include-item-base: false;
       }
       img {
         height: 40px;
+        left: 3px;
+        top: 2px;        
       }
       span {
         position: relative;
@@ -1141,6 +1281,139 @@ $zen-auto-include-item-base: false;
     width: 100%;
     font-size: 9px;
   }
+  .rubric-content {
+    margin-left: 0;
+    /*display: none;*/
+    
+    > .inside {
+      margin-left: 0;
+      padding-left: 0;
+    }
+    .pane-page-title h1 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }    
+  }
+  
+  /* blogs */
+  .page-blog .views-row .views-field-title h3 {
+    margin: 11px 0 8px 140px;
+    line-height: 20px;
+    font-size: 19px;
+  }
+  .page-blog .views-row .views-field-field-rubric-image {
+    margin-left: 136px;
+    padding-left: 52px;
+    padding-top: 2px;    
+  }  
+  .page-blog .views-row .views-field-body {
+    font-size: 14px;
+    line-height: 19px;
+  }  
+  
+  /* blog */
+  .node-type-blog .blog-info .pane-node-field-rubric,
+  .node-type-blog .blog-info .pane-1,
+  .node-type-blog .blog-info .pane-node-created  {
+    padding-left: 53px;
+  }
+  .node-type-blog .pane-node-body {
+    font-size: 14px;
+    line-height: 19px;
+  }    
+  
+  /* ideas */
+  .view-ideas .views-field-title, 
+  .view-ideas .views-field-field-od-query-data-name,
+  .panels-flexible-row.idea-row-white h1  {
+    font-size: 18px;
+    line-height: 1.3em;
+    padding-right: 6px;
+  }
+  .panels-flexible-row.idea-row-white .field-name-field-idea-vote-up-down {
+    margin: 0;
+  }
+  .idea-content {
+    width: 100%;
+  }
+  .panels-flexible-row.idea-row-white .field-name-body {
+    font-size: 14px;
+  }
+  .pane-node-comment-form {
+    padding-top: 10px;
+  }
+  
+  /* data-query */  
+  .addtoany_list.a2a_kit_size_32 a span {
+    height: 24px;
+    width: 24px;
+  }
+  
+  /* competitions */
+  .view.view-competitions-for-rubrics .views-exposed-form .views-exposed-widget label {
+    padding-top: 8px;
+  }
+  .view.view-competitions-for-rubrics .views-exposed-form .views-submit-button {
+    padding: 0 0 0 10px;
+    float: left;
+    
+    .form-submit {
+      padding: 0 10px;
+      height: 39px;
+      line-height: 39px;
+    }
+  }
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-left {
+    width: 30%;
+  }
+  .view.view-competitions-for-rubrics .views-row .field-type-image {
+    img {
+      width: 100%;
+    }    
+    &.field-name-field-rubric-image {
+      img {
+        width: 90%;
+      }
+    }
+  } 
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-right {
+    margin-left: 33%;
+  }
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-right .field-name-title, 
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-right .field-name-field-competition-place, 
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-right .field-name-field-competition-date, 
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-right .field-name-field-competition-organizer, 
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-right .field-name-field-competition-type, 
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-right .field-name-dynamic-field  {
+    margin-left: 16px;
+  }
+  .view.view-competitions-for-rubrics .views-row .field-name-title h2 {
+    font-size: 20px;
+    line-height: 18px;
+  }
+  .view.view-competitions-for-rubrics .views-row .field {
+    font-size: 15px;
+    line-height: 21px;
+  }
+  .view.view-competitions-for-rubrics .views-row .ds-2col > .group-right .view-mode-rubric_icon_with_title .field-name-title h2 {
+    margin: 5px 0 0 -15px;
+  }
+  
+  /* SPARQL */
+  .page-sparql #sparql-form .form-buttons input {
+    padding: .5em 1.0em;
+    font-size: 1.05em;
+  }
+  .page-sparql .intro {
+    padding: 20px;
+    width: 80%;
+  } 
+  .page-sparql #sparql-form dt {
+    font-size: 15px;
+  }  
+  .page-sparql #sparql-form dd select {
+    width: 100%;
+  }  
   
   /* import data */
   .view-opendata-import td {
@@ -1151,6 +1424,17 @@ $zen-auto-include-item-base: false;
   }
   
   /* app */
+  .app-col-left {
+    width: 30%;
+  }
+  .app-col-right {
+    margin-left: 30%;
+    
+    .field-label,
+    h2 {
+      padding-right: 7px;
+    }
+  }
   .app-info {
     padding-bottom: 0px;
     
@@ -1159,8 +1443,8 @@ $zen-auto-include-item-base: false;
     }
     .panel-pane {
       width: 100%;
-      font-size: 13px;
-      padding: 5px 0;
+      font-size: 16px;
+      padding: 0 0 7px 0;
       clear: both;
     }
     &.row-1 {
@@ -1178,7 +1462,8 @@ $zen-auto-include-item-base: false;
       margin-bottom: 10px;
     }
     h2 {
-      font-size: 12px;
+      font-size: 16px;
+      padding-right: 7px;
     }
     .pane-node-field-fivestar,
     .pane-node-field-app-url-organization {
@@ -1194,6 +1479,11 @@ $zen-auto-include-item-base: false;
     .pane-node-field-tags {
       width: 100%;
     }
+  }
+  .app-col-bottom .pane-node-body {
+    margin: 4px 0 0;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 13px;
   }
   .pane-node-field-app-image img {
     float: none;
@@ -1220,7 +1510,7 @@ $zen-auto-include-item-base: false;
         font-weight: normal;
         color: #FFA200;  
         line-height: 20px;
-        font-size: 13px;
+        font-size: 16px;
       }
     }
     .pane-entity-field {
@@ -1247,17 +1537,54 @@ $zen-auto-include-item-base: false;
         width: 136px;
       }
     }
-  }   
+  } 
+  
   /**
-   * map
+   * ask query
    */ 
+  .entityform .form-wrapper, 
+  .entityform .field-group-htabs {
+    padding-bottom: 1em;
+  } 
+  .entityform .form-text, 
+  .entityform .form-select,
+  .entityform .form-textarea-wrapper {
+    width: 90%;
+  }  
+  .entityform {
+    label, div.legend {
+      font-size: 16px;
+      color: #000;
+    }
+  }
+  .entityform label.option {
+    font-size: 15px;
+    color: #666;
+  }
+  .entitytype-opendata_query-form .field-name-field-od-query-data-rubrics .form-checkboxes {
+    width: 100%;
+  }
+  .entitytype-opendata_query-form .field-name-field-od-query-mark-next p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 19px;
+    padding-left: 27px;
+  }  
 
+  /**
+   * converter
+   */  
+  form.entitytype-file_converting_service-form {
+    width: 80%;
+    padding-top: 20px;
+  }
   
   /**
    * Organization
    */
   .view-organizations {
-    .view-filters {
+    .view-filters,
+    .view-header {
       label {
         width: 40%;
         padding-right: 0;
@@ -1272,12 +1599,125 @@ $zen-auto-include-item-base: false;
       .form-submit {
         float: right;
       }
+      .exposed-search-form {
+        float: none;
+      }
     } 
     td, th {
       padding: .4em;
       font-size: 13px;
     }
+    .pane-btn a.btn {
+      display: block;
+      margin: 0 auto;
+    }
+    .pane-btn .additional-info {
+      display: block;
+      vertical-align: middle;
+      padding: 10px;
+      font-size: 14px;
+    } 
+    .pane-btn {
+      display: block;
+      width: auto;
+    }
   }
+  /* node-type-organization */
+  .node-organization.view-mode-full .field-label {
+    width: 50%;
+  }  
+  .node-organization.view-mode-full .comments-count-string {
+    margin-left: 50%;
+  }
+  .node-organization.view-mode-full .field,
+  .node-organization.view-mode-full .comments-count-string {
+    padding-bottom: 10px;
+  }
+  .node-type-organization .pane-organizations-organization-datasets .view-content > div .views-field-title {
+    font-size: 17px;
+    line-height: 21px;    
+  }
+  .node-type-organization .pane-organizations-organization-datasets .view-content > div {
+    padding-bottom: 17px;
+    margin-bottom: 12px;
+  }  
+
+  /**
+   * statistics
+   */  
+   .stat-filters {
+    
+    .inside {
+      padding: 0;
+    }
+    .form-radios {
+      text-align: center;
+      display: block;
+    }
+    .form-type-radio {
+      float: none;
+      position: relative;
+      margin: 0 5px 11px;
+      display: inline-block;
+      
+      label {
+        padding: 0 12px;
+        height: 41px;
+        line-height: 38px;        
+        font-size: 16px;
+      }
+      &.active-element label {
+        font-size: 16px;
+      }
+    }
+  }
+  .stat-tabs h2 {
+    font-size: 20px;
+    margin: 0;
+  }  
+  
+  /**
+   * pager
+   */
+  .pager  {
+    font-size: 14px;
+    
+    li {
+      padding: 0;
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #e5e5e5;
+      font-size: 14px; 
+      margin-left: -4px;   
+      margin-bottom: 1px;
+      
+      &.last {
+        border-right: 1px solid #e5e5e5;
+      }
+      &.pager-current {
+        background-color: #e5e5e5;
+        padding: 0 10px;
+      }
+      &.pager-ellipsis {
+        padding: 0 10px;
+      }
+      
+      a {
+        text-decoration: none;
+        height: 28px;
+        line-height: 28px;     
+        padding: 0 10px;
+        display: inline-block;
+        background: #fff;
+        
+        &:hover {
+          text-decoration: none;
+          background-color: #e5e5e5;
+        }
+      }
+    }
+  }  
 }
 
 
