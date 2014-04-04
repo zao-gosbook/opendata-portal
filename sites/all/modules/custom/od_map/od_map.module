@@ -18,7 +18,7 @@ function od_map_render_russia_map() {
 
   $settings = array();
   $settings['russia'] = array(
-    'map_json_path' => url($env. '/resources/russia_1e-7sr.json', array('absolute' => TRUE, 'language' => FALSE)),
+    'map_json_path' => url($env. '/resources/russia_1e-7sr_with_crimea.topo.json', array('absolute' => TRUE, 'language' => FALSE)),
     'cities_tsv_path' => url($env. '/resources/Cities.tsv', array('absolute' => TRUE, 'language' => FALSE)),
     'portals_tsv_path' => url($env. '/resources/Portals.tsv', array('absolute' => TRUE, 'language' => FALSE)),
   );
