@@ -40,6 +40,8 @@ function odp_api_dataset_page($dataset_id, $function) {
       if ($file->filemime === 'text/csv') {
         $content = preg_split("/\\r\\n|\\r|\\n/", $content);
 
+        $delimiter = isset($resource->field_csv_delimiter['und'][0]['value']) ? $resource->field_csv_delimiter['und'][0]['value'] : ',';
+
         $header = array_shift($content);
 
         if (!empty($args['search']) && (is_string($args['search']) || is_numeric($args['search']))) {
@@ -52,7 +54,7 @@ function odp_api_dataset_page($dataset_id, $function) {
 
         array_unshift($content, $header);
         foreach ($content as &$row) {
-          $row = str_getcsv($row, ';');
+          $row = str_getcsv($row, $delimiter);
         }
       }
 
