@@ -696,7 +696,7 @@ div.horizontal-tabs .form-text {
         &.question {
           background-position: 0 0;
           padding-top: 20px;
-          height: 43px;  
+          height: 35px;  
           
           &:hover {
             background-position: -50px -55px;
@@ -720,6 +720,16 @@ div.horizontal-tabs .form-text {
             background-position: -50px -275px;
           }           
         }
+        &.askopendata {
+          background-position: 0 -324px;
+          height: 50px;
+          line-height: 14px;
+          padding-top: 8px;              
+          
+          &:hover {
+            background-position: -50px -383px;
+          }         
+        }
         &:hover {
           width: 77px;
           padding-right: 20px;    
@@ -732,6 +742,33 @@ div.horizontal-tabs .form-text {
     }
   }
 }
+
+/**
+ * tooltip
+ */
+span.info-tooltip {
+  position: relative;
+  cursor: help;
+  top: -7px;
+  display: inline-block;
+  height: 17px;
+  line-height: 17px;
+  width: 17px;
+  text-align: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: normal;
+  @include border-radius(3px);
+  background: #0c87e8;
+  @include transition(all 0.3s ease-in-out);
+  font-family: $arial;
+  
+  &:hover {
+    background: #000;
+  }
+} 
+
+
 .front .feedback-block ul li a {
   background-color: #fff;
   
@@ -4260,6 +4297,7 @@ html.js input.form-autocomplete {
       display: table-cell;
       vertical-align: middle;
       padding-left: 20px;
+      padding-right: 30px;
       font-size: 15px;
     }    
   }
@@ -4284,6 +4322,7 @@ html.js input.form-autocomplete {
       height: 48px;
       line-height: 48px;    
       padding-top: 0;      
+      padding-bottom: 0;      
     }
     .views-widget {
       float: left;
@@ -4410,6 +4449,20 @@ table {
     text-transform: none;
     line-height: 22px;
     font-size: 1.1em;    
+  }
+  .views-field-field-od-query-id {
+    font-size: 18px;
+    text-decoration: underline;
+  }
+  .views-field-field-query-state {
+    @include clearfix;
+    font-size: 16px;
+    color: #666;
+    
+    span {
+      float: left;
+      padding-right: 7px;
+    }
   }
   .views-field-field-rubric-image {
     img {
@@ -5300,6 +5353,9 @@ div.fivestar-widget .star {
   line-height: 22px;
   color: #666;
   
+  div[class*='-comments']{
+    width: 100%;
+  }
   .form-select,
   .form-submit {
     font-size: 16px;
@@ -5330,10 +5386,15 @@ div.fivestar-widget .star {
       line-height: 22px; 
     }
     .field-items,
+    .addtoany_list,
     .view {
       margin-left: 200px;
+      display: block;
     }
   }  
+  .pane-node-field-query-state {
+    text-transform: uppercase;
+  }
   .pane-rubric-nodes-query-od-rubrics {
     .views-row {
       img {
@@ -5475,7 +5536,7 @@ div.fivestar-widget .star {
     .field-name-field-upload-structure,
     .field-name-field-provenance,
     .field-name-field-created {
-      @include clearfix;
+      clear: both;
       padding-bottom: 12px;
       
       .field-label {
@@ -5569,6 +5630,7 @@ div.fivestar-widget .star {
     float: left;
   }
   .field-name-field-site-url,
+  .field-name-field-org-site-od-section,
   .field-name-field-opendata-portal-url {
     a {
       display: block;
