@@ -1826,8 +1826,23 @@ $zen-auto-include-item-base: false;
     float: left;
     
     .form-select {
-      width:95%;
+      width: 95%;
     }
+  }
+  .af-button-large span, 
+  .af-button-small span, 
+  .author-pane-link span {
+    font-size: 14px;
+  }
+  .forum-topic-header .topic-reply-link, 
+  .forum-topic-header .topic-new-post-link, 
+  .forum-topic-header .last-post-link {
+    font-size: 14px;
+    
+    &:hover span {
+      color: #333;
+      background: #c1c1c1;
+    }  
   }
 }
 
