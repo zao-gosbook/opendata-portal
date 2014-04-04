@@ -62,6 +62,35 @@ function od_dataset_download_path($node_dataset, $revision_id = NULL) {
 }
 
 /**
+ * Gets a path for downloading resources from dataset.
+ * @param $node_dataset
+ * @param null $revision_id
+ * @return string|bool
+ *  A url for downloading something from dataset of FALSE in case of any error.
+ *  Result of this should be passed to url() function in order to get valid URL
+ */
+function od_dataset_download_structure_path($node_dataset, $revision_id = NULL) {
+  // Change download callback to od_dataset's callback to support encodings
+  //$download_uri = 'dataset-actions/download_file/'. $item['fid'];
+  $download_uri = 'not_implemented_yet/stay_cool/it_will_be_ok';
+  try {
+    $wrapper = od_dataset_get_wrapper($node_dataset, $revision_id);
+    if ($wrapper->field_multivolume->raw() == TRUE) {
+      $download_uri = 'dataset-actions/download_package/' . $node_dataset->nid->value();
+    }
+  }
+  catch (Exception $e) {
+    // @fixme: prevent errors here.
+    watchdog_exception('od_common', $e);
+    //throw $e;
+
+    $download_uri = FALSE;
+  }
+
+  return $download_uri;
+}
+
+/**
  * @param $nid
  * @return bool|mixed
  */

@@ -188,12 +188,16 @@ function _passport_table_rows($nid) {
     if ($field_link_api = $resource->field_link_api->value()) {  
     $url_datasets[] = $field_link_api['url'];
     }
-    
-    if ($field_link_upload = $resource->field_upload) {
-      if (isset($field_link_upload->value()->uri)) {
-        $url_datasets[] = file_create_url($field_link_upload->value()->uri);
+
+      if ($field_link_upload = $resource->field_upload) {
+        if (isset($field_link_upload->value()->uri)) {
+          if ($node_wrapper->field_multivolume->value() == TRUE) {
+            $url_datasets[] =  od_dataset_download_path($node);
+          } else {
+            $url_datasets[] = file_create_url($field_link_upload->value()->uri);
+          }
+        }
       }
-    }
     foreach ($url_datasets as $key => $url) {
       $url_datasets[$key] = "<a href='$url'>$url</a>";
     }
@@ -385,7 +389,7 @@ function _passport_structured_description($nid) {
         $revision_provenence = t('Date of first publication');
       }
        
-      $url_datasets_revisions[$key]['date'] = $revision_date; 
+      $url_datasets_revisions[$key]['date'] = $revision_date;
       $url_datasets_revisions[$key]['date_iso'] = $revision_date_iso; 
       $url_datasets_revisions[$key]['field_content_last_change'] = $revision_provenence;  
       
