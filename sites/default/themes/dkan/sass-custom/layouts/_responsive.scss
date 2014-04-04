@@ -1789,6 +1789,46 @@ $zen-auto-include-item-base: false;
   .forum-statistics-sub-header {
     padding-left: 10px;
   }
+  .view-forum-themes .view-filters label {
+    font-size: 1.0em;
+    padding-top: 3px;
+  }
+  .page-forum #forum .view-filters .form-select {
+    font-size: 14px;
+    padding-top: 0; 
+    padding-bottom: 0; 
+  }
+  .view-forum-themes .view-filters .views-widget {
+    padding-right: 0;
+  }
+  .view-forum-themes .view-filters .views-submit-button {
+    padding-top: 0;
+  }
+  .page-forum #forum .view-filters .views-exposed-form .views-exposed-widget .form-submit {
+    margin-top: 8px;
+    height: 39px;
+    line-height: 39px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }  
+  .page-forum #forum .view-filters {
+    overflow: hidden;
+    padding-bottom: .8em;
+  }
+  .page-forum #advanced-forum-forum-topic-list-sort-form .form-submit {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;   
+    height: 39px;
+    line-height: 39px;    
+  }
+  #advanced-forum-forum-topic-list-sort-form .form-item  {
+    display: block;
+    float: left;
+    
+    .form-select {
+      width:95%;
+    }
+  }
 }
 
 
