@@ -1717,7 +1717,118 @@ $zen-auto-include-item-base: false;
         }
       }
     }
+  }
+  /**
+   * forum
+   */
+  .forum-table-wrap .forum-table-superheader, .forum-table-topics thead tr {
+    padding: 9px;
+  }
+  .forum-table-superheader .forum-table-name, 
+  .forum-table-superheader .forum-table-name a {
+    font-size: 19px;
+  }
+  .page-forum table {
+    font-size: 14px;
+  }
+  .page-forum table th, 
+  .page-forum table td {
+    padding: 9px;
+    line-height: 1.25em;
+  }
+  .forum-list-icon-wrapper {
+    width: 30px;
+    height: 30px;
+    
+    span {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  span.topic-icon {
+    width: 30px;
+    height: 30px;  
+  }
+  tr.even td.forum-list-icon-default .forum-list-icon-wrapper,
+  tr.odd td.forum-list-icon-default .forum-list-icon-wrapper  {
+    span {
+      @include background-size(cover);  
+    }
+  }
+  .forum-list-icon-legend {
+    
+    .forum-list-icon-new-posts,
+    .forum-list-icon-default,
+    .topic-icon-default,
+    .topic-icon-new,
+    .topic-icon-hot-new,
+    .topic-icon-hot,
+    .topic-icon-sticky,
+    .topic-icon-closed {  
+      @include background-size(cover);  
+    }    
+  }
+  span.topic-icon {
+    @include background-size(cover);  
+  }
+  .page-forum .pane-forum-action h2 {
+    font-size: 17px;
+  }
+  .forum-list-legend-item .forum-list-text-legend-new-posts, .forum-list-legend-item .forum-list-text-legend-default {
+    margin-top: 15px;
+  }
+  .forum-list-icon-legend {
+    margin-bottom: 9px;
+  }
+  .page-forum .pane-forum-action ul {
+    margin: 1em 0;
+  }
+  #forum-statistics {
+    font-size: 14px;
+  }
+  .forum-statistics-sub-header {
+    padding-left: 10px;
+  }
+  .view-forum-themes .view-filters label {
+    font-size: 1.0em;
+    padding-top: 3px;
+  }
+  .page-forum #forum .view-filters .form-select {
+    font-size: 14px;
+    padding-top: 0; 
+    padding-bottom: 0; 
+  }
+  .view-forum-themes .view-filters .views-widget {
+    padding-right: 0;
+  }
+  .view-forum-themes .view-filters .views-submit-button {
+    padding-top: 0;
+  }
+  .page-forum #forum .view-filters .views-exposed-form .views-exposed-widget .form-submit {
+    margin-top: 8px;
+    height: 39px;
+    line-height: 39px;
+    padding-top: 0;
+    padding-bottom: 0;
   }  
+  .page-forum #forum .view-filters {
+    overflow: hidden;
+    padding-bottom: .8em;
+  }
+  .page-forum #advanced-forum-forum-topic-list-sort-form .form-submit {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;   
+    height: 39px;
+    line-height: 39px;    
+  }
+  #advanced-forum-forum-topic-list-sort-form .form-item  {
+    display: block;
+    float: left;
+    
+    .form-select {
+      width:95%;
+    }
+  }
 }
 
 

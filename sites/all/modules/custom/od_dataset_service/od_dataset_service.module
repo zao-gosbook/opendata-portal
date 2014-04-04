@@ -1,5 +1,6 @@
 <?php
 
+$todo = <<<'CHECK_AND_REMOVE'
 /**
 * Implements of hook_services_resources().
 */
@@ -112,7 +113,7 @@ function _od_dataset_service_retrieve($fn, $identifier, $owner_name, $owner_id, 
  */
 function _od_dataset_service_retrieve_search_datasets($owner_name, $owner_id, $keyword, $offset, $limit) {
   $args = array($owner_name, $owner_id, $keyword);
-  
+
   $view = views_get_view('datasets_rest');
   $view->set_arguments($args);
   $view->set_offset($offset);
@@ -167,3 +168,5 @@ function od_dataset_service_load_dataset($identifier) {
 
   return $node;
 }
+
+CHECK_AND_REMOVE;
