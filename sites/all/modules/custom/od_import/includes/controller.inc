@@ -144,24 +144,6 @@ function od_import_format_date_unix_timestamp($created) {
   return $created;
 }
 
-function od_import_load_dataset($identifier) {
-  $node = FALSE;
-
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node');
-  $query->entityCondition('bundle', 'dataset');
-  $query->fieldCondition('field_dataset_id', 'value', $identifier);
-  $query->range(0, 1);
-  $query->addMetaData('account', user_load(1));
-  $result = $query->execute();
-  if (isset($result['node'])) {
-    $query_node = reset($result['node']);
-    $node = node_load($query_node->nid);
-  }
-
-  return $node;
-}
-
 function od_import_get_source_revisions($nid) {
   $revisions = array();
 
