@@ -52,8 +52,9 @@ HTML comment.
 -->
 <div class="<?php print $classes; ?>"<?php print $attributes; ?>>
   <?php if (!$label_hidden): ?>
-    <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>:&nbsp;</div>
-    <span class="info-tooltip" title="<?php print t('DATE OF CREATION INDICATES WHEN THE DATASET WAS FIRST PUBLISHED ON THE PORTAL.'); ?>">info</span>
+    <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>
+      <span class="info-tooltip" title="<?php print t('DATE OF CREATION INDICATES WHEN THE DATASET WAS FIRST PUBLISHED ON THE PORTAL.'); ?>">?</span>
+    :&nbsp;</div>
   <?php endif; ?>
   <div class="field-items"<?php print $content_attributes; ?>>
     <?php foreach ($items as $delta => $item): ?>
