@@ -53,7 +53,7 @@ HTML comment.
 <div class="<?php print $classes; ?>"<?php print $attributes; ?>>
   <?php if (!$label_hidden): ?>
     <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>
-      <span class="info-tooltip" title="<?php print t('STRUCTURE OF A DATASET PROVIDE A DESCRIPTION OF EACH DATA FIELD IN YOUR DATASET IN MACHINE-READABLE FORMAT.'); ?>">info</span>
+      <span class="info-tooltip" title="<?php print t('STRUCTURE OF A DATASET PROVIDE A DESCRIPTION OF EACH DATA FIELD IN YOUR DATASET IN MACHINE-READABLE FORMAT.'); ?>">?</span>
     :&nbsp;</div>
   <?php endif; ?>
   <div class="field-items"<?php print $content_attributes; ?>>
