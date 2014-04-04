@@ -793,7 +793,7 @@ $zen-auto-include-item-base: false;
           }
           &.idea {
             background-position: 0 -110px;
-            padding-top: 00;
+            padding-top: 0;
             height: 55px;          
             
             &:hover {
@@ -807,6 +807,15 @@ $zen-auto-include-item-base: false;
             
             &:hover {
               background-position: -50px -275px;
+            }           
+          }
+          &.askopendata {
+            background-position: 0 -325px;
+            padding-top: 0;
+            height: 55px;            
+            
+            &:hover {
+              background-position: -54px -380px;
             }           
           }
           &:hover {
@@ -1843,6 +1852,24 @@ $zen-auto-include-item-base: false;
       color: #333;
       background: #c1c1c1;
     }  
+  }
+  /* topic */
+  .forum-post-panel-sub {
+    width: 25%;
+  }
+  .forum-post-panel-sub .user-picture img {
+    border: 5px solid #e5e5e5;
+    margin-top: 5px;
+    width: 100%;
+    @include box-sizing(border-box);
+    background: #fff;
+  }
+  .forum-post-panel-main {
+    margin-left: 25%;
+  }
+  .forum-post-panel-main .post-title, 
+  .forum-post-panel-main .forum-post-content {
+    font-size: 14px;
   }
 }
 
