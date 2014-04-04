@@ -9,6 +9,10 @@ function odp_api_xml_output($xml) {
     drupal_deliver_page($xml);
   }
 
+  if ($xml === FALSE) {
+    $xml = '<result>Запрос не дал результатов</result>';
+  }
+
   // XML declaration.
   $xml = '<?xml version="1.0"?>' . "\n" . $xml;
   drupal_add_http_header('Content-Length', strlen($xml));
