@@ -815,7 +815,7 @@ $zen-auto-include-item-base: false;
             height: 55px;            
             
             &:hover {
-              background-position: -54px -380px;
+              background-position: -51px -383px;
             }           
           }
           &:hover {
@@ -1869,6 +1869,76 @@ $zen-auto-include-item-base: false;
   }
   .forum-post-panel-main .post-title, 
   .forum-post-panel-main .forum-post-content {
+    font-size: 14px;
+  }
+  
+  /* user */
+  .page-user.not-logged-in.section-user #user-login, 
+  .page-user.not-logged-in.section-user #user-register-form, 
+  .page-user.not-logged-in.section-user #user-pass, 
+  .page-user-login #user-login, 
+  .page-user-login #user-register-form, 
+  .page-user-login #user-pass, 
+  .page-user-register #user-login, 
+  .page-user-register #user-register-form, 
+  .page-user-register #user-pass, 
+  .page-user-password #user-login, 
+  .page-user-password #user-register-form, 
+  .page-user-password #user-pass {
+    margin: 0 2%;
+  } 
+  .not-front .region-content > .inside > .region-user-avatar {
+    float: left;
+    width: 50%;
+  }
+  .region-user-avatar .user-picture {
+    display: block;
+    
+    img {
+      margin-bottom: 0;
+    }
+  }
+  .page-user .pane-user-name-raw {
+    font-size: 24px;
+    line-height: 28px;
+  }  
+  .region-user-main-info .pane-page-title {
+    display: none;
+  }
+  .page-user .region-user-main-info .panel-pane {
+    padding-bottom: 7px;
+    font-size: 16px;
+  }  
+  .page-user .region-user-main-info .pane-user-name {
+    font-size: 28px;
+    line-height: 30px;
+  }
+  .page-user .region-user-main-info h3 {
+    font-size: 22px;
+  }
+  .page-user .region-user-main-info dl dt, .page-user .region-user-main-info dl dd {
+    font-size: 16px;
+    padding: 0 0 10px 0;
+  }  
+  .not-front .region-content > .inside > .region-user-main-info {
+    float: left;
+    width: 50%;    
+  }
+  .not-front .region-content > .inside > .user-menu {
+    float: none;
+    width: 80%;
+    margin: 0 auto;
+    clear: both;
+    
+    > .inside {
+      width: 100%;
+    }
+
+  }
+  .not-front .region-content > .inside >  .pane-superfish-2 {
+    display: none;
+  }
+  .ui-tabs .ui-tabs-nav li {
     font-size: 14px;
   }
 }
