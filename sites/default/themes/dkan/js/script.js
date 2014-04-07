@@ -17,6 +17,7 @@
    * @type {{attach: attach}}
    * @fixme: Убрать
    */
+  /*
   Drupal.behaviors.nomobileversion = {
     attach: function (context) {
       if (String(location.href).indexOf('nomobileversion') == -1 && $(window).width() <= 640 && $(window).height() <= 480) {
@@ -24,6 +25,7 @@
       }
     }
   }
+  */
 
   Drupal.behaviors.HintFormElemements = {
     attach: function (context) {
