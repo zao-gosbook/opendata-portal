@@ -1100,14 +1100,21 @@ $zen-auto-include-item-base: false;
   .dataset-left-col {
     width: 100%;
     display: none;
-  }
-  .dataset-right-col {
-    width: 100%;
     
     .addtoany_list.a2a_kit_size_32 a span {
       width: 45px;
       height: 45px;
+    } 
+    .pane-flag-link {
+      margin-bottom: 0
     }
+    .panels-flexible-column-inside {
+      padding-right: 0;
+    }
+  }
+  .dataset-right-col {
+    width: 100%;
+    
     h3, 
     h1, 
     h2, 
@@ -1681,10 +1688,16 @@ $zen-auto-include-item-base: false;
         width: 100%;
       }
       .form-submit {
-        float: right;
+        float: left;
+        margin-left: 40%;
       }
       .exposed-search-form {
         float: none;
+      }
+      .form-text, 
+      .form-select {
+        display: block;
+        width: 90%;
       }
     } 
     td, th {
