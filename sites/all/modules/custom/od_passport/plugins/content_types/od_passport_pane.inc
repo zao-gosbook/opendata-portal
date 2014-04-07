@@ -44,9 +44,15 @@ function od_passport_pane_content_type_render($subtype, $conf, $args, $contexts)
   return $rendered;
 }
 
-function od_passport_render($nid) {
+function od_passport_render($nid, $options = array()) {
   //Формируем блок и выводим в виде таблицы с атрибутами.
-  $rows =  _passport_table_rows($nid);
+  //По у молчанию подсказки в ячейках таблицы паспорта включены
+  $default_options = array(
+    'addtip' => TRUE,
+  );
+  $options += $default_options;
+
+  $rows =  _passport_table_rows($nid, $options);
   $structure = _passport_structured_description($nid);
   $table_attributes = array(
   'about' => "/" . _current_prefix() . "/" . drupal_get_path_alias(),
@@ -104,7 +110,7 @@ function od_passport_render($nid) {
 /**
  * Формируем таблицу паспорта
  */
-function _passport_table_rows($nid) {
+function _passport_table_rows($nid, $options = array()) {
   $node = node_load($nid);
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
@@ -116,7 +122,16 @@ function _passport_table_rows($nid) {
     'data' => $node_wrapper->field_dataset_id->value(), 
     'property' => 'dc:identifier',
   );
-  $rows['field_dataset_id'] = array(t('Identification number'), $data);
+
+  $label = '<span class="label">' . t('Identification number') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('UNIQUE CODE OF THE DATASET. CODE CONSISTS OF THE TIN ORGANIZATION-OWNER AND THE ENGLISH-LANGUAGE NAME OF THE DATASET.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_dataset_id'] = array($label , $data);
   
   //Наименование набора данных
   $data = array(
@@ -142,7 +157,16 @@ function _passport_table_rows($nid) {
     'data' => $node_wrapper->field_owner->value(), 
     'property' => 'dc:creator',
   );
-  $rows['field_owner'] = array(t('Dataset owner'), $data);
+
+  $label = '<span class="label">' . t('Dataset owner') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('ORGANIZATION - THE OWNER OF THE DATASET, WHICH HAS ADDED INFORMATION IN THE FORM OF OPEN DATA');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_owner'] = array($label, $data);
   
   //Ответственное лицо
   $value = $node_wrapper->field_contact_name->value();
@@ -152,7 +176,16 @@ function _passport_table_rows($nid) {
     'rel' => 'dc:publisher',
     'resource' => '#publisher',
   );
-  $rows['field_contact_name'] = array(t('Responsible person'), $data);
+
+  $label = '<span class="label">' . t('Responsible person') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('OFFICIAL REPRESENTATIVE IS RESPONSIBLE FOR REPRESENTATION OF AN ORGANIZATION-OWNER OF THE DATASET.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_contact_name'] = array($label, $data);
   
   //Телефон ответственного лица
   $value = $node_wrapper->field_contact_phone->value();
@@ -203,8 +236,17 @@ function _passport_table_rows($nid) {
     }
     $data = array(
       'data' => implode('<br />', $url_datasets)
-      );
-    $rows['dataset_urls'] = array(t('Dataset URL'), !empty($data['data']) ? $data : t('No info'));
+    );
+
+    $label = '<span class="label">' . t('Dataset URL') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('HYPERLINK TO THE LATEST VERSION OF THE DATASET.');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['dataset_urls'] = array($label, !empty($data['data']) ? $data : t('No info'));
     
     //Формат данных
     $value = $resource->field_format->value()->name;
@@ -213,7 +255,16 @@ function _passport_table_rows($nid) {
       'property' => 'dc:format',
       'content' => isset($value) ? $value : t('No info'),
     );
-    $rows['field_format'] = array(t('Dataset format'), $data);
+
+    $label = '<span class="label">' . t('Dataset format') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('THE COMPUTER-READABLE FORMAT, IN WHICH THE LATEST VERSION OF THE DATASET WAS PUBLISHED.');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['field_format'] = array($label, $data);
   
   
     //Описание структуры набора данных
@@ -238,7 +289,16 @@ function _passport_table_rows($nid) {
   $data = array(
     'data' => !empty($url_structure_string) ? $url_structure_string : t('No info'),
   );
-  $rows['dataset_urls_structure'] = array(t('Hyperlink (URL) on the dataset structure'),  $data);
+
+  $label = '<span class="label">' . t('Hyperlink (URL) on the dataset structure') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('HYPERLINK TO THE LATEST VERSION OF THE FILE STRUCTURE OF THE DATASET - A SET OF OPEN FIELD DESCRIPTION DATA IN MACHINE-READABLE FORMAT.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['dataset_urls_structure'] = array($label,  $data);
   
   //Дата первой публикации набора данных
   $data = array(
@@ -246,7 +306,16 @@ function _passport_table_rows($nid) {
     'property' => 'dc:created',
     'content' => date("d-m-Y", $node_wrapper->field_date_first_time_publ->value()),
   );
-  $rows['field_date_first_time_publ'] = array(t('Date of first publication'), $data);
+
+  $label = '<span class="label">' . t('Date of first publication') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('DATE OF FIRST PUBLICATION IN THE ORIGINAL SET.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_date_first_time_publ'] = array($label, $data);
   
   //Дата последнего внесения изменений
   $value = $node_wrapper->field_date_last_change->value();
@@ -262,7 +331,16 @@ function _passport_table_rows($nid) {
   $data = array(
     'data' => isset($value) ? date("d.m.Y", $node_wrapper->field_date_dataset_actual->value()) : t('No info'),
   );
-  $rows['field_date_dataset_actual'] = array(t('Date relevance dataset'), $data);
+
+  $label = '<span class="label">' . t('Date relevance dataset') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('THE DATE AFTER WHICH NEEDS TO BE UPDATED THE CURRENT VERSION OF THE DATASET.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_date_dataset_actual'] = array($label, $data);
   
   //Периодичность актуализации набора данных
   $value = $node_wrapper->field_frequency->value();
@@ -271,7 +349,16 @@ function _passport_table_rows($nid) {
     'property' => 'dc:valid',
     'content' =>  isset($value) ? $value : t('No info'),
   );
-  $rows['field_frequency'] = array(t('Frequency of updating'), $data);
+
+  $label = '<span class="label">' . t('Frequency of updating') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('INFORMATION ON HOW FREQUENTLY UPDATED THE DATASET');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_frequency'] = array($label, $data);
   
   //Содержание последнего изменения
   if ($resource->value()) {
@@ -279,7 +366,16 @@ function _passport_table_rows($nid) {
     $data = array(
       'data' => isset($value) ? $value : t('No info'),
     );
-    $rows['field_content_last_change'] = array(t('Content of the latter changes'), $data);
+
+    $label = '<span class="label">' . t('Content of the latter changes') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('THE LIST OF SPECIFIC CHANGES TO THE LATEST VERSION OF THE DATASET.');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['field_content_last_change'] = array($label, $data);
   }
   
   //Ключевые слова
@@ -344,7 +440,16 @@ function _passport_table_rows($nid) {
     $data = array(
       'data' => !empty($url_datasets_string_revisions) ? $url_datasets_string_revisions_list : t('No info'),
     );
-    $rows['dataset_urls_revisions'] = array(t('Hyperlink (URL) on the dataset versions'),  $data);
+
+    $label = '<span class="label">' . t('Hyperlink (URL) on the dataset versions') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('HYPERLINKS TO PREVIOUS VERSIONS OF THE DATASET (IF THEY HAS BEEN CHANGED)');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['dataset_urls_revisions'] = array($label,  $data);
     
     //Гиперссылки (URL) на версии структуры набора данных	
     foreach ($url_datasets_structure_revisions as $key=>$url) {
@@ -355,7 +460,16 @@ function _passport_table_rows($nid) {
     $data = array(
       'data' => !empty($url_datasets_structure_string_revisions) ? $url_datasets_structure_string_revisions_list : t('No info'),
     );
-    $rows['dataset_urls_structure_revisions'] = array(t('Hyperlink (URL) on the dataset structure versions'), $data);
+
+    $label = '<span class="label">' . t('Hyperlink (URL) on the dataset structure versions') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('HYPERLINKS OF PREVIOUS VERSIONS OF THE STRUCTURE OF THE DATA SET (IF THEY HAS BEEN CHANGED).');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['dataset_urls_structure_revisions'] = array($label, $data);
   }  
   return $rows;
 }
