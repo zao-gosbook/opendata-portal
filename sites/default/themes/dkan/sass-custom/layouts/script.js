@@ -62,37 +62,16 @@
         $('.region-facet, .rubric-menu, .show-result').animate({left: -8000}).hide();
         $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').show().animate({right: 0});
         
-        // Do not apply to other pages
-        if ($('.page-taxonomy-term .rubric-content .view').length == 0) {
-          return;
-        }
-
-        // In this we should use context and don't use once()
-        $('.view-content', context).not('.page-taxonomy-term-datasets .rubric-content .view .view-content').once('massontry', function() {
-          var massontry = $(this);
-          $('<div class="view-header"></div>').prependTo(massontry);
-          var container = document.querySelector('.page-taxonomy-term .rubric-content .view .view-content');
-          var msnry = new Masonry( container, {
-            // options
-            //columnWidth: 200,
-            itemSelector: '.views-row',
-            gutter: '.page-taxonomy-term .rubric-content .view .view-content .view-header'
-          });
-
-          window.msnry = msnry;
-
-          setTimeout(function() {
-            msnry.layout();
-          }, 50);
-        });        
         return false;
       });
       $('.region-mobile-change .hide-result').click(function(){
         $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').animate({right: -8000}).hide();
-        $('.region-facet, .show-result, .rubric-menu').animate({left: 0}).show();
+        $('.region-facet, .show-result, .rubric-menu').animate({left: 0}, function() {
+          Drupal.behaviors.TaxonomyColumnsRubric.attach(document); //Call this shit eclicitly
+        }).show();
         return false;
       });
-    }
+    }   
   }
 
   Drupal.behaviors.TaxonomyColumnsRubric = {
