@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ */
+
+define('OD_CONVERTERS_PATH', dirname(__FILE__));
+
+/**
+ * @return ODConverter
+ */
+function od_converter_object() {
+  static $converter = NULL;
+
+  if ($converter === NULL) {
+    $converter = new ODConverter();
+  }
+
+  return $converter;
+}
+
+function od_converter_test() {
+  $converter = od_converter_object();
+  $input = '/home/p1ratrulezzz/Загрузки/map.json';
+  $converter->convertFile($input, 'geojson', '/tmp/converted.topo.json', 'topojson');
+}
