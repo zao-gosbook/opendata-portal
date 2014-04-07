@@ -1008,6 +1008,9 @@ $zen-auto-include-item-base: false;
   }
   
   /* datasets */
+  .selected-filters-wrapper .filter-items-wrapper .filter-item-wrapper {
+    margin-bottom: 2px;
+  }
   .dataset-mobile-change,
   .section-taxonomy  .region-mobile-change,
   .section-rubriki  .region-mobile-change {
@@ -1092,6 +1095,78 @@ $zen-auto-include-item-base: false;
   .section-library-developers .pane-datasets-search-dataset-search > .view > .view-header {
     font-size: 30px;
   }
+  
+  /* dataset */
+  .dataset-left-col {
+    width: 100%;
+    display: none;
+  }
+  .dataset-right-col {
+    width: 100%;
+    
+    .addtoany_list.a2a_kit_size_32 a span {
+      width: 45px;
+      height: 45px;
+    }
+    h3, 
+    h1, 
+    h2, 
+    h2.pane-title, 
+    h2, 
+    .data-row-developers h2.pane-title,
+    .group_additional label, 
+    .view-header h2 {
+      font-size: 22px;
+    }   
+    .data-row-maininfo h2, 
+    .data-row-maininfo .field-label,
+    .data-row-maininfo .field, 
+    .data-row-maininfo .field-items,
+    .data-row-passport table th, 
+    .data-row-passport table td,
+    .data-row-developers .pane-content  {
+      font-size: 16px;
+    }    
+  } 
+
+  .data-row-passport table td a[href*='.csv'],
+  .data-row-passport table td a[href*='.xls'] {
+    display: block;
+    width: 30%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  span.info-tooltip {
+    left: 3px;
+    height: 14px;
+    line-height: 14px;
+    width: 14px;
+    font-size: 11px;    
+  }
+  .pane-if-you-unlogged {
+    font-size: 16px;
+    padding-top: 20px;
+    text-align: center;
+  }
+  .data-row-links .pane-node-field-vote {
+    float: left;
+    margin-top: 10px;
+  }
+  .data-row-links .pane-node-total-count {
+    float: left;
+    clear: both;
+    margin-top: 10px;
+  }
+  .data-row-links .pane-node-field-upload {
+    .od-common-pubdlcnt-count-wrapper {
+      padding: 0 0 0 24px;
+      height: 51px;
+      line-height: 51px;
+      background: url("../images/ico-downloads.png") no-repeat 0% 50%;
+    }    
+  }
+  
   
   /* apps */
   .pane-btn a.btn {
@@ -1935,7 +2010,7 @@ $zen-auto-include-item-base: false;
     }
 
   }
-  .not-front .region-content > .inside >  .pane-superfish-2 {
+  .page-user .pane-superfish-2 {
     display: none;
   }
   .ui-tabs .ui-tabs-nav li {
