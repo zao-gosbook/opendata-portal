@@ -1135,7 +1135,20 @@ $zen-auto-include-item-base: false;
       font-size: 16px;
     }    
   } 
-
+  .data-row-versions .panel-3col-33 {
+    padding-bottom: 20px;
+  }
+  .data-row-versions .panel-3col-33 .panel-col .inside {
+    margin-right: 10px;
+    margin-bottom: 0px;
+  }  
+  .data-row-versions .panel-3col-33 .panel-col-last {
+    margin: 0 208px 0 62px;
+  }
+  .data-row-versions .panel-3col-33 .panel-col-last .views-field-title {
+    font-size: 18px;
+    line-height: 20px;
+  }  
   .data-row-passport table td a[href*='.csv'],
   .data-row-passport table td a[href*='.xls'] {
     display: block;
