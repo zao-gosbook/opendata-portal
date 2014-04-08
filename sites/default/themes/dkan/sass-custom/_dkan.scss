@@ -481,40 +481,40 @@ div.horizontal-tabs .form-text {
                 &.nolink {
                   display: none;
                 }
-                &[href$=bezopasnost]{
+                &.ico-taxonomy-security {
                   background-image: url("../images/ico-taxonomy-security.png");
                 }
-                &[href$=geography]{
+                &.ico-taxonomy-geography {
                   background-image: url("../images/ico-taxonomy-geography.png");
                 }
-                &[href$=gosudarstvo]{
+                &.ico-taxonomy-gov {
                   background-image: url("../images/ico-taxonomy-gov.png");
                 }
-                &[href$=zdorove]{
+                &.ico-taxonomy-health {
                   background-image: url("../images/ico-taxonomy-health.png");
                 }
-                &[href$=education]{
+                &.ico-taxonomy-housing {
                   background-image: url("../images/ico-taxonomy-housing.png");
                 }
-                &[href$=culture]{
+                &.ico-taxonomy-culture {
                   background-image: url("../images/ico-taxonomy-culture.png");
                 }
-                &[href$=sport]{
+                &.ico-taxonomy-sport {
                   background-image: url("../images/ico-taxonomy-sport.png");
                 }
-                &[href$=stroitelstvo]{
+                &.ico-taxonomy-building {
                   background-image: url("../images/ico-taxonomy-building.png");
                 }
-                &[href$=torgovlya]{
+                &.ico-taxonomy-trade {
                   background-image: url("../images/ico-taxonomy-trade.png");
                 }
-                &[href$=transport]{
+                &.ico-taxonomy-transport {
                   background-image: url("../images/ico-taxonomy-transport.png");
                 }
-                &[href$=ecology]{
+                &.ico-taxonomy-ecology {
                   background-image: url("../images/ico-taxonomy-ecology.png");
                 }
-                &[href$=ekonomika]{
+                &.ico-taxonomy-economy {
                   background-image: url("../images/ico-taxonomy-economy.png");
                 }
               }
@@ -762,11 +762,26 @@ span.info-tooltip {
   background: #0c87e8;
   @include transition(all 0.3s ease-in-out);
   font-family: $arial;
+  z-index: 1;
   
   &:hover {
     background: #000;
   }
 } 
+td div.label {
+  position: relative;
+  padding-right: 30px;
+  
+  span.info-tooltip {
+    position: absolute;
+    left: auto;
+    right: 0;
+    top: 0;
+  }
+}
+.sticky-header {
+  z-index: 1000;
+}
 
 
 .front .feedback-block ul li a {
@@ -7130,6 +7145,93 @@ div.fivestar-widget .star {
     }
   }
 }
+
+/**
+ * help
+ */
+.reference-info {
+  font-size: 18px;
+  padding-bottom: 20px;
+}
+.reference-info-tab {
+  display: table;
+  margin: 0 -15px;
+  width: 100%;
+  
+  .tab-row {
+    display: table-row;
+  }
+  .cell {
+    display: table-cell;
+    background: #fff;
+    text-align: center;
+    border: 15px solid #e5e5e5;
+    width: 33.33%;
+    
+    &:hover {
+      .image-link img {
+        filter: none;
+        -webkit-filter: none;
+        -moz-filter: none;
+        -ms-filter: none;
+        -o-filter: none;/**/              
+      }
+      a.text-link {
+        color: #0C87E8;        
+      }      
+    }
+  }
+  .image-link {
+    display: block;
+    padding: 15px;
+    
+    img {
+      display: block;
+      margin: 0 auto;
+      filter: url(../images/filter.svg#grayscale);
+      filter: grayscale(100%);
+      -webkit-filter: grayscale(100%);
+      -moz-filter: grayscale(100%);
+      -ms-filter: grayscale(100%);
+      -o-filter: grayscale(100%);/**/      
+    }
+  }
+  a.text-link  {
+    color: #676767;
+    font-size: 26px;
+    padding: 0 15px 15px;
+    text-decoration: none;
+    display: block;    
+  }
+}
+
+/* .block-help */
+.block-help {
+  padding: 20px;
+  background: #fff;
+  font-size: 16px;
+  
+  h2 {
+    font-size: 24px;
+    margin: 0 0 20px;
+    line-height: 1.3;
+  }
+  dl {
+    margin: 0 0 20px;
+    font-size: 16px;
+  }
+  dt {
+    text-transform: uppercase;
+  }
+  dd {
+    line-height: 22px;
+    font-size: 16px;
+    color: #676767;
+    padding-top: 5px;
+    padding-bottom: 15px;
+  }
+}
+
 
 /**
  * pager
