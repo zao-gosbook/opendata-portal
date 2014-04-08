@@ -131,14 +131,14 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['field_dataset_id'] = array($label , $data);
+  $rows['field_dataset_id'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Наименование набора данных
   $data = array(
     'data' => $node_wrapper->title->value(), 
     'property' => 'dc:title',
   );
-  $rows['title'] = array(t('Dataset title'), $data);
+  $rows['title'] = array('<div class="label"><span class="label">' . t('Dataset title')  . '</span></div>', $data);
   
   //Описание набора данных
   $data = array(
@@ -150,7 +150,7 @@ function _passport_table_rows($nid, $options = array()) {
     $data['data'] = $value['value'];
   }
 
-  $rows['field_dataset_body'] = array(t('Dataset description'), $data);
+  $rows['field_dataset_body'] = array('<div class="label"><span class="label">' . t('Dataset description')  . '</span></div>', $data);
   
   //Владелец набора данных
   $data = array(
@@ -166,7 +166,7 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['field_owner'] = array($label, $data);
+  $rows['field_owner'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Ответственное лицо
   $value = $node_wrapper->field_contact_name->value();
@@ -185,7 +185,7 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['field_contact_name'] = array($label, $data);
+  $rows['field_contact_name'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Телефон ответственного лица
   $value = $node_wrapper->field_contact_phone->value();
@@ -196,7 +196,7 @@ function _passport_table_rows($nid, $options = array()) {
     'rel' => 'dc:publisher',
     'resource' => '#publisher',
   );
-  $rows['field_contact_phone'] = array(t('Phone number of responsible person'), $data);
+  $rows['field_contact_phone'] = array('<div class="label"><span class="label">' . t('Phone number of responsible person')  . '</span></div>', $data);
 
   //Адрес электронной почты ответсвенного лица
   $value = $node_wrapper->field_email_responsible->value();
@@ -207,7 +207,7 @@ function _passport_table_rows($nid, $options = array()) {
     'rel' => 'dc:publisher',
     'resource' => '#publisher',
   );
-  $rows['field_email_responsible'] = array(t('Responsible person email'), $data);
+  $rows['field_email_responsible'] = array('<div class="label"><span class="label">' . t('Responsible person email')  . '</span></div>', $data);
 
   //Гиперссылка(URL) на набор (Link file + Link API + Upload)
   $url_datasets = array();
@@ -242,7 +242,7 @@ function _passport_table_rows($nid, $options = array()) {
       $label .= $label_tip;
     }
 
-    $rows['dataset_urls'] = array($label, !empty($data['data']) ? $data : t('No info'));
+    $rows['dataset_urls'] = array('<div class="label">' . $label  . '</div>', !empty($data['data']) ? $data : t('No info'));
     
     //Формат данных
     $value = $resource->field_format->value()->name;
@@ -260,7 +260,7 @@ function _passport_table_rows($nid, $options = array()) {
       $label .= $label_tip;
     }
 
-    $rows['field_format'] = array($label, $data);
+    $rows['field_format'] = array('<div class="label">' . $label  . '</div>', $data);
   
   
     //Описание структуры набора данных
@@ -294,7 +294,7 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['dataset_urls_structure'] = array($label,  $data);
+  $rows['dataset_urls_structure'] = array('<div class="label">' . $label  . '</div>',  $data);
   
   //Дата первой публикации набора данных
   $data = array(
@@ -311,7 +311,7 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['field_date_first_time_publ'] = array($label, $data);
+  $rows['field_date_first_time_publ'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Дата последнего внесения изменений
   $value = $node_wrapper->field_date_last_change->value();
@@ -320,7 +320,7 @@ function _passport_table_rows($nid, $options = array()) {
     'property' => 'dc:modified',
     'content' => date("d-m-Y", $node_wrapper->field_date_last_change->value()),
   );
-  $rows['field_date_last_change'] = array(t('Date of last update'), $data);
+  $rows['field_date_last_change'] = array('<div class="label"><span class="label">' . t('Date of last update')  . '</span></div>', $data);
   
   //Дата актуальности набора
   $value = $node_wrapper->field_date_dataset_actual->value();
@@ -336,7 +336,7 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['field_date_dataset_actual'] = array($label, $data);
+  $rows['field_date_dataset_actual'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Периодичность актуализации набора данных
   $value = $node_wrapper->field_frequency->value();
@@ -354,7 +354,7 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['field_frequency'] = array($label, $data);
+  $rows['field_frequency'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Содержание последнего изменения
   if ($resource->value()) {
@@ -371,7 +371,7 @@ function _passport_table_rows($nid, $options = array()) {
       $label .= $label_tip;
     }
 
-    $rows['field_content_last_change'] = array($label, $data);
+    $rows['field_content_last_change'] = array('<div class="label">' . $label  . '</div>', $data);
   }
   
   //Ключевые слова
@@ -386,7 +386,7 @@ function _passport_table_rows($nid, $options = array()) {
     'data' => !empty($keywords_string) ? $keywords_string : t('No info'),
     'property' => 'dc:subject',
   );
-  $rows['field_tags'] = array(t('Keywords'), $data);
+  $rows['field_tags'] = array('<div class="label"><span class="label">' . t('Keywords')  . '</span></div>', $data);
   
   
   //Гиперссылки (URL) на версии набора данных (Link file + Link API + Upload)
@@ -445,7 +445,7 @@ function _passport_table_rows($nid, $options = array()) {
       $label .= $label_tip;
     }
 
-    $rows['dataset_urls_revisions'] = array($label,  $data);
+    $rows['dataset_urls_revisions'] = array('<div class="label">' . $label  . '</div>',  $data);
     
     //Гиперссылки (URL) на версии структуры набора данных	
     foreach ($url_datasets_structure_revisions as $key=>$url) {
@@ -465,7 +465,7 @@ function _passport_table_rows($nid, $options = array()) {
       $label .= $label_tip;
     }
 
-    $rows['dataset_urls_structure_revisions'] = array($label, $data);
+    $rows['dataset_urls_structure_revisions'] = array('<div class="label">' . $label  . '</div>', $data);
   }  
   return $rows;
 }
