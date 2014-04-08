@@ -34,7 +34,7 @@ function od_passport_html_pane_content_type_edit_form_submit($form, &$form_state
  */
 function od_passport_html_pane_content_type_render($subtype, $conf, $args, $contexts) {
   require_once dirname(__FILE__) . '/od_passport_pane.inc';
-  $html = drupal_render(od_passport_render($args[0])->content);           
+  $html = drupal_render(od_passport_render($args[0], array('addtip' => FALSE))->content);
   $form['html_code'] = array(
     '#title' => t('Html code'),
     '#type' => 'textarea',

@@ -263,6 +263,8 @@ function od_common_menu_alter(&$items) {
   unset($items['node/%node/activity']);
   unset($items['node/%node/resource']);
   unset($items['node/%node/api']);
+
+  $items['entityform/%entityform']['title callback'] = 'od_common_entityform_page_title';
 }
 
 function od_common_view_tab_title($node) {
@@ -277,6 +279,21 @@ function od_common_edit_tab_title($node) {
     return t('Edit passport');
   }
   return t('Edit');
+}
+
+/**
+ * Menu title callback for showing individual entities
+ */
+function od_common_entityform_page_title($entityform, $op = 'view') {
+  if (!empty($entityform)) {
+    $entityform_type = entityform_get_types($entityform->type);
+    switch ($op) {
+      case 'submit':
+        return $entityform_type->label;
+      default:
+        return $entityform_type->type <> 'feedback'? t('Form Submission') . ': ' . $entityform_type->label : t('Feedback');
+    }
+  }
 }
 
 function od_common_preprocess_menu_link(&$vars) {
