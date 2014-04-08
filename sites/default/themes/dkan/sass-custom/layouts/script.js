@@ -59,15 +59,15 @@
   Drupal.behaviors.MobileDatasetColumns = {
     attach: function (context) {
       $('.region-mobile-change .show-result').click(function(){
-        $('.region-facet, .rubric-menu, .show-result, .dataset-right-col').animate({left: -8000}).hide();
-        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps, .dataset-left-col').show().animate({right: 0});
+        $('.region-facet, .rubric-menu, .show-result').animate({left: -8000}).hide();
+        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').show().animate({right: 0});
         
         return false;
       });
       $('.region-mobile-change .hide-result').click(function(){
-        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps, .dataset-left-col').animate({right: -8000}).hide();
-        $('.region-facet, .show-result, .rubric-menu, .dataset-right-col').animate({left: 0}, function() {
-          window.msnry.layout();
+        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').animate({right: -8000}).hide();
+        $('.region-facet, .show-result, .rubric-menu').animate({left: 0}, function() {
+          Drupal.behaviors.TaxonomyColumnsRubric.attach(document); //Call this shit eclicitly
         }).show();
         return false;
       });

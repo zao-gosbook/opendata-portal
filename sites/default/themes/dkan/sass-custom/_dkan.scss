@@ -767,6 +767,16 @@ span.info-tooltip {
     background: #000;
   }
 } 
+.div-wrapper {
+  position: relative;
+  padding-right: 22px;
+  
+  span.info-tooltip {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
 
 
 .front .feedback-block ul li a {
@@ -7130,6 +7140,68 @@ div.fivestar-widget .star {
     }
   }
 }
+
+/**
+ * help
+ */
+.reference-info {
+  font-size: 18px;
+  padding-bottom: 20px;
+}
+.reference-info-tab {
+  display: table;
+  margin: 0 -15px;
+  width: 100%;
+  
+  .tab-row {
+    display: table-row;
+  }
+  .cell {
+    display: table-cell;
+    background: #fff;
+    text-align: center;
+    border: 15px solid #e5e5e5;
+    width: 33.33%;
+    
+    &:hover {
+      .image-link img {
+        filter: none;
+        -webkit-filter: none;
+        -moz-filter: none;
+        -ms-filter: none;
+        -o-filter: none;/**/              
+      }
+      a.text-link {
+        color: #0C87E8;        
+      }      
+    }
+  }
+  .image-link {
+    display: block;
+    padding: 15px;
+    
+    img {
+      display: block;
+      margin: 0 auto;
+      filter: url(../images/filter.svg#grayscale);
+      filter: grayscale(100%);
+      -webkit-filter: grayscale(100%);
+      -moz-filter: grayscale(100%);
+      -ms-filter: grayscale(100%);
+      -o-filter: grayscale(100%);/**/      
+    }
+  }
+  a.text-link  {
+    color: #676767;
+    font-size: 26px;
+    padding: 0 15px 15px;
+    text-decoration: none;
+    display: block;    
+  }
+}
+
+
+
 
 /**
  * pager
