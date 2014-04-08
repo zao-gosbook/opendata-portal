@@ -263,6 +263,8 @@ function od_common_menu_alter(&$items) {
   unset($items['node/%node/activity']);
   unset($items['node/%node/resource']);
   unset($items['node/%node/api']);
+
+  $items['entityform/%entityform']['title callback'] = 'od_common_entityform_page_title';
 }
 
 function od_common_view_tab_title($node) {
@@ -277,6 +279,21 @@ function od_common_edit_tab_title($node) {
     return t('Edit passport');
   }
   return t('Edit');
+}
+
+/**
+ * Menu title callback for showing individual entities
+ */
+function od_common_entityform_page_title($entityform, $op = 'view') {
+  if (!empty($entityform)) {
+    $entityform_type = entityform_get_types($entityform->type);
+    switch ($op) {
+      case 'submit':
+        return $entityform_type->label;
+      default:
+        return $entityform_type->type <> 'feedback'? t('Form Submission') . ': ' . $entityform_type->label : t('Feedback');
+    }
+  }
 }
 
 function od_common_preprocess_menu_link(&$vars) {
@@ -331,12 +348,6 @@ function od_common_field_formatter_info() {
 
   $info['od_common_recline_link_formatter_multivolume'] = array(
     'label' => t('Recline link (for multivolume and not)'),
-    'field types' => array('recline_field', 'file'),
-    'description' => t('Displays file as a link.'),
-  );
-
-  $info['od_common_recline_link_formatter_multivolume_from_resource'] = array(
-    'label' => t('Recline link from resource (for multivolume and not)'),
     'field types' => array('recline_field', 'file'),
     'description' => t('Displays file as a link.'),
   );
@@ -400,7 +411,6 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
       od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $items, $display);
       break;
     case 'od_common_recline_link_formatter_multivolume_from_resource':
-
       od_common_module('od_common_recline_link_formatter_multivolume');
       od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $resources, $display);
       break;
@@ -535,25 +545,6 @@ function od_common_js_alter(&$javascript) {
       );
     }
   }
-
-//  foreach ($javascript['settings']['data'] as $_index => &$_list) {
-//    foreach ($_list as $_modulename => &$_settings) {
-//      switch ($_modulename) {
-//        case 'superfish':
-//          foreach ($_settings as &$_sf) {
-//            $_sf['sf']['onBeforeShow'] = 'function(ul) { Drupal.superFish.onBeforeShow(); }';
-//          }
-//
-//          unset ($_sf);
-//          break;
-//      }
-//    }
-//
-//    unset($_settings);
-//  }
-//
-//  // Prevent reference re-using further.
-//  unset($_list);
 }
 
 /**

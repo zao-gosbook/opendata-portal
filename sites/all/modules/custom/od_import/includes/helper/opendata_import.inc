@@ -29,7 +29,11 @@ function _od_import_create_dataset($identifier, $org_id) {
   // Set opendata log variables.
   $dataset_node->od_log = array('user' => OD_COMMON_IMPORT_USER_ID);
 
+  // Save node.
   node_save($dataset_node);
+
+  // Prevent creating opendata log for next updating node.
+  $dataset_node->od_log = FALSE;
 
   return $dataset_node;
 }
@@ -66,7 +70,9 @@ function _od_import_update_dataset($dataset_node, $meta, $org_id, &$dataset_upda
   }
 
   // Update dataset.
-  node_save($dataset_node);
+  if ($dataset_updated || $resource_updated) {
+    node_save($dataset_node);
+  }
 
   // Set warning messages.
   foreach ($messages as $message) {
@@ -406,7 +412,11 @@ function _od_import_create_resource($dataset_id) {
   // Set opendata log variables.
   $resource_node->od_log = array('user' => OD_COMMON_IMPORT_USER_ID);
 
+  // Save node.
   node_save($resource_node);
+
+  // Prevent creating opendata log for next updating node.
+  $resource_node->od_log = FALSE;
 
   return $resource_node;
 }
@@ -460,7 +470,9 @@ function _od_import_update_resource($resource_node, $meta, &$messages, &$resourc
       $resource_node->od_log = array('user' => OD_COMMON_IMPORT_USER_ID);
     }
 
-    node_save($resource_node);
+    if ($resource_updated) {
+      node_save($resource_node);
+    }
 
     $revisions_created[$created] = $resource_node->vid;
   }

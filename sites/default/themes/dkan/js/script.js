@@ -12,15 +12,29 @@
 // - http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth
 (function ($, Drupal, window, document, undefined) {
 
+  /**
+   * Редирект на страницу "нет мобильной версии"
+   * @type {{attach: attach}}
+   * @fixme: Убрать
+   */
+  Drupal.behaviors.nomobileversion = {
+    attach: function (context) {
+      if (String(location.href).indexOf('nomobileversion') == -1 && $(window).width() <= 640 && $(window).height() <= 480) {
+        location.href = '/nomobileversion';
+      }
+    }
+  }
+
   Drupal.behaviors.HintFormElemements = {
     attach: function (context) {
       $('body.page-dataset .exposed-search-form .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for datasets'));
       $('body.page-apps .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for applications'));
-//      if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
-//        $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
-//        $('.pane-datasets-search-dataset-search .view-filters .form-text').attr("placeholder", Drupal.t("Search for data"));
-//        //$('input[placeholder], textarea[placeholder]').inputHints();
-//      }
+
+      if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
+        $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
+        $('.pane-datasets-search-dataset-search .view-filters .form-text').attr("placeholder", Drupal.t("Search for data"));
+        //$('input[placeholder], textarea[placeholder]').inputHints();
+      }
     }
   } 
   
@@ -40,22 +54,45 @@
 //    }
 //  }
 
+  Drupal.behaviors.MobileDatasetColumns = {
+    attach: function (context) {
+      $('.region-mobile-change .show-result').click(function(){
+        $('.region-facet, .rubric-menu, .show-result').animate({left: -8000}).hide();
+        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').show().animate({right: 0});
+        return false;
+      });
+      $('.region-mobile-change .hide-result').click(function(){
+        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').animate({right: -8000}).hide();
+        $('.region-facet, .show-result, .rubric-menu').animate({left: 0}).show();
+        return false;
+      });
+    }
+  }
+
   Drupal.behaviors.TaxonomyColumnsRubric = {
     attach: function (context) {
-      $('.page-taxonomy-term .rubric-content .view .view-content', context).not('.page-taxonomy-term-datasets .rubric-content .view .view-content').once('massontry', function() {
+      // Do not apply to other pages
+      if ($('.page-taxonomy-term .rubric-content .view').length == 0) {
+        return;
+      }
+
+      // In this we should use context and don't use once()
+      $('.view-content', context).not('.page-taxonomy-term-datasets .rubric-content .view .view-content').once('massontry', function() {
         var massontry = $(this);
         $('<div class="view-header"></div>').prependTo(massontry);
         var container = document.querySelector('.page-taxonomy-term .rubric-content .view .view-content');
         var msnry = new Masonry( container, {
           // options
           //columnWidth: 200,
-          itemSelector: '.views-row'/**/,
+          itemSelector: '.views-row',
           gutter: '.page-taxonomy-term .rubric-content .view .view-content .view-header'
         });
 
+        window.msnry = msnry;
+
         setTimeout(function() {
           msnry.layout();
-        }, 300);
+        }, 50);
       });
     }
   }

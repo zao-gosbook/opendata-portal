@@ -183,8 +183,7 @@ function options_field_widget_validate($element, &$form_state) {
  */
 function _options_properties($type, $multiple, $required, $has_value) {
   $base = array(
-    'filter_xss' => FALSE,
-    'strip_tags' => FALSE,
+    'html' => FALSE,
     'empty_option' => FALSE,
     'optgroups' => FALSE,
   );
@@ -195,7 +194,7 @@ function _options_properties($type, $multiple, $required, $has_value) {
     case 'select':
       $properties = array(
         // Select boxes do not support any HTML tag.
-        'strip_tags' => TRUE,
+        'html' => FALSE,
         'optgroups' => TRUE,
       );
       if ($multiple) {
@@ -219,7 +218,7 @@ function _options_properties($type, $multiple, $required, $has_value) {
 
     case 'buttons':
       $properties = array(
-        'filter_xss' => TRUE,
+        'html' => TRUE,
       );
       // Add a 'none' option for non-required radio buttons.
       if (!$required && !$multiple) {
@@ -229,7 +228,7 @@ function _options_properties($type, $multiple, $required, $has_value) {
 
     case 'onoff':
       $properties = array(
-        'filter_xss' => TRUE,
+        'html' => TRUE,
       );
       break;
   }
@@ -271,11 +270,11 @@ function _options_prepare_options(&$options, $properties) {
       _options_prepare_options($options[$value], $properties);
     }
     else {
-      if ($properties['strip_tags']) {
-        $options[$value] = strip_tags($label);
-      }
-      if ($properties['filter_xss']) {
+      if ($properties['html']) {
         $options[$value] = field_filter_xss($label);
+      }
+      else {
+        $options[$value] = decode_entities(strip_tags($label));
       }
     }
   }

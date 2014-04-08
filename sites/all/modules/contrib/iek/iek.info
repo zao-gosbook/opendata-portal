@@ -1,0 +1,13 @@
+name = Image effect kit
+description = Provides image manipulation tools.
+package = Media
+core = 7.x
+dependencies[] = image
+dependencies[] = token
+
+; Information added by drupal.org packaging script on 2013-10-16
+version = "7.x-1.2"
+core = "7.x"
+project = "iek"
+datestamp = "1381894580"
+
