@@ -33,6 +33,10 @@ function od_converters_rules_action_info() {
           'label' => t('Target format to convert to'),
           'options list' => 'od_converters_availaible_formats_list',
         ),
+        'destination_path' => array(
+          'type' => 'text',
+          'label' => t('Path where to store output file'),
+        ),
         'can_expire' => array(
           'type' => 'boolean',
           'label' => t('File will be deleted by cron after @time', array(
@@ -50,6 +54,7 @@ function od_converters_rules_action_info() {
           'label' => t('Formatted file'),
         ),
       ),
+      'base' => 'od_converters_rule_callback_convert_format_zip',
     ),
     'od_converters_rule_callback_convert_format' => array(
       'label' => t('Convert formats for files'),
@@ -106,15 +111,48 @@ function od_converters_rule_callback_convert_format($file, $fmt_source, $fmt_tar
   $formatted_file = NULL;
   $converter = od_converter_object();
   od_common_module('core');
-  $tempfile = od_common_tmpfilename('temporary:/', 'od_converters');
+  $fmt = od_converter_object()->getFormat($fmt_target);
+  $tempFiledir = od_common_tmpfilename('temporary:/', 'od_converters');
+  $tempfile = $tempFiledir. '/' . $fmt->normalizeFilename($file->filename);
+  @mkdir($tempFiledir);
   if ($converter->convertFile($file->uri, $fmt_source, $tempfile, $fmt_target)) {
     od_common_module('file');
-    $destination = $destination_path. '/' . pathinfo($file->uri, PATHINFO_FILENAME);
+    $destination = od_common_tmpfilename($destination_path);
+    @mkdir($destination);
     if ($file_object = od_common_file_save_data_by_path($tempfile, $destination, FILE_EXISTS_RENAME, $can_expire)) {
-      $formatted_file = $file;
+      $formatted_file = $file_object;
     }
+
+    unlink($tempfile);
   }
 
+  rmdir($tempFiledir);
+  return array(
+    'formatted_file' => $formatted_file,
+  );
+}
+
+/**
+ * Rule action callback :-)
+ */
+function od_converters_rule_callback_convert_format_zip($file, $fmt_source, $fmt_target, $destination_path, $can_expire) {
+  $formatted_file = NULL;
+  od_common_module('core');
+  $tempFiledir = od_common_tmpfilename('temporary:/', 'od_converters');
+  $fmt = od_converter_object()->getFormat('zip');
+  $tempfile = $tempFiledir. '/' . $fmt->normalizeFilename($file->filename);
+  @mkdir($tempFiledir);
+  if (od_converter_convert_zip($file->uri, $fmt_source, $tempfile, $fmt_target)) {
+    $destination = od_common_tmpfilename($destination_path);
+    @mkdir($destination);
+    if ($file_object = od_common_file_save_data_by_path($tempfile, $destination, FILE_EXISTS_RENAME, $can_expire)) {
+      $formatted_file = $file_object;
+    }
+
+    unlink($tempfile);
+  }
+
+  rmdir($tempFiledir);
   return array(
     'formatted_file' => $formatted_file,
   );

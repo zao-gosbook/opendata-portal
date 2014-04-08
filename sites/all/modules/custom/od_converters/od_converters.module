@@ -79,9 +79,7 @@ function od_converter_convert_zip($source, $source_format, $target, $target_form
     }
   }
 
-
-
-  //$converter->convertFile($input, 'shapefile', '/tmp/converted.topo.json', 'topojson');
+  return TRUE;
 }
 
 function od_converters_availaible_formats_list() {

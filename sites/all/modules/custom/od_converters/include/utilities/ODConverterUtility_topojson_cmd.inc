@@ -91,6 +91,7 @@ class ODConverterUtility_topojson_cmd extends ODConverterUtilityAbstract {
   }
 
   public function execute() {
+    chmod($this->binaries['topojson'], 0755);
     $command = $this->buildRecurse();
     $output = $this->syscall($command);
     $this->result = $output;
