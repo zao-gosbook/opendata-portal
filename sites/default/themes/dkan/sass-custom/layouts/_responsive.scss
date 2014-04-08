@@ -1152,7 +1152,7 @@ $zen-auto-include-item-base: false;
   .data-row-passport table td a[href*='.csv'],
   .data-row-passport table td a[href*='.xls'] {
     display: block;
-    width: 30%;
+    width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

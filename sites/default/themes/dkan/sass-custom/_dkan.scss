@@ -5226,6 +5226,27 @@ div.fivestar-widget .star {
         text-transform: none;
       }      
     }
+    td a[href*='.csv'],
+    td a[href*='.xls'] {
+      display: block;
+      width: 400px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    p {
+      margin: 0;
+    }
+    ul {
+      margin: 0;
+      
+      li {
+        padding-bottom: 3px;
+      }
+      br {
+        display: none;
+      }
+    }
   }
 }
 .data-row-developers .pane-content {
