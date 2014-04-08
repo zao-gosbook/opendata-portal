@@ -32,7 +32,7 @@ class ODConverterCodec_geojson_to_topojson extends ODConverterCodecAbstract {
     $this->utility->setInputFile($source);
     $this->utility->setOutputFile($target);
     $this->utility->setOptions('properties', TRUE);
-    $this->utility->execute();
+    return $this->utility->execute();
   }
 
   public function convertString($source) {

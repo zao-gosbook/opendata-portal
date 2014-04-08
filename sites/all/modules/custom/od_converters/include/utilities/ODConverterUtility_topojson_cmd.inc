@@ -4,14 +4,17 @@ class ODConverterUtility_topojson_cmd extends ODConverterUtilityAbstract {
   protected $binaries = array();
   protected $command_build = array();
   protected $result = NULL;
-
   public static function check() {
     return TRUE; //@fixme: check properly
   }
 
   function __construct() {
+    $this->construct();
+  }
+
+  protected function construct() {
     // @fixme
-    $binary_path = '/home/p1ratrulezzz/nodejs/node_modules/topojson/bin';
+    $binary_path = dirname(__FILE__). '/../../3rdparty/topojson.nodejs/topojson/bin';
     $this->binaries['topojson'] = $binary_path. '/topojson';
   }
 
@@ -31,12 +34,12 @@ class ODConverterUtility_topojson_cmd extends ODConverterUtilityAbstract {
         }
       }
 
-      $this->command_build['input']['file'] = $newfile;
+      $this->command_build['input']['file'] = static::escape($newfile);
     }
   }
 
   public function setInputFile($path) {
-    $this->command_build['input']['#file_original'] = static::escape($path);
+    $this->command_build['input']['#file_original'] = $path;
     $this->fixFormat();
   }
 

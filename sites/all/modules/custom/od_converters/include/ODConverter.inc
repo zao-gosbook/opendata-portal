@@ -27,6 +27,8 @@ class ODConverter {
   protected $formats = array();
   protected $utilities = array();
 
+  protected $codecOptions = array();
+
   /**
    * @param $source string
    * @param $fmt_source
@@ -42,12 +44,17 @@ class ODConverter {
   }
 
   public function convertFile($source, $fmt_source, $target, $fmt_target) {
+    $realpath_source = static::extractRealPath($source);
+    if (!file_exists($realpath_source)) {
+      return static::ERR_FILE_NOT_FOUND;
+    }
+
     if (!$this->isConversionSupported($fmt_source, $fmt_target)) {
       return FALSE;
     }
 
     $codec = $this->getCodec($fmt_source, $fmt_target);
-    return $codec->convertFile($source, $target);
+    return $codec->convertFile($realpath_source, static::extractRealPath($target));
   }
 
   /**
@@ -84,7 +91,7 @@ class ODConverter {
         $this->formats[$format_name] = FALSE;
       }
 
-      $this->formats[$format_name] = new $classname($this);
+      $this->formats[$format_name] = new $classname();
     }
 
     return $this->formats[$format_name];
@@ -162,5 +169,33 @@ class ODConverter {
     }
 
     return $this->utilities[$utility];
+  }
+
+  public function setCodecOptions($fmt_source, $fmt_target, $options, $value = NULL) {
+    $codec_key = $this->codecKey($fmt_source, $fmt_target);
+    $store = &$this->codecOptions[$codec_key];
+
+    if (is_array($options)) {
+      $store = $options;
+    }
+    elseif ($value !== NULL) {
+      $store[$options] = $value;
+    }
+  }
+
+  public function getCodecOptions($fmt_source, $fmt_target) {
+    $codec_key = $this->codecKey($fmt_source, $fmt_target);
+
+    return isset($this->codecOptions[$codec_key]) ? $this->codecOptions[$codec_key] : array();
+  }
+
+
+  public static function extractRealPath($path) {
+    $realpath = $path;
+    if ($wrapper = file_stream_wrapper_get_instance_by_uri($path)) {
+      $realpath = $wrapper->realpath();
+    }
+
+    return $realpath;
   }
 }
