@@ -35,7 +35,7 @@ abstract class ODConverterUtilityAbstract implements ODConverterUtilityInterface
     }
   }
 
-  protected static function escape($string) {
+  public static function escape($string) {
     return str_replace(array("'"), array("\\'"), $string); //@fixme: Replace with better thing
   }
 }
