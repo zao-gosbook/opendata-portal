@@ -62,7 +62,7 @@ class geoPHP
     $processor_type = $type_map[$type];
 
     if (!$processor_type) {
-      $type = 'wkt';
+      $processor_type = 'WKT';
       //throw new exception('geoPHP could not find an adapter of type '.htmlentities($type));
       //exit;
     }
