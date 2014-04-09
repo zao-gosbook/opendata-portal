@@ -157,10 +157,10 @@ function od_converters_rule_callback_convert_format_zip($file, $fmt_source, $fmt
       $formatted_file = $file_object;
     }
 
-    unlink($tempfile);
+    //unlink($tempfile);
   }
 
-  rmdir($tempFiledir);
+  //rmdir($tempFiledir);
   return array(
     'formatted_file' => $formatted_file,
   );
