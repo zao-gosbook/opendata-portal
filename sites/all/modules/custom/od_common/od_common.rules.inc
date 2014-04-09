@@ -187,6 +187,25 @@ function od_common_rules_action_info() {
       'group' => t('Gosbook'),
       'base' => 'od_common_rules_actions_od_common_entity_list_get_element_by_index',
     ),
+    'od_common_convert_geolocation_to_geofield' => array(
+      'label' => t('Converts geolocation spatial code into geofield'),
+      'parameter' => array(
+        'node' => array(
+          'type' => 'node',
+          'label' => t('A node with geolocation data'),
+        ),
+        'geolocation' => array(
+          'type' => 'text',
+          'label' => t('Full geolocation field machine-name'),
+        ),
+        'geofield' => array(
+          'type' => 'text',
+          'label' => t('Full geofield field machine-name'),
+        ),
+      ),
+      'group' => t('Gosbook'),
+      'base' => 'od_common_rules_actions_od_common_convert_geolocation_to_geofield',
+    ),
   );
 }
 
@@ -311,5 +330,20 @@ function od_common_rules_actions_od_common_file_get_extension_term($file, $vocab
   }
 
   return array('extension_term' => $term);
+}
+
+/**
+ * Rule callback.
+ */
+function od_common_rules_actions_od_common_convert_geolocation_to_geofield($node, $geolocation, $geofield) {
+  $wrapper = entity_metadata_wrapper('node', $node);
+  $geolocation = $node->$geolocation;
+  $data = array(
+    'lat' => $geolocation['und'][0]['lat'],
+    'lon' => $geolocation['und'][0]['lng'],
+  );
+
+  $wrapper->$geofield->set($data);
+  $wrapper->save();
 }
 
