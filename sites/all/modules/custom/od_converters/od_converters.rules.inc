@@ -108,6 +108,10 @@ function od_converters_rules_action_info() {
  * Rule action callback :-)
  */
 function od_converters_rule_callback_convert_format($file, $fmt_source, $fmt_target, $destination_path, $can_expire) {
+  if (is_array($file)) {
+    $file = file_load($file['fid']);
+  }
+
   $formatted_file = NULL;
   $converter = od_converter_object();
   od_common_module('core');
@@ -136,6 +140,9 @@ function od_converters_rule_callback_convert_format($file, $fmt_source, $fmt_tar
  * Rule action callback :-)
  */
 function od_converters_rule_callback_convert_format_zip($file, $fmt_source, $fmt_target, $destination_path, $can_expire) {
+  if (is_array($file)) {
+    $file = file_load($file['fid']);
+  }
   $formatted_file = NULL;
   od_common_module('core');
   $tempFiledir = od_common_tmpfilename('temporary:/', 'od_converters');
