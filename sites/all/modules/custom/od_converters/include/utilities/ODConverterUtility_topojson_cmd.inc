@@ -14,7 +14,7 @@ class ODConverterUtility_topojson_cmd extends ODConverterUtilityAbstract {
 
   protected function construct() {
     // @fixme
-    $binary_path = dirname(__FILE__). '/../../3rdparty/topojson.nodejs/topojson/bin';
+    $binary_path = DRUPAL_ROOT. '/../node_modules/topojson/bin';
     $this->binaries['topojson'] = $binary_path. '/topojson';
   }
 
@@ -91,7 +91,6 @@ class ODConverterUtility_topojson_cmd extends ODConverterUtilityAbstract {
   }
 
   public function execute() {
-    chmod($this->binaries['topojson'], 0755);
     $command = $this->buildRecurse();
     $output = $this->syscall($command);
     $this->result = $output;
