@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ */
+function geofield_ymap_uninstall() {
+  $vars = array(
+    'geofield_ymap_presets_path',
+    'geofield_ymap_preset',
+    'geofield_ymap_use_loader',
+    'geofield_ymap_debug_mode',
+  );
+  foreach ($vars as $var) {
+    variable_del($var);
+  }
+}
