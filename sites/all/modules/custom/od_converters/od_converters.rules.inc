@@ -150,6 +150,7 @@ function od_converters_rule_callback_convert_format_zip($file, $fmt_source, $fmt
   $tempfile = $tempFiledir. '/' . $fmt->normalizeFilename($file->filename);
   @mkdir($tempFiledir);
   if (od_converter_convert_zip($file->uri, $fmt_source, $tempfile, $fmt_target)) {
+    od_common_module('file');
     $destination = od_common_tmpfilename($destination_path);
     @mkdir($destination);
     if ($file_object = od_common_file_save_data_by_path($tempfile, $destination, FILE_EXISTS_RENAME, $can_expire)) {
