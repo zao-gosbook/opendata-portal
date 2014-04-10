@@ -481,40 +481,40 @@ div.horizontal-tabs .form-text {
                 &.nolink {
                   display: none;
                 }
-                &.ico-taxonomy-security {
+                &[href$=bezopasnost]{
                   background-image: url("../images/ico-taxonomy-security.png");
                 }
-                &.ico-taxonomy-geography {
+                &[href$=geography]{
                   background-image: url("../images/ico-taxonomy-geography.png");
                 }
-                &.ico-taxonomy-gov {
+                &[href$=gosudarstvo]{
                   background-image: url("../images/ico-taxonomy-gov.png");
                 }
-                &.ico-taxonomy-health {
+                &[href$=zdorove]{
                   background-image: url("../images/ico-taxonomy-health.png");
                 }
-                &.ico-taxonomy-housing {
+                &[href$=education]{
                   background-image: url("../images/ico-taxonomy-housing.png");
                 }
-                &.ico-taxonomy-culture {
+                &[href$=culture]{
                   background-image: url("../images/ico-taxonomy-culture.png");
                 }
-                &.ico-taxonomy-sport {
+                &[href$=sport]{
                   background-image: url("../images/ico-taxonomy-sport.png");
                 }
-                &.ico-taxonomy-building {
+                &[href$=stroitelstvo]{
                   background-image: url("../images/ico-taxonomy-building.png");
                 }
-                &.ico-taxonomy-trade {
+                &[href$=torgovlya]{
                   background-image: url("../images/ico-taxonomy-trade.png");
                 }
-                &.ico-taxonomy-transport {
+                &[href$=transport]{
                   background-image: url("../images/ico-taxonomy-transport.png");
                 }
-                &.ico-taxonomy-ecology {
+                &[href$=ecology]{
                   background-image: url("../images/ico-taxonomy-ecology.png");
                 }
-                &.ico-taxonomy-economy {
+                &[href$=ekonomika]{
                   background-image: url("../images/ico-taxonomy-economy.png");
                 }
               }
@@ -2078,7 +2078,9 @@ td div.label {
 
 /* mobile show columns */
 .section-taxonomy,
-.section-rubriki {
+.section-rubriki,
+.section-rubrics {
+
   .region-mobile-change {
     width: auto;
     float: none;
@@ -4757,7 +4759,7 @@ div.fivestar-widget .star {
       line-height: 45px;
       overflow: hidden;
       width: 45px;
-      background-size: cover;
+      @include background-size(cover);
       
       &.a2a_s_twitter {
         background: url("../images/ico-social-twitter.png") no-repeat;
@@ -4805,6 +4807,7 @@ div.fivestar-widget .star {
     background: url("../images/ico-subscribe.png") no-repeat 0 50%;    
   }
   .field-name-field-spatial,
+  .field-type-geofield,
   .field-name-field-geolocation {
     border: 10px solid #e5e5e5;
     
@@ -5227,6 +5230,8 @@ div.fivestar-widget .star {
       }      
     }
     td a[href*='.csv'],
+    td a[href*='.xml'],
+    td a[href*='.xsd'],
     td a[href*='.xls'] {
       display: block;
       width: 400px;
