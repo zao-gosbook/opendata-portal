@@ -4,6 +4,10 @@
  */
 
 define('OD_DATASET_PATH', dirname(__FILE__));
+define('OD_DATASET_DOWNLOAD_FIELD', 'field_resource_download');
+define('OD_DATASET_DOWNLOAD_ROUTER_PATH', 'od_dataset_download_router');
+define('OD_DATASET_ALIAS_DELIMITER', ':');
+define('OD_DATASET_FIELD_LATEST_UPDATE', 'field_dataset_latest_update');
 
 // Include our custom remote file source
 require_once OD_DATASET_PATH. '/od_dataset.remote_file_source_mod.inc';
@@ -29,7 +33,23 @@ function od_dataset_menu() {
     'access arguments' => array(2),
   );
 
+  $arg_offset = count(explode('/', OD_DATASET_DOWNLOAD_ROUTER_PATH));
+  $items[OD_DATASET_DOWNLOAD_ROUTER_PATH] = array(
+    'page callback' => 'od_dataset_download_router_page_callback',
+    'page arguments' => array($arg_offset + 1, $arg_offset + 2, $arg_offset + 3),
+    'access callback' => 'od_dataset_download_router_access_callback',
+    'access arguments' => array($arg_offset + 1, $arg_offset + 2, $arg_offset + 3),
+  );
+
   return $items;
+}
+
+function od_dataset_download_router_page_callback($type, $nid, $rid) {
+  return 'It\'s working!';
+}
+
+function od_dataset_download_router_access_callback($type, $nid, $rid) {
+  return TRUE; //@todo: Access callback could be rewritten
 }
 
 /**
@@ -209,4 +229,92 @@ function od_dataset_views_api() {
     'api' => 3,
     'path' => drupal_get_path('module', 'od_dataset') . '/views',
   );
+}
+
+function od_dataset_save_aliases($node_or_nid, $revision_id = NULL) {
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    foreach ($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
+      list($type, $alias) = od_dataset_alias_parse($_val_wr->value());
+      $path = array(
+        'source' => OD_DATASET_DOWNLOAD_ROUTER_PATH. "/{$type}/{$wrapper->nid->value()}",
+        'alias' => $alias,
+      );
+
+      path_save($path);
+    }
+  }
+}
+
+function od_dataset_set_alias_links($node_or_nid, $revision_id = NULL) {
+  if(($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) && ($links = od_dataset_build_alias_links($node_or_nid, $revision_id))) {
+    $wrapper->{OD_DATASET_DOWNLOAD_FIELD}->set(array());
+    foreach ($links as $link) {
+      $wrapper->{OD_DATASET_DOWNLOAD_FIELD}[] = $link;
+    }
+
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
+  $links = FALSE;
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    $alias = drupal_get_path_alias("node/{$wrapper->nid->value()}");
+    $stamp = gmdate('Y-m-d\TH-i', od_dataset_last_update_time($node_or_nid, $revision_id));
+    //$format = $wrapper->field_resources->get(0)->field_format->name->value();
+    $format = od_dataset_get_format($node_or_nid, $revision_id);
+    $suffix = $format ? '.' . $format : '';
+    $links = array(
+      'data' => od_dataset_alias_build('data', "{$alias}/data-{$stamp}-structure-{$stamp}{$suffix}"),
+      'structure' => od_dataset_alias_build('structure', "{$alias}/structure-{$stamp}{$suffix}"),
+    );
+  }
+
+  return $links;
+}
+
+/**
+ * @param $node_or_nid
+ * @param null $revision_id
+ * @return string
+ * @fixme: Implement this
+ */
+function od_dataset_get_format($node_or_nid, $revision_id = NULL) {
+  return 'csv';
+}
+
+function od_dataset_entity_insert($entity, $type) {
+  //od_dataset_entity_update($entity, $type);
+}
+
+function od_dataset_entity_presave($entity, $type) {
+  if ($type == 'node' && isset($entity->type) && $entity->type == 'dataset') {
+    od_dataset_set_alias_links($entity);
+    od_dataset_save_aliases($entity);
+  }
+}
+
+function od_dataset_alias_parse($alias) {
+  return explode(OD_DATASET_ALIAS_DELIMITER, $alias);
+}
+
+function od_dataset_alias_build($type, $alias) {
+  return ($type . OD_DATASET_ALIAS_DELIMITER . $alias);
+}
+
+function od_dataset_last_update_time($node_or_nid, $revision_id = NULL, $newtime = NULL) {
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    $stamp = $wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->value();
+    $newtime = ($newtime === NULL && $stamp === FALSE) ? $wrapper->changed->value() ? $newtime;
+    if ($newtime !== NULL) {
+      $wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->set($newtime);
+      $stamp = $newtime;
+    }
+
+    return $stamp;
+  }
+
+  return FALSE;
 }
