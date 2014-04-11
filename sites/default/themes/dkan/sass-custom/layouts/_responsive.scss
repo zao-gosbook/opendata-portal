@@ -1308,6 +1308,8 @@ $zen-auto-include-item-base: false;
   }
   .view-datasets-map .geolocation-lng-item {
     float: left;
+    clear: none;
+    margin-left: 10px;
   }
   .view-datasets-map .views-submit-button {
     float: left;
