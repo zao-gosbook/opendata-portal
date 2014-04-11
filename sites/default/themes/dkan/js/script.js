@@ -171,7 +171,7 @@
           if($(this).hasClass("sf-item-1")) { // 
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-199px"
+                "margin-left": "-111px"
               });              
             } 
             else {            
@@ -179,16 +179,16 @@
                 "margin-left": "-227px"
               }); 
             }
-          } 
+          }            
           if($(this).hasClass("sf-item-3")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-123px"
+                "margin-left": "-106px"
               });              
             } 
             else {
               ul.css({
-                "margin-left": "-150px"
+                "margin-left": "-139px"
               });              
             }
             //alert($('body').width());  
@@ -196,24 +196,36 @@
           if($(this).hasClass("sf-item-4")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-317px"
+                "margin-left": "-259px"
               });              
             } 
             else {           
               ul.css({
-                "margin-left": "-310px"
+                "margin-left": "-306px"
               });  
             }
           } 
           if($(this).hasClass("sf-item-6")) { //
              if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-343px"
+                "margin-left": "-142px"
               });              
             } 
             else {             
               ul.css({
-                "margin-left": "-141px"
+                "margin-left": "-165px"
+              });  
+            }
+          } 
+          if($(this).hasClass("sf-item-7")) { //
+             if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-734px"
+              });              
+            } 
+            else {             
+              ul.css({
+                "margin-left": "-677px"
               });  
             }
           }          
@@ -242,10 +254,10 @@
             //"margin-left": margin
           });  
           // кастомное положение блоков
-          if($(this).parent("li").hasClass("sf-item-1")) { // 
+          if($(this).hasClass("sf-item-1")) { // 
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-199px"
+                "margin-left": "-111px"
               });              
             } 
             else {            
@@ -253,44 +265,56 @@
                 "margin-left": "-227px"
               }); 
             }
-          } 
-          if($(this).parent("li").hasClass("sf-item-3")) { //
+          }            
+          if($(this).hasClass("sf-item-3")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-123px"
+                "margin-left": "-106px"
               });              
             } 
             else {
               ul.css({
-                "margin-left": "-150px"
+                "margin-left": "-139px"
               });              
             }
             //alert($('body').width());  
           } 
-          if($(this).parent("li").hasClass("sf-item-4")) { //
+          if($(this).hasClass("sf-item-4")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-317px"
+                "margin-left": "-259px"
               });              
             } 
             else {           
               ul.css({
-                "margin-left": "-310px"
+                "margin-left": "-306px"
               });  
             }
           } 
-          if($(this).parent("li").hasClass("sf-item-6")) { //
+          if($(this).hasClass("sf-item-6")) { //
              if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-343px"
+                "margin-left": "-142px"
               });              
             } 
             else {             
               ul.css({
-                "margin-left": "-141px"
+                "margin-left": "-165px"
               });  
             }
-          }          
+          } 
+          if($(this).hasClass("sf-item-7")) { //
+             if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-734px"
+              });              
+            } 
+            else {             
+              ul.css({
+                "margin-left": "-677px"
+              });  
+            }
+          }       
         }
         else {
           $(".region-header").removeClass("active-region");

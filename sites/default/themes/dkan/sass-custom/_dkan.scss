@@ -563,9 +563,21 @@ div.horizontal-tabs .form-text {
             }
           }
         }
-        &.last a {
-          border: 0;
-        }
+        &.last {
+          a {
+            border: 0;
+          }  
+          li {
+            a {
+              border-right: 1px solid #fff;
+            }
+            &.last {
+              a {
+                border: 0;
+              } 
+            }
+          }         
+        } 
       }
     }
   }
@@ -913,7 +925,7 @@ td div.label {
     z-index: 1000;
     height: 25px;
     left: 50%;
-    bottom: -70px;
+    bottom: -78px;
     cursor: pointer;
     margin-left: -25px;
     background: url("../images/ico-toggle-map.png") no-repeat 0 0;
@@ -1175,7 +1187,7 @@ td div.label {
   display: table;
 }
 .pane-gb-search-pane {
-  width: 588px;
+  width: 692px;
   display: table;
   
   form {
@@ -5269,6 +5281,27 @@ div.fivestar-widget .star {
     }
   }
 }
+.pane-passport-link {
+  padding-top: 10px;
+  a {
+    display: inline-block;
+    font-size: 16px;
+    padding: 7px 10px;
+    @include border-radius(5px);
+    border: 1px solid #0c87e8;
+    text-decoration: none;
+    
+    &:hover {
+      background-color: #0c87e8;
+      color: #fff;
+    }
+  }
+  span {
+    left: -7px;
+    top: -14px;
+    border: 1px solid #fff;
+  }
+}
 .data-row-developers .pane-content {
   font-size: 18px;
   line-height: 1.3em;
@@ -7292,12 +7325,16 @@ div.fivestar-widget .star {
       li {
         font-size: 16px;
         padding-bottom: 7px;
-      }
-      ul {
-        padding-bottom: 20px;
+        list-style-type: square;
       }
     }
-  } 
+  }
+  ul ul  {
+    padding-bottom: 20px;   
+  }   
+  ul ul ul {
+    padding-bottom: 0;
+  }  
   h3 {
     margin: 0 0 10px;
     font-size: 18px;
