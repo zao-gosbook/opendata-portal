@@ -34,18 +34,70 @@ function od_dataset_menu() {
   );
 
   $arg_offset = count(explode('/', OD_DATASET_DOWNLOAD_ROUTER_PATH));
-  $items[OD_DATASET_DOWNLOAD_ROUTER_PATH] = array(
+  $items[OD_DATASET_DOWNLOAD_ROUTER_PATH. '/%/%'] = array(
     'page callback' => 'od_dataset_download_router_page_callback',
-    'page arguments' => array($arg_offset + 1, $arg_offset + 2, $arg_offset + 3),
+    'page arguments' => array($arg_offset + 0, $arg_offset + 1, $arg_offset + 2),
     'access callback' => 'od_dataset_download_router_access_callback',
-    'access arguments' => array($arg_offset + 1, $arg_offset + 2, $arg_offset + 3),
+    'access arguments' => array($arg_offset + 0, $arg_offset + 1, $arg_offset + 2),
   );
 
   return $items;
 }
 
-function od_dataset_download_router_page_callback($type, $nid, $rid) {
-  return 'It\'s working!';
+function od_dataset_download_router_page_callback($type, $nid, $rid = NULL) {
+  switch ($type) {
+    case 'structure':
+      drupal_access_denied();
+      break;
+    case 'data':
+      if (!empty($rid) || (($alias = drupal_lookup_path('alias', $_GET['q'])) && ($rid = od_dataset_get_revision_id_by_alias($alias)))) {
+        od_dataset_do_download($nid, $rid);
+      }
+      break;
+  }
+
+  drupal_not_found();
+}
+
+/**
+ * @param $alias
+ * @param string $type
+ * @return bool
+ * @throws Exception
+ * @todo: Add static (non-static?) cache
+ */
+function od_dataset_get_revision_id_by_alias($alias, $type = '%') {
+  $revision_id = FALSE;
+  if ($info = field_info_field(OD_DATASET_DOWNLOAD_FIELD)) {
+    if ($info['storage']['type'] != 'field_sql_storage') {
+      throw new Exception("Storage type of a ". OD_DATASET_DOWNLOAD_FIELD. ' should be field_sql_storage! Or implement another...');
+    }
+
+    list($table, $column_info) = each($info['storage']['details']['sql']['FIELD_LOAD_REVISION']);
+
+    $operator = $type == '%' ? ' LIKE ' : '=';
+    $sql = "
+    SELECT
+      revision_id
+    FROM
+      {{$table}}
+    WHERE (
+      {$column_info['value']}{$operator}:field_value
+    )
+    LIMIT 1
+    ";
+
+    $result = db_query($sql, array(':field_value' => "{$type}:{$alias}"));
+    if ($tmp = $result->fetchField()) {
+      $revision_id = $tmp;
+    }
+  }
+
+  return $revision_id;
+}
+
+function od_dataset_do_download($node_or_nid, $revision_id = NULL) {
+  $wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id);
 }
 
 function od_dataset_download_router_access_callback($type, $nid, $rid) {
@@ -136,6 +188,14 @@ function od_dataset_download_file_access_callback($file) {
  * @return bool|EntityMetadataWrapper
  */
 function od_dataset_get_wrapper($node_or_nid, $revision_id = NULL) {
+  if ($node_or_nid instanceof EntityMetadataWrapper) {
+    if ($revision_id !== NULL && $node_or_nid->vid->value() != $revision_id) {
+      return od_dataset_get_wrapper($node_or_nid->nid->value(), $revision_id);
+    }
+
+    return $node_or_nid;
+  }
+
   $obj = $node_or_nid;
   $nid = is_object($node_or_nid) && isset($node_or_nid->nid) ? $node_or_nid->nid : $node_or_nid;
   if ($revision_id !== NULL && ($obj = node_load($nid, $revision_id)) && !$obj) {
@@ -143,6 +203,19 @@ function od_dataset_get_wrapper($node_or_nid, $revision_id = NULL) {
   }
 
   return entity_metadata_wrapper('node', $obj);
+}
+
+/**
+ * @param $node_or_nid
+ * @param null $revision_id
+ * @return bool
+ */
+function od_dataset_get_wrapper_by_resource($node_or_nid, $revision_id = NULL) {
+  if (($resource = od_dataset_get_wrapper($node_or_nid)) && $resource->getBundle() == 'resource') {
+    return od_dataset_get_wrapper($resource->field_dataset_ref, $revision_id);
+  }
+
+  return FALSE;
 }
 
 /**
@@ -240,7 +313,18 @@ function od_dataset_save_aliases($node_or_nid, $revision_id = NULL) {
         'alias' => $alias,
       );
 
-      path_save($path);
+      if (!($oldpath = path_load(array('alias' => $alias))) || ($oldpath['source'] != $path['source'])) {
+        path_save($path);
+        // Save to history
+        db_insert('od_dataset_paths')
+          ->fields(array(
+            'entity_type' => $wrapper->type(),
+            'entity_id' => $wrapper->nid->value(),
+            'revision_id' => $wrapper->{$wrapper->entityKey('revision')}->value(),
+            'pid' => $path['pid'],
+          ))
+          ->execute();
+      }
     }
   }
 }
@@ -294,6 +378,10 @@ function od_dataset_entity_presave($entity, $type) {
     od_dataset_set_alias_links($entity);
     od_dataset_save_aliases($entity);
   }
+  elseif ($type = 'node' && isset($entity->type) && $entity->type == 'resource') {
+    $dataset_wr = od_dataset_get_wrapper_by_resource($entity->nid);
+    od_dataset_last_update_time($dataset_wr, NULL, time());
+  }
 }
 
 function od_dataset_alias_parse($alias) {
@@ -306,10 +394,32 @@ function od_dataset_alias_build($type, $alias) {
 
 function od_dataset_last_update_time($node_or_nid, $revision_id = NULL, $newtime = NULL) {
   if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
-    $stamp = $wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->value();
-    $newtime = ($newtime === NULL && $stamp === FALSE) ? $wrapper->changed->value() ? $newtime;
+    $order = array(
+      OD_DATASET_FIELD_LATEST_UPDATE => array('has_time' => TRUE),
+      'field_date_dataset_actual' => array(),
+      'field_date_first_time_publ' => array(),
+      'field_date_last_change' => array(),
+      'changed' => array('has_time' => TRUE),
+    );
+
+    $stamp = NULL;
+    foreach ($order as $_fieldname => $_info) {
+      if ($stamp = $wrapper->{$_fieldname}->value()) {
+        if (empty($_info['has_time']) && ($tmpstamp = $wrapper->changed->value())) {
+          $stamp = strtotime(gmdate("H", $tmpstamp). ":". gmdate('i', $tmpstamp). "+00:00", $stamp);
+        }
+        break;
+      }
+    }
+
+    // Set time for the first time requesting
+    if (!$wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->value()) {
+      $newtime = $stamp;
+    }
+
     if ($newtime !== NULL) {
       $wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->set($newtime);
+      //$wrapper->save();
       $stamp = $newtime;
     }
 
