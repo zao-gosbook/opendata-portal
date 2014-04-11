@@ -1,0 +1,13 @@
+name = Panels Hash Cache
+description = Hash-based Caching for Panels
+package = Panels
+dependencies[] = ctools
+core = 7.x
+configure = admin/config/system/panels_hash_cache
+
+; Information added by drupal.org packaging script on 2011-12-20
+version = "7.x-1.0-alpha1"
+core = "7.x"
+project = "panels_hash_cache"
+datestamp = "1324417846"
+
