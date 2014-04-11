@@ -6413,6 +6413,39 @@ div.fivestar-widget .star {
     padding-bottom: 0;
   }
 }
+
+/**
+ * od-map 
+ */ 
+.od-map-map-russia-wrapper {
+  width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  
+  g.region > path.has-portal {
+    fill: #0c87e8;
+    
+    &:hover {
+      fill: #ffa200;
+    }
+  }
+  g.region > path.no-portal {
+    fill: #999;
+    
+    &:hover {
+      fill: #999;
+    }    
+  }
+  .info-block {
+    background: #fff;
+    border: 1px solid #000;
+    @include border-radius(3px);
+  }  
+  g.city > text.city-label {
+    fill: #000;
+  }
+} 
  
 /**
  * forum 
