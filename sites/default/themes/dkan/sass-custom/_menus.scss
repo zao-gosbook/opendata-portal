@@ -1,0 +1,5 @@
+/* Hide submenu items that will be hidden anyway by superfish */
+.pane-system-main-menu>ul>li>ul {
+        display: none;
+}
+
