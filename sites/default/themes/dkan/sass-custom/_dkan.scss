@@ -3808,6 +3808,21 @@ body {
     .dataset-owner {
       color: #B5B5B5;
     }
+    .dataset-format {
+      background: url("../images/icon-resource.png") no-repeat scroll 0 0 transparent;
+      height: 38px;
+      width: 40px;
+      color: #676767;
+      font-size: 14px;
+      line-height: 47px;
+      text-align: center;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    .update-date {
+      margin-top: 5px;
+      color: #666;
+    }
   }
 }
 
@@ -6750,8 +6765,8 @@ div.fivestar-widget .star {
     }
   }  
   .geolocation-lng-item {
-    clear: none;
-    margin-left: 10px;
+    /*clear: none;
+    margin-left: 10px;*/
   }
   .geolocation-address {
 
@@ -6779,14 +6794,14 @@ div.fivestar-widget .star {
       display: block;
       font-size: 0.85em;
       margin: 10px 0 0;
-      padding: 1.25em 0 1.25em 4.7em;
+      padding: 1.05em 0 1.05em 4.7em;
       text-align: left;
       text-transform: none;
       color: #0c87e8;
       border: 2px solid #0c87e8;
       width: 155px;
       position: absolute;
-      top: -60px;
+      top: -55px;
       right: 0;
     }
   }
@@ -7258,6 +7273,38 @@ div.fivestar-widget .star {
   }
 }
 
+/**
+ * sitemap
+ */
+.page-sitemap {
+  padding: 30px 30px 2px 30px;
+  background: #fff;
+  
+  ul {
+    margin-top: 0;
+  }
+  > ul {
+    padding-left: 0;
+    
+    > li {
+      list-style: none;
+      
+      li {
+        font-size: 16px;
+        padding-bottom: 7px;
+      }
+      ul {
+        padding-bottom: 20px;
+      }
+    }
+  } 
+  h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+}
 
 /**
  * pager
