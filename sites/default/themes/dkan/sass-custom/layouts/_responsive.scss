@@ -2171,7 +2171,8 @@ $zen-auto-include-item-base: false;
       top: 7px;
     }
     .pane-system-main-menu > ul > li > a {
-      padding: 1em .5em;
+      padding: 1.15em .5em;
+      font-size: 12px;
     }
     .pane-system-user-menu {
       left: 14px;
@@ -2264,6 +2265,7 @@ $zen-auto-include-item-base: false;
   
   .region-header .pane-system-main-menu > ul > li ul li a {
     padding: 0 0.5em;
+    font-size: 12px;
   }
   .region-orange {
     .pane-2 {
@@ -2352,7 +2354,8 @@ $zen-auto-include-item-base: false;
     }
   }
   .region-header .pane-system-main-menu > ul > li.sf-item-2 > ul {
-    width: 534px !important;
+    width: 564px !important;
+    margin-left: -63px !important;
   }
   .pane-rubrics-rubrics-front  {
     margin-left: 21px;
