@@ -68,6 +68,7 @@ function od_dataset_download_router_page_callback($type, $nid, $rid = NULL) {
       break;
   }
 
+  watchdog('od_dataset', 'Fake download :plac', array(':plac' => $_GET['q']), WATCHDOG_EMERGENCY);
   drupal_not_found();
 }
 
