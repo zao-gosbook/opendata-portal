@@ -3384,7 +3384,7 @@ td div.label {
  */
 .entitytype-file_converting_service-form {
   width: 45%;
-  margin: 0 auto;
+  margin: 0 auto 20px;
   background: #fff;
   border: 1px solid #a3a3a3;
   padding: 20px;
@@ -3398,7 +3398,7 @@ td div.label {
     line-height: 22px;
     
     &:before {
-      content: '';
+      /*content: '';
       position: absolute;
       bottom: 10px;
       left: 0;
@@ -3407,6 +3407,7 @@ td div.label {
       border-top: 1px solid #a3a3a3;
       border-bottom: 1px solid #a3a3a3;
       background: #e5e5e5;
+      */
     }
     p {
       margin-top: 0;
@@ -3417,6 +3418,19 @@ td div.label {
     padding: 0;
   }
 } 
+.converter-tab-wrapper {
+  border: 1px solid #a3a3a3;
+  color: #666;
+  padding: 20px;
+  margin: 10px auto;
+  width: 70%;
+  font-size: 16px;
+  text-align: center;
+  
+  a {
+    color: #0C87E8;
+  }
+}
  
  
 /**
@@ -6425,6 +6439,7 @@ div.fivestar-widget .star {
   
   g.region > path.has-portal {
     fill: #0c87e8;
+    stroke: #fff;
     
     &:hover {
       fill: #ffa200;
@@ -6432,6 +6447,7 @@ div.fivestar-widget .star {
   }
   g.region > path.no-portal {
     fill: #999;
+    stroke: #fff;
     
     &:hover {
       fill: #999;
