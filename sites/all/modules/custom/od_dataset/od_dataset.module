@@ -442,16 +442,17 @@ function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
     $format = od_dataset_get_format($node_or_nid, $revision_id);
     $suffix = $format ? '.' . $format : '';
     $links = array();
-    if ($wrapper->field_resources->count() > 0 && $wrapper->field_resources->get(0)->getBundle() == 'resource') {
+    //@todo: Control data availability somewhere else not here
+    //if ($wrapper->field_resources->count() > 0 && $wrapper->field_resources->get(0)->getBundle() == 'resource') {
       // Build data link
-      if ($wrapper->field_resources->get(0)->field_upload->value()) {
+      //if ($wrapper->field_resources->get(0)->field_upload->value()) {
         $links['data'] = od_dataset_alias_build('data', "{$alias}/data-{$stamp}-structure-{$stamp}{$suffix}");
-      }
+      //}
 
-      if ($wrapper->field_resources->get(0)->field_upload_structure->value()) {
+      //if ($wrapper->field_resources->get(0)->field_upload_structure->value()) {
         $links['structure'] = od_dataset_alias_build('structure', "{$alias}/structure-{$stamp}{$suffix}");
-      }
-    }
+      //}
+    //}
   }
 
   return $links;
