@@ -1,0 +1,35 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function od_dataset_field_schema($field) {
+  if ($field['type'] == 'entityrevision_map') {
+    $schema = array(
+      'columns' => array(
+        'target_id' => array(
+          'description' => 'The id of the target entity.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'target_rid' => array(
+          'description' => 'The rid if the target entity',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+      ),
+      'indexes' => array(
+        'target_id' => array('target_id'),
+        'target_id_complex' => array('target_id', 'target_rid'),
+      ),
+      'foreign keys' => array(),
+    );
+
+    return $schema;
+  }
+}

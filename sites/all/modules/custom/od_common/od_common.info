@@ -7,6 +7,7 @@ core = 7.x
 
 dependencies[] = od_pubdlcnt
 dependencies[] = od_publisher
+dependencies[] = od_dataset
 
 ; Script with new ajax command
 ; scripts[] = js/commands/od_common.ajax_command_setval.js
