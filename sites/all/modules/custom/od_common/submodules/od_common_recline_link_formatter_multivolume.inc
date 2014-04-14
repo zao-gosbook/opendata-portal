@@ -5,21 +5,9 @@
 
 function od_common_module__recline_link_formatter_multivolume(&$element, $entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   foreach ($items as $delta => $item) {
-    //@fixme: Use od_dataset_download_path()
+    $dataset_wrapper = od_dataset_get_wrapper_by_resource($entity, $entity->vid);
     // Change download callback to od_dataset's callback to support encodings
-    $download_uri = 'dataset-actions/download_file/'. $item['fid'];
-    try {
-      $wrapper = entity_metadata_wrapper($entity_type, $entity);
-      if (($dataset = $wrapper->field_dataset_ref->value()) && ($wrapper->field_dataset_ref->field_multivolume->raw() == TRUE)) {
-        $download_uri = 'dataset-actions/download_package/' . $dataset->nid;
-      }
-    }
-    catch (Exception $e) {
-      // @fixme: prevent errors here.
-      watchdog_exception('od_common', $e);
-      //throw $e;
-    }
-
+    $download_uri = (string) od_dataset_download_path($dataset_wrapper);
     $element[$delta]['links_container'] = array(
       '#prefix' => '<div class="multi-download-link-wrapper">',
       '#suffix' => '</div>',
