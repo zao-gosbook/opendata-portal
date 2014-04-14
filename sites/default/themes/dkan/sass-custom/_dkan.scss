@@ -481,40 +481,40 @@ div.horizontal-tabs .form-text {
                 &.nolink {
                   display: none;
                 }
-                &.ico-taxonomy-security {
+                &[href$=bezopasnost]{
                   background-image: url("../images/ico-taxonomy-security.png");
                 }
-                &.ico-taxonomy-geography {
+                &[href$=geography]{
                   background-image: url("../images/ico-taxonomy-geography.png");
                 }
-                &.ico-taxonomy-gov {
+                &[href$=gosudarstvo]{
                   background-image: url("../images/ico-taxonomy-gov.png");
                 }
-                &.ico-taxonomy-health {
+                &[href$=zdorove]{
                   background-image: url("../images/ico-taxonomy-health.png");
                 }
-                &.ico-taxonomy-housing {
+                &[href$=education]{
                   background-image: url("../images/ico-taxonomy-housing.png");
                 }
-                &.ico-taxonomy-culture {
+                &[href$=culture]{
                   background-image: url("../images/ico-taxonomy-culture.png");
                 }
-                &.ico-taxonomy-sport {
+                &[href$=sport]{
                   background-image: url("../images/ico-taxonomy-sport.png");
                 }
-                &.ico-taxonomy-building {
+                &[href$=stroitelstvo]{
                   background-image: url("../images/ico-taxonomy-building.png");
                 }
-                &.ico-taxonomy-trade {
+                &[href$=torgovlya]{
                   background-image: url("../images/ico-taxonomy-trade.png");
                 }
-                &.ico-taxonomy-transport {
+                &[href$=transport]{
                   background-image: url("../images/ico-taxonomy-transport.png");
                 }
-                &.ico-taxonomy-ecology {
+                &[href$=ecology]{
                   background-image: url("../images/ico-taxonomy-ecology.png");
                 }
-                &.ico-taxonomy-economy {
+                &[href$=ekonomika]{
                   background-image: url("../images/ico-taxonomy-economy.png");
                 }
               }
@@ -563,9 +563,21 @@ div.horizontal-tabs .form-text {
             }
           }
         }
-        &.last a {
-          border: 0;
-        }
+        &.last {
+          a {
+            border: 0;
+          }  
+          li {
+            a {
+              border-right: 1px solid #fff;
+            }
+            &.last {
+              a {
+                border: 0;
+              } 
+            }
+          }         
+        } 
       }
     }
   }
@@ -913,7 +925,7 @@ td div.label {
     z-index: 1000;
     height: 25px;
     left: 50%;
-    bottom: -70px;
+    bottom: -78px;
     cursor: pointer;
     margin-left: -25px;
     background: url("../images/ico-toggle-map.png") no-repeat 0 0;
@@ -1175,7 +1187,7 @@ td div.label {
   display: table;
 }
 .pane-gb-search-pane {
-  width: 588px;
+  width: 692px;
   display: table;
   
   form {
@@ -2078,7 +2090,9 @@ td div.label {
 
 /* mobile show columns */
 .section-taxonomy,
-.section-rubriki {
+.section-rubriki,
+.section-rubrics {
+
   .region-mobile-change {
     width: auto;
     float: none;
@@ -3806,6 +3820,21 @@ body {
     .dataset-owner {
       color: #B5B5B5;
     }
+    .dataset-format {
+      background: url("../images/icon-resource.png") no-repeat scroll 0 0 transparent;
+      height: 38px;
+      width: 40px;
+      color: #676767;
+      font-size: 14px;
+      line-height: 47px;
+      text-align: center;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    .update-date {
+      margin-top: 5px;
+      color: #666;
+    }
   }
 }
 
@@ -4757,7 +4786,7 @@ div.fivestar-widget .star {
       line-height: 45px;
       overflow: hidden;
       width: 45px;
-      background-size: cover;
+      @include background-size(cover);
       
       &.a2a_s_twitter {
         background: url("../images/ico-social-twitter.png") no-repeat;
@@ -4805,6 +4834,7 @@ div.fivestar-widget .star {
     background: url("../images/ico-subscribe.png") no-repeat 0 50%;    
   }
   .field-name-field-spatial,
+  .field-type-geofield,
   .field-name-field-geolocation {
     border: 10px solid #e5e5e5;
     
@@ -5226,6 +5256,50 @@ div.fivestar-widget .star {
         text-transform: none;
       }      
     }
+    td a[href*='.csv'],
+    td a[href*='.xml'],
+    td a[href*='.xsd'],
+    td a[href*='.xls'] {
+      display: block;
+      width: 400px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    p {
+      margin: 0;
+    }
+    ul {
+      margin: 0;
+      
+      li {
+        padding-bottom: 3px;
+      }
+      br {
+        display: none;
+      }
+    }
+  }
+}
+.pane-passport-link {
+  padding-top: 10px;
+  a {
+    display: inline-block;
+    font-size: 16px;
+    padding: 7px 10px;
+    @include border-radius(5px);
+    border: 1px solid #0c87e8;
+    text-decoration: none;
+    
+    &:hover {
+      background-color: #0c87e8;
+      color: #fff;
+    }
+  }
+  span {
+    left: -7px;
+    top: -14px;
+    border: 1px solid #fff;
   }
 }
 .data-row-developers .pane-content {
@@ -6339,6 +6413,39 @@ div.fivestar-widget .star {
     padding-bottom: 0;
   }
 }
+
+/**
+ * od-map 
+ */ 
+.od-map-map-russia-wrapper {
+  width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  
+  g.region > path.has-portal {
+    fill: #0c87e8;
+    
+    &:hover {
+      fill: #ffa200;
+    }
+  }
+  g.region > path.no-portal {
+    fill: #999;
+    
+    &:hover {
+      fill: #999;
+    }    
+  }
+  .info-block {
+    background: #fff;
+    border: 1px solid #000;
+    @include border-radius(3px);
+  }  
+  g.city > text.city-label {
+    fill: #000;
+  }
+} 
  
 /**
  * forum 
@@ -6724,8 +6831,8 @@ div.fivestar-widget .star {
     }
   }  
   .geolocation-lng-item {
-    clear: none;
-    margin-left: 10px;
+    /*clear: none;
+    margin-left: 10px;*/
   }
   .geolocation-address {
 
@@ -6753,14 +6860,14 @@ div.fivestar-widget .star {
       display: block;
       font-size: 0.85em;
       margin: 10px 0 0;
-      padding: 1.25em 0 1.25em 4.7em;
+      padding: 1.05em 0 1.05em 4.7em;
       text-align: left;
       text-transform: none;
       color: #0c87e8;
       border: 2px solid #0c87e8;
       width: 155px;
       position: absolute;
-      top: -60px;
+      top: -55px;
       right: 0;
     }
   }
@@ -7232,6 +7339,42 @@ div.fivestar-widget .star {
   }
 }
 
+/**
+ * sitemap
+ */
+.page-sitemap {
+  padding: 30px 30px 2px 30px;
+  background: #fff;
+  
+  ul {
+    margin-top: 0;
+  }
+  > ul {
+    padding-left: 0;
+    
+    > li {
+      list-style: none;
+      
+      li {
+        font-size: 16px;
+        padding-bottom: 7px;
+        list-style-type: square;
+      }
+    }
+  }
+  ul ul  {
+    padding-bottom: 20px;   
+  }   
+  ul ul ul {
+    padding-bottom: 0;
+  }  
+  h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+}
 
 /**
  * pager
