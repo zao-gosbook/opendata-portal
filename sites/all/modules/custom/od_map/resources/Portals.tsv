@@ -1,0 +1,6 @@
+region	url	text
+RU-MOS	http://data.mos.ru/	<span class="first">Портал открытых данных Москвы</span>
+RU-TUL	http://opendata71.ru/	<span class="first">Портал открытых данных Тулы</span>
+RU-ULY	http://data.ulgov.ru/	<span class="first">Портал открытых данных Ульяновска</span>
+RU-PER	http://opendata.permkrai.ru/	<span class="first">Портал открытых данных Перьми</span>
+RU-LEN	http://data.gov.spb.ru/	<span class="first">Портал открытых данных Санкт-Петербурга</span>
