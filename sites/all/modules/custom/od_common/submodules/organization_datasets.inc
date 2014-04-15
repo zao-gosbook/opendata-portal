@@ -20,7 +20,7 @@ function _od_common_organization_datasets($org_nid) {
      $dataset_string = '<div>' . $dataset_link . '</div>';
      $org_datasets .= $dataset_string;
      if ($counter > 10 && ((count($result_datasets['node']) - 10) !== 0)) {
-       $org_datasets .= '<div class="more-link">' . l(t('More @count datasets', array('@count' => count($result_datasets['node']) - 10)), 'node/' . $org_nid). '</div>';
+       $org_datasets .= '<div class="more-link">' . l(t('@count more datasets', array('@count' => count($result_datasets['node']) - 10)), 'node/' . $org_nid). '</div>';
        break;
      }
    }
@@ -50,7 +50,7 @@ function _od_common_organization_topic_datasets($org_nid, $topic_id) {
      $dataset_string = '<div>' . $dataset_link . '</div>';
      $org_datasets .= $dataset_string;
      if ($counter > 10 && ((count($result_datasets['node']) - 10) !== 0)) {
-       $org_datasets .= '<div class="more-link">' . l(t('More @count datasets', array('@count' => count($result_datasets['node']) - 10)), 'node/' . $org_nid). '</div>';
+       $org_datasets .= '<div class="more-link">' . l(t('@count more datasets with the topic', array('@count' => count($result_datasets['node']) - 10)), 'node/' . $org_nid). '</div>';
        break;
      }
    }
