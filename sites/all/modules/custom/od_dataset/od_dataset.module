@@ -113,12 +113,12 @@ function od_dataset_do_download($node_or_nid, $revision_id = NULL, $type = 'data
       throw new Exception('Can\'t get dataset wrapper');
     }
 
+    if ($wrapper->field_resources->count() == 0) {
+      return FALSE; // just exit from function and let parent function to end up with drupal_not_found();
+    }
+
     switch ($type) {
       case 'data':
-        if ($wrapper->field_resources->count() == 0) {
-          return FALSE; // just exit from function and let parent function to end up with drupal_not_found();
-        }
-
         if ((boolean) $wrapper->field_multivolume->value() === TRUE) {
           return od_dataset_download_package_page_callback($wrapper);
         }
@@ -127,7 +127,9 @@ function od_dataset_do_download($node_or_nid, $revision_id = NULL, $type = 'data
         }
         break;
       case 'structure':
-        //if ($file = $wrapper->)
+        if ($file = $wrapper->field_resources->get(0)->field_upload_structure->value()) {
+          return od_dataset_download_file($file->uri, $file->filename);
+        }
         break;
     }
 
