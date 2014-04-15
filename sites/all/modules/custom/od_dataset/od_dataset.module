@@ -54,11 +54,9 @@ function od_dataset_menu() {
 function od_dataset_download_router_page_callback($type, $nid, $rid = NULL) {
   switch ($type) {
     case 'structure':
-      drupal_access_denied(); //@fixme
-      break;
     case 'data':
-      if (!empty($rid) || (($alias = drupal_lookup_path('alias', $_GET['q'])) && ($rid = od_dataset_get_revision_id_by_alias($alias)))) {
-        if (od_dataset_do_download($nid, $rid)) {
+      if (!empty($rid) || (($alias = drupal_lookup_path('alias', $_GET['q'])) && ($rid = od_dataset_get_revision_id_by_alias($alias, $type)))) {
+        if (od_dataset_do_download($nid, $rid, $type)) {
           // Go to download, all is ok
           drupal_exit();
         }
@@ -108,22 +106,29 @@ function od_dataset_get_revision_id_by_alias($alias, $type = '%') {
   return $revision_id;
 }
 
-function od_dataset_do_download($node_or_nid, $revision_id = NULL) {
+function od_dataset_do_download($node_or_nid, $revision_id = NULL, $type = 'data') {
   try {
     $wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id);
     if (!$wrapper) {
       throw new Exception('Can\'t get dataset wrapper');
     }
 
-    if ($wrapper->field_resources->count() == 0) {
-      return FALSE; // just exit from function and let parent function to end up with drupal_not_found();
-    }
+    switch ($type) {
+      case 'data':
+        if ($wrapper->field_resources->count() == 0) {
+          return FALSE; // just exit from function and let parent function to end up with drupal_not_found();
+        }
 
-    if ((boolean) $wrapper->field_multivolume->value() === TRUE) {
-      return od_dataset_download_package_page_callback($wrapper);
-    }
-    elseif ($file = $wrapper->field_resources->get(0)->field_upload->value()) {
-      return od_dataset_download_file_page_callback($file);
+        if ((boolean) $wrapper->field_multivolume->value() === TRUE) {
+          return od_dataset_download_package_page_callback($wrapper);
+        }
+        elseif ($file = $wrapper->field_resources->get(0)->field_upload->value()) {
+          return od_dataset_download_file_page_callback($file);
+        }
+        break;
+      case 'structure':
+        //if ($file = $wrapper->)
+        break;
     }
 
     return TRUE;
@@ -174,6 +179,7 @@ function od_dataset_download_path($node_dataset, $revision_id = NULL, $target_ty
  * @return string|bool
  *  A url for downloading something from dataset of FALSE in case of any error.
  *  Result of this should be passed to url() function in order to get valid URL
+ * @fixme: Check if files are exist
  */
 function od_dataset_download_path_internal($node_dataset, $revision_id = NULL, $target_type = 'data') {
   // Change download callback to od_dataset's callback to support encodings
@@ -205,6 +211,7 @@ function od_dataset_download_path_internal($node_dataset, $revision_id = NULL, $
  * @return string|bool
  *  A url for downloading something from dataset of FALSE in case of any error.
  *  Result of this should be passed to url() function in order to get valid URL
+ * @deprecated
  */
 function od_dataset_download_structure_path($node_dataset, $revision_id = NULL) {
   return od_dataset_download_path($node_dataset, $revision_id, 'structure');
