@@ -1,0 +1,37 @@
+g.city>text.city-label {
+    fill: #884609;
+}
+
+g.city>circle.city-circle {
+    fill: #ff381a;
+    opacity: 0.75;
+}
+
+g.region>path.has-portal {
+    fill: #24ff2d;
+}
+
+g.region>path.has-portal:hover {
+    fill: #3cc7ff;
+}
+
+g.region>path.no-portal {
+    fill: #7A7A7A;
+}
+
+.info-block {
+    position: absolute;
+    text-align: center;
+    width: 150px;
+    height: 38px;
+    padding: 2px;
+    font-size: 10px;
+    background: #ffba16;
+    border: 1px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.info-block>span.second {
+    margin-left: 4px;
+}

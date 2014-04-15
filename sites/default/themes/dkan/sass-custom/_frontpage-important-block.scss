@@ -2,10 +2,6 @@
  * frontpage notice
  */
 .frontpage-important-info-block {
-  a {
-    color: #ffffff;
-  }
-
   width: 25%;
   font-size: 15px;
   color: #ffffff;
@@ -15,4 +11,36 @@
   line-height: 1.15;
   background-color: rgba(0,0,0,.45);
   padding: 15px;
+}
+
+
+/**
+ * Gagarin forever!!!
+ */
+.view-quick-facts .view-content > div .views-field-field-fact-image .field-content {
+  width: 180px;
+  height: 180px;
+  line-height: 180px;
+  border: 12px solid #ffa200;
+  @include border-radius(100%); 
+  text-align: center;
+  
+  img {
+    width: 70%;
+    margin-top: 30px;
+    margin-left: -10px;    
+  }
+}
+@media (max-width: 1200px) and (min-width: 767px) {
+  .view-quick-facts .view-content > div .views-field-field-fact-image .field-content {
+    width: 70px;
+    height: 70px;
+    border: 7px solid #ffa200;
+    line-height: 1;
+    
+    img {
+      margin-top: 14px;
+      margin-left: -3px;    
+    }    
+  }
 }

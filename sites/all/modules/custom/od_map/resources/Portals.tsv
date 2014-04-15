@@ -1,0 +1,6 @@
+region	url	text
+RU-MOS	http://data.mos.ru/	<span class="first">Портал открытых данных Правительства Москвы</span>
+RU-TUL	http://opendata71.ru/	<span class="first">Портал открытых данных Правительства Тульской области</span>
+RU-ULY	http://data.ulgov.ru/	<span class="first">Портал открытых данных Ульяновской области</span>
+RU-PER	http://opendata.permkrai.ru/	<span class="first"> Портал Правительства Пермского края "Открытые данные"</span>
+RU-LEN	http://data.gov.spb.ru/	<span class="first">Открытые данные Санкт-Петербурга</span>

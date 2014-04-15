@@ -1013,7 +1013,8 @@ $zen-auto-include-item-base: false;
   }
   .dataset-mobile-change,
   .section-taxonomy  .region-mobile-change,
-  .section-rubriki  .region-mobile-change {
+  .section-rubriki  .region-mobile-change,
+  .section-rubrics  .region-mobile-change {
     display: block;
   }
   .section-taxonomy,
@@ -1152,7 +1153,7 @@ $zen-auto-include-item-base: false;
   .data-row-passport table td a[href*='.csv'],
   .data-row-passport table td a[href*='.xls'] {
     display: block;
-    width: 30%;
+    width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1307,6 +1308,8 @@ $zen-auto-include-item-base: false;
   }
   .view-datasets-map .geolocation-lng-item {
     float: left;
+    clear: none;
+    margin-left: 10px;
   }
   .view-datasets-map .views-submit-button {
     float: left;
@@ -2168,7 +2171,8 @@ $zen-auto-include-item-base: false;
       top: 7px;
     }
     .pane-system-main-menu > ul > li > a {
-      padding: 1em .5em;
+      padding: 1.15em .5em;
+      font-size: 12px;
     }
     .pane-system-user-menu {
       left: 14px;
@@ -2261,6 +2265,7 @@ $zen-auto-include-item-base: false;
   
   .region-header .pane-system-main-menu > ul > li ul li a {
     padding: 0 0.5em;
+    font-size: 12px;
   }
   .region-orange {
     .pane-2 {
@@ -2349,7 +2354,8 @@ $zen-auto-include-item-base: false;
     }
   }
   .region-header .pane-system-main-menu > ul > li.sf-item-2 > ul {
-    width: 534px !important;
+    width: 564px !important;
+    margin-left: -63px !important;
   }
   .pane-rubrics-rubrics-front  {
     margin-left: 21px;
