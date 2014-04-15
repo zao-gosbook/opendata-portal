@@ -65,7 +65,7 @@ function gb_search_pane_content_type_form($form, &$form_state, $conf) {
 
   $form = array();
 
-  $form['#action'] = url();
+  $form['#action'] = url('');
 
   $form['field_query'] = array(
     '#title' => t($conf['query_field_label']),
