@@ -12,3 +12,9 @@ files[] = include/ODDetectEncodingException.inc
 files[] = include/adapters/ODDetectEncodingAdapter_Enca.inc
 files[] = include/adapters/ODDetectEncodingAdapter_DrupalEnca.inc
 files[] = include/adapters/ODDetectEncodingAdapter_dummy.inc
+; Processors
+files[] = include/mime_converters/ODDetectEncodingMimeProcessorInterface.inc
+files[] = include/mime_converters/ODDetectEncodingMimeProcessorAbstract.inc
+files[] = include/mime_converters/ODDetectEncodingMimeProcessorDefault.inc
+files[] = include/mime_converters/ODDetectEncodingMimeProcessorFactory.inc
+
