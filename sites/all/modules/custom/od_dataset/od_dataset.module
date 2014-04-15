@@ -302,7 +302,7 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
       $realpath = file_stream_wrapper_get_instance_by_uri($file->uri)->realpath();
       if (file_exists($file->uri)) {
         $add_file = $realpath;
-        if ($target_encoding && $detector->convertFile($file->uri, $out_file, $target_encoding)) {
+        if ($target_encoding && $detector->convertFileAdvanced($file->uri, $out_file, $target_encoding)) {
           $add_file = $out_file;
         }
 
@@ -329,7 +329,7 @@ function od_dataset_download_file_page_callback($file) {
     $detector = od_detect_encoding_get_detector();
     $out_file = od_common_tmpfilename('temporary://', $file->uri);
     // @fixme: Check if encoding is valid before converting
-    if ($detector->convertFile($file->uri, $out_file, $target_encoding)) {
+    if ($detector->convertFileAdvanced($file->uri, $out_file, $target_encoding)) {
       od_dataset_download_file($out_file, $file->filename);
       return TRUE;
     }
