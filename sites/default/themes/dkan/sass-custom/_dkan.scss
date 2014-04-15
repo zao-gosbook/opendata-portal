@@ -6457,6 +6457,7 @@ div.fivestar-widget .star {
     background: #fff;
     border: 1px solid #000;
     @include border-radius(3px);
+    height: auto;
   }  
   g.city > text.city-label {
     fill: #000;
