@@ -252,6 +252,10 @@ $zen-auto-include-item-base: false;
   }
   .region-header {
     
+    #mini-panel-search_block {
+      display: block;
+    }    
+    
     &.panels-flexible-row {
       padding-bottom: 0;
     }
@@ -327,8 +331,8 @@ $zen-auto-include-item-base: false;
       clear: left;
       padding-left: 0;
       padding-top: 0;
-      margin-left: -10px;
-      margin-right: -10px;      
+      margin-left: -19px;
+      margin-right: -20px;      
       
       .sf-clone-parent {
         display: none;
@@ -2162,8 +2166,8 @@ $zen-auto-include-item-base: false;
     }    
     .pane-system-main-menu {
       position: absolute;
-      right: 25px;
-      top: 79px;
+      right: 21px;
+      top: 47px;
       margin: 0;
       padding: 0;
     }
@@ -2322,6 +2326,9 @@ $zen-auto-include-item-base: false;
   .region-header .header__site-slogan {
     font-size: 9px;
   }
+  .region-header #mini-panel-search_block {
+    float: right;
+  }  
   .pane-search-block {
     position: absolute;
     right: 4px;
@@ -2330,6 +2337,7 @@ $zen-auto-include-item-base: false;
     .pane-gb-search-pane {
       width: 409px;
       padding: 0;
+      float: right;
       
       .form-text {
         @include border-radius(0);

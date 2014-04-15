@@ -150,6 +150,15 @@
     }
   }
 
+  /*Drupal.behaviors.resizeMainMenu = {
+    attach: function(context, settings) {
+      if($('body').width() > 1200) {
+        var width_menu = $('.region-header .pane-system-main-menu > ul').width();
+        $('.pane-gb-search-pane').width(width_menu);            
+      }
+    }
+  } */   
+  
   Drupal.behaviors.positionActiveMenu = {
     attach: function(context, settings) {  
       $(".not-front .region-header").addClass("active-region");
