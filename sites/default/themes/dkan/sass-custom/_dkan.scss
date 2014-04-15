@@ -389,8 +389,11 @@ div.horizontal-tabs .form-text {
     color: #0c87e8;
     letter-spacing: 0.87px;
   }
+  #mini-panel-search_block {
+    display: table;
+  }
   .pane-system-main-menu {
-    padding-left: 10%;
+    /*padding-left: 10%;*/
     padding-top: 22px;
     text-transform: uppercase;
     
@@ -583,7 +586,7 @@ div.horizontal-tabs .form-text {
   }
   .pane-system-user-menu {
     float: right;
-    margin-top: -57px;
+    margin-top: -97px;
     padding: 0 60px 20px 30px;
     
     > ul {
@@ -1185,9 +1188,10 @@ td div.label {
 
 .pane-search-block {
   display: table;
+  width: 100%;
 }
 .pane-gb-search-pane {
-  width: 692px;
+  width: 100%;
   display: table;
   
   form {
