@@ -574,9 +574,13 @@ function od_dataset_last_update_time($node_or_nid, $revision_id = NULL, $newtime
 
 
 function od_dataset_batch_update_page_callback() {
+  $options = array(
+    'force' => !empty($_GET['force']),
+  );
+
   $batch = array(
     'operations' => array(
-      array('_od_dataset_update_batch_process', array(array())),
+      array('_od_dataset_update_batch_process', array($options)),
     ),
     'title' => t('Updating all aliases for datasets'),
     'init_message' => t('Batch start'),
@@ -642,10 +646,12 @@ function _od_dataset_update_batch_process($options, &$context) {
             OD_DATASET_FIELD_LATEST_UPDATE => array(),
           );
 
-          // Apply filtering: do not update old nodes if they already have values
-          foreach ($fields_to_update as $_fieldname => $_meta) {
-            if ($twrp->{$_fieldname}->value()) {
-              unset($fields_to_update[$_fieldname]);
+          if (empty($options['force'])) {
+            // Apply filtering: do not update old nodes if they already have values
+            foreach ($fields_to_update as $_fieldname => $_meta) {
+              if ($twrp->{$_fieldname}->value()) {
+                unset($fields_to_update[$_fieldname]);
+              }
             }
           }
 
