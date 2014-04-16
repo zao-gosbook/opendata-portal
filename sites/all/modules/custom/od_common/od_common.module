@@ -11,11 +11,6 @@ define('OD_COMMON', dirname(__FILE__));
 require_once OD_COMMON . '/od_common.ajax_commands.inc';
 
 /**
- * Load constants.
- */
-require_once OD_COMMON . '/includes/constants.inc';
-
-/**
  * Implements hook_module_implements_alter()
  */
 function od_common_module_implements_alter(&$implementations, $hook) {
