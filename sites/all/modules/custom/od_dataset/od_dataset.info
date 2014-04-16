@@ -8,5 +8,3 @@ dependencies[] = od_dataset_helper
 
 ; Views handlers
 files[] = views/od_dataset_views_handler_area_facets_info.inc
-
-files[] = plugins/facetapi/adapter.inc
