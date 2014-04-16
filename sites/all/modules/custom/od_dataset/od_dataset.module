@@ -158,9 +158,11 @@ function od_dataset_download_path($node_dataset, $revision_id = NULL, $target_ty
   //$download_uri = 'dataset-actions/download_file/'. $item['fid'];
   $result = new ODDatasetDownloadUriObject();
   $result->internal_uri = od_dataset_download_path_internal($node_dataset, $revision_id, $target_type);
-  $result->type = $result->internal_uri ? 'internal' : 'not_found';
   try {
-    if (!$result->internal_uri && ($wrapper = od_dataset_get_wrapper($node_dataset, $revision_id))) {
+    if ($result->internal_uri && !drupal_lookup_path('source', $result->internal_uri)) {
+      $result->internal_uri = FALSE; // Source doesn't exist. Orphaned alias.
+    }
+    elseif (!$result->internal_uri && ($wrapper = od_dataset_get_wrapper($node_dataset, $revision_id))) {
       $result->internal_uri = 'this_is_a_link_to_external_'. $target_type; //@fixme: Implement in correct way
       $result->type = 'external';
     }
@@ -168,9 +170,10 @@ function od_dataset_download_path($node_dataset, $revision_id = NULL, $target_ty
   catch (Exception $e) {
     // @fixme: prevent errors here.
     watchdog_exception('od_common', $e);
-    $result->type = 'not_found';
+    $result->internal_uri = FALSE;
   }
 
+  $result->type = $result->internal_uri ? 'internal' : 'not_found';
   return $result;
 }
 
