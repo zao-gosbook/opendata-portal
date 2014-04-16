@@ -1191,7 +1191,7 @@ td div.label {
   /*width: 100%;*/
 }
 .pane-gb-search-pane {
-  width: auto;
+  width: 100%;
   display: table;
   
   form {
@@ -4407,8 +4407,10 @@ html.js input.form-autocomplete {
       text-decoration: none;
       display: inline-block;  
       text-decoration: none;
-      margin-top: 6px;
     }
+  }
+  .view-header a.btn[href="/datasets-map"] {
+    margin: 0 0 25px 20px;
   }
   tr.odd {
     background: #f4f4f4;
@@ -4430,13 +4432,19 @@ html.js input.form-autocomplete {
     a {
       text-decoration: none;
     }
-    &.views-field-field-site-url a {
-      display: block;
-      width: 25px;
-      height: 21px;
-      overflow: hidden;
-      text-indent: -10000px;
-      background: url("../images/icon-direct.png");
+    &.views-field-field-site-url,
+    &.views-field-field-org-site-od-section {
+      text-align: center;
+      
+      a {
+        display: block;
+        width: 25px;
+        height: 21px;
+        overflow: hidden;
+        text-indent: -10000px;
+        background: url("../images/icon-direct.png");      
+        margin: 0 auto;
+      }
     }
   }
 }
@@ -6685,6 +6693,21 @@ div.fivestar-widget .star {
  * map
  */ 
  
+.link-yandex-map a {
+  display: inline-block;
+  padding: 0 10px 0 42px;
+  height: 42px;
+  line-height: 42px;
+  background: #fff url("../images/ico-ymaps.png") no-repeat 5px 50%;
+  font-size: 16px;
+  text-decoration: none;
+  border: 1px solid #0C87E8;
+  margin-bottom: 10px;
+} 
+.link-google-map a {
+  background-image: url("../images/ico-gmaps.png");
+}
+
 /* filters */
 .od-map-page-switcher-wrapper {
   padding: 0 0 20px;    
@@ -6745,7 +6768,7 @@ div.fivestar-widget .star {
   }  
 } 
 .page-datasets-map {
-  background-color: #fff;  
+  /*background-color: #fff;  */
   
   .custom-text-wrapper {
     padding: 20px 0;
@@ -6940,6 +6963,11 @@ div.fivestar-widget .star {
   #ip-geoloc-map-of-view-datasets_map-google_map {
     height: 680px !important;
   }
+}
+.view-datasets-map .geofield-ymap {
+  border: 3px solid #fff;
+  margin-top: 15px;
+  height: 680px !important;
 }
 
 /**
