@@ -200,7 +200,8 @@ class geofield_ymap_plugin_style_geofield_ymap extends views_plugin_style {
     foreach ($this->view->result as $row_index => $row) {
       $this->view->row_index = $row_index;
       $geofield_values = $this->view->field[$geofield]->get_value($row);
-      if (!$geofield_values) {
+      $geofield_values = array_filter(array_map('array_filter', $geofield_values));
+      if (empty($geofield_values)) {
         continue;
       }
 
