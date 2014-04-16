@@ -4,6 +4,7 @@ package = "Gosbook"
 core = 7.x
 
 dependencies[] = remote_file_source
+dependencies[] = od_dataset_helper
 
 ; Views handlers
 files[] = views/od_dataset_views_handler_area_facets_info.inc
