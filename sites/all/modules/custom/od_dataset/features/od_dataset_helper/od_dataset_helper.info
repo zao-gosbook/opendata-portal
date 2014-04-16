@@ -1,0 +1,13 @@
+name = od_dataset_helper
+core = 7.x
+package = od_dataset
+version = 7.x-0.1
+project = od_dataset_helper
+dependencies[] = date
+dependencies[] = features
+dependencies[] = text
+features[features_api][] = api:2
+features[field_base][] = field_dataset_latest_update
+features[field_base][] = field_resource_download
+features[field_instance][] = node-dataset-field_dataset_latest_update
+features[field_instance][] = node-dataset-field_resource_download
