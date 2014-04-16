@@ -96,7 +96,23 @@ class ODDetectEncoding {
   }
 
   function convertFile($input_file, $output_file,$out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
-    return $this->_adapter->convertFile($input_file, $output_file,$out_charset, $in_charset);
+    $processor = ODDetectEncodingMimeProcessorFactory::getProcessorDefault();
+    if (!$processor) {
+      return FALSE;
+    }
+
+    $processor->setConverterAdapter($this->getAdapter());
+    return $processor->convertFile($input_file, $output_file, $out_charset, $in_charset);
+  }
+
+  function convertFileAdvanced($input_file, $output_file,$out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
+    $processor = ODDetectEncodingMimeProcessorFactory::getProcessorFile($input_file);
+    if (!$processor) {
+      return FALSE;
+    }
+
+    $processor->setConverterAdapter($this->getAdapter());
+    return $processor->convertFile($input_file, $output_file, $out_charset, $in_charset);
   }
 
   public function copyFile($input_file, $output_file) {

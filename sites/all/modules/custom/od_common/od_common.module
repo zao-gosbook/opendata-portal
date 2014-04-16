@@ -688,3 +688,27 @@ function od_common_views_api() {
     'path' => drupal_get_path('module', 'od_common') . '/views',
   );
 }
+
+/**
+ * Implements hook_language_negotiation_info().
+ */
+function od_common_language_negotiation_info() {
+  $file = str_replace(DRUPAL_ROOT . '/', '', OD_COMMON). '/od_common.language.inc';
+  $providers = array();
+
+  $providers['od-common-'. LOCALE_LANGUAGE_NEGOTIATION_URL] = array(
+    'types' => array(LANGUAGE_TYPE_CONTENT, LANGUAGE_TYPE_INTERFACE, LANGUAGE_TYPE_URL),
+    'callbacks' => array(
+      'language' => 'od_common_language_language_from_session',
+      'switcher' => 'locale_language_from_session',
+      'url_rewrite' => 'locale_language_url_rewrite_session',
+    ),
+    'file' => $file,
+    'weight' => -8,
+    'name' => t('Session mod (also counts anonymous users)'),
+    'description' => t('Determine the language from the URL (Path prefix or domain).'),
+    'config' => 'admin/config/regional/language/configure/url',
+  );
+
+  return $providers;
+}

@@ -36,7 +36,6 @@
       var path = d3.geo.path().projection(projection);
 
       //Reading map file and data
-
       queue()
         .defer(d3.json, config.map_json_path)
         .defer(d3.tsv, config.portals_tsv_path)
@@ -45,6 +44,7 @@
       //Start of Choropleth drawing
 
       function ready(error, map, data) {
+        console.log(map);
         var portalsById = {};
 
         // Gather info
@@ -59,7 +59,7 @@
         svg.append("g")
           .attr("class", "region")
           .selectAll("path")
-          .data(topojson.object(map, map.objects.russia).geometries)
+          .data(topojson.object(map, map.objects.map).geometries)
           //.data(topojson.feature(map, map.objects.russia).features) <-- in case topojson.v1.js
           .enter().append("path")
           .attr("d", path)

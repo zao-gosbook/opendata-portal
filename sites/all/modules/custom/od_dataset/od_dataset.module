@@ -1,9 +1,14 @@
 <?php
 /**
  * @file
+ * @todo: Use pathauto?
  */
 
 define('OD_DATASET_PATH', dirname(__FILE__));
+define('OD_DATASET_DOWNLOAD_FIELD', 'field_resource_download');
+define('OD_DATASET_DOWNLOAD_ROUTER_PATH', 'od_dataset_download_router');
+define('OD_DATASET_ALIAS_DELIMITER', ':');
+define('OD_DATASET_FIELD_LATEST_UPDATE', 'field_dataset_latest_update');
 
 // Include our custom remote file source
 require_once OD_DATASET_PATH. '/od_dataset.remote_file_source_mod.inc';
@@ -29,7 +34,147 @@ function od_dataset_menu() {
     'access arguments' => array(2),
   );
 
+  $arg_offset = count(explode('/', OD_DATASET_DOWNLOAD_ROUTER_PATH));
+  $items[OD_DATASET_DOWNLOAD_ROUTER_PATH. '/%/%'] = array(
+    'page callback' => 'od_dataset_download_router_page_callback',
+    'page arguments' => array($arg_offset + 0, $arg_offset + 1, $arg_offset + 2),
+    'access callback' => 'od_dataset_download_router_access_callback',
+    'access arguments' => array($arg_offset + 0, $arg_offset + 1, $arg_offset + 2),
+  );
+
+  $items['od_dataset_batch_update'] = array(
+    'page callback' => 'od_dataset_batch_update_page_callback',
+    'access arguments' => array('administer'),
+    'title' => 'batch',
+  );
+
   return $items;
+}
+
+function od_dataset_download_router_page_callback($type, $nid, $rid = NULL) {
+  switch ($type) {
+    case 'structure':
+    case 'data':
+      if (!empty($rid) || (($alias = drupal_lookup_path('alias', $_GET['q'])) && ($rid = od_dataset_get_revision_id_by_alias($alias, $type)))) {
+        if (od_dataset_do_download($nid, $rid, $type)) {
+          // Go to download, all is ok
+          drupal_exit();
+        }
+
+        // Otherwise just show 404 page
+      }
+      break;
+  }
+
+  watchdog('od_dataset', 'Fake download :plac', array(':plac' => $_GET['q']), WATCHDOG_EMERGENCY);
+  drupal_not_found();
+}
+
+/**
+ * @param $alias
+ * @param string $type
+ * @return bool
+ * @throws Exception
+ * @todo: Add static (non-static?) cache
+ */
+function od_dataset_get_revision_id_by_alias($alias, $type = '%') {
+  $revision_id = FALSE;
+  if ($info = field_info_field(OD_DATASET_DOWNLOAD_FIELD)) {
+    if ($info['storage']['type'] != 'field_sql_storage') {
+      throw new Exception("Storage type of a ". OD_DATASET_DOWNLOAD_FIELD. ' should be field_sql_storage! Or implement another...');
+    }
+
+    list($table, $column_info) = each($info['storage']['details']['sql']['FIELD_LOAD_REVISION']);
+    $operator = $type == '%' ? ' LIKE ' : '=';
+    $sql = "
+    SELECT
+      revision_id
+    FROM
+      {{$table}}
+    WHERE (
+      {$column_info['value']}{$operator}:field_value
+    )
+    LIMIT 1
+    ";
+
+    $result = db_query($sql, array(':field_value' => "{$type}:{$alias}"));
+    if ($tmp = $result->fetchField()) {
+      $revision_id = $tmp;
+    }
+  }
+
+  return $revision_id;
+}
+
+function od_dataset_do_download($node_or_nid, $revision_id = NULL, $type = 'data') {
+  try {
+    $wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id);
+    if (!$wrapper) {
+      throw new Exception('Can\'t get dataset wrapper');
+    }
+
+    if ($wrapper->field_resources->count() == 0) {
+      return FALSE; // just exit from function and let parent function to end up with drupal_not_found();
+    }
+
+    switch ($type) {
+      case 'data':
+        if ((boolean) $wrapper->field_multivolume->value() === TRUE) {
+          return od_dataset_download_package_page_callback($wrapper);
+        }
+        elseif ($file = $wrapper->field_resources->get(0)->field_upload->value()) {
+          return od_dataset_download_file_page_callback($file);
+        }
+        break;
+      case 'structure':
+        if ($file = $wrapper->field_resources->get(0)->field_upload_structure->value()) {
+          return od_dataset_download_file($file->uri, $file->filename);
+        }
+        break;
+    }
+
+    return TRUE;
+  }
+  catch (Exception $e) {
+    watchdog_exception('od_dataset', $e);
+    return FALSE;
+  }
+}
+
+function od_dataset_download_router_access_callback($type, $nid, $rid) {
+  return TRUE; //@todo: Access callback could be rewritten
+}
+
+/**
+ * Gets a path for downloading resources from dataset.
+ * @param $node_dataset
+ * @param null $revision_id
+ * @return ODDatasetDownloadUriObject
+ *  A url for downloading something from dataset of FALSE in case of any error.
+ *  Result of this should be passed to url() function in order to get valid URL
+ */
+function od_dataset_download_path($node_dataset, $revision_id = NULL, $target_type = 'data') {
+  // Change download callback to od_dataset's callback to support encodings
+  //$download_uri = 'dataset-actions/download_file/'. $item['fid'];
+  $result = new ODDatasetDownloadUriObject();
+  $result->internal_uri = od_dataset_download_path_internal($node_dataset, $revision_id, $target_type);
+  try {
+    if ($result->internal_uri && !drupal_lookup_path('source', $result->internal_uri)) {
+      $result->internal_uri = FALSE; // Source doesn't exist. Orphaned alias.
+    }
+    elseif (!$result->internal_uri && ($wrapper = od_dataset_get_wrapper($node_dataset, $revision_id))) {
+      $result->internal_uri = 'this_is_a_link_to_external_'. $target_type; //@fixme: Implement in correct way
+      $result->type = 'external';
+    }
+  }
+  catch (Exception $e) {
+    // @fixme: prevent errors here.
+    watchdog_exception('od_common', $e);
+    $result->internal_uri = FALSE;
+  }
+
+  $result->type = $result->internal_uri ? 'internal' : 'not_found';
+  return $result;
 }
 
 /**
@@ -39,26 +184,42 @@ function od_dataset_menu() {
  * @return string|bool
  *  A url for downloading something from dataset of FALSE in case of any error.
  *  Result of this should be passed to url() function in order to get valid URL
+ * @fixme: Check if files are exist
  */
-function od_dataset_download_path($node_dataset, $revision_id = NULL) {
+function od_dataset_download_path_internal($node_dataset, $revision_id = NULL, $target_type = 'data') {
   // Change download callback to od_dataset's callback to support encodings
   //$download_uri = 'dataset-actions/download_file/'. $item['fid'];
-  $download_uri = 'not_implemented_yet/stay_cool/it_will_be_ok';
+  $download_uri = FALSE;
   try {
     $wrapper = od_dataset_get_wrapper($node_dataset, $revision_id);
-    if ($wrapper->field_multivolume->raw() == TRUE) {
-      $download_uri = 'dataset-actions/download_package/' . $node_dataset->nid->value();
+    foreach($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
+      list($type, $alias) = od_dataset_alias_parse($_val_wr->value());
+      if ($target_type == $type) {
+        $download_uri = $alias;
+        break;
+      }
     }
   }
   catch (Exception $e) {
     // @fixme: prevent errors here.
     watchdog_exception('od_common', $e);
-    //throw $e;
-
     $download_uri = FALSE;
   }
 
   return $download_uri;
+}
+
+/**
+ * Gets a path for downloading resources from dataset.
+ * @param $node_dataset
+ * @param null $revision_id
+ * @return string|bool
+ *  A url for downloading something from dataset of FALSE in case of any error.
+ *  Result of this should be passed to url() function in order to get valid URL
+ * @deprecated
+ */
+function od_dataset_download_structure_path($node_dataset, $revision_id = NULL) {
+  return od_dataset_download_path($node_dataset, $revision_id, 'structure');
 }
 
 /**
@@ -87,13 +248,34 @@ function od_dataset_download_file_access_callback($file) {
  * @return bool|EntityMetadataWrapper
  */
 function od_dataset_get_wrapper($node_or_nid, $revision_id = NULL) {
+  if ($node_or_nid instanceof EntityMetadataWrapper) {
+    if ($revision_id !== NULL && $node_or_nid->vid->value() != $revision_id) {
+      return od_dataset_get_wrapper($node_or_nid->nid->value(), $revision_id);
+    }
+
+    return $node_or_nid;
+  }
+
   $obj = $node_or_nid;
   $nid = is_object($node_or_nid) && isset($node_or_nid->nid) ? $node_or_nid->nid : $node_or_nid;
-  if ($revision_id !== NULL && ($obj = node_load($nid, $revision_id)) && !$obj) {
+  if (($revision_id !== NULL && ($obj = node_load($nid, $revision_id)) && !$obj) || !$obj) {
     return FALSE;
   }
 
   return entity_metadata_wrapper('node', $obj);
+}
+
+/**
+ * @param $node_or_nid
+ * @param null $revision_id
+ * @return bool
+ */
+function od_dataset_get_wrapper_by_resource($node_or_nid, $revision_id = NULL) {
+  if (($resource = od_dataset_get_wrapper($node_or_nid)) && $resource->getBundle() == 'resource') {
+    return od_dataset_get_wrapper($resource->field_dataset_ref); //@fixme: Get with proper revision id
+  }
+
+  return FALSE;
 }
 
 /**
@@ -123,7 +305,7 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
       $realpath = file_stream_wrapper_get_instance_by_uri($file->uri)->realpath();
       if (file_exists($file->uri)) {
         $add_file = $realpath;
-        if ($target_encoding && $detector->convertFile($file->uri, $out_file, $target_encoding)) {
+        if ($target_encoding && $detector->convertFileAdvanced($file->uri, $out_file, $target_encoding)) {
           $add_file = $out_file;
         }
 
@@ -136,11 +318,11 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
 
   if (!$zip->close()) {
     @unlink($tmp_file);
-    drupal_not_found();
+    return FALSE;
   }
 
   od_dataset_download_file($tmp_file, drupal_substr($wrapper->title->value(), 0, 200). '.zip');
-  drupal_exit();
+  return TRUE;
 }
 
 function od_dataset_download_file_page_callback($file) {
@@ -150,17 +332,17 @@ function od_dataset_download_file_page_callback($file) {
     $detector = od_detect_encoding_get_detector();
     $out_file = od_common_tmpfilename('temporary://', $file->uri);
     // @fixme: Check if encoding is valid before converting
-    if ($detector->convertFile($file->uri, $out_file, $target_encoding)) {
+    if ($detector->convertFileAdvanced($file->uri, $out_file, $target_encoding)) {
       od_dataset_download_file($out_file, $file->filename);
-      drupal_exit();
+      return TRUE;
     }
   }
   else {
     od_dataset_download_file($file->uri, $file->filename);
-    drupal_exit();
+    return TRUE;
   }
 
-  drupal_not_found();
+  return FALSE;
 }
 
 function od_dataset_download_file($path, $filename = NULL) {
@@ -180,4 +362,343 @@ function od_dataset_views_api() {
     'api' => 3,
     'path' => drupal_get_path('module', 'od_dataset') . '/views',
   );
+}
+
+function od_dataset_save_aliases($node_or_nid, $revision_id = NULL) {
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    foreach ($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
+      list($type, $alias) = od_dataset_alias_parse($_val_wr->value());
+      $path = array(
+        'source' => OD_DATASET_DOWNLOAD_ROUTER_PATH. "/{$type}/{$wrapper->nid->value()}",
+        'alias' => $alias,
+      );
+
+      if (!($oldpath = path_load(array('alias' => $alias))) || ($oldpath['source'] != $path['source'])) {
+        path_save($path);
+        // Save to history
+        db_insert('od_dataset_paths')
+          ->fields(array(
+            'entity_type' => $wrapper->type(),
+            'entity_id' => $wrapper->nid->value(),
+            'revision_id' => $wrapper->{$wrapper->entityKey('revision')}->value(),
+            'pid' => $path['pid'],
+          ))
+          ->execute();
+      }
+    }
+  }
+}
+
+function od_dataset_save_important_fields($node_or_nid, $revision_id = NULL, $fields = NULL) {
+  $wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id);
+  if (!$wrapper) {
+    throw new Exception('Can\'t get dataset wrapper');
+  }
+
+  if (empty($fields)) {
+    return FALSE;
+  }
+
+  $entity = $wrapper->value();
+  $entity_type = $wrapper->type();
+  // Collect the storage backends used by the remaining fields in the entities.
+  $storages = array();
+  foreach ($fields as $_fieldname => $_meta) {
+    $instance = field_info_instance($entity_type, $_fieldname, $wrapper->getBundle());
+    $field = field_info_field_by_id($instance['field_id']);
+    $field_id = $field['id'];
+    $field_name = $field['field_name'];
+    // Leave the field untouched if $entity comes with no $field_name property,
+    // but empty the field if it comes as a NULL value or an empty array.
+    // Function property_exists() is slower, so we catch the more frequent
+    // cases where it's an empty array with the faster isset().
+    if (isset($entity->$field_name) || property_exists($entity, $field_name)) {
+      // Collect the storage backend if the field has not been written yet.
+      if (!isset($skip_fields[$field_id])) {
+        $storages[$field['storage']['type']][$field_id] = $field_id;
+      }
+    }
+  }
+
+  // Field storage backends save any remaining unsaved fields.
+  foreach ($storages as $storage => $fields) {
+    $storage_info = field_info_storage_types($storage);
+    module_invoke($storage_info['module'], 'field_storage_write', $entity_type, $entity, FIELD_STORAGE_UPDATE, $fields);
+  }
+
+  // Clear field caches
+  $entity_info = $wrapper->entityInfo();
+  if ($entity_info['field cache']) {
+    cache_clear_all("field:$entity_type:{$wrapper->getIdentifier()}", 'cache_field');
+  }
+}
+
+function od_dataset_set_alias_links($node_or_nid, $revision_id = NULL) {
+  if(($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) && ($links = od_dataset_build_alias_links($node_or_nid, $revision_id))) {
+    $wrapper->{OD_DATASET_DOWNLOAD_FIELD}->set(array());
+    foreach ($links as $link) {
+      $wrapper->{OD_DATASET_DOWNLOAD_FIELD}[] = $link;
+    }
+
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
+  $links = FALSE;
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    $alias = drupal_get_path_alias("node/{$wrapper->nid->value()}");
+    $stamp = gmdate('Y-m-d\TH-i', od_dataset_last_update_time($node_or_nid, $revision_id));
+    //$format = $wrapper->field_resources->get(0)->field_format->name->value();
+    $format = od_dataset_get_format($node_or_nid, $revision_id);
+    $suffix = $format ? '.' . $format : '';
+    $links = array();
+    //@todo: Control data availability somewhere else not here
+    //if ($wrapper->field_resources->count() > 0 && $wrapper->field_resources->get(0)->getBundle() == 'resource') {
+      // Build data link
+      //if ($wrapper->field_resources->get(0)->field_upload->value()) {
+        $links['data'] = od_dataset_alias_build('data', "{$alias}/data-{$stamp}-structure-{$stamp}{$suffix}");
+      //}
+
+      //if ($wrapper->field_resources->get(0)->field_upload_structure->value()) {
+        $links['structure'] = od_dataset_alias_build('structure', "{$alias}/structure-{$stamp}{$suffix}");
+      //}
+    //}
+  }
+
+  return $links;
+}
+
+/**
+ * @param $node_or_nid
+ * @param null $revision_id
+ * @return string
+ * @fixme: Implement this
+ */
+function od_dataset_get_format($node_or_nid, $revision_id = NULL) {
+  $extension = FALSE;
+  if (($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) && $wrapper->field_resources->count() > 0) {
+    try {
+      if ((boolean) $wrapper->field_multivolume->value() === TRUE) {
+        $extension = 'zip';
+      }
+      elseif ($_tmp_term = $wrapper->field_resources->get(0)->field_format->value()) {
+        $extension = $_tmp_term->name;
+      }
+    }
+    catch (Exception $e) {
+      watchdog_exception('od_dataset', $e);
+    }
+  }
+
+  return $extension;
+}
+
+function od_dataset_entity_insert($entity, $type) {
+  //od_dataset_entity_update($entity, $type);
+}
+
+function od_dataset_entity_update($entity, $type) {
+  //od_dataset_entity_update($entity, $type);
+}
+
+function od_dataset_entity_presave($entity, $type) {
+  if ($type == 'node' && isset($entity->type) && $entity->type == 'dataset') {
+    od_dataset_set_alias_links($entity);
+    od_dataset_save_aliases($entity);
+  }
+  elseif ($type = 'node' && isset($entity->type) && $entity->type == 'resource') {
+    $dataset_wr = od_dataset_get_wrapper_by_resource($entity->nid);
+    od_dataset_last_update_time($dataset_wr, NULL, time());
+  }
+}
+
+function od_dataset_entity_delete($entity, $type) {
+  if ($type == 'node' && isset($entity->type) && $entity->type == 'dataset') {
+    od_dataset_delete_aliases($entity);
+  }
+}
+
+function od_dataset_delete_aliases($node_or_nid, $revision_id = NULL) {
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    foreach ($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
+      list(, $alias) = od_dataset_alias_parse($_val_wr->value());
+      path_delete(array('alias' => $alias));
+    }
+  }
+}
+
+function od_dataset_alias_parse($alias) {
+  return explode(OD_DATASET_ALIAS_DELIMITER, $alias);
+}
+
+function od_dataset_alias_build($type, $alias) {
+  return ($type . OD_DATASET_ALIAS_DELIMITER . $alias);
+}
+
+function od_dataset_last_update_time($node_or_nid, $revision_id = NULL, $newtime = NULL) {
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    $order = array(
+      OD_DATASET_FIELD_LATEST_UPDATE => array('has_time' => TRUE),
+      'field_date_dataset_actual' => array(),
+      'field_date_first_time_publ' => array(),
+      'field_date_last_change' => array(),
+      'changed' => array('has_time' => TRUE),
+    );
+
+    $stamp = NULL;
+    foreach ($order as $_fieldname => $_info) {
+      if ($stamp = $wrapper->{$_fieldname}->value()) {
+        if (empty($_info['has_time']) && ($tmpstamp = $wrapper->changed->value())) {
+          $stamp = strtotime(gmdate("H", $tmpstamp). ":". gmdate('i', $tmpstamp). "+00:00", $stamp);
+        }
+        break;
+      }
+    }
+
+    // Set time for the first time requesting
+    if (!$wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->value()) {
+      $newtime = $stamp;
+    }
+
+    if ($newtime !== NULL) {
+      $wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->set($newtime);
+      //$wrapper->save();
+      $stamp = $newtime;
+    }
+
+    return $stamp;
+  }
+
+  return FALSE;
+}
+
+
+function od_dataset_batch_update_page_callback() {
+  $options = array(
+    'force' => !empty($_GET['force']),
+  );
+
+  $batch = array(
+    'operations' => array(
+      array('_od_dataset_update_batch_process', array($options)),
+    ),
+    'title' => t('Updating all aliases for datasets'),
+    'init_message' => t('Batch start'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('Batch has encountered an error.'),
+    //'file' => drupal_get_path('module', 'batch_example') . '/batch_example.inc',
+  );
+
+  batch_set($batch);
+  batch_process('node/1');
+}
+
+/**
+ * Batch processing callback; Generate aliases for nodes.
+ */
+function _od_dataset_update_batch_process($options, &$context) {
+  // Start a transaction
+  $transaction = db_transaction();
+  try {
+    if (!isset($context['sandbox']['current'])) {
+      $context['sandbox']['count'] = 0;
+      $context['sandbox']['current'] = 0;
+      $sql = "
+      DELETE
+        ua, dp
+      FROM {url_alias} AS ua
+      INNER JOIN {od_dataset_paths} AS dp ON dp.pid=ua.pid
+      WHERE (
+        dp.pid IS NOT NULL
+      )
+      ";
+
+      // Delete orphaned from both tables
+      db_query($sql);
+    }
+
+
+    $batch_count = 25;
+    $query = db_select('node', 'n');
+    $query
+      ->fields('n', array('nid'))
+      ->condition('n.type', 'dataset');
+
+    // Get the total amount of items to process.
+    if (!isset($context['sandbox']['total'])) {
+      $context['sandbox']['total'] = $query->countQuery()->execute()->fetchField();
+
+      // If there are no nodes to update, then stop immediately.
+      if (!$context['sandbox']['total']) {
+        $context['finished'] = 1;
+        return;
+      }
+    }
+
+    $query->range($context['sandbox']['current'], $batch_count);
+    $context['sandbox']['current'] += $batch_count;
+    foreach (($rows = $query->execute()) as $row) {
+      if ($wrapper = od_dataset_get_wrapper($row->nid)) {
+        foreach (node_revision_list($wrapper->value()) as $rev) {
+          $twrp = od_dataset_get_wrapper($wrapper, $rev->vid);
+          $fields_to_update = array(
+            OD_DATASET_DOWNLOAD_FIELD => array(),
+            OD_DATASET_FIELD_LATEST_UPDATE => array(),
+          );
+
+          if (empty($options['force'])) {
+            // Apply filtering: do not update old nodes if they already have values
+            foreach ($fields_to_update as $_fieldname => $_meta) {
+              if ($twrp->{$_fieldname}->value()) {
+                unset($fields_to_update[$_fieldname]);
+              }
+            }
+          }
+
+          // Only save url aliases for now
+          od_dataset_set_alias_links($twrp);
+          od_dataset_save_aliases($twrp);
+
+          // Handle real field values
+          if (!empty($fields_to_update)) {
+            $twrp->value()->revision = 0;
+            try {
+              od_dataset_save_important_fields($twrp, NULL, $fields_to_update);
+            }
+            catch (Exception $e) {
+              watchdog_exception('od_dataset', $e);
+            }
+          }
+          unset($twrp);
+          $twrp = NULL;
+        }
+      }
+
+      unset($wrapper);
+      $wrapper = NULL;
+    }
+
+    $context['sandbox']['count'] += $rows->rowCount();
+    $context['message'] = t('Updated alias for node @nid.', array('@nid' => $row->nid));
+
+    if ($context['sandbox']['count'] != $context['sandbox']['total']) {
+      $context['finished'] = $context['sandbox']['count'] / $context['sandbox']['total'];
+    }
+
+    // Commit transaction
+    unset($transaction);
+  }
+  catch (Exception $e) {
+    $transaction->rollback();
+    throw $e;
+  }
+}
+
+class ODDatasetDownloadUriObject extends stdClass {
+  public function __toString() {
+    return (string) $this->internal_uri;
+  }
 }

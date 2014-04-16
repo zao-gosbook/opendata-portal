@@ -17,6 +17,7 @@
    * @type {{attach: attach}}
    * @fixme: Убрать
    */
+  /*
   Drupal.behaviors.nomobileversion = {
     attach: function (context) {
       if (String(location.href).indexOf('nomobileversion') == -1 && $(window).width() <= 640 && $(window).height() <= 480) {
@@ -24,6 +25,7 @@
       }
     }
   }
+  */
 
   Drupal.behaviors.HintFormElemements = {
     attach: function (context) {
@@ -57,16 +59,19 @@
   Drupal.behaviors.MobileDatasetColumns = {
     attach: function (context) {
       $('.region-mobile-change .show-result').click(function(){
-        $('.region-facet, .rubric-menu, .show-result').animate({left: -8000}).hide();
-        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').show().animate({right: 0});
+        $('.region-facet, .rubric-menu, .show-result, .dataset-right-col').animate({left: -8000}).hide();
+        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps, .dataset-left-col').show().animate({right: 0});
+        
         return false;
       });
       $('.region-mobile-change .hide-result').click(function(){
-        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps').animate({right: -8000}).hide();
-        $('.region-facet, .show-result, .rubric-menu').animate({left: 0}).show();
+        $('.hide-result, .dataset-search-facets, .rubric-content, .right-column-apps, .dataset-left-col').animate({right: -8000}).hide();
+        $('.region-facet, .show-result, .rubric-menu, .dataset-right-col').animate({left: 0}, function() {
+          window.msnry.layout();
+        }).show();
         return false;
       });
-    }
+    }   
   }
 
   Drupal.behaviors.TaxonomyColumnsRubric = {
@@ -145,6 +150,15 @@
     }
   }
 
+  /*Drupal.behaviors.resizeMainMenu = {
+    attach: function(context, settings) {
+      if($('body').width() > 1200) {
+        var width_menu = $('.region-header .pane-system-main-menu > ul').width();
+        $('.pane-gb-search-pane').width(width_menu);            
+      }
+    }
+  } */   
+  
   Drupal.behaviors.positionActiveMenu = {
     attach: function(context, settings) {  
       $(".not-front .region-header").addClass("active-region");
@@ -166,7 +180,7 @@
           if($(this).hasClass("sf-item-1")) { // 
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-199px"
+                "margin-left": "-111px"
               });              
             } 
             else {            
@@ -174,16 +188,16 @@
                 "margin-left": "-227px"
               }); 
             }
-          } 
+          }            
           if($(this).hasClass("sf-item-3")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-123px"
+                "margin-left": "-106px"
               });              
             } 
             else {
               ul.css({
-                "margin-left": "-150px"
+                "margin-left": "-139px"
               });              
             }
             //alert($('body').width());  
@@ -191,24 +205,36 @@
           if($(this).hasClass("sf-item-4")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-317px"
+                "margin-left": "-259px"
               });              
             } 
             else {           
               ul.css({
-                "margin-left": "-310px"
+                "margin-left": "-306px"
               });  
             }
           } 
           if($(this).hasClass("sf-item-6")) { //
              if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-343px"
+                "margin-left": "-142px"
               });              
             } 
             else {             
               ul.css({
-                "margin-left": "-141px"
+                "margin-left": "-165px"
+              });  
+            }
+          } 
+          if($(this).hasClass("sf-item-7")) { //
+             if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-734px"
+              });              
+            } 
+            else {             
+              ul.css({
+                "margin-left": "-677px"
               });  
             }
           }          
@@ -237,10 +263,10 @@
             //"margin-left": margin
           });  
           // кастомное положение блоков
-          if($(this).parent("li").hasClass("sf-item-1")) { // 
+          if($(this).hasClass("sf-item-1")) { // 
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-199px"
+                "margin-left": "-111px"
               });              
             } 
             else {            
@@ -248,44 +274,56 @@
                 "margin-left": "-227px"
               }); 
             }
-          } 
-          if($(this).parent("li").hasClass("sf-item-3")) { //
+          }            
+          if($(this).hasClass("sf-item-3")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-123px"
+                "margin-left": "-106px"
               });              
             } 
             else {
               ul.css({
-                "margin-left": "-150px"
+                "margin-left": "-139px"
               });              
             }
             //alert($('body').width());  
           } 
-          if($(this).parent("li").hasClass("sf-item-4")) { //
+          if($(this).hasClass("sf-item-4")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-317px"
+                "margin-left": "-259px"
               });              
             } 
             else {           
               ul.css({
-                "margin-left": "-310px"
+                "margin-left": "-306px"
               });  
             }
           } 
-          if($(this).parent("li").hasClass("sf-item-6")) { //
+          if($(this).hasClass("sf-item-6")) { //
              if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-343px"
+                "margin-left": "-142px"
               });              
             } 
             else {             
               ul.css({
-                "margin-left": "-141px"
+                "margin-left": "-165px"
               });  
             }
-          }          
+          } 
+          if($(this).hasClass("sf-item-7")) { //
+             if($('body').width() > 765 && $('body').width() < 1200) {
+              ul.css({
+                "margin-left": "-734px"
+              });              
+            } 
+            else {             
+              ul.css({
+                "margin-left": "-677px"
+              });  
+            }
+          }       
         }
         else {
           $(".region-header").removeClass("active-region");
