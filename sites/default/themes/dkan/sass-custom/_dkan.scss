@@ -1906,6 +1906,8 @@ td div.label {
   }
 }
 
+
+
 /* library */
 .section-library {
   
@@ -4511,6 +4513,57 @@ table {
       margin-bottom: 20px;
     }     
   }
+  .view-filters {
+    @include clearfix;
+    
+    form {
+      float: right;
+      margin-right: -10px;
+    }
+    .views-exposed-widget {
+      padding: 0;
+    }
+    label {
+      color: #666666;
+      font-size: 15px;
+      line-height: 1.35em;
+      margin: 0;
+      padding-right: 7px; 
+      float: left;
+      font-weight: normal;
+    }
+    .form-radios {
+      float: left;
+    }
+    .form-type-bef-link {
+      padding-right: 7px;
+      float: left;
+      margin: 0;
+      
+      a {
+        color: #666666;
+        font-size: 15px;
+        line-height: 1.35em;   
+        color: #000;
+        text-decoration: none;
+      }
+      &[class$='asc'] a {
+        padding-right: 18px;
+        background: url("/misc/arrow-asc.png") no-repeat 100% 50%;
+      }
+      &[class$='desc'] a {
+        padding-right: 18px;
+        background: url("/misc/arrow-desc.png") no-repeat 100% 50%;
+      }      
+      &.selected a {
+        color: #3D9FED;
+        border-bottom: 1px dashed #3D9FED;
+      }
+    }
+  }
+  .view-content {
+    clear: both;
+  }
   .views-row {
     padding-bottom: 28px;
     margin-bottom: 28px;
@@ -4835,6 +4888,22 @@ div.fivestar-widget .star {
     font-size: 24px;
     line-height: 1.0em;
     margin: 0 0 .4em;
+  }
+  .dataset-rules {
+    font-size: 15px;
+    line-height: 1.35;
+    
+    ol {
+      margin-top: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      padding-top: 12px;
+      background: #eee;
+      
+      > li {
+        padding-bottom: 10px;
+      }
+    }
   }
   .panel-pane {
     margin-bottom: 40px;
