@@ -11,3 +11,4 @@ features[field_base][] = field_dataset_latest_update
 features[field_base][] = field_resource_download
 features[field_instance][] = node-dataset-field_dataset_latest_update
 features[field_instance][] = node-dataset-field_resource_download
+project path = sites/all/modules/custom/od_dataset/features
