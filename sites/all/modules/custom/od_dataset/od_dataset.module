@@ -479,8 +479,14 @@ function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
         $links['data'] = od_dataset_alias_build('data', "{$alias}/data-{$stamp_data}-structure-{$stamp_structure}{$suffix}");
       //}
 
+    $structure_format = 'csv';
+    if ($wrapper->field_resources->count() > 0 && $wrapper->field_resources->get(0)->getBundle() == 'resource') {
+      if (($file = $wrapper->field_resources->get(0)->field_upload_structure->value()) && $ext = pathinfo($file->uri, PATHINFO_EXTENSION)) {
+        $structure_format = $ext;
+      }
+    }
       //if ($wrapper->field_resources->get(0)->field_upload_structure->value()) {//@fixme: Correct structure format
-        $links['structure'] = od_dataset_alias_build('structure', "{$alias}/structure-{$stamp_structure}");
+        $links['structure'] = od_dataset_alias_build('structure', "{$alias}/structure-{$stamp_structure}.{$structure_format}");
       //}
     //}
   }
