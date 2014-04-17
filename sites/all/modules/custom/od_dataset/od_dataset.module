@@ -168,7 +168,7 @@ function od_dataset_download_path($node_dataset, $revision_id = NULL, $target_ty
       $result->internal_uri = FALSE; // Source doesn't exist. Orphaned alias.
     }
     elseif (!$result->internal_uri && ($wrapper = od_dataset_get_wrapper($node_dataset, $revision_id))) {
-      $result->internal_uri = 'this_is_a_link_to_external_'. $target_type; //@fixme: Implement in correct way
+      $result->internal_uri = 'http://example.com/this_is_a_link_to_external_'. $target_type; //@fixme: Implement in correct way
       $result->type = 'external';
     }
   }
