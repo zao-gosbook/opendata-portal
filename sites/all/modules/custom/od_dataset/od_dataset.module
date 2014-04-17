@@ -5,10 +5,15 @@
  */
 
 define('OD_DATASET_PATH', dirname(__FILE__));
-define('OD_DATASET_DOWNLOAD_FIELD', 'field_resource_download');
 define('OD_DATASET_DOWNLOAD_ROUTER_PATH', 'od_dataset_download_router');
 define('OD_DATASET_ALIAS_DELIMITER', ':');
-define('OD_DATASET_FIELD_LATEST_UPDATE', 'field_dataset_latest_update');
+/*
+ * Fields
+ */
+define('OD_DATASET_DOWNLOAD_FIELD', 'field_resource_download');
+define('OD_DATASET_FIELD_LATEST_UPDATE_DATASET', 'field_dataset_latest_update');
+define('OD_DATASET_FIELD_LATEST_UPDATE', OD_DATASET_FIELD_LATEST_UPDATE_DATASET); //@deprecated. Fallback
+define('OD_DATASET_FIELD_LATEST_UPDATE_STRUCTURE', 'field_structure_latest_update');
 
 // Include our custom remote file source
 require_once OD_DATASET_PATH. '/od_dataset.remote_file_source_mod.inc';
@@ -386,6 +391,15 @@ function od_dataset_save_aliases($node_or_nid, $revision_id = NULL) {
           ->execute();
       }
     }
+
+    $fields_to_update = array(
+      OD_DATASET_DOWNLOAD_FIELD => array(),
+      OD_DATASET_FIELD_LATEST_UPDATE_DATASET => array(),
+      OD_DATASET_FIELD_LATEST_UPDATE_STRUCTURE => array(),
+    );
+
+    $wrapper->value()->revision = 0;
+    od_dataset_save_important_fields($wrapper, NULL, $fields_to_update);
   }
 }
 
@@ -450,7 +464,8 @@ function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
   $links = FALSE;
   if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
     $alias = drupal_get_path_alias("node/{$wrapper->nid->value()}");
-    $stamp = gmdate('Y-m-d\TH-i', od_dataset_last_update_time($node_or_nid, $revision_id));
+    $stamp_data = gmdate('Ymd\THi', od_dataset_last_update_time($node_or_nid, $revision_id, 'data'));
+    $stamp_structure = gmdate('Ymd\THi', od_dataset_last_update_time($node_or_nid, $revision_id, 'structure'));
     //$format = $wrapper->field_resources->get(0)->field_format->name->value();
     $format = od_dataset_get_format($node_or_nid, $revision_id);
     $suffix = $format ? '.' . $format : '';
@@ -459,11 +474,11 @@ function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
     //if ($wrapper->field_resources->count() > 0 && $wrapper->field_resources->get(0)->getBundle() == 'resource') {
       // Build data link
       //if ($wrapper->field_resources->get(0)->field_upload->value()) {
-        $links['data'] = od_dataset_alias_build('data', "{$alias}/data-{$stamp}-structure-{$stamp}{$suffix}");
+        $links['data'] = od_dataset_alias_build('data', "{$alias}/data-{$stamp_data}-structure-{$stamp_structure}{$suffix}");
       //}
 
-      //if ($wrapper->field_resources->get(0)->field_upload_structure->value()) {
-        $links['structure'] = od_dataset_alias_build('structure', "{$alias}/structure-{$stamp}{$suffix}");
+      //if ($wrapper->field_resources->get(0)->field_upload_structure->value()) {//@fixme: Correct structure format
+        $links['structure'] = od_dataset_alias_build('structure', "{$alias}/structure-{$stamp_structure}");
       //}
     //}
   }
@@ -497,22 +512,23 @@ function od_dataset_get_format($node_or_nid, $revision_id = NULL) {
 }
 
 function od_dataset_entity_insert($entity, $type) {
-  //od_dataset_entity_update($entity, $type);
+  od_dataset_on_entity_save($entity, $type);
 }
 
 function od_dataset_entity_update($entity, $type) {
-  //od_dataset_entity_update($entity, $type);
+  od_dataset_on_entity_save($entity, $type);
 }
 
-function od_dataset_entity_presave($entity, $type) {
+function od_dataset_on_entity_save($entity, $type) {
   if ($type == 'node' && isset($entity->type) && $entity->type == 'dataset') {
     od_dataset_set_alias_links($entity);
     od_dataset_save_aliases($entity);
   }
-  elseif ($type = 'node' && isset($entity->type) && $entity->type == 'resource') {
-    $dataset_wr = od_dataset_get_wrapper_by_resource($entity->nid);
-    od_dataset_last_update_time($dataset_wr, NULL, time());
-  }
+  //@fixme: Do we need to auto update it in that way?
+//  elseif ($type = 'node' && isset($entity->type) && $entity->type == 'resource') {
+//    $dataset_wr = od_dataset_get_wrapper_by_resource($entity->nid);
+//    od_dataset_last_update_time($dataset_wr, NULL, 'data', time());
+//  }
 }
 
 function od_dataset_entity_delete($entity, $type) {
@@ -538,15 +554,28 @@ function od_dataset_alias_build($type, $alias) {
   return ($type . OD_DATASET_ALIAS_DELIMITER . $alias);
 }
 
-function od_dataset_last_update_time($node_or_nid, $revision_id = NULL, $newtime = NULL) {
+function od_dataset_last_update_time($node_or_nid, $revision_id = NULL, $type = 'data', $newtime = NULL) {
   if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    $target_date_field = $type == 'data' ? OD_DATASET_FIELD_LATEST_UPDATE_DATASET : OD_DATASET_FIELD_LATEST_UPDATE_STRUCTURE;
+
     $order = array(
-      OD_DATASET_FIELD_LATEST_UPDATE => array('has_time' => TRUE),
-      'field_date_dataset_actual' => array(),
-      'field_date_first_time_publ' => array(),
-      'field_date_last_change' => array(),
-      'changed' => array('has_time' => TRUE),
+      $target_date_field => array('has_time' => TRUE),
     );
+
+    if ($type == 'data') {
+      $order += array(
+        'field_date_last_change' => array(),
+        'field_date_first_time_publ' => array(),
+        'changed' => array('has_time' => TRUE),
+      );
+    }
+    else {
+      $order += array(
+        'field_date_last_change' => array(),
+        'field_date_first_time_publ' => array(),
+        'changed' => array('has_time' => TRUE),
+      );
+    }
 
     $stamp = NULL;
     foreach ($order as $_fieldname => $_info) {
@@ -559,12 +588,12 @@ function od_dataset_last_update_time($node_or_nid, $revision_id = NULL, $newtime
     }
 
     // Set time for the first time requesting
-    if (!$wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->value()) {
+    if (!$wrapper->{$target_date_field}->value()) {
       $newtime = $stamp;
     }
 
     if ($newtime !== NULL) {
-      $wrapper->{OD_DATASET_FIELD_LATEST_UPDATE}->set($newtime);
+      $wrapper->{$target_date_field}->set($newtime);
       //$wrapper->save();
       $stamp = $newtime;
     }
