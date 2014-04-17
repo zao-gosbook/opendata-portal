@@ -172,72 +172,6 @@ function entityforms_default_entity_rule_setting() {
     "false_msg" : null,
     "rdf_mapping" : []
   }');
-  $items['20'] = entity_import('entity_rule_setting', '{
-    "id" : "20",
-    "entity_type" : "entityform",
-    "bundle" : "dataset_actualization",
-    "op" : "entityform_submission",
-    "rules_config" : "rules_dataset_actualization_form",
-    "weight" : "0",
-    "args" : null,
-    "false_msg" : null,
-    "rdf_mapping" : []
-  }');
-  $items['23'] = entity_import('entity_rule_setting', '{
-    "id" : "23",
-    "entity_type" : "entityform",
-    "bundle" : "od_preprocess_wizard",
-    "op" : "entityform_submission",
-    "rules_config" : "rules_123",
-    "weight" : "0",
-    "args" : null,
-    "false_msg" : null,
-    "rdf_mapping" : []
-  }');
-  $items['25'] = entity_import('entity_rule_setting', '{
-    "id" : "25",
-    "entity_type" : "entityform",
-    "bundle" : "od_preprocess_wizard",
-    "op" : "entityform_submission",
-    "rules_config" : "rules_create_dataset",
-    "weight" : "0",
-    "args" : null,
-    "false_msg" : null,
-    "rdf_mapping" : []
-  }');
-  $items['26'] = entity_import('entity_rule_setting', '{
-    "id" : "26",
-    "entity_type" : "entityform",
-    "bundle" : "opendata_query",
-    "op" : "entityform_submission",
-    "rules_config" : "rules_create_dataset",
-    "weight" : "0",
-    "args" : null,
-    "false_msg" : null,
-    "rdf_mapping" : []
-  }');
-  $items['27'] = entity_import('entity_rule_setting', '{
-    "id" : "27",
-    "entity_type" : "entityform",
-    "bundle" : "dataset_actualization",
-    "op" : "entityform_submission",
-    "rules_config" : "rules_actualize_dataset_one_volume",
-    "weight" : "0",
-    "args" : null,
-    "false_msg" : null,
-    "rdf_mapping" : []
-  }');
-  $items['29'] = entity_import('entity_rule_setting', '{
-    "id" : "29",
-    "entity_type" : "entityform",
-    "bundle" : "add_idea",
-    "op" : "entityform_submission",
-    "rules_config" : "rules_idea_creation",
-    "weight" : "0",
-    "args" : null,
-    "false_msg" : null,
-    "rdf_mapping" : []
-  }');
   return $items;
 }
 
@@ -264,7 +198,7 @@ function entityforms_default_entityform_type() {
       "submission_text" : { "value" : "", "format" : "full_html" },
       "submission_show_submitted" : 0,
       "submissions_view" : "default",
-      "user_submissions_view" : "",
+      "user_submissions_view" : "default",
       "form_status" : "ENTITYFORM_OPEN",
       "roles" : { "2" : "2", "1" : 0, "6" : 0, "3" : 0, "4" : 0, "5" : 0 },
       "resubmit_action" : "new",
@@ -283,7 +217,7 @@ function entityforms_default_entityform_type() {
       "draft_button_text" : "",
       "draft_save_text" : { "value" : "", "format" : "full_html" },
       "submit_button_text" : "Create",
-      "submit_confirm_msg" : "",
+      "submit_confirm_msg" : "\\u003Cnone\\u003E",
       "your_submissions" : "",
       "disallow_resubmit_msg" : "",
       "delete_confirm_msg" : "",
@@ -298,7 +232,10 @@ function entityforms_default_entityform_type() {
       "roles" : { "1" : "1", "2" : 0, "6" : 0, "3" : 0, "4" : 0, "5" : 0 },
       "resubmit_action" : "new",
       "redirect_path" : "",
-      "instruction_pre" : { "value" : "", "format" : "full_html" }
+      "instruction_pre" : {
+        "value" : "\\u041d\\u0430 \\u044d\\u0442\\u043e\\u0439 \\u0441\\u0442\\u0440\\u0430\\u043d\\u0438\\u0446\\u0435 \\u0432\\u044b \\u043c\\u043e\\u0436\\u0435\\u0442\\u0435 \\u043f\\u0440\\u0435\\u0434\\u043b\\u043e\\u0436\\u0438\\u0442\\u044c \\u0438\\u0434\\u0435\\u044e \\u0440\\u0430\\u0437\\u0432\\u0438\\u0442\\u0438\\u044f \\u041f\\u043e\\u0440\\u0442\\u0430\\u043b\\u0430, \\u043d\\u043e\\u0432\\u043e\\u0433\\u043e \\u043f\\u0440\\u0438\\u043b\\u043e\\u0436\\u0435\\u043d\\u0438\\u044f \\u0438\\u043b\\u0438 \\u0441\\u0435\\u0440\\u0432\\u0438\\u0441\\u0430, \\u0438\\u043b\\u0438 \\u0438\\u0434\\u0435\\u044e \\u0440\\u0430\\u0437\\u0432\\u0438\\u0442\\u0438\\u044f \\u043e\\u0442\\u043a\\u0440\\u044b\\u0442\\u044b\\u0445 \\u0434\\u0430\\u043d\\u043d\\u044b\\u0445 \\u0432 \\u0420\\u043e\\u0441\\u0441\\u0438\\u0438. \\u041f\\u043e\\u0441\\u043b\\u0435 \\u043f\\u0440\\u043e\\u0432\\u0435\\u0440\\u043a\\u0438 \\u043c\\u043e\\u0434\\u0435\\u0440\\u0430\\u0442\\u043e\\u0440\\u043e\\u043c \\u0438\\u0434\\u0435\\u044f \\u0431\\u0443\\u0434\\u0435\\u0442 \\u0434\\u043e\\u0441\\u0442\\u0443\\u043f\\u043d\\u0430 \\u0434\\u043b\\u044f \\u0432\\u0441\\u0435\\u0445 \\u043f\\u043e\\u043b\\u044c\\u0437\\u043e\\u0432\\u0430\\u0442\\u0435\\u043b\\u0435\\u0439 \\u043d\\u0430 \\u0441\\u0442\\u0440\\u0430\\u043d\\u0438\\u0446\\u0435 \\u00ab\\u0418\\u0434\\u0435\\u0438\\u00bb. \\u0412 \\u0441\\u043b\\u0443\\u0447\\u0430\\u0435 \\u0435\\u0441\\u043b\\u0438 \\u0438\\u0434\\u0435\\u044f \\u043d\\u0430\\u0431\\u0440\\u0430\\u043b\\u0430 \\u0434\\u043e\\u0441\\u0442\\u0430\\u0442\\u043e\\u0447\\u043d\\u043e \\u0431\\u043e\\u043b\\u044c\\u0448\\u043e\\u0435 \\u0447\\u0438\\u0441\\u043b\\u043e \\u0433\\u043e\\u043b\\u043e\\u0441\\u043e\\u0432, \\u043e\\u043d\\u0430 \\u0431\\u0443\\u0434\\u0435\\u0442 \\u043d\\u0435\\u0437\\u0430\\u043c\\u0435\\u0434\\u043b\\u0438\\u0442\\u0435\\u043b\\u044c\\u043d\\u043e \\u043f\\u0435\\u0440\\u0435\\u0430\\u0434\\u0440\\u0435\\u0441\\u043e\\u0432\\u0430\\u043d\\u0430 \\u043b\\u0438\\u0446\\u0430\\u043c, \\u043e\\u0442\\u0432\\u0435\\u0442\\u0441\\u0442\\u0432\\u0435\\u043d\\u043d\\u044b\\u043c \\u0437\\u0430 \\u0435\\u0435 \\u0440\\u0435\\u0430\\u043b\\u0438\\u0437\\u0430\\u0446\\u0438\\u044e.",
+        "format" : "full_html"
+      }
     },
     "weight" : "0",
     "rdf_mapping" : [],
@@ -331,12 +268,7 @@ function entityforms_default_entityform_type() {
     },
     "weight" : "0",
     "rdf_mapping" : [],
-    "paths" : { "submit" : {
-        "source" : "eform\\/submit\\/add-new-forum",
-        "alias" : "forum\\/addnew",
-        "language" : "und"
-      }
-    }
+    "paths" : []
   }');
   $items['dataset_actualization'] = entity_import('entityform_type', '{
     "type" : "dataset_actualization",
@@ -347,16 +279,16 @@ function entityforms_default_entityform_type() {
       "draft_save_text" : { "value" : "", "format" : "full_html" },
       "submit_button_text" : "\\u0410\\u043a\\u0442\\u0443\\u0430\\u043b\\u0438\\u0437\\u0438\\u0440\\u043e\\u0432\\u0430\\u0442\\u044c",
       "submit_confirm_msg" : "\\u0410\\u043a\\u0442\\u0443\\u0430\\u043b\\u0438\\u0437\\u0430\\u0446\\u0438\\u044f \\u043f\\u0440\\u043e\\u0448\\u043b\\u0430 \\u0443\\u0441\\u043f\\u0435\\u0448\\u043d\\u043e",
-      "your_submissions" : "",
+      "your_submissions" : "\\u003Cnone\\u003E",
       "disallow_resubmit_msg" : "",
       "delete_confirm_msg" : "",
       "page_title_view" : "",
       "preview_page" : 0,
-      "submission_page_title" : "",
+      "submission_page_title" : "\\u003Cnone\\u003E",
       "submission_text" : { "value" : "", "format" : "full_html" },
       "submission_show_submitted" : 0,
       "submissions_view" : "default",
-      "user_submissions_view" : "",
+      "user_submissions_view" : "default",
       "form_status" : "ENTITYFORM_OPEN",
       "roles" : { "6" : "6", "5" : "5", "1" : 0, "2" : 0, "3" : 0, "4" : 0 },
       "resubmit_action" : "new",
@@ -388,7 +320,7 @@ function entityforms_default_entityform_type() {
       "submission_text" : { "value" : "", "format" : "full_html" },
       "submission_show_submitted" : 0,
       "submissions_view" : "default",
-      "user_submissions_view" : "",
+      "user_submissions_view" : "default",
       "form_status" : "ENTITYFORM_OPEN",
       "roles" : { "6" : "6", "5" : "5", "1" : 0, "2" : 0, "3" : 0, "4" : 0 },
       "resubmit_action" : "new",
@@ -452,7 +384,7 @@ function entityforms_default_entityform_type() {
       },
       "submission_show_submitted" : 0,
       "submissions_view" : "default",
-      "user_submissions_view" : "",
+      "user_submissions_view" : "default",
       "form_status" : "ENTITYFORM_OPEN",
       "roles" : { "1" : "1", "2" : "2", "6" : 0, "3" : 0, "4" : 0, "5" : 0 },
       "resubmit_action" : "new",
@@ -460,38 +392,6 @@ function entityforms_default_entityform_type() {
       "instruction_pre" : {
         "value" : "\\u003Cdiv class=\\u0022messages messages--warning\\u0022\\u003E\\u0412 \\u0441\\u043b\\u0443\\u0447\\u0430\\u0435 \\u043f\\u043e\\u044f\\u0432\\u043b\\u0435\\u043d\\u0438\\u044f \\u0432\\u043e\\u043f\\u0440\\u043e\\u0441\\u043e\\u0432 \\u043f\\u043e \\u0440\\u0430\\u0431\\u043e\\u0442\\u0435 \\u0441 \\u043e\\u0442\\u043a\\u0440\\u044b\\u0442\\u044b\\u043c\\u0438 \\u0434\\u0430\\u043d\\u043d\\u044b\\u043c\\u0438 \\u0432\\u044b \\u043c\\u043e\\u0436\\u0435\\u0442\\u0435 \\u043e\\u0431\\u0440\\u0430\\u0442\\u0438\\u0442\\u044c\\u0441\\u044f \\u0432 \\u0441\\u043b\\u0443\\u0436\\u0431\\u0443 \\u0442\\u0435\\u0445\\u043d\\u0438\\u0447\\u0435\\u0441\\u043a\\u043e\\u0439 \\u043f\\u043e\\u0434\\u0434\\u0435\\u0440\\u0436\\u043a\\u0438 \\u043f\\u043e \\u0442\\u0435\\u043b\\u0435\\u0444\\u043e\\u043d\\u0443 8-495-721-56-28 (\\u0441 10:00 \\u0434\\u043e 19:00, \\u043f\\u043e \\u043c\\u043e\\u0441\\u043a\\u043e\\u0432\\u0441\\u043a\\u043e\\u043c\\u0443 \\u0432\\u0440\\u0435\\u043c\\u0435\\u043d\\u0438).\\r\\n\\u0422\\u0430\\u043a\\u0436\\u0435 \\u0432\\u044b \\u043c\\u043e\\u0436\\u0435\\u0442\\u0435 \\u043e\\u0442\\u043f\\u0440\\u0430\\u0432\\u0438\\u0442\\u044c \\u043d\\u0430\\u043c \\u0441\\u043e\\u043e\\u0431\\u0449\\u0435\\u043d\\u0438\\u0435, \\u0437\\u0430\\u043f\\u043e\\u043b\\u043d\\u0438\\u0432 \\u0441\\u043b\\u0435\\u0434\\u0443\\u044e\\u0449\\u0443\\u044e \\u0444\\u043e\\u0440\\u043c\\u0443:\\u003C\\/div\\u003E",
         "format" : "ds_code"
-      }
-    },
-    "weight" : "0",
-    "rdf_mapping" : [],
-    "paths" : []
-  }');
-  $items['file_converting_service'] = entity_import('entityform_type', '{
-    "type" : "file_converting_service",
-    "label" : "File converting service",
-    "data" : {
-      "draftable" : 0,
-      "draft_button_text" : "",
-      "draft_save_text" : { "value" : "", "format" : "full_html" },
-      "submit_button_text" : "Convert",
-      "submit_confirm_msg" : "\\u003Cnone\\u003E",
-      "your_submissions" : "",
-      "disallow_resubmit_msg" : "",
-      "delete_confirm_msg" : "",
-      "page_title_view" : "",
-      "preview_page" : 0,
-      "submission_page_title" : "\\u041a\\u043e\\u043d\\u0432\\u0435\\u0440\\u0442\\u0430\\u0446\\u0438\\u044f \\u0444\\u0430\\u0439\\u043b\\u0430",
-      "submission_text" : { "value" : "", "format" : "full_html" },
-      "submission_show_submitted" : 0,
-      "submissions_view" : "default",
-      "user_submissions_view" : "default",
-      "form_status" : "ENTITYFORM_OPEN",
-      "roles" : { "1" : "1", "2" : "2", "6" : 0, "3" : 0, "4" : 0, "5" : 0 },
-      "resubmit_action" : "new",
-      "redirect_path" : "",
-      "instruction_pre" : {
-        "value" : "\\u003Cp\\u003E\\u0412\\u044b \\u043c\\u043e\\u0436\\u0435\\u0442\\u0435 \\u0432\\u043e\\u0441\\u043f\\u043e\\u043b\\u044c\\u0437\\u043e\\u0432\\u0430\\u0442\\u044c\\u0441\\u044f \\u003Ca class=\\u0022external\\u0022 target=\\u0022_blank\\u0022 href=\\u0022http:\\/\\/shancarter.github.io\\/mr-data-converter\\/\\u0022\\u003E\\u041a\\u043e\\u043d\\u0432\\u0435\\u0440\\u0442\\u0435\\u0440\\u043e\\u043c \\u0432 JSON\\u003C\\/a\\u003E \\u0438\\u043b\\u0438 \\u0437\\u0430\\u0433\\u0440\\u0443\\u0437\\u0438\\u0442\\u044c \\u0444\\u0430\\u0439\\u043b \\u0432 \\u043e\\u0434\\u043d\\u043e\\u043c \\u0438\\u0437 \\u0440\\u0430\\u0437\\u0440\\u0435\\u0448\\u0451\\u043d\\u043d\\u044b\\u0445 \\u0444\\u043e\\u0440\\u043c\\u0430\\u0442\\u043e\\u0432 \\u0438 \\u0441\\u043a\\u043e\\u043d\\u0432\\u0435\\u0440\\u0442\\u0438\\u0440\\u043e\\u0432\\u0430\\u0442\\u044c \\u0435\\u0433\\u043e \\u0432 \\u0444\\u043e\\u0440\\u043c\\u0430\\u0442 CSV.\\u003C\\/p\\u003E",
-        "format" : "full_html"
       }
     },
     "weight" : "0",
@@ -516,7 +416,7 @@ function entityforms_default_entityform_type() {
       "submission_text" : { "value" : "", "format" : "full_html" },
       "submission_show_submitted" : 0,
       "submissions_view" : "default",
-      "user_submissions_view" : "",
+      "user_submissions_view" : "default",
       "form_status" : "ENTITYFORM_OPEN",
       "roles" : { "6" : "6", "1" : 0, "2" : 0, "3" : 0, "4" : 0, "5" : 0 },
       "resubmit_action" : "new",
@@ -525,12 +425,7 @@ function entityforms_default_entityform_type() {
     },
     "weight" : "0",
     "rdf_mapping" : [],
-    "paths" : { "submit" : {
-        "source" : "eform\\/submit\\/notify-dataset-subscribers",
-        "alias" : "notify",
-        "language" : "und"
-      }
-    }
+    "paths" : []
   }');
   $items['od_preprocess_wizard'] = entity_import('entityform_type', '{
     "type" : "od_preprocess_wizard",
@@ -584,13 +479,16 @@ function entityforms_default_entityform_type() {
         "format" : "full_html"
       },
       "submission_show_submitted" : 0,
-      "submissions_view" : "entityforms",
-      "user_submissions_view" : "",
+      "submissions_view" : "default",
+      "user_submissions_view" : "default",
       "form_status" : "ENTITYFORM_OPEN",
       "roles" : { "1" : "1", "2" : "2", "6" : 0, "3" : 0, "4" : 0, "5" : 0 },
       "resubmit_action" : "new",
       "redirect_path" : "",
-      "instruction_pre" : { "value" : "", "format" : "html" }
+      "instruction_pre" : {
+        "value" : "\\u003Cp\\u003E\\u0412 \\u0441\\u043b\\u0443\\u0447\\u0430\\u0435, \\u0435\\u0441\\u043b\\u0438 \\u0432\\u0430\\u043c \\u043d\\u0443\\u0436\\u043d\\u044b \\u043a\\u0430\\u043a\\u0438\\u0435-\\u0442\\u043e \\u0434\\u0430\\u043d\\u043d\\u044b\\u0435, \\u043d\\u043e \\u0432\\u044b \\u043d\\u0435 \\u043d\\u0430\\u0448\\u043b\\u0438 \\u0438\\u0445 \\u043d\\u0430 \\u041f\\u043e\\u0440\\u0442\\u0430\\u043b\\u0435, \\u0432\\u044b \\u043c\\u043e\\u0436\\u0435\\u0442\\u0435 \\u043f\\u043e\\u0434\\u0430\\u0442\\u044c \\u0437\\u0430\\u043f\\u0440\\u043e\\u0441 \\u0434\\u043b\\u044f \\u0438\\u0445 \\u0434\\u043e\\u0431\\u0430\\u0432\\u043b\\u0435\\u043d\\u0438\\u044f. \\u0417\\u0430\\u043f\\u0440\\u043e\\u0441 \\u0431\\u0443\\u0434\\u0435\\u0442 \\u043f\\u0435\\u0440\\u0435\\u0430\\u0434\\u0440\\u0435\\u0441\\u043e\\u0432\\u0430\\u043d \\u0447\\u0435\\u0440\\u0435\\u0437 \\u0421\\u043e\\u0432\\u0435\\u0442 \\u043f\\u043e \\u043e\\u0442\\u043a\\u0440\\u044b\\u0442\\u044b\\u043c \\u0434\\u0430\\u043d\\u043d\\u044b\\u043c \\u0432 \\u043e\\u0442\\u0432\\u0435\\u0442\\u0441\\u0442\\u0432\\u0435\\u043d\\u043d\\u043e\\u0435 \\u0432\\u0435\\u0434\\u043e\\u043c\\u0441\\u0442\\u0432\\u043e, \\u043a\\u043e\\u0442\\u043e\\u0440\\u043e\\u0435 \\u0432\\u044b \\u0443\\u043a\\u0430\\u0437\\u044b\\u0432\\u0430\\u0435\\u0442\\u0435 \\u0432 \\u044d\\u043b\\u0435\\u043a\\u0442\\u0440\\u043e\\u043d\\u043d\\u043e\\u0439 \\u0444\\u043e\\u0440\\u043c\\u0435. \\u041f\\u043e\\u0441\\u043b\\u0435 \\u043e\\u0442\\u0432\\u0435\\u0442\\u0430 \\u0432\\u0435\\u0434\\u043e\\u043c\\u0441\\u0442\\u0432\\u0430 \\u043e \\u0441\\u0440\\u043e\\u043a\\u0430\\u0445 \\u0440\\u0430\\u0441\\u043a\\u0440\\u044b\\u0442\\u0438\\u044f \\u0434\\u0430\\u043d\\u043d\\u044b\\u0445 \\u0438 \\u043f\\u0440\\u0435\\u0434\\u043e\\u0441\\u0442\\u0430\\u0432\\u043b\\u0435\\u043d\\u0438\\u0438 \\u0441\\u0430\\u043c\\u0438\\u0445 \\u0434\\u0430\\u043d\\u043d\\u044b\\u0445 \\u043e\\u043d\\u0438 \\u0431\\u0443\\u0434\\u0443\\u0442 \\u0440\\u0430\\u0437\\u043c\\u0435\\u0449\\u0435\\u043d\\u044b \\u043d\\u0430 \\u043d\\u0430\\u0448\\u0435\\u043c \\u041f\\u043e\\u0440\\u0442\\u0430\\u043b\\u0435. \\u003C\\/p\\u003E\\r\\n\\u003Cp\\u003E\\u0412\\u044b \\u043c\\u043e\\u0436\\u0435\\u0442\\u0435 \\u043f\\u043e\\u0434\\u0430\\u0442\\u044c \\u043a\\u0430\\u043a \\u043f\\u0443\\u0431\\u043b\\u0438\\u0447\\u043d\\u044b\\u0439 \\u0437\\u0430\\u043f\\u0440\\u043e\\u0441, \\u0442\\u0430\\u043a \\u0438 \\u043a\\u043e\\u043d\\u0444\\u0438\\u0434\\u0435\\u043d\\u0446\\u0438\\u0430\\u043b\\u044c\\u043d\\u044b\\u0439. \\u0415\\u0441\\u043b\\u0438 \\u0437\\u0430\\u043f\\u0440\\u043e\\u0441 \\u044f\\u0432\\u043b\\u044f\\u0435\\u0442\\u0441\\u044f \\u043f\\u0443\\u0431\\u043b\\u0438\\u0447\\u043d\\u044b\\u043c, \\u0442\\u043e \\u043e\\u043d \\u0431\\u0443\\u0434\\u0435\\u0442 \\u043e\\u043f\\u0443\\u0431\\u043b\\u0438\\u043a\\u043e\\u0432\\u0430\\u043d \\u043d\\u0430 \\u0441\\u0442\\u0440\\u0430\\u043d\\u0438\\u0446\\u0435 \\u0432\\u0441\\u0435\\u0445 \\u0437\\u0430\\u043f\\u0440\\u043e\\u0441\\u043e\\u0432 \\u043f\\u043e\\u0441\\u043b\\u0435 \\u043f\\u0440\\u043e\\u0432\\u0435\\u0440\\u043a\\u0438 \\u043c\\u043e\\u0434\\u0435\\u0440\\u0430\\u0442\\u043e\\u0440\\u043e\\u043c. \\u041d\\u0438\\u043a\\u0430\\u043a\\u0430\\u044f \\u043b\\u0438\\u0447\\u043d\\u0430\\u044f \\u0438\\u043d\\u0444\\u043e\\u0440\\u043c\\u0430\\u0446\\u0438\\u044f \\u043d\\u0435 \\u043f\\u043e\\u043f\\u0430\\u0434\\u0435\\u0442 \\u043d\\u0430 \\u043e\\u0431\\u0449\\u0443\\u044e \\u0441\\u0442\\u0440\\u0430\\u043d\\u0438\\u0446\\u0443. \\u0415\\u0441\\u043b\\u0438 \\u0437\\u0430\\u043f\\u0440\\u043e\\u0441 \\u044f\\u0432\\u043b\\u044f\\u0435\\u0442\\u0441\\u044f \\u043a\\u043e\\u043d\\u0444\\u0438\\u0434\\u0435\\u043d\\u0446\\u0438\\u0430\\u043b\\u044c\\u043d\\u044b\\u043c, \\u0442\\u043e \\u0435\\u0433\\u043e \\u0443\\u0432\\u0438\\u0434\\u044f\\u0442 \\u0442\\u043e\\u043b\\u044c\\u043a\\u043e \\u043c\\u043e\\u0434\\u0435\\u0440\\u0430\\u0442\\u043e\\u0440\\u044b \\u041f\\u043e\\u0440\\u0442\\u0430\\u043b\\u0430 \\u0438 \\u043f\\u0440\\u0435\\u0434\\u0441\\u0442\\u0430\\u0432\\u0438\\u0442\\u0435\\u043b\\u0438 \\u043e\\u0442\\u0432\\u0435\\u0442\\u0441\\u0442\\u0432\\u0435\\u043d\\u043d\\u043e\\u0433\\u043e \\u0432\\u0435\\u0434\\u043e\\u043c\\u0441\\u0442\\u0432\\u0430, \\u043a\\u043e\\u0442\\u043e\\u0440\\u043e\\u043c\\u0443 \\u0430\\u0434\\u0440\\u0435\\u0441\\u043e\\u0432\\u0430\\u043d \\u0437\\u0430\\u043f\\u0440\\u043e\\u0441.\\u003C\\/p\\u003E",
+        "format" : "html"
+      }
     },
     "weight" : "0",
     "rdf_mapping" : [],

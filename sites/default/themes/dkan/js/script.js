@@ -197,7 +197,7 @@
             } 
             else {
               ul.css({
-                "margin-left": "-139px"
+                "margin-left": "-150px"
               });              
             }
             //alert($('body').width());  
@@ -229,12 +229,12 @@
           if($(this).hasClass("sf-item-7")) { //
              if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-734px"
+                "margin-left": "-655px"
               });              
             } 
             else {             
               ul.css({
-                "margin-left": "-677px"
+                "margin-left": "-780px"
               });  
             }
           }          
@@ -283,7 +283,7 @@
             } 
             else {
               ul.css({
-                "margin-left": "-139px"
+                "margin-left": "-150px"
               });              
             }
             //alert($('body').width());  
@@ -315,12 +315,12 @@
           if($(this).hasClass("sf-item-7")) { //
              if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({
-                "margin-left": "-734px"
+                "margin-left": "-655px"
               });              
             } 
             else {             
               ul.css({
-                "margin-left": "-677px"
+                "margin-left": "-780px"
               });  
             }
           }       

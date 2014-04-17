@@ -99,6 +99,8 @@ function od_dataset_get_revision_id_by_alias($alias, $type = '%') {
     WHERE (
       {$column_info['value']}{$operator}:field_value
     )
+    ORDER BY
+      revision_id DESC
     LIMIT 1
     ";
 
@@ -675,7 +677,8 @@ function _od_dataset_update_batch_process($options, &$context) {
           $twrp = od_dataset_get_wrapper($wrapper, $rev->vid);
           $fields_to_update = array(
             OD_DATASET_DOWNLOAD_FIELD => array(),
-            OD_DATASET_FIELD_LATEST_UPDATE => array(),
+            OD_DATASET_FIELD_LATEST_UPDATE_DATASET => array(),
+            OD_DATASET_FIELD_LATEST_UPDATE_STRUCTURE => array(),
           );
 
           if (empty($options['force'])) {
