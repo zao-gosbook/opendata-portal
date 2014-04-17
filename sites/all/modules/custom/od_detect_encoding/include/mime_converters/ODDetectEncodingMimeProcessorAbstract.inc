@@ -53,6 +53,7 @@ abstract class ODDetectEncodingMimeProcessorAbstract implements ODDetectEncoding
     return TRUE;
   }
 
+  //protected function fallbackConvertString
   public function convertString($string, $out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
     if ($in_charset == ODDetectEncoding::ENC_AUTO && ($in_charset = $this->converter->guessEncoding($string)) === FALSE) {
       $this->converter->getExceptionObject()->setInfo(ODDetectEncoding::ERR_CONVERT, 'Can\'t convert a string because an encoding can\'t be determined.');
