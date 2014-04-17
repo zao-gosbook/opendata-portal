@@ -1,0 +1,2 @@
+Maps data are downloaded from https://gist.github.com/KoGor/5685937.
+russia_1e-7sr_with_crimea.topo.json is modified version of russia_1e-7sr.json (with this tool: http://geojson.io/)
