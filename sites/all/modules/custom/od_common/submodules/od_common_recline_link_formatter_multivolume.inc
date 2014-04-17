@@ -56,3 +56,4 @@ function od_common_module__recline_link_formatter_multivolume(&$element, $entity
     }
   }
 }
+
