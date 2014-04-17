@@ -197,7 +197,7 @@
             } 
             else {
               ul.css({
-                "margin-left": "-139px"
+                "margin-left": "-150px"
               });              
             }
             //alert($('body').width());  
@@ -283,7 +283,7 @@
             } 
             else {
               ul.css({
-                "margin-left": "-139px"
+                "margin-left": "-150px"
               });              
             }
             //alert($('body').width());  
