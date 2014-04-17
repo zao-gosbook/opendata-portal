@@ -2899,7 +2899,7 @@ function entityforms_field_default_field_instances() {
       'description_field' => 0,
       'entity_translation_sync' => FALSE,
       'file_directory' => 'temp_converting_service',
-      'file_extensions' => 'csv xls xlsx',
+      'file_extensions' => 'csv xls xlsx zip json geojson',
       'max_filesize' => '50MB',
       'od_file_preprocess' => 1,
       'user_register_form' => FALSE,
@@ -4520,6 +4520,47 @@ notspecified|Лицензия отсутствует',
     ),
   );
 
+  // Exported field_instance: 'entityform-opendata_query-field_ef_email'
+  $field_instances['entityform-opendata_query-field_ef_email'] = array(
+    'bundle' => 'opendata_query',
+    'default_value' => array(
+      0 => array(
+        'email' => '[current-user:mail]',
+      ),
+    ),
+    'default_value_function' => 'field_default_token_default_value_function',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'email',
+        'settings' => array(
+          'conditions' => array(),
+        ),
+        'type' => 'email_default',
+        'weight' => 24,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_ef_email',
+    'label' => 'Email',
+    'required' => 1,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'email',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'email_textfield',
+      'weight' => 2,
+    ),
+  );
+
   // Exported field_instance: 'entityform-opendata_query-field_od_query_data_benefits'
   $field_instances['entityform-opendata_query-field_od_query_data_benefits'] = array(
     'bundle' => 'opendata_query',
@@ -4587,7 +4628,7 @@ notspecified|Лицензия отсутствует',
         'rows' => 3,
       ),
       'type' => 'text_textarea',
-      'weight' => 20,
+      'weight' => 22,
     ),
   );
 
@@ -4729,7 +4770,7 @@ notspecified|Лицензия отсутствует',
         'rows' => 3,
       ),
       'type' => 'text_textarea',
-      'weight' => 13,
+      'weight' => 14,
     ),
   );
 
@@ -4843,7 +4884,7 @@ notspecified|Лицензия отсутствует',
         'apply_chosen' => 1,
       ),
       'type' => 'options_select',
-      'weight' => 22,
+      'weight' => 15,
     ),
   );
 
@@ -4914,7 +4955,7 @@ notspecified|Лицензия отсутствует',
         'rows' => 3,
       ),
       'type' => 'text_textarea',
-      'weight' => 21,
+      'weight' => 23,
     ),
   );
 
@@ -4948,7 +4989,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 14,
+      'weight' => 16,
     ),
   );
 
@@ -5019,7 +5060,7 @@ notspecified|Лицензия отсутствует',
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 17,
+      'weight' => 19,
     ),
   );
 
@@ -5053,7 +5094,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 16,
+      'weight' => 18,
     ),
   );
 
@@ -5091,7 +5132,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 15,
+      'weight' => 17,
     ),
   );
 
@@ -5125,7 +5166,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 18,
+      'weight' => 20,
     ),
   );
 
@@ -5196,7 +5237,7 @@ notspecified|Лицензия отсутствует',
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 19,
+      'weight' => 21,
     ),
   );
 
@@ -5262,7 +5303,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'markup',
       'settings' => array(),
       'type' => 'markup',
-      'weight' => 23,
+      'weight' => 24,
     ),
   );
 
@@ -5295,7 +5336,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'markup',
       'settings' => array(),
       'type' => 'markup',
-      'weight' => 2,
+      'weight' => 1,
     ),
   );
 
@@ -5329,6 +5370,44 @@ notspecified|Лицензия отсутствует',
       'settings' => array(),
       'type' => 'markup',
       'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance: 'entityform-opendata_query-field_od_query_organiz_exist'
+  $field_instances['entityform-opendata_query-field_od_query_organiz_exist'] = array(
+    'bundle' => 'opendata_query',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(
+          'conditions' => array(),
+        ),
+        'type' => 'list_default',
+        'weight' => 26,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_od_query_organiz_exist',
+    'label' => 'Существующая организация',
+    'required' => 1,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 13,
     ),
   );
 
@@ -5366,7 +5445,7 @@ notspecified|Лицензия отсутствует',
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 1,
+      'weight' => 0,
     ),
   );
 
@@ -6117,7 +6196,7 @@ notspecified|Лицензия отсутствует',
     'bundle' => 'request_to_become_a_publisher',
     'default_value' => array(
       0 => array(
-        'value' => 0,
+        'value' => 1,
       ),
     ),
     'deleted' => 0,
@@ -6230,7 +6309,7 @@ notspecified|Лицензия отсутствует',
   $field_instances['entityform-request_to_become_a_publisher-field_pubreq_selected_org'] = array(
     'bundle' => 'request_to_become_a_publisher',
     'default_value' => NULL,
-    'default_value_function' => '',
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -6252,7 +6331,12 @@ notspecified|Лицензия отсутствует',
     'settings' => array(
       'behaviors' => array(
         'prepopulate' => array(
-          'status' => 0,
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'og_context' => 0,
+          'skip_perm' => 0,
+          'status' => 1,
         ),
       ),
       'entity_translation_sync' => FALSE,

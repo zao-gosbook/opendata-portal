@@ -2170,6 +2170,11 @@ $zen-auto-include-item-base: false;
       top: 47px;
       margin: 0;
       padding: 0;
+      width: 600px;
+      
+      > ul {
+        float: right;
+      }
     }
     .pane-locale-language {
       top: 7px;
@@ -2335,7 +2340,8 @@ $zen-auto-include-item-base: false;
     top: 32px;    
     
     .pane-gb-search-pane {
-      width: 409px;
+      width: 450px;
+      margin-left: 0;
       padding: 0;
       float: right;
       
@@ -3220,6 +3226,34 @@ $zen-auto-include-item-base: false;
   } 
 }
 
+/**
+ * addaptive menu
+ */
+@media all and (max-width: 1225px) and (min-width: 1026px) {
+  .region-header {
+    #logo {
+      width: 68px;
+      margin-top: 19px;
+    }  
+    #name-and-slogan {
+      padding-top: 32px;
+    }
+    #name-and-slogan a {
+      color: #FFFFFF;
+      font-size: 23px;
+    }  
+    #name-and-slogan h1:before {
+      top: -9px;
+    } 
+    .header__site-slogan {
+      font-size: 9px;
+    }
+    .pane-system-user-menu {
+      left: 94px;
+      top: 100px;
+    }    
+  }
+}
 
 /**
  * addaptive rubrics

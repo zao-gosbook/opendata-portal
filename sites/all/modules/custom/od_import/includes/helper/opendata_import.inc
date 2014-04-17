@@ -15,14 +15,14 @@ function _od_import_create_dataset($identifier, $org_id) {
   $dataset_node->status = NODE_NOT_PUBLISHED;
 
   // Meta identifier.
-  $dataset_node->{OD_COMMON_FIELD_DATASET_IDENTIFIER}[LANGUAGE_NONE][0] = array(
+  $dataset_node->{ODP_FIELD_DATASET_IDENTIFIER}[LANGUAGE_NONE][0] = array(
     'value' => $identifier,
     'format' => NULL,
     'safe_value' => $identifier,
   );
 
   // Meta owner.
-  $dataset_node->{OD_COMMON_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0] = array(
+  $dataset_node->{ODP_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0] = array(
     'target_id' => $org_id,
   );
 
@@ -113,7 +113,7 @@ function _od_import_dataset_set_title($dataset_node, $meta, &$messages, &$datase
  */
 function _od_import_dataset_set_description($dataset_node, $meta, &$messages, &$dataset_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_DESCRIPTION};
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_DESCRIPTION};
 
   if (isset($meta['description'])) {
     // Get the new field value.
@@ -145,7 +145,7 @@ function _od_import_dataset_set_description($dataset_node, $meta, &$messages, &$
  */
 function _od_import_dataset_set_created(&$dataset_node, $meta, &$messages, &$dataset_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_CREATED};
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_CREATED};
 
   if (isset($meta['created'])) {
     // Get created in unix timestamp format.
@@ -188,7 +188,7 @@ function _od_import_dataset_set_created(&$dataset_node, $meta, &$messages, &$dat
  */
 function _od_import_dataset_set_updated(&$dataset_node, $meta, &$messages, &$dataset_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_UPDATED};
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_UPDATED};
 
   if (isset($meta['data'][0]['created'])) {
     // Get created in unix timestamp format.
@@ -231,7 +231,7 @@ function _od_import_dataset_set_updated(&$dataset_node, $meta, &$messages, &$dat
  */
 function _od_import_dataset_set_subject(&$dataset_node, $meta, &$messages, &$dataset_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_SUBJECT};
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_SUBJECT};
 
   if (isset($meta['subject'])) {
     // Get the new field value.
@@ -264,7 +264,7 @@ function _od_import_dataset_set_subject(&$dataset_node, $meta, &$messages, &$dat
  */
 function _od_import_dataset_set_publisher_name(&$dataset_node, $meta, &$messages, &$dataset_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_PUBLISHER_NAME};
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_PUBLISHER_NAME};
 
   if (isset($meta['publisher']['name'])) {
     // Get the new field value.
@@ -294,7 +294,7 @@ function _od_import_dataset_set_publisher_name(&$dataset_node, $meta, &$messages
  */
 function _od_import_dataset_set_publisher_phone(&$dataset_node, $meta, &$messages, &$dataset_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_PUBLISHER_PHONE};
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_PUBLISHER_PHONE};
 
   if (isset($meta['publisher']['phone'])) {
     // Get the new field value.
@@ -324,7 +324,7 @@ function _od_import_dataset_set_publisher_phone(&$dataset_node, $meta, &$message
  */
 function _od_import_dataset_set_publisher_mbox(&$dataset_node, $meta, &$messages, &$dataset_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_PUBLISHER_EMAIL};
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_PUBLISHER_EMAIL};
 
   if (isset($meta['publisher']['mbox'])) {
     if (valid_email_address($meta['publisher']['mbox'])) {
@@ -361,20 +361,20 @@ function _od_import_dataset_set_publisher_mbox(&$dataset_node, $meta, &$messages
  */
 function _od_import_dataset_set_resource(&$dataset_node, $meta, &$messages, &$dataset_updated, &$resource_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->{OD_COMMON_FIELD_DATASET_RESOURCES};
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_RESOURCES};
 
   // Return if data does not exist.
   if (isset($meta['data'])) {
     // Load resource node.
     if (!empty($field_value)) {
-      $resource_nid = $dataset_node->{OD_COMMON_FIELD_DATASET_RESOURCES}['und'][0]['target_id'];
+      $resource_nid = $dataset_node->{ODP_FIELD_DATASET_RESOURCES}['und'][0]['target_id'];
       $resource_node = node_load($resource_nid);
     }
     // Or create if it has not created yet.
     else {
       $resource_node = _od_import_create_resource($dataset_node->nid);
 
-      $dataset_node->{OD_COMMON_FIELD_DATASET_RESOURCES}[LANGUAGE_NONE][0] = array(
+      $dataset_node->{ODP_FIELD_DATASET_RESOURCES}[LANGUAGE_NONE][0] = array(
         'target_id' => $resource_node->nid,
       );
       $dataset_updated = TRUE;
@@ -384,7 +384,7 @@ function _od_import_dataset_set_resource(&$dataset_node, $meta, &$messages, &$da
   }
   else {
     if (empty($field_value)) {
-      $dataset_node->{OD_COMMON_FIELD_DATASET_RESOURCES} = array();
+      $dataset_node->{ODP_FIELD_DATASET_RESOURCES} = array();
     }
     $messages[] = 'Не заполнено поле "Гиперссылка на набор открытых данных".';
   }
@@ -405,7 +405,7 @@ function _od_import_create_resource($dataset_id) {
   $resource_node->promote = NODE_NOT_PROMOTED;
   $resource_node->comment = COMMENT_NODE_OPEN;
 
-  $resource_node->{OD_COMMON_FIELD_RESOURCE_DATASET}[LANGUAGE_NONE][0] = array(
+  $resource_node->{ODP_FIELD_RESOURCE_DATASET}[LANGUAGE_NONE][0] = array(
     'target_id' => $dataset_id,
   );
 
@@ -429,7 +429,7 @@ function _od_import_update_resource($resource_node, $meta, &$messages, &$resourc
 
   $revisions_created = array();
   foreach ($revisions as $revision) {
-    $created = $revision->{OD_COMMON_FIELD_RESOURCE_CREATED}['und'][0]['value'];
+    $created = $revision->{ODP_FIELD_RESOURCE_CREATED}['und'][0]['value'];
     $revisions_created[$created] = $revision->vid;
   }
 
@@ -485,7 +485,7 @@ function _od_import_update_resource($resource_node, $meta, &$messages, &$resourc
  */
 function _od_import_resource_set_created($resource_node, $data, &$messages, &$resource_updated) {
   // Get the current field value.
-  $field_value = &$resource_node->{OD_COMMON_FIELD_RESOURCE_CREATED};
+  $field_value = &$resource_node->{ODP_FIELD_RESOURCE_CREATED};
 
   if (isset($data['created'])) {
     // Get created in unix timestamp format.
@@ -530,7 +530,7 @@ function _od_import_resource_set_created($resource_node, $data, &$messages, &$re
  */
 function _od_import_resource_set_provenance($resource_node, $data, &$messages, &$resource_updated) {
   // Get the current field value.
-  $field_value = &$resource_node->{OD_COMMON_FIELD_RESOURCE_PROVENANCE};
+  $field_value = &$resource_node->{ODP_FIELD_RESOURCE_PROVENANCE};
 
   if (isset($data['provenance'])) {
     // Get the new field value.
@@ -560,7 +560,7 @@ function _od_import_resource_set_provenance($resource_node, $data, &$messages, &
  */
 function _od_import_resource_set_format($resource_node, $data, &$messages, &$resource_updated) {
   // Get the current field value.
-  $field_value = &$resource_node->{OD_COMMON_FIELD_RESOURCE_FORMAT};
+  $field_value = &$resource_node->{ODP_FIELD_RESOURCE_FORMAT};
 
   if (isset($data['format'])) {
     // Get format tid.
@@ -600,7 +600,7 @@ function _od_import_resource_set_format($resource_node, $data, &$messages, &$res
  */
 function _od_import_resource_set_data($resource_node, $data, &$messages, &$resource_updated, $meta) {
   // Get the current field value.
-  $field_value = &$resource_node->{OD_COMMON_FIELD_RESOURCE_DATA};
+  $field_value = &$resource_node->{ODP_FIELD_RESOURCE_DATA};
 
   if (isset($data['source'])) {
     $url = $data['source'];
@@ -617,13 +617,13 @@ function _od_import_resource_set_data($resource_node, $data, &$messages, &$resou
 
         $file->display = 1;
 
-        $resource_node->{OD_COMMON_FIELD_RESOURCE_UTF8_ENCODING}[LANGUAGE_NONE][0]['value'] = $file->utf8;
+        $resource_node->{ODP_FIELD_RESOURCE_UTF8_ENCODING}[LANGUAGE_NONE][0]['value'] = $file->utf8;
 
         switch ($file->filemime) {
           case 'text/csv':
             $file->grid = 1;
-            $delimiter = od_import_detect_delimiter($file->uri);
-            $resource_node->{OD_COMMON_FIELD_RESOURCE_CSV_DELIMITER}[LANGUAGE_NONE][0]['value'] = $delimiter;
+            $delimiter = odp_detect_csv_delimiter($file->uri);
+            $resource_node->{ODP_FIELD_RESOURCE_CSV_DELIMITER}[LANGUAGE_NONE][0]['value'] = $delimiter;
             break;
         }
 
@@ -658,7 +658,7 @@ function _od_import_resource_set_data($resource_node, $data, &$messages, &$resou
  */
 function _od_import_resource_set_structure($resource_node, $data, &$messages, &$resource_updated, $meta) {
   // Get the current field value.
-  $field_value = &$resource_node->{OD_COMMON_FIELD_RESOURCE_STRUCTURE};
+  $field_value = &$resource_node->{ODP_FIELD_RESOURCE_STRUCTURE};
 
   if (isset($data['source'])) {
     $url = $data['source'];

@@ -391,11 +391,16 @@ div.horizontal-tabs .form-text {
   }
   #mini-panel-search_block {
     display: table;
+    
+    .pane-system-main-menu {
+      display: block;
+    }
   }
   .pane-system-main-menu {
     /*padding-left: 10%;*/
     padding-top: 22px;
     text-transform: uppercase;
+    display: none;
     
     > ul {
       margin: 0;
@@ -1191,7 +1196,7 @@ td div.label {
   /*width: 100%;*/
 }
 .pane-gb-search-pane {
-  width: auto;
+  width: 100%;
   display: table;
   
   form {
@@ -1905,6 +1910,8 @@ td div.label {
     }
   }
 }
+
+
 
 /* library */
 .section-library {
@@ -4407,8 +4414,10 @@ html.js input.form-autocomplete {
       text-decoration: none;
       display: inline-block;  
       text-decoration: none;
-      margin-top: 6px;
     }
+  }
+  .view-header a.btn[href="/datasets-map"] {
+    margin: 0 0 25px 20px;
   }
   tr.odd {
     background: #f4f4f4;
@@ -4430,13 +4439,19 @@ html.js input.form-autocomplete {
     a {
       text-decoration: none;
     }
-    &.views-field-field-site-url a {
-      display: block;
-      width: 25px;
-      height: 21px;
-      overflow: hidden;
-      text-indent: -10000px;
-      background: url("../images/icon-direct.png");
+    &.views-field-field-site-url,
+    &.views-field-field-org-site-od-section {
+      text-align: center;
+      
+      a {
+        display: block;
+        width: 25px;
+        height: 21px;
+        overflow: hidden;
+        text-indent: -10000px;
+        background: url("../images/icon-direct.png");      
+        margin: 0 auto;
+      }
     }
   }
 }
@@ -4502,6 +4517,57 @@ table {
       text-transform: none;
       margin-bottom: 20px;
     }     
+  }
+  .view-filters {
+    @include clearfix;
+    
+    form {
+      float: right;
+      margin-right: -10px;
+    }
+    .views-exposed-widget {
+      padding: 0;
+    }
+    label {
+      color: #666666;
+      font-size: 15px;
+      line-height: 1.35em;
+      margin: 0;
+      padding-right: 7px; 
+      float: left;
+      font-weight: normal;
+    }
+    .form-radios {
+      float: left;
+    }
+    .form-type-bef-link {
+      padding-right: 7px;
+      float: left;
+      margin: 0;
+      
+      a {
+        color: #666666;
+        font-size: 15px;
+        line-height: 1.35em;   
+        color: #000;
+        text-decoration: none;
+      }
+      &[class$='asc'] a {
+        padding-right: 18px;
+        background: url("/misc/arrow-asc.png") no-repeat 100% 50%;
+      }
+      &[class$='desc'] a {
+        padding-right: 18px;
+        background: url("/misc/arrow-desc.png") no-repeat 100% 50%;
+      }      
+      &.selected a {
+        color: #3D9FED;
+        border-bottom: 1px dashed #3D9FED;
+      }
+    }
+  }
+  .view-content {
+    clear: both;
   }
   .views-row {
     padding-bottom: 28px;
@@ -4827,6 +4893,23 @@ div.fivestar-widget .star {
     font-size: 24px;
     line-height: 1.0em;
     margin: 0 0 .4em;
+  }
+  .dataset-rules {
+    font-size: 15px;
+    line-height: 1.35;
+    
+    ol {
+      margin-top: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      padding-right: 12px;
+      padding-top: 12px;
+      background: #eee;
+      
+      > li {
+        padding-bottom: 10px;
+      }
+    }
   }
   .panel-pane {
     margin-bottom: 40px;
@@ -5629,6 +5712,64 @@ div.fivestar-widget .star {
 }
 
 /**
+ * select version dropdown dfgsdf
+ */
+.multi-download-link-wrapper {
+  display: inline-block;
+  position: relative;
+  
+  .main-download-link-wrapper {
+    a {
+      background: url("../images/arr-down-white.png") no-repeat scroll 86% 50% #0C87E8;
+      color: #FFFFFF;
+      display: inline-block;
+      font-size: 18px;
+      line-height: 1em;
+      padding: 0.75em 2.6em 0.75em 1.6em;
+      position: relative;
+      text-decoration: none;
+      text-transform: none;    
+    }
+  }
+  .dropdown-links {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B3B3B3;
+    position: absolute;
+    top: 46px;
+    width: 265px;
+    
+    .download {
+      margin: 0;
+      
+      a {
+        background: url("../images/ico-downloads.png") no-repeat scroll 17px 50% transparent;
+        color: #0C87E8;
+        display: block;
+        font-size: 14px;
+        height: 45px;
+        line-height: 45px;
+        margin: 0;
+        padding: 0 0 0 42px;
+        text-decoration: none;     
+        
+        em {
+          color: #777777;
+          font-style: normal;        
+        }
+        &:hover {
+          color: #fff;
+          background: #0C87E8;
+          
+          em {
+            color: #000;
+          }
+        }
+      }
+    }  
+  }
+}
+
+/**
  * node-resource
  */
 .node-type-resource {
@@ -5650,18 +5791,6 @@ div.fivestar-widget .star {
         width: 290px;
         float: left;
       }
-    }
-    .download a {
-      background: #0C87E8 url("../images/ico-download.png") no-repeat 8px 50%;
-      @include background-size(25px auto);
-      color: #FFFFFF;
-      display: inline-block;
-      font-size: 14px;
-      line-height: 1em;
-      padding: 0.9em 1.6em .9em 45px;
-      text-decoration: none;
-      text-transform: none;
-      margin-bottom: 20px;
     }
     /* bootstrap navigation */
     .input-prepend.text-query {
@@ -6685,6 +6814,21 @@ div.fivestar-widget .star {
  * map
  */ 
  
+.link-yandex-map a {
+  display: inline-block;
+  padding: 0 10px 0 42px;
+  height: 42px;
+  line-height: 42px;
+  background: #fff url("../images/ico-ymaps.png") no-repeat 5px 50%;
+  font-size: 16px;
+  text-decoration: none;
+  border: 1px solid #0C87E8;
+  margin-bottom: 10px;
+} 
+.link-google-map a {
+  background-image: url("../images/ico-gmaps.png");
+}
+
 /* filters */
 .od-map-page-switcher-wrapper {
   padding: 0 0 20px;    
@@ -6745,7 +6889,7 @@ div.fivestar-widget .star {
   }  
 } 
 .page-datasets-map {
-  background-color: #fff;  
+  /*background-color: #fff;  */
   
   .custom-text-wrapper {
     padding: 20px 0;
@@ -6940,6 +7084,11 @@ div.fivestar-widget .star {
   #ip-geoloc-map-of-view-datasets_map-google_map {
     height: 680px !important;
   }
+}
+.view-datasets-map .geofield-ymap {
+  border: 3px solid #fff;
+  margin-top: 15px;
+  height: 680px !important;
 }
 
 /**

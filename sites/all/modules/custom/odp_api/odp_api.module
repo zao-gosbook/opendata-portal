@@ -8,6 +8,7 @@ define('ODP_API', dirname(__FILE__));
 /**
  * Include API files.
  */
+require_once ODP_API . '/includes/constants.inc';
 require_once ODP_API . '/includes/model.inc';
 require_once ODP_API . '/includes/controller.inc';
 
@@ -15,301 +16,23 @@ function odp_api_menu() {
   // Init output variable.
   $items = array();
 
-  $items['api'] = array(
+  $items['api/json'] = array(
     'title' => 'Api',
     'page callback' => 'odp_api_page',
     'access arguments' => array('access content'),
-    'delivery callback' => 'odp_api_xml_output',
+    'delivery callback' => 'odp_api_json_deliver',
     'type' => MENU_CALLBACK,
     'file' => 'includes/pages/api.inc',
   );
-  $items['api/dataset'] = array(
-    'title' => 'API',
-    'page callback' => 'odp_api_dataset_page',
-    'page arguments' => array(2,3),
+  $items['api/xml'] = array(
+    'title' => 'Api',
+    'page callback' => 'odp_api_page',
     'access arguments' => array('access content'),
-    'delivery callback' => 'odp_api_xml_output',
+    'delivery callback' => 'odp_api_xml_deliver',
     'type' => MENU_CALLBACK,
-    'file' => 'includes/pages/api_dataset.inc',
+    'file' => 'includes/pages/api.inc',
   );
-
-  $items['api/datasets'] = array(
-    'title' => 'API',
-    'page callback' => 'odp_api_datasets_page',
-    'page arguments' => array(2,3),
-    'access arguments' => array('access content'),
-    'delivery callback' => 'odp_api_xml_output',
-    'type' => MENU_CALLBACK,
-    'file' => 'includes/pages/api_datasets.inc',
-  );
+  $items['api'] = $items['api/json'];
 
   return $items;
 }
-
-/**
- * Implements of hook_services_resources().
- */
-/* @TODO УСТАРЕЛО
-function odp_api_services_resources() {
-  $items = array();
-
-  $items['dataset'] = array(
-    'operations' => array(
-      'retrieve' => array(
-        'help' => 'Retrieves dataset info',
-        'callback' => 'odp_api_services_retrieve',
-        'access callback' => 'user_access',
-        'access arguments' => array('access content'),
-        'access arguments append' => FALSE,
-        'args' => array(
-          array(
-            'name' => 'dataset',
-            'type' => 'string',
-            'description' => 'Function to perform',
-            'source' => array('path' => '0'),
-            'optional' => FALSE,
-            'default' => '0',
-          ),
-          array(
-            'name' => 'function1',
-            'type' => 'string',
-            'description' => 'Function to perform',
-            'source' => array('path' => '1'),
-            'optional' => TRUE,
-            'default' => '0',
-          ),
-          array(
-            'name' => 'function2',
-            'type' => 'string',
-            'description' => 'Function to perform',
-            'source' => array('path' => '2'),
-            'optional' => TRUE,
-            'default' => '0',
-          ),
-          array(
-            'name' => 'function3',
-            'type' => 'string',
-            'description' => 'Function to perform',
-            'source' => array('path' => '3'),
-            'optional' => TRUE,
-            'default' => '0',
-          ),
-        ),
-      ),
-    ),
-  );
-
-  $items['datasets'] = array(
-    'operations' => array(
-      'retrieve' => array(
-        'help' => 'Retrieves datasets',
-        'callback' => '_odp_api_retrieve',
-        'access callback' => 'user_access',
-        'access arguments' => array('access content'),
-        'access arguments append' => FALSE,
-        'args' => array(
-          array(
-            'name' => 'fn',
-            'type' => 'string',
-            'description' => 'Function to perform',
-            'source' => array('path' => '0'),
-            'optional' => TRUE,
-            'default' => '0',
-          ),
-          array(
-            'name' => 'identifier',
-            'type' => 'string',
-            'description' => 'Name of dataset',
-            'source' => array('param' => 'identifier'),
-            'optional' => TRUE,
-            'default' => '',
-          ),
-          array(
-            'name' => 'owner_name',
-            'type' => 'string',
-            'description' => 'Name of dataset owner',
-            'source' => array('param' => 'owner_name'),
-            'optional' => TRUE,
-            'default' => '0',
-          ),
-          array(
-            'name' => 'owner_id',
-            'type' => 'string',
-            'description' => 'ID of dataset owner',
-            'source' => array('param' => 'owner_id'),
-            'optional' => TRUE,
-            'default' => '0',
-          ),
-          array (
-            'name' => 'keyword',
-            'type' => 'string',
-            'description' => 'array of dataset keywords',
-            'source' => array('param' => 'keyword'),
-            'optional' => TRUE,
-            'default' => '0',
-          ),
-          array(
-            'name' => 'offset',
-            'optional' => TRUE,
-            'type' => 'int',
-            'source' => array('param' => 'offset'),
-            'description' => 'offset this number of results',
-            'default' => 0,
-          ),
-          array(
-            'name' => 'limit',
-            'optional' => TRUE,
-            'type' => 'int',
-            'source' => array('param' => 'limit'),
-            'description' => 'maximum number of results to return (default: 20)',
-            'default' => 20,
-          ),
-        ),
-      ),
-    ),
-  );
-
-  return $items;
-}
-
-function odp_api_services_retrieve($dataset_id, $function1 = NULL, $function2 = NULL, $function3 = NULL) {
-  // Init output variable.
-  $result = FALSE;
-
-  // Get $_GET query parameters.
-  $args = drupal_get_query_parameters();
-
-  $dataset = odp_load_dataset($dataset_id);
-
-  if (!$dataset) {
-    return FALSE;
-  }
-
-  switch ($function1) {
-    case 'data':
-      $resource = odp_load_dataset_resource($dataset_id);
-
-      if (empty($resource->field_upload[LANGUAGE_NONE][0]['fid'])) {
-        return $result;
-      }
-
-      $file = file_load($resource->field_upload[LANGUAGE_NONE][0]['fid']);
-
-      if ($file->status && $file->size > 2000000 && !empty($file->uri)) {
-        return $result;
-      }
-
-      $content = file_get_contents($file->uri);
-
-      if (empty($file->uri)) {
-        return $result;
-      }
-
-      if ($file->filemime === 'text/csv') {
-        $content = preg_split("/\\r\\n|\\r|\\n/", $content);
-
-        $header = array_shift($content);
-
-        if (!empty($args['search']) && (is_string($args['search']) || is_numeric($args['search']))) {
-          foreach ($content as $key => $string) {
-            if (stripos($string, $args['search']) === FALSE) {
-              unset($content[$key]);
-            }
-          }
-        }
-
-        array_unshift($content, $header);
-        foreach ($content as &$row) {
-          $row = str_getcsv($row, ';');
-        }
-      }
-
-      $result = $content;
-      break;
-    default:
-      $result = $dataset;
-      break;
-  }
-
-  return $result;
-}
-
-function _odp_api_retrieve($fn, $identifier, $owner_name, $owner_id, $keyword, $offset, $limit) {
-  $result = array();
-
-  switch ($fn) {
-    case 'search':
-
-      // Check for mad values
-      $owner_name = rawurldecode($owner_name) ? rawurldecode($owner_name) : 'all';
-      $owner_id = rawurldecode($owner_id) ? rawurldecode($owner_id) : 'all';
-      $keyword = rawurldecode($keyword) ? rawurldecode($keyword) : 'all';
-      $offset = intval($offset) ? intval($offset) : 0;
-      $limit = intval($limit) ? intval($limit) : 20;
-
-      $result = _odp_api_retrieve_search_datasets($owner_name, $owner_id, $keyword, $offset, $limit);
-      break;
-    case 'content':
-      if (!empty($identifier)) {
-        $result = _odp_api_retrieve_content_dataset_headers($identifier);
-      }
-      break;
-  }
-
-  return $result;
-}
-
-function _odp_api_retrieve_search_datasets($owner_name, $owner_id, $keyword, $offset, $limit) {
-  $args = array($owner_name, $owner_id, $keyword);
-
-  $view = views_get_view('opendata_portal_api');
-  $view->set_arguments($args);
-  $view->set_offset($offset);
-  $view->set_items_per_page($limit);
-  $view->execute();
-
-  $xml_parser = xml_parser_create();
-  $result = array();
-  $status = xml_parse_into_struct($xml_parser, $view->render(), $result);
-  var_export($result);
-
-  $result = json_decode(filter_xss($view->render(), array()));
-
-  $datasets = $result->datasets;
-
-  if (!empty($datasets)) {
-    foreach ($datasets as &$dataset) {
-      $dataset = $dataset->dataset->identifier;
-    }
-  }
-
-  return $result->datasets;
-}
-
-function _odp_api_retrieve_content_dataset_headers($identifier) {
-  $result = array();
-  $dataset = odp_load_dataset($identifier);
-
-  if (empty($dataset)) {
-    return $result;
-  }
-
-  if (empty($dataset->field_resources['und'][0]['target_id'])) {
-    return $result;
-  }
-
-  $resource = node_load($dataset->field_resources['und'][0]['target_id']);
-
-  $file_uri = $resource->field_upload['und'][0]['uri'];
-
-  $uri = file_create_url($file_uri);
-
-  $content = od_file_preprocess_parse_csv($uri);
-
-  $rows = reset($content);
-  $row = reset($rows);
-
-  return array('keys' => $row);
-}
-
-*/
