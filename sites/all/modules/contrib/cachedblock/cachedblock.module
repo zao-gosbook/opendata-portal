@@ -1,0 +1,241 @@
+<?php
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function cachedblock_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'block_list_alter') {
+    // Set our implementation to be the last one.
+    $implementation = $implementations['cachedblock'];
+    unset($implementations['cachedblock']);
+    $implementations['cachedblock'] = $implementation;
+  }
+}
+
+/**
+ * Implements hook_block_list_alter().
+ */
+// must be the last.
+function cachedblock_block_list_alter(&$blocks) {
+  global $theme_key;
+
+  foreach ($blocks as &$block) {
+    if (!isset($block->theme) || !isset($block->status) || $block->theme != $theme_key || $block->status != 1) {
+      continue;
+    }
+    $conf = _cachedblock_block_list($block->module, $block->delta);
+    if (!empty($conf->status)) {
+      // Overwrite block identifiers.
+      $block->module = 'cachedblock';
+      $block->delta = $conf->bid;
+      $block->cache = DRUPAL_CACHE_CUSTOM;
+    }
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * Generates the administrator-defined blocks for display.
+ */
+function cachedblock_block_view($delta = '') {
+  $delta = intval($delta);
+  $list = _cachedblock_block_list();
+
+  if (empty($list[$delta]->status)) {
+    return array();
+  }
+
+  $block = $list[$delta];
+  $data = array();
+
+  $cid = NULL;
+  $cacheable = ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD');
+
+  if ($cacheable) {
+    $cid = _cachedblock_get_cache_id($block);
+  }
+  if (!empty($cid)) {
+    $cached_block = cache_get($cid, 'cache_block');
+    if (!empty($cached_block)) {
+      $data = $cached_block->data;
+    }
+  }
+
+  if (empty($data)) {
+    $data = module_invoke($block->module, 'block_view', $block->delta);
+    $delta = str_replace('-', '_', $block->delta);
+    drupal_alter(array('block_view', "block_view_{$block->module}_{$delta}"), $data, $block);
+
+    if (is_array($data['content'])) {
+      unset($data['content']['#contextual_links']);
+      unset($data['content']['#views_contextual_links_info']);
+      // Do not miss attached JS and CSS.
+      $attached = isset($data['content']['#attached']) ? $data['content']['#attached'] : array();
+      $data['content'] = array('#markup' => drupal_render($data['content']));
+      if (!empty($attached)) {
+        $data['content']['#attached'] = $attached;
+      }
+    }
+
+    if (isset($cid)) {
+      $expire = CACHE_TEMPORARY;
+      drupal_alter('cachedblock_expire', $expire, $block);
+      cache_set($cid, $data, 'cache_block', $expire);
+    }
+  }
+
+  // Overwrite the overwritten block identifiers to the original values.
+  $data['module'] = $block->module;
+  $data['delta'] = $block->delta;
+
+  return $data;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cachedblock_form_block_admin_configure_alter(&$form, &$form_state, $form_id) {
+  cachedblock_settings_form($form, $form_state, $form_id);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cachedblock_form_block_add_block_form_alter(&$form, &$form_state, $form_id) {
+  cachedblock_settings_form($form, $form_state, $form_id);
+}
+
+function cachedblock_settings_form(&$form, &$form_state, $form_id) {
+  $conf = _cachedblock_block_list($form['module']['#value'], $form['delta']['#value']);
+  if (empty($conf)) {
+    $conf = new stdClass();
+    $conf->module = $form['module']['#value'];
+    $conf->delta = $form['delta']['#value'];
+    $conf->status = 0;
+    $conf->cache = DRUPAL_CACHE_PER_ROLE;
+    $conf->settings = '';
+  }
+  if (!empty($conf->settings)) {
+    $conf->settings = unserialize($conf->settings);
+  }
+  else {
+    $conf->settings = array();
+  }
+
+  $block_cache_options = array(
+    DRUPAL_CACHE_GLOBAL => t('Cache once for everything (global)'),
+    DRUPAL_CACHE_PER_PAGE => t('Per page'),
+    DRUPAL_CACHE_PER_ROLE => t('Per role'),
+    DRUPAL_CACHE_PER_ROLE | DRUPAL_CACHE_PER_PAGE => t('Per role per page'),
+    DRUPAL_CACHE_PER_USER => t('Per user'),
+    DRUPAL_CACHE_PER_USER | DRUPAL_CACHE_PER_PAGE => t('Per user per page'),
+  );
+
+  $form['settings']['cachedblock'] = array(
+    '#type' => 'select',
+    '#title' => t('Cache this block'),
+    '#description' => t('Enforce block caching even if node access modules are installed.'),
+    '#weight' => 2,
+    '#options' => array(0 => t('No'), 1 => t('Yes')),
+    '#default_value' => $conf->status,
+  );
+
+  $form['settings']['cachedblock_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Cache setting'),
+    '#description' => t('Select the appropriate cache setting for this block.'),
+    '#weight' => 3,
+    '#options' => $block_cache_options,
+    '#default_value' => $conf->cache,
+  );
+
+  drupal_alter('cachedblock_form', $form, $conf);
+
+  $form['#submit'][] = 'cachedblock_settings_form_submit';
+}
+
+function cachedblock_settings_form_submit($form, &$form_state) {
+  if ($form_state['values']['form_id'] == 'block_admin_configure' || $form_state['values']['form_id'] == 'block_add_block_form') {
+    $conf = _cachedblock_block_list($form_state['values']['module'], $form_state['values']['delta']);
+    if (empty($conf)) {
+      $conf = new stdClass();
+      $conf->module = $form_state['values']['module'];
+      $conf->delta = $form_state['values']['delta'];
+      $conf->status = 0;
+      $conf->cache = DRUPAL_CACHE_PER_ROLE;
+      $conf->settings = '';
+    }
+    if (!empty($conf->settings)) {
+      $conf->settings = unserialize($conf->settings);
+    }
+    else {
+      $conf->settings = array();
+    }
+
+    if ((intval($conf->status) === 0) && (intval($form_state['values']['cachedblock']) === 0)) {
+      // Do not store unneeded settings.
+      return;
+    }
+
+    $conf->status = intval($form_state['values']['cachedblock']);
+    $conf->cache = intval($form_state['values']['cachedblock_type']);
+
+    drupal_alter('cachedblock_settings', $conf, $form_state['values']);
+
+    if (!empty($conf->settings)) {
+      $conf->settings = serialize($conf->settings);
+    }
+    else {
+      $conf->settings = NULL;
+    }
+
+    if (empty($conf->bid)) {
+      drupal_write_record('cachedblock', $conf);
+    }
+    else {
+      drupal_write_record('cachedblock', $conf, array('bid'));
+    }
+  }
+}
+
+function cachedblock_contextual_links_view_alter(&$element, $items) {
+  if (isset($element['#element']['#block'])) {
+    $conf = _cachedblock_block_list($element['#element']['#block']->module, $element['#element']['#block']->delta);
+    if (!empty($conf->status)) {
+      $element['#links'] = array();
+    }
+  }
+}
+
+function _cachedblock_block_list($module = NULL, $delta = NULL) {
+  static $list = NULL;
+
+  if (is_null($list)) {
+    $list = db_select('cachedblock', 'b')->fields('b')->execute()->fetchAllAssoc('bid');
+  }
+
+  if (isset($module) && isset($delta)) {
+    $delta = strval($delta);
+    foreach ($list as $conf) {
+      if (($conf->module === $module) && ($conf->delta === $delta)) {
+        return $conf;
+      }
+    }
+    return NULL;
+  }
+
+  return $list;
+}
+
+function _cachedblock_get_cache_id($block) {
+  $cid_parts[] = $block->module;
+  $cid_parts[] = $block->delta;
+  $cid_parts = array_merge($cid_parts, drupal_render_cid_parts($block->cache));
+
+  return implode(':', $cid_parts);
+}
+
+function cachedblock_clear_block_cache($module, $delta) {
+  cache_clear_all($module . ':' . $delta . ':', 'cache_block', TRUE);
+}
