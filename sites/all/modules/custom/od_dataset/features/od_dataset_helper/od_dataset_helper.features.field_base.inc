@@ -77,5 +77,36 @@ function od_dataset_helper_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_structure_latest_update'
+  $field_bases['field_structure_latest_update'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_structure_latest_update',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'date',
+    'settings' => array(
+      'cache_count' => 4,
+      'cache_enabled' => 0,
+      'entity_translation_sync' => FALSE,
+      'granularity' => array(
+        'day' => 'day',
+        'hour' => 'hour',
+        'minute' => 'minute',
+        'month' => 'month',
+        'second' => 'second',
+        'year' => 'year',
+      ),
+      'timezone_db' => 'UTC',
+      'todate' => '',
+      'tz_handling' => 'utc',
+    ),
+    'translatable' => 0,
+    'type' => 'datestamp',
+  );
+
   return $field_bases;
 }
