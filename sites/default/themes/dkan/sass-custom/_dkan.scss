@@ -489,40 +489,40 @@ div.horizontal-tabs .form-text {
                 &.nolink {
                   display: none;
                 }
-                &[href$=bezopasnost]{
+                &.ico-taxonomy-security {
                   background-image: url("../images/ico-taxonomy-security.png");
                 }
-                &[href$=geography]{
+                &.ico-taxonomy-geography {
                   background-image: url("../images/ico-taxonomy-geography.png");
                 }
-                &[href$=gosudarstvo]{
+                &.ico-taxonomy-gov {
                   background-image: url("../images/ico-taxonomy-gov.png");
                 }
-                &[href$=zdorove]{
+                &.ico-taxonomy-health {
                   background-image: url("../images/ico-taxonomy-health.png");
                 }
-                &[href$=education]{
+                &.ico-taxonomy-housing {
                   background-image: url("../images/ico-taxonomy-housing.png");
                 }
-                &[href$=culture]{
+                &.ico-taxonomy-culture {
                   background-image: url("../images/ico-taxonomy-culture.png");
                 }
-                &[href$=sport]{
+                &.ico-taxonomy-sport {
                   background-image: url("../images/ico-taxonomy-sport.png");
                 }
-                &[href$=stroitelstvo]{
+                &.ico-taxonomy-building {
                   background-image: url("../images/ico-taxonomy-building.png");
                 }
-                &[href$=torgovlya]{
+                &.ico-taxonomy-trade {
                   background-image: url("../images/ico-taxonomy-trade.png");
                 }
-                &[href$=transport]{
+                &.ico-taxonomy-transport {
                   background-image: url("../images/ico-taxonomy-transport.png");
                 }
-                &[href$=ecology]{
+                &.ico-taxonomy-ecology {
                   background-image: url("../images/ico-taxonomy-ecology.png");
                 }
-                &[href$=ekonomika]{
+                &.ico-taxonomy-economy {
                   background-image: url("../images/ico-taxonomy-economy.png");
                 }
               }
