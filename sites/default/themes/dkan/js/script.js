@@ -234,7 +234,7 @@
             } 
             else {             
               ul.css({
-                "margin-left": "-780px"
+                "margin-left": "-742px"
               });  
             }
           }          
@@ -320,7 +320,7 @@
             } 
             else {             
               ul.css({
-                "margin-left": "-780px"
+                "margin-left": "-742px"
               });  
             }
           }       

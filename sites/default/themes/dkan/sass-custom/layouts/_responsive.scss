@@ -1389,9 +1389,26 @@ $zen-auto-include-item-base: false;
     }
   }
   .page-taxonomy-term .view-rubric-nodes .views-row {
-    width: 100%;
-    font-size: 9px;
+    width: 100% !important;
+    font-size: 10px;
+    position: static !important;
   }
+  .page-taxonomy-term .view-rubric-nodes .views-row .field-name-field-image, 
+  .page-taxonomy-term .rubric-content .view .views-row .field-name-field-image  {
+    margin-bottom: 10px;
+  }
+  .page-taxonomy-term .view-rubric-nodes .views-row h2, 
+  .page-taxonomy-term .rubric-content .view .views-row h2 {
+    padding-bottom: 7px;
+  }
+  .page-taxonomy-term .view-rubric-nodes .views-row .field-name-body, 
+  .page-taxonomy-term .view-rubric-nodes .views-row .field-name-field-teaser, 
+  .page-taxonomy-term .rubric-content .view .views-row .field-name-body, 
+  .page-taxonomy-term .rubric-content .view .views-row .field-name-field-teaser {
+    height: 2.25em;
+    line-height: 1.25em;
+    margin: 0 0 1.0em;
+  }  
   .rubric-content {
     margin-left: 0;
     /*display: none;*/
