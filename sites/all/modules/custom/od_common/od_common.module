@@ -11,11 +11,6 @@ define('OD_COMMON', dirname(__FILE__));
 require_once OD_COMMON . '/od_common.ajax_commands.inc';
 
 /**
- * Load constants.
- */
-require_once OD_COMMON . '/includes/constants.inc';
-
-/**
  * Implements hook_module_implements_alter()
  */
 function od_common_module_implements_alter(&$implementations, $hook) {
@@ -176,6 +171,7 @@ function od_common_popup_description_exclusions() {
     'edit-field-license-und',
   );
 }
+
 /**
  * Implements hook_preprocess_THEMEHOOK()
  */
@@ -360,6 +356,13 @@ function od_common_field_formatter_info() {
     );
   }
 
+  $info['od_common_recline_visualization'] = array(
+    'label' => t('Recline.js visualization modification (Djeday Path)'),
+    'field types' => array('recline_field', 'file'),
+    // TODO: add some settings.
+    'settings' => array(),
+  );
+
   return $info;
 }
 
@@ -410,9 +413,39 @@ function od_common_field_formatter_view($entity_type, $entity, $field, $instance
       od_common_module('od_common_recline_link_formatter_multivolume');
       od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $items, $display);
       break;
-    case 'od_common_recline_link_formatter_multivolume_from_resource':
+//    case 'od_common_recline_link_formatter_multivolume_from_resource':
+//      od_common_module('od_common_recline_link_formatter_multivolume');
+//      od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $resources, $display);
+//      break;
+    case 'od_common_recline_visualization':
+      $build = $element;
       od_common_module('od_common_recline_link_formatter_multivolume');
-      od_common_module__recline_link_formatter_multivolume($element, $entity_type, $entity, $field, $instance, $langcode, $resources, $display);
+      od_common_module__recline_link_formatter_multivolume($build, $entity_type, $entity, $field, $instance, $langcode, $items, $display);
+
+      $item['entity'] = $entity;
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array();
+        if (isset($build[$delta])) {
+          $element[$delta]['download_link'] = $build[$delta];
+        }
+
+        $item['entity'] = $entity;
+        // Call this just to add necessary js
+        $void = theme('recline_default_formatter', array('item' => $item));
+        $element[$delta] += array(
+          'visual' => array(
+            '#markup' => '<span class="data-explorer"></span>',
+          ),
+        );
+      }
+//
+//      foreach ($items as $delta => $item) {
+//        $item['entity'] = $entity;
+//        $element[$delta] = array(
+//          '#theme' => 'recline_default_formatter',
+//          '#item' => $item,
+//        );
+//      }
       break;
   }
 
@@ -451,7 +484,7 @@ function theme_od_common_recline_link_formatter($variables) {
 
   $variables['title'] = !$variables['title'] ? t('Download') : $variables['title'];
   $file = l($variables['title'], $url, $options);
-  return '<div class="download">' . $file . '</div><span class="data-explorer"></span>';
+  return '<div class="download">' . $file . '</div>';
 }
 
 /**
@@ -600,8 +633,6 @@ function theme_od_common_privatemsg_list_field__last_updated($variables) {
   return $field;
 }
 
-
-
 /**
  * Formats a timestamp according to the defines rules.
  *
@@ -692,4 +723,28 @@ function od_common_views_api() {
     'api' => 3,
     'path' => drupal_get_path('module', 'od_common') . '/views',
   );
+}
+
+/**
+ * Implements hook_language_negotiation_info().
+ */
+function od_common_language_negotiation_info() {
+  $file = str_replace(DRUPAL_ROOT . '/', '', OD_COMMON). '/od_common.language.inc';
+  $providers = array();
+
+  $providers['od-common-'. LOCALE_LANGUAGE_NEGOTIATION_URL] = array(
+    'types' => array(LANGUAGE_TYPE_CONTENT, LANGUAGE_TYPE_INTERFACE, LANGUAGE_TYPE_URL),
+    'callbacks' => array(
+      'language' => 'od_common_language_language_from_session',
+      'switcher' => 'locale_language_from_session',
+      'url_rewrite' => 'locale_language_url_rewrite_session',
+    ),
+    'file' => $file,
+    'weight' => -8,
+    'name' => t('Session mod (also counts anonymous users)'),
+    'description' => t('Determine the language from the URL (Path prefix or domain).'),
+    'config' => 'admin/config/regional/language/configure/url',
+  );
+
+  return $providers;
 }

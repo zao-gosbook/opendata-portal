@@ -1,0 +1,15 @@
+name = Opendata Converters
+description = "Provides converters api"
+package = "Gosbook"
+core = 7.x
+
+dependencies[] = ctools
+
+; Autoload classes
+files[] = include/ODConverter.inc
+files[] = include/formats/ODConverterFormatInterface.inc
+files[] = include/formats/ODConverterFormatAbstract.inc
+files[] = include/utilities/ODConverterUtilityInterface.inc
+files[] = include/utilities/ODConverterUtilityAbstract.inc
+files[] = include/codecs/ODConverterCodecInterface.inc
+files[] = include/codecs/ODConverterCodecAbstract.inc

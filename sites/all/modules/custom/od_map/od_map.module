@@ -1,0 +1,54 @@
+<?php
+/*
+ * @file
+ */
+
+function od_map_render_russia_map() {
+  $form = array();
+  $env = drupal_get_path('module', 'od_map');
+
+  drupal_add_js('http://d3js.org/d3.v3.min.js');
+  drupal_add_js('http://d3js.org/queue.v1.min.js');
+  drupal_add_js('http://d3js.org/topojson.v0.min.js');
+
+
+  $form['map']['html']['#markup'] = '<div class="od-map-wrapper map-russia od-map-map-russia-wrapper"></div>';
+  $form['map']['#attached']['js'][] = $env. '/js/map-russia.js';
+  $form['map']['#attached']['css'][] = $env. '/css/map-russia.css';
+
+  $settings = array();
+  $settings['russia'] = array(
+    'map_json_path' => url($env. '/resources/russia_1e-7sr_with_crimea.topo.json', array('absolute' => TRUE, 'language' => FALSE)),
+    'cities_tsv_path' => url($env. '/resources/Cities.tsv', array('absolute' => TRUE, 'language' => FALSE)),
+    'portals_tsv_path' => url($env. '/resources/Portals.tsv', array('absolute' => TRUE, 'language' => FALSE)),
+  );
+
+  drupal_add_js(array('od_map' => $settings), 'setting');
+
+  return render($form);
+}
+
+function od_map_render_world_map() {
+  $form = array();
+  $env = drupal_get_path('module', 'od_map');
+
+  drupal_add_js('http://d3js.org/d3.v3.min.js');
+  drupal_add_js('http://d3js.org/queue.v1.min.js');
+  drupal_add_js('http://d3js.org/topojson.v0.min.js');
+
+
+  $form['map']['html']['#markup'] = '<div class="od-map-wrapper map-world"></div>';
+  $form['map']['#attached']['js'][] = $env. '/js/map-world.js';
+  $form['map']['#attached']['css'][] = $env. '/css/map-world.css';
+
+  $settings = array();
+  $settings['world'] = array(
+    'map_json_path' => url($env. '/resources/world-110m.json', array('absolute' => TRUE, 'language' => FALSE)),
+    'cities_tsv_path' => url($env. '/resources/WorldCities.tsv', array('absolute' => TRUE, 'language' => FALSE)),
+    'portals_tsv_path' => url($env. '/resources/WorldPortals.tsv', array('absolute' => TRUE, 'language' => FALSE)),
+  );
+
+  drupal_add_js(array('od_map' => $settings), 'setting');
+
+  return render($form);
+}

@@ -1,0 +1,97 @@
+<?php
+/**
+ * @file
+ */
+
+define('OD_CONVERTERS_PATH', dirname(__FILE__));
+
+/**
+ * @return ODConverter
+ */
+function od_converter_object() {
+  static $converter = NULL;
+
+  if ($converter === NULL) {
+    $converter = new ODConverter();
+  }
+
+  return $converter;
+}
+
+function od_converter_test() {
+  $converter = od_converter_object();
+  $input = '/home/p1ratrulezzz/Загрузки/map.json';
+  $converter->convertFile($input, 'geojson', '/tmp/converted.topo.json', 'topojson');
+}
+
+function od_converter_test1() {
+  $input = '/home/p1ratrulezzz/Загрузки/antarctica-latest.shp (1).zip';
+  od_converter_convert_zip($input, 'shapefile', 'temporary://converted.zip', 'topojson');
+}
+
+function od_converter_convert_zip($source, $source_format, $target, $target_format) {
+  $converter = od_converter_object();
+
+  $realpath = $converter::extractRealPath($source);
+  $zip = new ZipArchive();
+  if ($zip->open($realpath) !== TRUE) {
+    return FALSE;
+  }
+
+  od_common_module('core');
+  $inputFmt = $converter->getFormat($source_format);
+  $outputFmt = $converter->getFormat($target_format);
+  $zipOut = new ZipArchive();
+  $status = $zipOut->open($converter::extractRealPath($target), ZipArchive::CREATE | ZipArchive::OVERWRITE);
+  $extractDir = od_common_tmpfilename('temporary:/', 'od_converter');
+  $outputDir = od_common_tmpfilename('temporary:/', 'od_converter');
+  @mkdir($extractDir, 0755, TRUE);
+  @mkdir($outputDir, 0755, TRUE);
+  $zip->extractTo($extractDir);
+  $clean = array();
+  for( $i = 0; $i < $zip->numFiles; $i++ ){
+    $stat = $zip->statIndex( $i );
+    $clean[] = "{$extractDir}/{$stat['name']}";
+    if ($inputFmt->checkFileName($stat['name'])) {
+      $sourceFile = "{$extractDir}/{$stat['name']}";
+      $outputFilePath = $outputFmt::normalizeFilename($stat['name']);
+      $outputFile = "{$outputDir}/{$outputFilePath}";
+      if ($converter->convertFile($sourceFile, $source_format, $outputFile, $target_format)) {
+        $zipOut->addFile($converter::extractRealPath($outputFile), $outputFilePath);
+      }
+
+      $clean[] = $sourceFile;
+      $clean[] = $outputFile;
+    }
+  }
+
+  $zipOut->close();
+  $zip->close();
+
+  $clean[] = $extractDir;
+  $clean[] = $outputDir;
+  foreach ($clean as $filename) {
+    if (is_dir($filename)) {
+      @rmdir($filename);
+    }
+    else {
+      @unlink($filename);
+    }
+  }
+
+  return TRUE;
+}
+
+function od_converters_availaible_formats_list() {
+  static $formats = NULL;
+  if ($formats === NULL) {
+    $converter = od_converter_object();
+    $formats = array();
+    foreach (array('geojson', 'topojson', 'json', 'shapefile') as $format_name) {
+      $format = $converter->getFormat($format_name);
+      $formats[$format->name()] = $format->label();
+    }
+  }
+
+  return $formats;
+}

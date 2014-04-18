@@ -253,7 +253,7 @@ function _od_import_meta_from_data($data, $org_nid, $time_start) {
     }
 
     $identifier = $meta['identifier'];
-    $dataset_node = od_import_load_dataset($identifier);
+    $dataset_node = odp_load_dataset($identifier);
 
     $dataset_is_new = !$dataset_node ? TRUE : FALSE;
 

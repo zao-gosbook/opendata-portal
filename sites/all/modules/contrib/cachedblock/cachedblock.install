@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * @file
+ * Install file.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function cachedblock_schema() {
+  $schema = array();
+
+  $schema['cachedblock'] = array(
+    'description' => 'Stores cached block information',
+    'fields' => array(
+      'bid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique block ID.',
+      ),
+      'module' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => "The module from which the block originates.",
+      ),
+      'delta' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '0',
+        'description' => 'Unique ID for block within a module.',
+      ),
+      'status' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+        'description' => 'Cache enabled status (1 = enabled, 0 = disabled).',
+      ),
+      'cache' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+        'size' => 'tiny',
+        'description' => 'Binary flag to indicate block cache mode (1: cache per role, 2: cache per user, 4: cache per page, 8: cache globally).',
+      ),
+      'settings' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'description' => 'Serialized data containing additional settings.',
+      ),
+    ),
+    'primary key' => array('bid'),
+    'unique keys' => array(
+      'md' => array('module', 'delta'),
+    ),
+  );
+
+  return $schema;
+}

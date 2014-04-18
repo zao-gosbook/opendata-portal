@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Define module root directory.
+ */
+define('ODP_API', dirname(__FILE__));
+
+/**
+ * Include API files.
+ */
+require_once ODP_API . '/includes/constants.inc';
+require_once ODP_API . '/includes/model.inc';
+require_once ODP_API . '/includes/controller.inc';
+
+function odp_api_menu() {
+  // Init output variable.
+  $items = array();
+
+  $items['api/json'] = array(
+    'title' => 'Api',
+    'page callback' => 'odp_api_page',
+    'access arguments' => array('access content'),
+    'delivery callback' => 'odp_api_json_deliver',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/pages/api.inc',
+  );
+  $items['api/xml'] = array(
+    'title' => 'Api',
+    'page callback' => 'odp_api_page',
+    'access arguments' => array('access content'),
+    'delivery callback' => 'odp_api_xml_deliver',
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/pages/api.inc',
+  );
+  $items['api'] = $items['api/json'];
+
+  return $items;
+}

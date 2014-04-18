@@ -60,8 +60,8 @@ function gb_search_pane_content_type_render($subtype, $conf, $args) {
 }
 
 
-function gb_search_pane_content_type_form($form, $form_state, $conf) {
-  $form_state['conf'] = $conf;
+function gb_search_pane_content_type_form($form, &$form_state, $conf) {
+  $form_state['conf'] = &$conf;
 
   $form = array();
 
@@ -86,8 +86,8 @@ function gb_search_pane_content_type_form($form, $form_state, $conf) {
   return $form;
 }
 
-function gb_search_pane_content_type_form_submit($form, $form_state) {
-  $conf = $form_state['conf'];
+function gb_search_pane_content_type_form_submit($form, &$form_state) {
+  $conf = &$form_state['conf'];
   $options = array('query' => array($conf['query_field_name'] => $form_state['values']['field_query']));
   if($form_state['values']['field_select'] == '0') drupal_goto($conf['redirect_url_site'], $options);
   if($form_state['values']['field_select'] == '1') drupal_goto($conf['redirect_url_datasets'], $options);

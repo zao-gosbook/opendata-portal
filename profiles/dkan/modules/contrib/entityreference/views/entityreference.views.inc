@@ -30,6 +30,26 @@ function entityreference_field_views_data($field) {
         'help' => t('A bridge to the @entity entity that is referenced via !field_name', $parameters),
       );
     }
+
+    if (isset($field['settings']['handler_settings']['lock_revision']) && $field['settings']['handler_settings']['lock_revision'] && isset($entity_info['revision table'])) {
+      $entity = $entity_info['label'];
+      if ($entity == t('Node')) {
+        $entity = t('Content');
+      }
+      $entity .= ' ' . t('Revision');
+
+      $field_name = $field['field_name'] . '_revision_id';
+      $parameters = array('@entity' => $entity, '!field_name' => $field['field_name']);
+      $data[$table_name][$field_name]['relationship'] = array(
+        'handler' => 'views_handler_relationship',
+        'base' => $entity_info['revision table'],
+        'base field' => $entity_info['entity keys']['revision'],
+        'label' => t('@entity entity revision referenced from !field_name', $parameters),
+        'group' => t('Entity Reference'),
+        'title' => t('Referenced Entity Revision'),
+        'help' => t('A bridge to the @entity entity revision that is referenced via !field_name', $parameters),
+      );
+    }
   }
 
   // Invoke the behaviors to allow them to change the properties.
@@ -80,6 +100,17 @@ function entityreference_field_views_data_views_data_alter(&$data, $field) {
         'group' => t('Entity Reference'),
         'title' => t('Referencing entity'),
         'help' => t('A bridge to the @entity entity that is referencing @target_entity via !field_name', $replacements),
+        'join_extra' => array(
+          0 => array(
+            'field' => 'entity_type',
+            'value' => $entity_type,
+          ),
+          1 => array(
+            'field' => 'deleted',
+            'value' => 0,
+            'numeric' => TRUE,
+          ),
+        ),
       );
     }
   }

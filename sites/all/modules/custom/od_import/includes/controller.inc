@@ -144,24 +144,6 @@ function od_import_format_date_unix_timestamp($created) {
   return $created;
 }
 
-function od_import_load_dataset($identifier) {
-  $node = FALSE;
-
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node');
-  $query->entityCondition('bundle', 'dataset');
-  $query->fieldCondition('field_dataset_id', 'value', $identifier);
-  $query->range(0, 1);
-  $query->addMetaData('account', user_load(1));
-  $result = $query->execute();
-  if (isset($result['node'])) {
-    $query_node = reset($result['node']);
-    $node = node_load($query_node->nid);
-  }
-
-  return $node;
-}
-
 function od_import_get_source_revisions($nid) {
   $revisions = array();
 
@@ -180,45 +162,4 @@ function od_import_get_source_revisions($nid) {
     $revisions[$vid] = node_load($nid, $vid);
   }
   return $revisions;
-}
-
-function od_import_detect_delimiter($data, $end_of_line = PHP_EOL, $enclosure = '"') {
-  if (file_valid_uri($data)) {
-    $data = file_get_contents($data);
-  }
-
-  if ($data === FALSE) {
-    return ',';
-  }
-
-  $delimiters = array();
-  $available_delimiters = array(',', ';');
-
-  $data = explode($end_of_line, $data);
-
-  foreach ($available_delimiters as $available_delimiter) {
-    $cols_count = array();
-    foreach ($data as $row) {
-      if (empty($row)) {
-        continue;
-      }
-
-      $cols_count[] = count(str_getcsv($row, $available_delimiter, $enclosure));
-    }
-
-    $count_values = array_count_values($cols_count);
-    arsort($count_values);
-    $popular_key = key($count_values);
-    $max_key = max(array_keys($count_values));
-
-    if ($popular_key === $max_key) {
-      $delimiters[$popular_key] = $available_delimiter;
-    }
-  }
-
-  krsort($delimiters);
-
-  $delimiter = !empty($delimiters) ? reset($delimiters) : FALSE;
-
-  return $delimiter;
 }

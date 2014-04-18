@@ -1,0 +1,79 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function __od_dataset_field_schema($field) {
+  if ($field['type'] == 'entityrevision_map') {
+    $schema = array(
+      'columns' => array(
+        'target_id' => array(
+          'description' => 'The id of the target entity.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'target_rid' => array(
+          'description' => 'The rid if the target entity',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+      ),
+      'indexes' => array(
+        'target_id' => array('target_id'),
+        'target_id_complex' => array('target_id', 'target_rid'),
+      ),
+      'foreign keys' => array(),
+    );
+
+    return $schema;
+  }
+}
+
+function od_dataset_schema() {
+  $schema = array();
+
+  $schema['od_dataset_paths'] = array(
+    'description' => '',
+    'fields' => array(
+      'pid' => array(
+        'description' => '',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'revision_id' => array(
+        'description' => '',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'entity_type' => array(
+        'description' => '',
+        'type' => 'varchar',
+        'length' => '32',
+        'not null' => TRUE,
+      ),
+      'entity_id' => array(
+        'description' => '',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Create `od_dataset_paths` table
+ */
+function od_dataset_update_7001() {
+  $table = 'od_dataset_paths';
+  if (!db_table_exists($table)) {
+    $schema = drupal_get_schema($table, TRUE);
+    db_create_table($table, $schema);
+  }
+}

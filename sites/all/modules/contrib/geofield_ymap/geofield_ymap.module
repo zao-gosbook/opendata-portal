@@ -1,0 +1,184 @@
+<?php
+
+require_once 'geofield_ymap.element.inc';
+require_once 'geofield_ymap.widget.inc';
+require_once 'geofield_ymap.formatter.inc';
+require_once 'geofield_ymap.filter.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function geofield_ymap_menu() {
+  $items = array();
+
+  $items['admin/config/system/geofield-ymap'] = array(
+    'title' => 'Geofield Yandex Maps',
+    'description' => 'Geofield Yandex Maps global settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('geofield_ymap_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'geofield_ymap.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_init().
+ */
+function geofield_ymap_init() {
+  if (variable_get('geofield_ymap_use_loader', FALSE)) {
+    $module_path = geofield_ymap_get_module_path();
+    drupal_add_js(array(
+      'geofieldYmap' => array(
+        'modulePath' => base_path() . $module_path,
+        'presetsPath' => variable_get('geofield_ymap_presets_path', ''),
+        'preset' => variable_get('geofield_ymap_preset', ''),
+      ),
+    ), 'setting');
+    drupal_add_js($module_path . '/js/geofield_ymap_loader.js');
+  }
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function geofield_ymap_js_alter(&$javascript) {
+  $module_path = geofield_ymap_get_module_path();
+  $main_script = $module_path . '/js/geofield_ymap.js';
+  $loader_script = $module_path . '/js/geofield_ymap_loader.js';
+  if (isset($javascript[$loader_script]) && isset($javascript[$main_script])) {
+    unset($javascript[$loader_script]);
+  }
+}
+
+/**
+ * Implements hook_library().
+ */
+function geofield_ymap_library() {
+  $module_path = geofield_ymap_get_module_path();
+  $settings = array(
+    'geofieldYmap' => array(
+      'modulePath' => base_path() . $module_path,
+      'preset' => variable_get('geofield_ymap_preset', ''),
+    ),
+  );
+  $script_url = '//api-maps.yandex.ru/2.1-dev/?lang=ru-RU&load=package.full&coordorder=longlat';
+  if (variable_get('geofield_ymap_debug_mode', FALSE)) {
+    $script_url .= '&mode=debug';
+  }
+
+  $library = array(
+    'geofield_ymap' => array(
+      'title' => 'Geofield Yandex Maps',
+      'version' => '1',
+      'js' => array(
+        array('data' => $settings, 'type' => 'setting'),
+        array('data' => $script_url, 'type' => 'external'),
+        array('data' => $module_path . '/js/geofield_ymap.js'),
+      ),
+      'css' => array(
+        array('data' => $module_path . '/geofield_ymap.css'),
+      ),
+    ),
+  );
+  if ($presets_path = variable_get('geofield_ymap_presets_path', '')) {
+    $library['geofield_ymap']['js'][] = array('data' => $presets_path);
+  }
+  return $library;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function geofield_ymap_theme() {
+  return array(
+    'geofield_ymap' => array(
+      'render element' => 'element',
+      'file' => 'geofield_ymap.theme.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function geofield_ymap_views_api() {
+  return array('api' => 3);
+}
+
+/**
+ * Convert field items to GeoJSON array.
+ */
+function geofield_ymap_items_to_geojson($items) {
+  if (!$items) {
+    return array();
+  }
+
+  geophp_load();
+
+  $features = array();
+  foreach ($items as $delte => $item) {
+    if (!empty($item['geom'])) {
+      $geoms = geoPHP::load($item['geom']);
+      foreach (geofield_ymap_split_objects($geoms) as $geom) {
+        $features[] = array(
+          'type' => 'Feature',
+          'geometry' => $geom->out('json', TRUE),
+        );
+      }
+    }
+  }
+
+  return $features ? array('type' => 'FeatureCollection', 'features' => $features) : array();
+}
+
+/**
+ * Split MultiType object to separate objects.
+ */
+function geofield_ymap_split_objects($geom) {
+  $geoms = array();
+  if (in_array($geom->geometryType(), array('GeometryCollection', 'MultiPoint', 'MultiLineString', 'MultiPolygon'))) {
+    foreach ($geom->getComponents() as $component) {
+      $geoms = array_merge($geoms, geofield_ymap_split_objects($component));
+    }
+  }
+  else {
+    $geoms = array($geom);
+  }
+  return $geoms;
+}
+
+/**
+ * Return module path.
+ */
+function geofield_ymap_get_module_path() {
+  static $module_path;
+  if (!$module_path) {
+    $module_path = drupal_get_path('module', 'geofield_ymap');
+  }
+  return $module_path;
+}
+
+/**
+ * Return map types.
+ */
+function _geofield_ymap_get_map_types() {
+  return array(
+    'yandex#map'             => t('Roadmap'),
+    'yandex#satellite'       => t('Satelite'),
+    'yandex#hybrid'          => t('Hybrid'),
+    'yandex#publicMap'       => t('Public map'),
+    'yandex#publicMapHybrid' => t('Hybrid public map'),
+  );
+}
+
+/**
+ * Return json encoded array.
+ */
+function _geofield_ymap_json_encode($array) {
+  if (defined('JSON_UNESCAPED_UNICODE')) {
+    return json_encode($array, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+  return json_encode($array);
+}

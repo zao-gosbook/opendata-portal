@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Define module root directory.
+ */
+define('ODP', dirname(__FILE__));
+
+/**
+ * Load constants.
+ */
+require_once ODP . '/includes/constants.inc';
+
+/**
+ * Include API files.
+ */
+require_once ODP . '/includes/model.inc';
+require_once ODP . '/includes/controller.inc';

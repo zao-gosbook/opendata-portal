@@ -232,7 +232,7 @@ function entityforms_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Map',
-    'weight' => '6',
+    'weight' => '8',
     'children' => array(
       0 => 'field_geolocation',
     ),

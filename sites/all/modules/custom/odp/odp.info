@@ -1,0 +1,3 @@
+name = Opendata portal
+description = Opendata portal main site module.
+core = 7.x

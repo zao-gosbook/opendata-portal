@@ -389,10 +389,18 @@ div.horizontal-tabs .form-text {
     color: #0c87e8;
     letter-spacing: 0.87px;
   }
+  #mini-panel-search_block {
+    display: table;
+    
+    .pane-system-main-menu {
+      display: block;
+    }
+  }
   .pane-system-main-menu {
-    padding-left: 10%;
+    /*padding-left: 10%;*/
     padding-top: 22px;
     text-transform: uppercase;
+    display: none;
     
     > ul {
       margin: 0;
@@ -481,40 +489,40 @@ div.horizontal-tabs .form-text {
                 &.nolink {
                   display: none;
                 }
-                &[href$=bezopasnost]{
+                &.ico-taxonomy-security {
                   background-image: url("../images/ico-taxonomy-security.png");
                 }
-                &[href$=geography]{
+                &.ico-taxonomy-geography {
                   background-image: url("../images/ico-taxonomy-geography.png");
                 }
-                &[href$=gosudarstvo]{
+                &.ico-taxonomy-gov {
                   background-image: url("../images/ico-taxonomy-gov.png");
                 }
-                &[href$=zdorove]{
+                &.ico-taxonomy-health {
                   background-image: url("../images/ico-taxonomy-health.png");
                 }
-                &[href$=education]{
+                &.ico-taxonomy-housing {
                   background-image: url("../images/ico-taxonomy-housing.png");
                 }
-                &[href$=culture]{
+                &.ico-taxonomy-culture {
                   background-image: url("../images/ico-taxonomy-culture.png");
                 }
-                &[href$=sport]{
+                &.ico-taxonomy-sport {
                   background-image: url("../images/ico-taxonomy-sport.png");
                 }
-                &[href$=stroitelstvo]{
+                &.ico-taxonomy-building {
                   background-image: url("../images/ico-taxonomy-building.png");
                 }
-                &[href$=torgovlya]{
+                &.ico-taxonomy-trade {
                   background-image: url("../images/ico-taxonomy-trade.png");
                 }
-                &[href$=transport]{
+                &.ico-taxonomy-transport {
                   background-image: url("../images/ico-taxonomy-transport.png");
                 }
-                &[href$=ecology]{
+                &.ico-taxonomy-ecology {
                   background-image: url("../images/ico-taxonomy-ecology.png");
                 }
-                &[href$=ekonomika]{
+                &.ico-taxonomy-economy {
                   background-image: url("../images/ico-taxonomy-economy.png");
                 }
               }
@@ -563,15 +571,27 @@ div.horizontal-tabs .form-text {
             }
           }
         }
-        &.last a {
-          border: 0;
-        }
+        &.last {
+          a {
+            border: 0;
+          }  
+          li {
+            a {
+              border-right: 1px solid #fff;
+            }
+            &.last {
+              a {
+                border: 0;
+              } 
+            }
+          }         
+        } 
       }
     }
   }
   .pane-system-user-menu {
     float: right;
-    margin-top: -57px;
+    margin-top: -97px;
     padding: 0 60px 20px 30px;
     
     > ul {
@@ -762,11 +782,26 @@ span.info-tooltip {
   background: #0c87e8;
   @include transition(all 0.3s ease-in-out);
   font-family: $arial;
+  z-index: 1;
   
   &:hover {
     background: #000;
   }
 } 
+td div.label {
+  position: relative;
+  padding-right: 30px;
+  
+  span.info-tooltip {
+    position: absolute;
+    left: auto;
+    right: 0;
+    top: 0;
+  }
+}
+.sticky-header {
+  z-index: 1000;
+}
 
 
 .front .feedback-block ul li a {
@@ -898,7 +933,7 @@ span.info-tooltip {
     z-index: 1000;
     height: 25px;
     left: 50%;
-    bottom: -70px;
+    bottom: -78px;
     cursor: pointer;
     margin-left: -25px;
     background: url("../images/ico-toggle-map.png") no-repeat 0 0;
@@ -1158,9 +1193,10 @@ span.info-tooltip {
 
 .pane-search-block {
   display: table;
+  /*width: 100%;*/
 }
 .pane-gb-search-pane {
-  width: 588px;
+  width: 100%;
   display: table;
   
   form {
@@ -1875,6 +1911,8 @@ span.info-tooltip {
   }
 }
 
+
+
 /* library */
 .section-library {
   
@@ -2063,7 +2101,9 @@ span.info-tooltip {
 
 /* mobile show columns */
 .section-taxonomy,
-.section-rubriki {
+.section-rubriki,
+.section-rubrics {
+
   .region-mobile-change {
     width: auto;
     float: none;
@@ -3355,7 +3395,7 @@ span.info-tooltip {
  */
 .entitytype-file_converting_service-form {
   width: 45%;
-  margin: 0 auto;
+  margin: 0 auto 20px;
   background: #fff;
   border: 1px solid #a3a3a3;
   padding: 20px;
@@ -3369,7 +3409,7 @@ span.info-tooltip {
     line-height: 22px;
     
     &:before {
-      content: '';
+      /*content: '';
       position: absolute;
       bottom: 10px;
       left: 0;
@@ -3378,6 +3418,7 @@ span.info-tooltip {
       border-top: 1px solid #a3a3a3;
       border-bottom: 1px solid #a3a3a3;
       background: #e5e5e5;
+      */
     }
     p {
       margin-top: 0;
@@ -3388,6 +3429,19 @@ span.info-tooltip {
     padding: 0;
   }
 } 
+.converter-tab-wrapper {
+  border: 1px solid #a3a3a3;
+  color: #666;
+  padding: 20px;
+  margin: 10px auto;
+  width: 70%;
+  font-size: 16px;
+  text-align: center;
+  
+  a {
+    color: #0C87E8;
+  }
+}
  
  
 /**
@@ -3790,6 +3844,21 @@ body {
     }
     .dataset-owner {
       color: #B5B5B5;
+    }
+    .dataset-format {
+      background: url("../images/icon-resource.png") no-repeat scroll 0 0 transparent;
+      height: 38px;
+      width: 40px;
+      color: #676767;
+      font-size: 14px;
+      line-height: 47px;
+      text-align: center;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    .update-date {
+      margin-top: 5px;
+      color: #666;
     }
   }
 }
@@ -4345,8 +4414,10 @@ html.js input.form-autocomplete {
       text-decoration: none;
       display: inline-block;  
       text-decoration: none;
-      margin-top: 6px;
     }
+  }
+  .view-header a.btn[href="/datasets-map"] {
+    margin: 0 0 25px 20px;
   }
   tr.odd {
     background: #f4f4f4;
@@ -4368,13 +4439,19 @@ html.js input.form-autocomplete {
     a {
       text-decoration: none;
     }
-    &.views-field-field-site-url a {
-      display: block;
-      width: 25px;
-      height: 21px;
-      overflow: hidden;
-      text-indent: -10000px;
-      background: url("../images/icon-direct.png");
+    &.views-field-field-site-url,
+    &.views-field-field-org-site-od-section {
+      text-align: center;
+      
+      a {
+        display: block;
+        width: 25px;
+        height: 21px;
+        overflow: hidden;
+        text-indent: -10000px;
+        background: url("../images/icon-direct.png");      
+        margin: 0 auto;
+      }
     }
   }
 }
@@ -4440,6 +4517,57 @@ table {
       text-transform: none;
       margin-bottom: 20px;
     }     
+  }
+  .view-filters {
+    @include clearfix;
+    
+    form {
+      float: right;
+      margin-right: -10px;
+    }
+    .views-exposed-widget {
+      padding: 0;
+    }
+    label {
+      color: #666666;
+      font-size: 15px;
+      line-height: 1.35em;
+      margin: 0;
+      padding-right: 7px; 
+      float: left;
+      font-weight: normal;
+    }
+    .form-radios {
+      float: left;
+    }
+    .form-type-bef-link {
+      padding-right: 7px;
+      float: left;
+      margin: 0;
+      
+      a {
+        color: #666666;
+        font-size: 15px;
+        line-height: 1.35em;   
+        color: #000;
+        text-decoration: none;
+      }
+      &[class$='asc'] a {
+        padding-right: 18px;
+        background: url("/misc/arrow-asc.png") no-repeat 100% 50%;
+      }
+      &[class$='desc'] a {
+        padding-right: 18px;
+        background: url("/misc/arrow-desc.png") no-repeat 100% 50%;
+      }      
+      &.selected a {
+        color: #3D9FED;
+        border-bottom: 1px dashed #3D9FED;
+      }
+    }
+  }
+  .view-content {
+    clear: both;
   }
   .views-row {
     padding-bottom: 28px;
@@ -4742,7 +4870,7 @@ div.fivestar-widget .star {
       line-height: 45px;
       overflow: hidden;
       width: 45px;
-      background-size: cover;
+      @include background-size(cover);
       
       &.a2a_s_twitter {
         background: url("../images/ico-social-twitter.png") no-repeat;
@@ -4765,6 +4893,23 @@ div.fivestar-widget .star {
     font-size: 24px;
     line-height: 1.0em;
     margin: 0 0 .4em;
+  }
+  .dataset-rules {
+    font-size: 15px;
+    line-height: 1.35;
+    
+    ol {
+      margin-top: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      padding-right: 12px;
+      padding-top: 12px;
+      background: #eee;
+      
+      > li {
+        padding-bottom: 10px;
+      }
+    }
   }
   .panel-pane {
     margin-bottom: 40px;
@@ -4790,6 +4935,7 @@ div.fivestar-widget .star {
     background: url("../images/ico-subscribe.png") no-repeat 0 50%;    
   }
   .field-name-field-spatial,
+  .field-type-geofield,
   .field-name-field-geolocation {
     border: 10px solid #e5e5e5;
     
@@ -5211,6 +5357,50 @@ div.fivestar-widget .star {
         text-transform: none;
       }      
     }
+    td a[href*='.csv'],
+    td a[href*='.xml'],
+    td a[href*='.xsd'],
+    td a[href*='.xls'] {
+      display: block;
+      width: 400px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    p {
+      margin: 0;
+    }
+    ul {
+      margin: 0;
+      
+      li {
+        padding-bottom: 3px;
+      }
+      br {
+        display: none;
+      }
+    }
+  }
+}
+.pane-passport-link {
+  padding-top: 10px;
+  a {
+    display: inline-block;
+    font-size: 16px;
+    padding: 7px 10px;
+    @include border-radius(5px);
+    border: 1px solid #0c87e8;
+    text-decoration: none;
+    
+    &:hover {
+      background-color: #0c87e8;
+      color: #fff;
+    }
+  }
+  span {
+    left: -7px;
+    top: -14px;
+    border: 1px solid #fff;
   }
 }
 .data-row-developers .pane-content {
@@ -5522,6 +5712,64 @@ div.fivestar-widget .star {
 }
 
 /**
+ * select version dropdown dfgsdf
+ */
+.multi-download-link-wrapper {
+  display: inline-block;
+  position: relative;
+  
+  .main-download-link-wrapper {
+    a {
+      background: url("../images/arr-down-white.png") no-repeat scroll 86% 50% #0C87E8;
+      color: #FFFFFF;
+      display: inline-block;
+      font-size: 18px;
+      line-height: 1em;
+      padding: 0.75em 2.6em 0.75em 1.6em;
+      position: relative;
+      text-decoration: none;
+      text-transform: none;    
+    }
+  }
+  .dropdown-links {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B3B3B3;
+    position: absolute;
+    top: 46px;
+    width: 265px;
+    
+    .download {
+      margin: 0;
+      
+      a {
+        background: url("../images/ico-downloads.png") no-repeat scroll 17px 50% transparent;
+        color: #0C87E8;
+        display: block;
+        font-size: 14px;
+        height: 45px;
+        line-height: 45px;
+        margin: 0;
+        padding: 0 0 0 42px;
+        text-decoration: none;     
+        
+        em {
+          color: #777777;
+          font-style: normal;        
+        }
+        &:hover {
+          color: #fff;
+          background: #0C87E8;
+          
+          em {
+            color: #000;
+          }
+        }
+      }
+    }  
+  }
+}
+
+/**
  * node-resource
  */
 .node-type-resource {
@@ -5543,18 +5791,6 @@ div.fivestar-widget .star {
         width: 290px;
         float: left;
       }
-    }
-    .download a {
-      background: #0C87E8 url("../images/ico-download.png") no-repeat 8px 50%;
-      @include background-size(25px auto);
-      color: #FFFFFF;
-      display: inline-block;
-      font-size: 14px;
-      line-height: 1em;
-      padding: 0.9em 1.6em .9em 45px;
-      text-decoration: none;
-      text-transform: none;
-      margin-bottom: 20px;
     }
     /* bootstrap navigation */
     .input-prepend.text-query {
@@ -6324,6 +6560,42 @@ div.fivestar-widget .star {
     padding-bottom: 0;
   }
 }
+
+/**
+ * od-map 
+ */ 
+.od-map-map-russia-wrapper {
+  width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  
+  g.region > path.has-portal {
+    fill: #0c87e8;
+    stroke: #fff;
+    
+    &:hover {
+      fill: #ffa200;
+    }
+  }
+  g.region > path.no-portal {
+    fill: #999;
+    stroke: #fff;
+    
+    &:hover {
+      fill: #999;
+    }    
+  }
+  .info-block {
+    background: #fff;
+    border: 1px solid #000;
+    @include border-radius(3px);
+    height: auto;
+  }  
+  g.city > text.city-label {
+    fill: #000;
+  }
+} 
  
 /**
  * forum 
@@ -6541,71 +6813,86 @@ div.fivestar-widget .star {
 /**
  * map
  */ 
+ 
+.link-yandex-map a {
+  display: inline-block;
+  padding: 0 10px 0 42px;
+  height: 42px;
+  line-height: 42px;
+  background: #fff url("../images/ico-ymaps.png") no-repeat 5px 50%;
+  font-size: 16px;
+  text-decoration: none;
+  border: 1px solid #0C87E8;
+  margin-bottom: 10px;
+} 
+.link-google-map a {
+  background-image: url("../images/ico-gmaps.png");
+}
+
+/* filters */
+.od-map-page-switcher-wrapper {
+  padding: 0 0 20px;    
+  @include clearfix;
+  
+  .form-item {
+    margin: 0;
+  }
+  .form-type-radios > label {
+    height: 54px;
+    line-height: 58px; 
+    padding-right: 30px;
+    float: left;
+  }
+  .field-prefix {
+    display: none;
+  }
+  .form-radios {
+    float: left;
+  }
+  .form-type-radio {
+    float: left;
+    margin-right: 0; 
+    position: relative;
+    margin: 0;
+    
+    input {
+      position: absolute;
+      left: -10000px;
+    }
+    label {
+      padding: 0 18px;
+      height: 54px;
+      line-height: 54px;
+      background: #efefef;
+      font-size: 16px;
+      display: block;
+      cursor: pointer;
+      color: #0c87e8;
+      margin-right: 1px;
+    }
+    &.active-element label {
+      color: #fff;
+      background: #8a8a8a;
+      font-size: 20px;
+    }
+    &.active-element:before {
+      display: block;
+      content: '';
+      position: absolute;
+      bottom: -11px;
+      left: 50%;
+      margin-left: -7px;
+      width: 13px;
+      height: 11px;
+      background: url("../images/arr-bottom-grey.png") no-repeat 0 0;
+    }
+  }  
+} 
 .page-datasets-map {
-  background-color: #fff;  
+  /*background-color: #fff;  */
   
   .custom-text-wrapper {
     padding: 20px 0;
-  }
-  
-  /* filters */
-  .od-map-page-switcher-wrapper {
-    padding: 0 0 20px;    
-    @include clearfix;
-    
-    .form-item {
-      margin: 0;
-    }
-    .form-type-radios > label {
-      height: 54px;
-      line-height: 58px; 
-      padding-right: 30px;
-      float: left;
-    }
-    .field-prefix {
-      display: none;
-    }
-    .form-radios {
-      float: left;
-    }
-    .form-type-radio {
-      float: left;
-      margin-right: 0; 
-      position: relative;
-      margin: 0;
-      
-      input {
-        position: absolute;
-        left: -10000px;
-      }
-      label {
-        padding: 0 18px;
-        height: 54px;
-        line-height: 54px;
-        background: #efefef;
-        font-size: 16px;
-        display: block;
-        cursor: pointer;
-        color: #0c87e8;
-        margin-right: 1px;
-      }
-      &.active-element label {
-        color: #fff;
-        background: #8a8a8a;
-        font-size: 20px;
-      }
-      &.active-element:before {
-        display: block;
-        content: '';
-        position: absolute;
-        bottom: -11px;
-        left: 50%;
-        margin-left: -7px;
-        width: 13px;
-        height: 11px;
-        background: url("../images/arr-bottom-grey.png") no-repeat 0 0;
-      }
-    }  
   }
 }
 
@@ -6709,8 +6996,8 @@ div.fivestar-widget .star {
     }
   }  
   .geolocation-lng-item {
-    clear: none;
-    margin-left: 10px;
+    /*clear: none;
+    margin-left: 10px;*/
   }
   .geolocation-address {
 
@@ -6738,14 +7025,14 @@ div.fivestar-widget .star {
       display: block;
       font-size: 0.85em;
       margin: 10px 0 0;
-      padding: 1.25em 0 1.25em 4.7em;
+      padding: 1.05em 0 1.05em 4.7em;
       text-align: left;
       text-transform: none;
       color: #0c87e8;
       border: 2px solid #0c87e8;
       width: 155px;
       position: absolute;
-      top: -60px;
+      top: -57px;
       right: 0;
     }
   }
@@ -6797,6 +7084,11 @@ div.fivestar-widget .star {
   #ip-geoloc-map-of-view-datasets_map-google_map {
     height: 680px !important;
   }
+}
+.view-datasets-map .geofield-ymap {
+  border: 3px solid #fff;
+  margin-top: 15px;
+  height: 680px !important;
 }
 
 /**
@@ -7128,6 +7420,129 @@ div.fivestar-widget .star {
         }
       }
     }
+  }
+}
+
+/**
+ * help
+ */
+.reference-info {
+  font-size: 18px;
+  padding-bottom: 20px;
+}
+.reference-info-tab {
+  display: table;
+  margin: 0 -15px;
+  width: 100%;
+  
+  .tab-row {
+    display: table-row;
+  }
+  .cell {
+    display: table-cell;
+    background: #fff;
+    text-align: center;
+    border: 15px solid #e5e5e5;
+    width: 33.33%;
+    
+    &:hover {
+      .image-link img {
+        filter: none;
+        -webkit-filter: none;
+        -moz-filter: none;
+        -ms-filter: none;
+        -o-filter: none;/**/              
+      }
+      a.text-link {
+        color: #0C87E8;        
+      }      
+    }
+  }
+  .image-link {
+    display: block;
+    padding: 15px;
+    
+    img {
+      display: block;
+      margin: 0 auto;
+      filter: url(../images/filter.svg#grayscale);
+      filter: grayscale(100%);
+      -webkit-filter: grayscale(100%);
+      -moz-filter: grayscale(100%);
+      -ms-filter: grayscale(100%);
+      -o-filter: grayscale(100%);/**/      
+    }
+  }
+  a.text-link  {
+    color: #676767;
+    font-size: 26px;
+    padding: 0 15px 15px;
+    text-decoration: none;
+    display: block;    
+  }
+}
+
+/* .block-help */
+.block-help {
+  padding: 20px;
+  background: #fff;
+  font-size: 16px;
+  
+  h2 {
+    font-size: 24px;
+    margin: 0 0 20px;
+    line-height: 1.3;
+  }
+  dl {
+    margin: 0 0 20px;
+    font-size: 16px;
+  }
+  dt {
+    text-transform: uppercase;
+  }
+  dd {
+    line-height: 22px;
+    font-size: 16px;
+    color: #676767;
+    padding-top: 5px;
+    padding-bottom: 15px;
+  }
+}
+
+/**
+ * sitemap
+ */
+.page-sitemap {
+  padding: 30px 30px 2px 30px;
+  background: #fff;
+  
+  ul {
+    margin-top: 0;
+  }
+  > ul {
+    padding-left: 0;
+    
+    > li {
+      list-style: none;
+      
+      li {
+        font-size: 16px;
+        padding-bottom: 7px;
+        list-style-type: square;
+      }
+    }
+  }
+  ul ul  {
+    padding-bottom: 20px;   
+  }   
+  ul ul ul {
+    padding-bottom: 0;
+  }  
+  h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    line-height: 1.1;
+    text-transform: uppercase;
   }
 }
 

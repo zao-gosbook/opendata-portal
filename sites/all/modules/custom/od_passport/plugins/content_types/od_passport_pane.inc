@@ -44,12 +44,18 @@ function od_passport_pane_content_type_render($subtype, $conf, $args, $contexts)
   return $rendered;
 }
 
-function od_passport_render($nid) {
+function od_passport_render($nid, $options = array()) {
   //Формируем блок и выводим в виде таблицы с атрибутами.
-  $rows =  _passport_table_rows($nid);
+  //По у молчанию подсказки в ячейках таблицы паспорта включены
+  $default_options = array(
+    'addtip' => TRUE,
+  );
+  $options += $default_options;
+
+  $rows =  _passport_table_rows($nid, $options);
   $structure = _passport_structured_description($nid);
   $table_attributes = array(
-  'about' => "/" . _current_prefix() . "/" . drupal_get_path_alias(),
+  'about' => "/" . drupal_get_path_alias(),
   'typeof' => 'foaf:Document'
   );
   $block = new stdClass();
@@ -61,7 +67,7 @@ function od_passport_render($nid) {
   $block->content['passport_table'] = array(
    '#type' => 'container',
    '#attributes' => array(
-     'about' => "/" . _current_prefix() . "/" . drupal_get_path_alias(),
+     'about' =>  "/" . drupal_get_path_alias(),
      'typeof' => 'foaf:Document',
    ),
     'sub_div' => array(
@@ -104,7 +110,7 @@ function od_passport_render($nid) {
 /**
  * Формируем таблицу паспорта
  */
-function _passport_table_rows($nid) {
+function _passport_table_rows($nid, $options = array()) {
   $node = node_load($nid);
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
@@ -116,14 +122,23 @@ function _passport_table_rows($nid) {
     'data' => $node_wrapper->field_dataset_id->value(), 
     'property' => 'dc:identifier',
   );
-  $rows['field_dataset_id'] = array(t('Identification number'), $data);
+
+  $label = '<span class="label">' . t('Identification number') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('UNIQUE CODE OF THE DATASET. CODE CONSISTS OF THE TIN ORGANIZATION-OWNER AND THE ENGLISH-LANGUAGE NAME OF THE DATASET.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_dataset_id'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Наименование набора данных
   $data = array(
     'data' => $node_wrapper->title->value(), 
     'property' => 'dc:title',
   );
-  $rows['title'] = array(t('Dataset title'), $data);
+  $rows['title'] = array('<div class="label"><span class="label">' . t('Dataset title')  . '</span></div>', $data);
   
   //Описание набора данных
   $data = array(
@@ -135,14 +150,23 @@ function _passport_table_rows($nid) {
     $data['data'] = $value['value'];
   }
 
-  $rows['field_dataset_body'] = array(t('Dataset description'), $data);
+  $rows['field_dataset_body'] = array('<div class="label"><span class="label">' . t('Dataset description')  . '</span></div>', $data);
   
   //Владелец набора данных
   $data = array(
     'data' => $node_wrapper->field_owner->value(), 
     'property' => 'dc:creator',
   );
-  $rows['field_owner'] = array(t('Dataset owner'), $data);
+
+  $label = '<span class="label">' . t('Dataset owner') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('ORGANIZATION - THE OWNER OF THE DATASET, WHICH HAS ADDED INFORMATION IN THE FORM OF OPEN DATA');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_owner'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Ответственное лицо
   $value = $node_wrapper->field_contact_name->value();
@@ -152,7 +176,16 @@ function _passport_table_rows($nid) {
     'rel' => 'dc:publisher',
     'resource' => '#publisher',
   );
-  $rows['field_contact_name'] = array(t('Responsible person'), $data);
+
+  $label = '<span class="label">' . t('Responsible person') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('OFFICIAL REPRESENTATIVE IS RESPONSIBLE FOR REPRESENTATION OF AN ORGANIZATION-OWNER OF THE DATASET.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_contact_name'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Телефон ответственного лица
   $value = $node_wrapper->field_contact_phone->value();
@@ -163,7 +196,7 @@ function _passport_table_rows($nid) {
     'rel' => 'dc:publisher',
     'resource' => '#publisher',
   );
-  $rows['field_contact_phone'] = array(t('Phone number of responsible person'), $data);
+  $rows['field_contact_phone'] = array('<div class="label"><span class="label">' . t('Phone number of responsible person')  . '</span></div>', $data);
 
   //Адрес электронной почты ответсвенного лица
   $value = $node_wrapper->field_email_responsible->value();
@@ -174,33 +207,22 @@ function _passport_table_rows($nid) {
     'rel' => 'dc:publisher',
     'resource' => '#publisher',
   );
-  $rows['field_email_responsible'] = array(t('Responsible person email'), $data);
+  $rows['field_email_responsible'] = array('<div class="label"><span class="label">' . t('Responsible person email')  . '</span></div>', $data);
 
   //Гиперссылка(URL) на набор (Link file + Link API + Upload)
-  $url_datasets = array();
-
   // формируем массив ссылок из трех полей. По логике должно быть заполнено только одно из них.
   if ($resource->value()) {
-    if ($field_link_remote_file = $resource->field_link_remote_file->value()) {
-    $url_datasets[] = $field_link_remote_file['uri'];
+    $uri = od_dataset_download_path($node);
+
+    $label = '<span class="label">' . t('Dataset URL') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('HYPERLINK TO THE LATEST VERSION OF THE DATASET.');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
     }
 
-    if ($field_link_api = $resource->field_link_api->value()) {  
-    $url_datasets[] = $field_link_api['url'];
-    }
-    
-    if ($field_link_upload = $resource->field_upload) {
-      if (isset($field_link_upload->value()->uri)) {
-        $url_datasets[] = file_create_url($field_link_upload->value()->uri);
-      }
-    }
-    foreach ($url_datasets as $key => $url) {
-      $url_datasets[$key] = "<a href='$url'>$url</a>";
-    }
-    $data = array(
-      'data' => implode('<br />', $url_datasets)
-      );
-    $rows['dataset_urls'] = array(t('Dataset URL'), !empty($data['data']) ? $data : t('No info'));
+    $rows['dataset_urls'] = array('<div class="label">' . $label  . '</div>', $uri ? l(url($uri, array('absolute' => true)), url($uri, array('absolute' => true))) : t('No info'));
     
     //Формат данных
     $value = $resource->field_format->value()->name;
@@ -209,32 +231,34 @@ function _passport_table_rows($nid) {
       'property' => 'dc:format',
       'content' => isset($value) ? $value : t('No info'),
     );
-    $rows['field_format'] = array(t('Dataset format'), $data);
+
+    $label = '<span class="label">' . t('Dataset format') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('THE COMPUTER-READABLE FORMAT, IN WHICH THE LATEST VERSION OF THE DATASET WAS PUBLISHED.');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['field_format'] = array('<div class="label">' . $label  . '</div>', $data);
   
   
     //Описание структуры набора данных
-    $url_datasets_structure = array();
+    $uri = od_dataset_download_path($node, NULL,'structure');
+    $data = array(
+      'data' =>  $uri ? l(url($uri, array('absolute' => true)), url($uri, array('absolute' => true))) : t('No info'),
+    );
 
-    if ($field_link_structure_file = $resource->field_link_structure_file->value()) {  
-        $url_datasets_structure[] = $field_link_structure_file['uri'];
-      }
-    
-    if ($field_upload_structure = $resource->field_upload_structure) {
-      $field_upload_structure = $field_upload_structure->value();
-      if (isset($field_upload_structure['uri'])) {
-        $url_datasets_structure[] = file_create_url($field_upload_structure['uri']);
-      }
-    } 
-  } 
-  
-  foreach ($url_datasets_structure as $key => $url) {
-    $url_datasets_structure[$key] = "<a href='$url'>$url</a>";
-  }
-  $url_structure_string = implode('<br />', $url_datasets_structure);
-  $data = array(
-    'data' => !empty($url_structure_string) ? $url_structure_string : t('No info'),
-  );
-  $rows['dataset_urls_structure'] = array(t('Hyperlink (URL) on the dataset structure'),  $data);
+    $label = '<span class="label">' . t('Hyperlink (URL) on the dataset structure') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('HYPERLINK TO THE LATEST VERSION OF THE FILE STRUCTURE OF THE DATASET - A SET OF OPEN FIELD DESCRIPTION DATA IN MACHINE-READABLE FORMAT.');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['dataset_urls_structure'] = array('<div class="label">' . $label  . '</div>',  $data);
+ }
   
   //Дата первой публикации набора данных
   $data = array(
@@ -242,7 +266,16 @@ function _passport_table_rows($nid) {
     'property' => 'dc:created',
     'content' => date("d-m-Y", $node_wrapper->field_date_first_time_publ->value()),
   );
-  $rows['field_date_first_time_publ'] = array(t('Date of first publication'), $data);
+
+  $label = '<span class="label">' . t('Date of first publication') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('DATE OF FIRST PUBLICATION IN THE ORIGINAL SET.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_date_first_time_publ'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Дата последнего внесения изменений
   $value = $node_wrapper->field_date_last_change->value();
@@ -251,14 +284,23 @@ function _passport_table_rows($nid) {
     'property' => 'dc:modified',
     'content' => date("d-m-Y", $node_wrapper->field_date_last_change->value()),
   );
-  $rows['field_date_last_change'] = array(t('Date of last update'), $data);
+  $rows['field_date_last_change'] = array('<div class="label"><span class="label">' . t('Date of last update')  . '</span></div>', $data);
   
   //Дата актуальности набора
   $value = $node_wrapper->field_date_dataset_actual->value();
   $data = array(
     'data' => isset($value) ? date("d.m.Y", $node_wrapper->field_date_dataset_actual->value()) : t('No info'),
   );
-  $rows['field_date_dataset_actual'] = array(t('Date relevance dataset'), $data);
+
+  $label = '<span class="label">' . t('Date relevance dataset') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('THE DATE AFTER WHICH NEEDS TO BE UPDATED THE CURRENT VERSION OF THE DATASET.');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_date_dataset_actual'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Периодичность актуализации набора данных
   $value = $node_wrapper->field_frequency->value();
@@ -267,17 +309,35 @@ function _passport_table_rows($nid) {
     'property' => 'dc:valid',
     'content' =>  isset($value) ? $value : t('No info'),
   );
-  $rows['field_frequency'] = array(t('Frequency of updating'), $data);
+
+  $label = '<span class="label">' . t('Frequency of updating') . '</span>';
+  if ($options['addtip']) {
+    $label_tip = '<span class="info-tooltip" title="';
+    $label_tip .= t('INFORMATION ON HOW FREQUENTLY UPDATED THE DATASET');
+    $label_tip .=  '">?</span>';
+    $label .= $label_tip;
+  }
+
+  $rows['field_frequency'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Содержание последнего изменения
-  if ($resource->value()) {
+  if ($resource->value() && $resource->getBundle() == 'resource') {
     $value = $resource->field_provenance->value();
     $data = array(
       'data' => isset($value) ? $value : t('No info'),
     );
-    $rows['field_content_last_change'] = array(t('Content of the latter changes'), $data);
+
+    $label = '<span class="label">' . t('Content of the latter changes') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('THE LIST OF SPECIFIC CHANGES TO THE LATEST VERSION OF THE DATASET.');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['field_content_last_change'] = array('<div class="label">' . $label  . '</div>', $data);
   }
-  
+
   //Ключевые слова
   $keywords = array();
   foreach ($node_wrapper->field_tags as $term) {
@@ -290,68 +350,65 @@ function _passport_table_rows($nid) {
     'data' => !empty($keywords_string) ? $keywords_string : t('No info'),
     'property' => 'dc:subject',
   );
-  $rows['field_tags'] = array(t('Keywords'), $data);
+  $rows['field_tags'] = array('<div class="label"><span class="label">' . t('Keywords')  . '</span></div>', $data);
   
   
   //Гиперссылки (URL) на версии набора данных (Link file + Link API + Upload)
-  //Гиперссылки (URL) на версии структуры набора данных (field_link_structure_file + field_upload_structure) 
+  //Гиперссылки (URL) на версии структуры набора данных (field_link_structure_file + field_upload_structure)
   if ($resource->value()) {
-    $resource_revisions = node_revision_list($resource->value());
-    $url_datasets_revisions = array();
-    $url_datasets_structure_revisions = array();
-    foreach ($resource_revisions as $revision) {
-      $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
-      if($revision->vid != $resource->vid->value()) {
-        if ($field_link_remote_file = $revision_object->field_link_remote_file->value()) {
-          $url_datasets_revisions[] = $field_link_remote_file['uri'];
-        }
-      
-        if ($field_link_api = $revision_object->field_link_api->value()) {  
-          $url_datasets_revisions[] = $field_link_api['url'];
-        }
-      
-        if ($field_link_upload = $revision_object->field_upload) {
-          if (isset($field_link_upload->value()->uri)) {
-           $url_datasets_revisions[] = file_create_url($field_link_upload->value()->uri);
-          }
-        }
-
-        if ($field_link_structure_file = $revision_object->field_link_structure_file->value()) {  
-          $url_datasets_structure_revisions[] = $field_link_structure_file['uri'];
-        }
-      
-        if ($field_upload_structure = $revision_object->field_upload_structure) {
-          $field_upload_structure = $field_upload_structure->value();
-          if (isset($field_upload_structure['uri'])) {
-           $url_datasets_structure_revisions[] = file_create_url($field_upload_structure['uri']);
-          }
-        }  
-      }  
+    $dataset_revisions = node_revision_list($node);
+    $url_data = array();
+    $url_structure = array();
+    foreach ($dataset_revisions as $revision) {
+      $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
+      if($revision->vid != $node->vid) {
+        $url_data[] = od_dataset_download_path($node, $revision->vid,'data')->__toString();
+        $url_structure[] = od_dataset_download_path($node, $revision->vid,'structure')->__toString();
+      }
     }
-    
-    $url_datasets_revisions= array_unique($url_datasets_revisions);
-    $url_datasets_structure_revisions = array_unique($url_datasets_structure_revisions);
+
+    $url_data= array_unique($url_data);
+    $url_structure = array_unique($url_structure);
+
     //Гиперссылки (URL) на версии набора данных
-    foreach ($url_datasets_revisions as $key=>$url) {
-      $url_datasets_revisions[$key] = "<li><a href='$url'>$url</a></li>";
+    foreach ($url_data as $key=>$url) {
+      $url_datasets_revisions[$key] = '<li>' . l(url($url, array('absolute' => true)), url($url, array('absolute' => true))) . '</li>';
     }
     $url_datasets_string_revisions = implode('', $url_datasets_revisions);
     $url_datasets_string_revisions_list = "<ul>$url_datasets_string_revisions</ul>";
     $data = array(
       'data' => !empty($url_datasets_string_revisions) ? $url_datasets_string_revisions_list : t('No info'),
     );
-    $rows['dataset_urls_revisions'] = array(t('Hyperlink (URL) on the dataset versions'),  $data);
+
+    $label = '<span class="label">' . t('Hyperlink (URL) on the dataset versions') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('HYPERLINKS TO PREVIOUS VERSIONS OF THE DATASET (IF THEY HAS BEEN CHANGED)');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['dataset_urls_revisions'] = array('<div class="label">' . $label  . '</div>',  $data);
     
     //Гиперссылки (URL) на версии структуры набора данных	
-    foreach ($url_datasets_structure_revisions as $key=>$url) {
-      $url_datasets_structure_revisions[$key] = "<li><a href='$url'>$url</a></li>";
-    }  
-    $url_datasets_structure_string_revisions = implode('<br />', $url_datasets_structure_revisions);
-    $url_datasets_structure_string_revisions_list = "<ul>$url_datasets_structure_string_revisions</ul>";
+    foreach ($url_structure as $key=>$url) {
+      $url_datasets_structure_revisions[$key] = '<li>' . l(url($url, array('absolute' => true)), url($url, array('absolute' => true))) . '</li>';
+    }
+    $url_datasets_structure_string_revisions = implode('', $url_datasets_structure_revisions);
+    $url_datasets_structure_revisions_list = "<ul>$url_datasets_structure_string_revisions</ul>";
     $data = array(
-      'data' => !empty($url_datasets_structure_string_revisions) ? $url_datasets_structure_string_revisions_list : t('No info'),
+      'data' => !empty($url_datasets_structure_string_revisions) ? $url_datasets_structure_revisions_list : t('No info'),
     );
-    $rows['dataset_urls_structure_revisions'] = array(t('Hyperlink (URL) on the dataset structure versions'), $data);
+
+    $label = '<span class="label">' . t('Hyperlink (URL) on the dataset structure versions') . '</span>';
+    if ($options['addtip']) {
+      $label_tip = '<span class="info-tooltip" title="';
+      $label_tip .= t('HYPERLINKS OF PREVIOUS VERSIONS OF THE STRUCTURE OF THE DATA SET (IF THEY HAS BEEN CHANGED).');
+      $label_tip .=  '">?</span>';
+      $label .= $label_tip;
+    }
+
+    $rows['dataset_urls_structure_revisions'] = array('<div class="label">' . $label  . '</div>', $data);
   }  
   return $rows;
 }
@@ -363,60 +420,42 @@ function _passport_structured_description($nid) {
   $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
   $resource = $resource->get(0);
 
-  $resource_revisions = node_revision_list($resource->value());
-  $first_revision = end($resource_revisions); //Самая первая версия набора
+  $dataset_revisions = node_revision_list($node);
+
+
+  $first_revision = end($dataset_revisions); //Самая первая версия набора
   $url_datasets_revisions = array();
-  if ($resource->value()) {
-      foreach ($resource_revisions as $key => $revision) {
-      $revision_object = entity_metadata_wrapper('node', node_load($resource->nid->value(), $revision->vid));
-      $revision_date = date("Ymd\THi", $revision->timestamp);
-      //dpm($revision_date, 'revision date');
-      $revision_date_iso = date("Y-m-d", $revision->timestamp);
-      //Информация о последнем изменении в паспорте
-      if ($revision_object->field_provenance->value()) {
-        $revision_provenence = $revision_object->field_provenance->value();
-      } else {
-        $revision_provenence = t('No info');
-      }
-      //если это первая версия набора, то записываем значения из полей паспорта
-      if ($first_revision->vid == $revision->vid) {
-        $revision_date = date("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
-        $revision_date_iso = date("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
-        $revision_provenence = t('Date of first publication');
-      }
-       
-      $url_datasets_revisions[$key]['date'] = $revision_date; 
-      $url_datasets_revisions[$key]['date_iso'] = $revision_date_iso; 
-      $url_datasets_revisions[$key]['field_content_last_change'] = $revision_provenence;  
-      
-      
-      //ссылки на файлы наборов
-      if ($field_link_remote_file = $revision_object->field_link_remote_file->value()) {
-        $url_datasets_revisions[$key]['uri'] = $field_link_remote_file['uri'];
-      }
-    
-      if ($field_link_api = $revision_object->field_link_api->value()) {  
-        $url_datasets_revisions[$key]['uri'] = $field_link_api['url'];
-      }
-    
-      if ($field_link_upload = $revision_object->field_upload) {
-        if (isset($field_link_upload->value()->uri)) {
-          $url_datasets_revisions[$key]['uri'] = file_create_url($field_link_upload->value()->uri);
+  if ($resource->value() && $resource->getBundle() == 'resource') {
+      foreach ($dataset_revisions as $key => $revision) {
+        $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
+        $revision_object_resource = $revision_object->field_resources; // Получаем ресурс из паспорта.
+        $revision_object_resource = $revision_object_resource->get(0);
+
+        $revision_date = date("Ymd\THi", $revision->timestamp);
+        $revision_date_iso = date("Y-m-d", $revision->timestamp);
+        //Информация о последнем изменении в паспорте
+        if ($revision_object_resource->getBundle() == 'resource' && $revision_object_resource->field_provenance->value()) {
+          $revision_provenence = $revision_object_resource->field_provenance->value();
+        } else {
+         $revision_provenence = t('No info');
         }
-      }
-      
-      //ссылки на структуру наборов
-      if ($field_link_structure_file = $revision_object->field_link_structure_file->value()) {  
-        $url_datasets_revisions[$key]['structure'] = $field_link_structure_file['uri'];
-      }
-    
-      if ($field_upload_structure = $revision_object->field_upload_structure) {
-        $field_upload_structure = $field_upload_structure->value();
-        if (isset($field_upload_structure['uri'])) {
-          $url_datasets_revisions[$key]['structure'] = file_create_url($field_upload_structure['uri']);
+        //если это первая версия набора, то записываем значения из полей паспорта
+        if ($first_revision->vid == $revision->vid) {
+          $revision_date = date("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
+          $revision_date_iso = date("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
+          $revision_provenence = t('Date of first publication');
         }
-      } 
-      isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = NULL;
+
+        $url_datasets_revisions[$key]['date'] = $revision_date;
+        $url_datasets_revisions[$key]['date_iso'] = $revision_date_iso;
+        $url_datasets_revisions[$key]['field_content_last_change'] = $revision_provenence;
+
+
+        //ссылки на файлы наборов
+        $url_datasets_revisions[$key]['uri'] = url(od_dataset_download_path($node, $revision->vid,'data')->__toString(),array('absolute' => true));
+        $url_datasets_revisions[$key]['structure'] = url(od_dataset_download_path($node, $revision->vid,'structure')->__toString(),array('absolute' => true));;
+
+        isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = NULL;
     }
     return _passport_markup_structured_description($url_datasets_revisions);
   }
@@ -461,10 +500,4 @@ function _passport_markup_structured_description($dataset_data) {
   }
  $divs = array ('div_versions' => $divs_versions, 'div_structures' => $divs_structures);
  return $divs;
-}
-
-//определяем префикс языка
-function _current_prefix() {
-  global $language;
-  return $language->language;
 }
