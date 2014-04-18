@@ -321,7 +321,7 @@ function _passport_table_rows($nid, $options = array()) {
   $rows['field_frequency'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Содержание последнего изменения
-  if ($resource->value()) {
+  if ($resource->value() && $resource->getBundle() == 'resource') {
     $value = $resource->field_provenance->value();
     $data = array(
       'data' => isset($value) ? $value : t('No info'),
@@ -337,7 +337,7 @@ function _passport_table_rows($nid, $options = array()) {
 
     $rows['field_content_last_change'] = array('<div class="label">' . $label  . '</div>', $data);
   }
-  
+
   //Ключевые слова
   $keywords = array();
   foreach ($node_wrapper->field_tags as $term) {
@@ -357,8 +357,6 @@ function _passport_table_rows($nid, $options = array()) {
   //Гиперссылки (URL) на версии структуры набора данных (field_link_structure_file + field_upload_structure)
   if ($resource->value()) {
     $dataset_revisions = node_revision_list($node);
-    //dpm($dataset_revisions);
-    //dpm($node);
     $url_data = array();
     $url_structure = array();
     foreach ($dataset_revisions as $revision) {
@@ -427,7 +425,7 @@ function _passport_structured_description($nid) {
 
   $first_revision = end($dataset_revisions); //Самая первая версия набора
   $url_datasets_revisions = array();
-  if ($resource->value()) {
+  if ($resource->value() && $resource->getBundle() == 'resource') {
       foreach ($dataset_revisions as $key => $revision) {
         $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
         $revision_object_resource = $revision_object->field_resources; // Получаем ресурс из паспорта.
@@ -436,10 +434,10 @@ function _passport_structured_description($nid) {
         $revision_date = date("Ymd\THi", $revision->timestamp);
         $revision_date_iso = date("Y-m-d", $revision->timestamp);
         //Информация о последнем изменении в паспорте
-        if ($revision_object_resource->field_provenance->value()) {
+        if ($revision_object_resource->getBundle() == 'resource' && $revision_object_resource->field_provenance->value()) {
           $revision_provenence = $revision_object_resource->field_provenance->value();
         } else {
-          $revision_provenence = t('No info');
+         $revision_provenence = t('No info');
         }
         //если это первая версия набора, то записываем значения из полей паспорта
         if ($first_revision->vid == $revision->vid) {
