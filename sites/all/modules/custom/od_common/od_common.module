@@ -754,10 +754,11 @@ function od_common_language_switcher_links($type, $path) {
   $links = array();
   foreach ($languages[1] as $language) {
     $links[$language->language] = array(
-      'href' => url($_GET['q'], array('query' => array('language' => $language->language))),
+      'href' => $_GET['q'],
       'title' => $language->native,
       'language' => $language,
       'attributes' => array('class' => array('language-link')),
+      'options' => array('query' => array('language' => $language->language),
     );
   }
   
