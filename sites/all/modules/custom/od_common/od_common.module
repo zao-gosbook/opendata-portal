@@ -758,7 +758,7 @@ function od_common_language_switcher_links($type, $path) {
       'title' => $language->native,
       'language' => $language,
       'attributes' => array('class' => array('language-link')),
-      'options' => array('query' => array('language' => $language->language),
+      'options' => array('query' => array('language' => $language->language)),
     );
   }
   
