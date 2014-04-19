@@ -736,7 +736,7 @@ function od_common_language_negotiation_info() {
     'types' => array(LANGUAGE_TYPE_CONTENT, LANGUAGE_TYPE_INTERFACE, LANGUAGE_TYPE_URL),
     'callbacks' => array(
       'language' => 'od_common_language_language_from_session',
-      'switcher' => 'locale_language_from_session',
+      'switcher' => 'locale_language_switcher_url', // But use url links. Sly move dude :-)
       'url_rewrite' => 'locale_language_url_rewrite_session',
     ),
     'file' => $file,
