@@ -723,7 +723,7 @@ Title Desc|Z -> A</pre> Leave the replacement value blank to remove an option al
                || (!empty($form_state['input']['sort_bef_combine']) && $form_state['input']['sort_bef_combine'] == "$by_key $order_key")
                || (empty($form_state['input']['sort_bef_combine']) && $selected == "$by_key $order_key")
              ) {
-                $hidden_options["$by_key $order_key"] = "$by_val $order_val";
+                //$hidden_options["$by_key $order_key"] = "$by_val $order_val";
              }
              else {
                 $used_sort_keys[$by_key] = $order_key;
