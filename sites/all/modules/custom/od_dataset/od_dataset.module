@@ -135,7 +135,7 @@ function od_dataset_do_download($node_or_nid, $revision_id = NULL, $type = 'data
         break;
       case 'structure':
         if ($file = $wrapper->field_resources->get(0)->field_upload_structure->value()) {
-          return od_dataset_download_file($file->uri, $file->filename);
+          return od_dataset_download_file($file, $file->filename);
         }
         break;
     }
