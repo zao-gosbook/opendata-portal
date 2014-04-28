@@ -1711,6 +1711,14 @@ $zen-auto-include-item-base: false;
    * Organization
    */
   .view-organizations {
+    .view-header a.btn[href="/datasets-map"] {
+      display: inline-block;
+      width: auto;
+    }
+    .od-organization-page-switcher-wrapper {
+      float: none;
+      padding-right: 0;
+    }
     .view-filters,
     .view-header {
       label {
@@ -2087,6 +2095,30 @@ $zen-auto-include-item-base: false;
   .ui-tabs .ui-tabs-nav li {
     font-size: 14px;
   }
+  
+  /* moderation */  
+  .redaction-tabs {
+    font-size: 14px;
+  
+    #edit-status-wrapper {
+      width: 45%;
+    }
+    #edit-type-1-wrapper {
+      width: 45%;
+    }
+    .views-exposed-form .views-exposed-widget .form-submit {
+      margin-top: .4em;
+      margin-bottom: .4em;
+    }  
+    .form-item-operation {
+      .form-select {
+        margin-bottom: 1em;
+      }
+    }
+  }
+  .page-user-moderation #edit-combine-wrapper .form-text {
+    padding: .64em;
+  }  
 }
 
 
@@ -2429,6 +2461,25 @@ $zen-auto-include-item-base: false;
   .page-apps .pane-page-content .right-column .popular-apps {
       width: 100%;
   } 
+  
+  /* moderation */  
+  .redaction-tabs {
+    #edit-status-wrapper {
+      width: 45%;
+    }
+    #edit-type-1-wrapper {
+      width: 45%;
+    }
+    .views-exposed-form .views-exposed-widget .form-submit {
+      margin-top: .4em;
+      margin-bottom: .4em;
+    }  
+    .form-item-operation {
+      .form-select {
+        margin-bottom: 1em;
+      }
+    }
+  }  
   
   /* about */
   .section-about {
