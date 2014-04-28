@@ -200,11 +200,13 @@ function od_dataset_download_path_internal($node_dataset, $revision_id = NULL, $
   $download_uri = FALSE;
   try {
     $wrapper = od_dataset_get_wrapper($node_dataset, $revision_id);
-    foreach($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
-      list($type, $alias) = od_dataset_alias_parse($_val_wr->value());
-      if ($target_type == $type) {
-        $download_uri = $alias;
-        break;
+    if ($wrapper->field_resources->count() > 0) {
+      foreach($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
+        list($type, $alias) = od_dataset_alias_parse($_val_wr->value());
+        if ($target_type == $type) {
+          $download_uri = $alias;
+          break;
+        }
       }
     }
   }
