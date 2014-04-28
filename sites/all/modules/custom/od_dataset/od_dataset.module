@@ -135,7 +135,7 @@ function od_dataset_do_download($node_or_nid, $revision_id = NULL, $type = 'data
         break;
       case 'structure':
         if ($file = $wrapper->field_resources->get(0)->field_upload_structure->value()) {
-          return od_dataset_download_file($file->uri, $file->filename);
+          return od_dataset_download_file_page_callback($file);
         }
         break;
     }
@@ -295,9 +295,19 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
   $resources = $wrapper->field_resources;
 
   $zip = new ZipArchive();
-  $tmp_file = tempnam(sys_get_temp_dir(), 'tmp');
+  $tmp_file = od_common_tmpfilename('temporary:/', REQUEST_TIME, TRUE); // Create file, of course!
+  $tmp_file = file_stream_wrapper_get_instance_by_uri($tmp_file)->realpath();
   if ( true !== ($zip->open($tmp_file, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE) )) {
-    drupal_not_found(); //@fixme: Control somehow. Write to watchdog.
+    return FALSE;
+  }
+
+  od_common_module('file');
+  // Create file that will expire in 6 hours
+  $drupal_file = od_common_file_save_data_by_path($tmp_file, 'temporary://', FILE_EXISTS_RENAME, TRUE);
+  @unlink($tmp_file); // Remove old file if it existed
+
+  if (!$drupal_file) {
+    return FALSE; // Can't operate further, we have an error. Disaster!
   }
 
   $detector = od_detect_encoding_get_detector();
@@ -316,36 +326,46 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
           $add_file = $out_file;
         }
 
-        $zip->addFile($add_file, "resource_{$resource_index}{$suffix}");
+        // Handle expirations. File will be created with status=0 but we don't need it anymore in further code.
+        if ($df = od_common_file_save_data_by_path($add_file, 'temporary://', FILE_EXISTS_RENAME, TRUE)) {
+          // Clean orphaned files
+          @unlink($out_file);
+          @unlink($realpath);
+
+          $rp = file_stream_wrapper_get_instance_by_uri($df->uri)->realpath();
+          $zip->addFile($rp, "resource_{$resource_index}{$suffix}");
+        }
       }
     }
 
     $resource_index++;
   }
 
-  if (!$zip->close()) {
-    @unlink($tmp_file);
+  if (!($zip->close() && $zip->numFiles > 0)) {
     return FALSE;
   }
 
-  od_dataset_download_file($tmp_file, drupal_substr($wrapper->title->value(), 0, 200). '.zip');
-  return TRUE;
+  return od_dataset_download_file_page_callback($drupal_file, drupal_substr($wrapper->title->value(), 0, 200). '.zip', TRUE);
 }
 
-function od_dataset_download_file_page_callback($file) {
+function od_dataset_download_file_page_callback($file, $filename = NULL, $skip_converting = FALSE) {
+  $filename = $filename !== NULL ? $filename : $file->filename;
   $target_encoding = isset($_GET['encoding']) ? $_GET['encoding'] : NULL;
-  if ($target_encoding) {
+  if (!$skip_converting && $target_encoding) {
     od_common_module('core');
+    od_common_module('file');
     $detector = od_detect_encoding_get_detector();
-    $out_file = od_common_tmpfilename('temporary://', $file->uri);
+    $out_file = od_common_tmpfilename('temporary:/', $file->uri);
     // @fixme: Check if encoding is valid before converting
     if ($detector->convertFileAdvanced($file->uri, $out_file, $target_encoding)) {
-      od_dataset_download_file($out_file, $file->filename);
-      return TRUE;
+      if ($drupal_file = od_common_file_save_data_by_path($out_file, 'temporary://', FILE_EXISTS_RENAME, TRUE)) {
+        od_dataset_download_file($drupal_file->uri, $filename);
+        return TRUE;
+      }
     }
   }
   else {
-    od_dataset_download_file($file->uri, $file->filename);
+    od_dataset_download_file($file->uri, $filename);
     return TRUE;
   }
 
@@ -361,7 +381,6 @@ function od_dataset_download_file($path, $filename = NULL) {
   drupal_add_http_header('Content-Description', 'File Transfer');
   drupal_add_http_header('Content-Length', filesize($path));
   readfile($path);
-  @unlink($path);
 }
 
 function od_dataset_views_api() {
@@ -520,18 +539,28 @@ function od_dataset_get_format($node_or_nid, $revision_id = NULL) {
 }
 
 function od_dataset_entity_insert($entity, $type) {
-  od_dataset_on_entity_save($entity, $type);
+  od_dataset_on_entity_save($entity, $type, 'insert');
 }
 
 function od_dataset_entity_update($entity, $type) {
-  od_dataset_on_entity_save($entity, $type);
+  od_dataset_on_entity_save($entity, $type, 'update');
 }
 
-function od_dataset_on_entity_save($entity, $type) {
+function od_dataset_on_entity_save($entity, $type, $operation) {
   if ($type == 'node' && isset($entity->type) && $entity->type == 'dataset') {
     od_dataset_set_alias_links($entity);
     od_dataset_save_aliases($entity);
   }
+  //@fixme:  Should work on this better
+//  elseif ($operation == 'update' && $type == 'node' && isset($entity->type) && $entity->type == 'resource') {
+//    static $processed = array();
+//    $items = field_get_items($type, $entity, 'field_dataset_ref');
+//    if (($item = reset($items)) && !isset($processed[$item['target_id']])) {
+//      $processed[$item['target_id']] = TRUE;
+//      od_dataset_cascade_update_prepare($item['target_id'], $item['revision_id'], $entity); // Prepare resource
+//      od_dataset_cascade_update_dataset($item['target_id'], $item['revision_id']); // And update it immediately
+//    }
+//  }
   //@fixme: Do we need to auto update it in that way?
 //  elseif ($type = 'node' && isset($entity->type) && $entity->type == 'resource') {
 //    $dataset_wr = od_dataset_get_wrapper_by_resource($entity->nid);
@@ -539,6 +568,53 @@ function od_dataset_on_entity_save($entity, $type) {
 //  }
 }
 
+function od_dataset_cascade_update_prepare($nid, $vid, $resource) {
+  if (($rw = od_dataset_get_wrapper($resource))) {
+    $storage = &drupal_static(__FUNCTION__. ":{$nid}:{$vid}", array());
+    $storage[$rw->nid->value()] = $rw;
+  }
+}
+
+function od_dataset_cascade_update_dataset($node_or_nid, $revision_id = NULL) {
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    $storage = &drupal_static("od_dataset_cascade_update_prepare:{$wrapper->nid->value()}:{$wrapper->vid->value()}", array());
+
+    $new_resources = array();
+    if (count($storage) > 0) {
+      $wrapper->value()->revision = 1; // Create new revision
+      $wrapper->save();
+      // Reinit wrapper
+      $wrapper = entity_metadata_wrapper('node', $wrapper->value());
+      $wrapper->value()->revision = 0;
+      foreach ($wrapper->field_resources as $rw) {
+        //$rw->value()->original = $rw->value();
+
+        if (isset($storage[$rw->nid->value()])) {
+          $w = $storage[$rw->nid->value()];
+          unset($storage[$rw->nid->value()]);
+          $rw->value()->revision = 0;
+          $rw->set($w->value());
+        }
+        else {
+          $rw->value()->revision = 1;
+        }
+
+        // Set new revision id before save
+        $rw->field_dataset_ref->set($wrapper); /*[LANGUAGE_NONE] = array(array(
+          'target_id' => $wrapper->nid->value(),
+          'revision_id' => $wrapper->vid->value(),
+        ));*/
+
+        //$rw->value()->original = $rw->value();
+        $rw->save();
+        unset($rw);
+      }
+
+      //$wrapper->value()->original = $wrapper->value(); // Nefig mne tut reviziyu menyat'.
+      $wrapper->save();
+    }
+  }
+}
 function od_dataset_entity_delete($entity, $type) {
   if ($type == 'node' && isset($entity->type) && $entity->type == 'dataset') {
     od_dataset_delete_aliases($entity);

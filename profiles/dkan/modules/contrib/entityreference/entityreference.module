@@ -243,47 +243,25 @@ function entityreference_field_validate($entity_type, $entity, $field, $instance
  * Adds the target type to the field data structure when saving.
  */
 function entityreference_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
-  if (!empty($field['settings']['handler_settings']['lock_revision'])) {
-    $dest_entity_type = $field['settings']['target_type'];
-    $original_items = array();
-    if (isset($entity->original)) {
-      $original_items = field_get_items($entity_type, $entity->original, $field['field_name']);
+  $dest_entity_type = $field['settings']['target_type'];
+  foreach ($items as $key => $val) {
+
+    // If the revision id is explicitly set, load the revision.
+    $ref_entity = FALSE;
+    if (isset($val['revision_id']) && $val['revision_id']) {
+      $ref_entity = entity_revision_load($dest_entity_type, $val['revision_id']);
     }
-    else {
-      $ids = entity_extract_ids($entity_type, $entity);
-      if ($ids[0]) {
-        $original = entity_load_unchanged($entity_type, $ids[0]);
-        if ($original) {
-          $original_items = field_get_items($entity_type, $original, $field['field_name']);
-        }
-      }
+    // If the was not set or couldn't be loaded.
+    if (!$ref_entity) {
+      $ref_entity = entity_load_single($dest_entity_type, $val['target_id']);
     }
-    foreach ($items as $key => $val) {
-      // If the revision id is explicitly set, load the revision.
-      $ref_entity = FALSE;
-      if (isset($val['revision_id']) && $val['revision_id']) {
-        $ref_entity = entity_revision_load($dest_entity_type, $val['revision_id']);
-      }
-      // If the was not set or couldn't be loaded.
-      if (!$ref_entity) {
-        $ref_entity = entity_load_single($dest_entity_type, $val['target_id']);
-      }
-      $ref_ids = entity_extract_ids($dest_entity_type, $ref_entity);
-      // find the original item, which does not have the same delta per se.
-      $original_revision = FALSE;
-      foreach ($original_items as $original_item) {
-        if ($original_item['target_id'] == $val['target_id']) {
-          $original_revision = isset($original_item['revision_id']) ? $original_item['revision_id'] : FALSE;
-        }
-      }
-      if (isset($ref_ids[1]) && is_numeric($ref_ids[1]) && !$original_revision) {
-        $items[$key]['revision_id'] = $ref_ids[1];
-      }
-      else if ($original_revision) {
-        $items[$key]['revision_id'] = $original_revision;
-      }
+    $ref_ids = entity_extract_ids($dest_entity_type, $ref_entity);
+
+    if (isset($ref_ids[1]) && is_numeric($ref_ids[1])) {
+      $items[$key]['revision_id'] = $ref_ids[1];
     }
   }
+
   // Invoke the behaviors.
   foreach (entityreference_get_behavior_handlers($field, $instance) as $handler) {
     $handler->presave($entity_type, $entity, $field, $instance, $langcode, $items);
@@ -713,14 +691,11 @@ function entityreference_field_property_callback(&$info, $entity_type, $field, $
   // Then apply the default.
   entity_metadata_field_default_property_callback($info, $entity_type, $field, $instance, $field_type);
 
-  // If the entity reference is locked to a revision, load that revision, not
-  // the current one.
-  if (!empty($field['settings']['handler_settings']['lock_revision'])) {
-    $name = $field['field_name'];
-    $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
-    $property['getter callback'] = 'entityreference_metadata_field_get_revision_data';
-    $property['setter callback'] = 'entityreference_metadata_field_set_revision_data';
-  }
+  // Load revision, not the current one.
+  $name = $field['field_name'];
+  $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
+  $property['getter callback'] = 'entityreference_metadata_field_get_revision_data';
+  $property['setter callback'] = 'entityreference_metadata_field_set_revision_data';
 
   // Invoke the behaviors to allow them to change the properties.
   foreach (entityreference_get_behavior_handlers($field, $instance) as $handler) {
