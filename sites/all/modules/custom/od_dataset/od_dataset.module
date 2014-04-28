@@ -362,7 +362,7 @@ function od_dataset_download_file($path, $filename = NULL) {
   drupal_add_http_header('Content-Description', 'File Transfer');
   drupal_add_http_header('Content-Length', filesize($path));
   readfile($path);
-  @unlink($path);
+  //@unlink($path);
 }
 
 function od_dataset_views_api() {
@@ -521,17 +521,22 @@ function od_dataset_get_format($node_or_nid, $revision_id = NULL) {
 }
 
 function od_dataset_entity_insert($entity, $type) {
-  od_dataset_on_entity_save($entity, $type);
+  od_dataset_on_entity_save($entity, $type, 'insert');
 }
 
 function od_dataset_entity_update($entity, $type) {
-  od_dataset_on_entity_save($entity, $type);
+  od_dataset_on_entity_save($entity, $type, 'update');
 }
 
-function od_dataset_on_entity_save($entity, $type) {
+function od_dataset_on_entity_save($entity, $type, $operation) {
   if ($type == 'node' && isset($entity->type) && $entity->type == 'dataset') {
     od_dataset_set_alias_links($entity);
     od_dataset_save_aliases($entity);
+  }
+  elseif ($operation == 'update' && $type == 'node' && isset($entity->type) && $entity->type == 'resource') {
+    $a=1;
+    $item = field_get_items($type, $entity, 'field_dataset_ref');
+    //od_dataset_cascade_update_dataset($entity->field_dataset_ref);
   }
   //@fixme: Do we need to auto update it in that way?
 //  elseif ($type = 'node' && isset($entity->type) && $entity->type == 'resource') {
