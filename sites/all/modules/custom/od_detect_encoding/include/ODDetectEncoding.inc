@@ -122,6 +122,12 @@ class ODDetectEncoding {
   }
 
   public function copyFile($input_file, $output_file) {
-    return $this->_adapter->copyFile($input_file, $output_file);
+    $processor = ODDetectEncodingMimeProcessorFactory::getProcessorFile($input_file);
+    if (!$processor) {
+      return FALSE;
+    }
+
+    $processor->setConverterAdapter($this->getAdapter());
+    return $processor->copyFile($input_file, $output_file);
   }
 }

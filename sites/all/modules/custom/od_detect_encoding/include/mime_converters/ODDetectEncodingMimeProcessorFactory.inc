@@ -27,14 +27,21 @@ class ODDetectEncodingMimeProcessorFactory {
 
       $processor = FALSE;
       foreach ($class_paths as $_class_path) {
-        if (class_exists($_class_path)) {
-          $processor = new $_class_path();
+        if ($processor = static::instanceRouter($mime, $_class_path)) {
           break;
         }
       }
     }
 
     return $processor ? $processor : static::getProcessorDefault();
+  }
+
+  protected static function instanceRouter($classpath, $mime = NULL) {
+    if (!isset(static::$cached['classes'][$classpath]) && (static::$cached['classes'][$classpath] = FALSE) && ($mime === NULL || (static::inc($mime) && class_exists($classpath)))) {
+      static::$cached['classes'][$classpath] = new $classpath();
+    }
+
+    return static::$cached['classes'][$classpath];
   }
 
   /**
@@ -49,8 +56,11 @@ class ODDetectEncodingMimeProcessorFactory {
     return FALSE;
   }
 
+  /**
+   * @return ODDetectEncodingMimeProcessorInterface
+   */
   public static function getProcessorDefault() {
-    return new static::$default_processor_class();
+    return static::instanceRouter(NULL, static::$default_processor_class);
   }
 
   public static function inc($mime) {
