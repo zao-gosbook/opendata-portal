@@ -15,7 +15,6 @@ function cachedblock_module_implements_alter(&$implementations, $hook) {
 /**
  * Implements hook_block_list_alter().
  */
-// must be the last.
 function cachedblock_block_list_alter(&$blocks) {
   global $theme_key;
 
@@ -35,8 +34,6 @@ function cachedblock_block_list_alter(&$blocks) {
 
 /**
  * Implements hook_block_view().
- *
- * Generates the administrator-defined blocks for display.
  */
 function cachedblock_block_view($delta = '') {
   $delta = intval($delta);
@@ -45,6 +42,9 @@ function cachedblock_block_view($delta = '') {
   if (empty($list[$delta]->status)) {
     return array();
   }
+
+  $show_timings = user_access('administer blocks');
+  $start_time = $show_timings ? microtime(TRUE) : 0;
 
   $block = $list[$delta];
   $data = array();
@@ -59,22 +59,66 @@ function cachedblock_block_view($delta = '') {
     $cached_block = cache_get($cid, 'cache_block');
     if (!empty($cached_block)) {
       $data = $cached_block->data;
+      if ($show_timings) {
+        $data['content']['#cachedblock_contextual_links'][] = t('Cached: @time ms.', array('@time' => round((microtime(TRUE) - $start_time) * 1000, 2)));
+      }
     }
   }
 
   if (empty($data)) {
+    // See the discussion https://drupal.org/node/1460766.
+    $before = array(
+      'head' => drupal_add_html_head(),
+      'css' => drupal_add_css(),
+      'js' => drupal_add_js(),
+      'headers' => drupal_get_http_header(),
+    );
+    $before['settings'] = isset($before['js']['settings']['data']) ? $before['js']['settings']['data'] : array();
+    unset($before['js']['settings']);
+
     $data = module_invoke($block->module, 'block_view', $block->delta);
     $delta = str_replace('-', '_', $block->delta);
     drupal_alter(array('block_view', "block_view_{$block->module}_{$delta}"), $data, $block);
 
-    if (is_array($data['content'])) {
-      unset($data['content']['#contextual_links']);
-      unset($data['content']['#views_contextual_links_info']);
-      // Do not miss attached JS and CSS.
-      $attached = isset($data['content']['#attached']) ? $data['content']['#attached'] : array();
-      $data['content'] = array('#markup' => drupal_render($data['content']));
-      if (!empty($attached)) {
-        $data['content']['#attached'] = $attached;
+    $after = array(
+      'head' => drupal_add_html_head(),
+      'css' => drupal_add_css(),
+      'js' => drupal_add_js(),
+      'headers' => drupal_get_http_header(),
+    );
+    $after['settings'] = isset($after['js']['settings']['data']) ? $after['js']['settings']['data'] : array();
+    unset($after['js']['settings']);
+
+    $array_mapping_func = function_exists('drupal_array_diff_assoc_recursive') ? 'drupal_array_diff_assoc_recursive' : 'array_diff_assoc';
+
+    if (isset($data['content'])) {
+      if (is_array($data['content'])) {
+        $contextual_links = isset($data['content']['#contextual_links']) ? $data['content']['#contextual_links'] : array();
+        $views_contextual_links = isset($data['content']['#views_contextual_links_info']) ? $data['content']['#views_contextual_links_info'] : array();
+        unset($data['content']['#contextual_links']);
+        unset($data['content']['#views_contextual_links_info']);
+        // Do not miss attached assets.
+        $attached = isset($data['content']['#attached']) ? $data['content']['#attached'] : array();
+        unset($data['content']['#attached']);
+        $data['content'] = array('content' => array('#markup' => drupal_render($data['content'])));
+        if (!empty($attached)) {
+          $data['content']['#attached'] = $attached;
+        }
+        if (!empty($contextual_links)) {
+          $data['content']['#contextual_links'] = $contextual_links;
+        }
+        if (!empty($views_contextual_links)) {
+          $data['content']['#views_contextual_links_info'] = $views_contextual_links;
+        }
+      }
+      else {
+        $data['content'] = array('content' => array('#markup' => $data['content']));
+      }
+      foreach ($before as $key => $before_data) {
+        $data['content']['#cachedblock_attached'][$key] = _cachedblock_asset_diff($after[$key], $before_data, $array_mapping_func);
+      }
+      if ($show_timings) {
+        $data['content']['#cachedblock_contextual_links'][] = t('Build: @time ms.', array('@time' => round((microtime(TRUE) - $start_time) * 1000, 2)));
       }
     }
 
@@ -84,12 +128,39 @@ function cachedblock_block_view($delta = '') {
       cache_set($cid, $data, 'cache_block', $expire);
     }
   }
+  elseif (isset($data['content']['#cachedblock_attached'])) {
+    // Restore assets.
+    if (!empty($data['content']['#cachedblock_attached']['head'])) {
+      drupal_add_html_head($data['content']['#cachedblock_attached']['head']);
+    }
+    foreach ($data['content']['#cachedblock_attached']['css'] as $css) {
+      drupal_add_css($css['data'], $css);
+    }
+    foreach ($data['content']['#cachedblock_attached']['js'] as $js) {
+      drupal_add_js($js['data'], $js);
+    }
+    foreach ($data['content']['#cachedblock_attached']['settings'] as $settings) {
+      drupal_add_js($settings, 'setting');
+    }
+    foreach ($data['content']['#cachedblock_attached']['headers'] as $name => $value) {
+      drupal_add_http_header($name, $value);
+    }
+  }
 
   // Overwrite the overwritten block identifiers to the original values.
   $data['module'] = $block->module;
   $data['delta'] = $block->delta;
 
   return $data;
+}
+
+/**
+ * Implements hook_ctools_plugin_post_alter().
+ */
+function cachedblock_ctools_plugin_post_alter(&$plugin, &$info) {
+  if (($plugin['module'] === 'ctools') && (isset($plugin['name'])) && ($plugin['name'] === 'block')) {
+    $plugin['render callback'] = 'cachedblock_ctools_plugin_render_block';
+  }
 }
 
 /**
@@ -199,11 +270,17 @@ function cachedblock_settings_form_submit($form, &$form_state) {
   }
 }
 
+/**
+ * Implements hook_contextual_links_view_alter().
+ */
 function cachedblock_contextual_links_view_alter(&$element, $items) {
   if (isset($element['#element']['#block'])) {
-    $conf = _cachedblock_block_list($element['#element']['#block']->module, $element['#element']['#block']->delta);
+    $block = $element['#element']['#block'];
+    $conf = _cachedblock_block_list($block->module, $block->delta);
     if (!empty($conf->status)) {
-      $element['#links'] = array();
+      if (!empty($element['#element']['#cachedblock_contextual_links'])) {
+        $element['#links']['cachedblock-stat'] = array('title' => implode(' ', $element['#element']['#cachedblock_contextual_links']));
+      }
     }
   }
 }
@@ -228,6 +305,24 @@ function _cachedblock_block_list($module = NULL, $delta = NULL) {
   return $list;
 }
 
+function _cachedblock_asset_diff(array $assets, array $start_assets, $diff_function) {
+  $diff = $diff_function($assets, $start_assets);
+
+  // Cleanup the resulting array since drupal_array_diff_assoc_recursive() can
+  // leave half populated arrays behind.
+  foreach ($diff as $key => $entry) {
+    // If only the weight was different we can remove this entry.
+    if (count($entry) == 1 && isset($entry['weight'])) {
+      unset($diff[$key]);
+    }
+    // If there are other differences we override with the latest entry.
+    elseif ($entry != $assets[$key]) {
+      $diff[$key] = $assets[$key];
+    }
+  }
+  return $diff;
+}
+
 function _cachedblock_get_cache_id($block) {
   $cid_parts[] = $block->module;
   $cid_parts[] = $block->delta;
@@ -238,4 +333,55 @@ function _cachedblock_get_cache_id($block) {
 
 function cachedblock_clear_block_cache($module, $delta) {
   cache_clear_all($module . ':' . $delta . ':', 'cache_block', TRUE);
+}
+
+function cachedblock_ctools_plugin_render_block($subtype, $conf) {
+  list($module, $delta) = _ctools_block_get_module_delta($subtype, $conf);
+
+  $info = _ctools_get_block_info($module, $delta);
+
+  $cachedblock_conf = _cachedblock_block_list($module, $delta);
+  $block = (empty($cachedblock_conf->status)) ? module_invoke($module, 'block_view', $delta) : cachedblock_block_view($cachedblock_conf->bid);
+
+  if ((!empty($info)) && (empty($cachedblock_conf->status))) {
+    // Allow modules to modify the block before it is viewed, via either
+    // hook_block_view_alter() or hook_block_view_MODULE_DELTA_alter().
+    drupal_alter(array('block_view', "block_view_{$module}_{$delta}"), $block, $info);
+  }
+  $block = (object) $block;
+
+  if (empty($block)) {
+    return;
+  }
+
+  $block->module = $module;
+  $block->delta = $delta;
+
+  if (!isset($block->title)) {
+    if ($module == 'block' && !empty($info) && isset($info->title)) {
+      $block->title = $info->title;
+    }
+    elseif (isset($block->subject)) {
+      $block->title = $block->subject;
+    }
+    else {
+      $block->title = NULL;
+    }
+  }
+
+  if (module_exists('block') && user_access('administer blocks')) {
+    $block->admin_links = array(
+      array(
+        'title' => t('Configure block'),
+        'href' => "admin/structure/block/manage/$module/$delta/configure",
+        'query' => drupal_get_destination(),
+      ),
+    );
+    if (!empty($block->content['#cachedblock_contextual_links'])) {
+      $block->admin_links[] = array('title' => implode(' ', $block->content['#cachedblock_contextual_links']));
+    }
+
+  }
+
+  return $block;
 }
