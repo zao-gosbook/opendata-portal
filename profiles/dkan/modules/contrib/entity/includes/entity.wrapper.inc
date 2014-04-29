@@ -574,6 +574,7 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
    * Contains the entity id.
    */
   protected $id = FALSE;
+  protected $vid = FALSE;
   protected $bundle;
   protected $entityInfo;
 
@@ -609,13 +610,14 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
   protected function setEntity($data) {
     // For entities we allow getter callbacks to return FALSE, which we
     // interpret like NULL values as unset properties.
-    if (isset($data) && $data !== FALSE && !is_object($data)) {
+    if (isset($data) && $data !== FALSE && !is_object($data) && !is_array($data) || (is_array($data) && !isset($data['id']) && !isset($data['vid']))) {
       $this->id = $data;
       $this->data = FALSE;
     }
     elseif (is_object($data) && $data instanceof EntityDrupalWrapper) {
       // We got a wrapped entity passed, so take over its values.
       $this->id = $data->id;
+      $this->vid = $data->vid;
       $this->data = $data->data;
       // For generic entity references, also update the entity type accordingly.
       if ($this->info['type'] == 'entity') {
@@ -625,11 +627,18 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
     elseif (is_object($data)) {
       // We got the entity object passed.
       $this->data = $data;
-      $id = entity_id($this->type, $data);
+      list($id, $vid) = entity_extract_ids($this->type, $data);
       $this->id = isset($id) ? $id : FALSE;
+      $this->vid = isset($vid) ? $vid : FALSE;
+    }
+    elseif (is_array($data) && (isset($data['id']) || isset($data['vid']))) {
+      $this->data = FALSE;
+      $this->id = isset($data['id']) ? $data['id'] : FALSE;
+      $this->vid = isset($data['vid']) ? $data['vid'] : FALSE;
     }
     else {
       $this->id = FALSE;
+      $this->vid = FALSE;
       $this->data = NULL;
     }
   }
@@ -717,22 +726,17 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
     if (!empty($options['identifier'])) {
       return $this->id;
     }
+    elseif (!$this->data && !empty($this->vid)) {
+      // Lazy load the entity revision if necessary
+      $return = entity_revision_load($this->type, $this->vid);
+      // In case the entity cannot be loaded, we return NULL just as for empty
+      // properties.
+      $this->data = $return ? $return : NULL;
+    }
     elseif (!$this->data && !empty($this->id)) {
-      /* @fixme: Begins hack for support revisions */
-      $conditions = array();
-      if (isset($this->entityInfo['entity keys']['revision']) && isset($this->id[$this->entityInfo['entity keys']['revision']])) {
-        $conditions[$this->entityInfo['entity keys']['revision']] = $this->id[$this->entityInfo['entity keys']['revision']];
-      }
-
-      $id = $this->id;
-      if (is_array($id)) {
-        $id = $id['id'];
-      }
 
       // Lazy load the entity if necessary.
-      $return = entity_load($this->type, array($id), $conditions);
-      /* @fixme: /Ends hack for supporting revisions */
-
+      $return = entity_load($this->type, array($this->id));
       // In case the entity cannot be loaded, we return NULL just as for empty
       // properties.
       $this->data = $return ? reset($return) : NULL;
@@ -761,6 +765,7 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
       return $this;
     }
     $previous_id = $this->id;
+    $previous_vid = $this->vid;
     $previous_type = $this->type;
     // Set value, so we get the identifier and pass it to the normal setter.
     $this->clear();
@@ -768,7 +773,7 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
     // Generally, we have to update the parent only if the entity reference
     // has changed. In case of a generic entity reference, we pass the entity
     // wrapped. Else we just pass the id of the entity to the setter callback.
-    if ($this->info['type'] == 'entity' && ($previous_id != $this->id || $previous_type != $this->type)) {
+    if ($this->info['type'] == 'entity' && ($previous_id != $this->id || $previous_vid != $this->vid || $previous_type != $this->type)) {
       // We need to clone the wrapper we pass through as value, so it does not
       // get cleared when the current wrapper instance gets cleared.
       $this->updateParent(clone $this);
@@ -779,8 +784,14 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
     elseif ($this->id === FALSE && !$this->data) {
       $this->updateParent(NULL);
     }
-    elseif ($previous_id != $this->id) {
-      $this->updateParent($this->id);
+    elseif ($previous_id != $this->id || $previous_vid != $this->vid) {
+      // Check if the entity has not been deleted.
+      if ($this->vid && entity_load_single($this->type, $this->id) && !entity_revision_is_default($this->type, $this->value())) {
+        $this->updateParent(array('id' => $this->id, 'vid' => $this->vid));
+      }
+      else {
+        $this->updateParent($this->id);
+      }
     }
     return $this;
   }
@@ -790,6 +801,7 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
    */
   public function clear() {
     $this->id = NULL;
+    $this->vid = NULL;
     $this->bundle = isset($this->info['bundle']) ? $this->info['bundle'] : NULL;
     if ($this->type != $this->info['type']) {
       // Reset entity info / property info based upon the info provided during
@@ -843,7 +855,7 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
       entity_save($this->type, $this->data);
       // On insert, update the identifier afterwards.
       if (!$this->id) {
-        list($this->id, , ) = entity_extract_ids($this->type, $this->data);
+        list($this->id, $this->vid, ) = entity_extract_ids($this->type, $this->data);
       }
     }
     // If the entity hasn't been loaded yet, don't bother saving it.
@@ -1022,11 +1034,43 @@ class EntityListWrapper extends EntityMetadataWrapper implements IteratorAggrega
     // Generic entity-wrappers need to be handled separately though.
     if ($this->isEntityList && empty($options['identifier']) && $this->dataAvailable()) {
       $list = parent::value();
-      $entities = $list ? entity_load($this->get(0)->type, $list) : array();
+      $vids = array();
+      $ids = array();
+      $entities = array();
+      $type = $this->get(0)->type;
+      foreach ($list as $item) {
+        if (is_array($item) && isset($item['vid'])) {
+          $vids[] = $item['vid'];
+        }
+        else {
+          $ids[] = is_array($item) ? $item['id'] : $item;
+        }
+      }
+      if ($vids) {
+        foreach ($vids as $vid) {
+          $entity = entity_revision_load($type, $vid);
+          if ($entity) {
+            $entities[entity_id($type, $entity)] = $entity;
+          }
+        }
+      }
+      if ($ids) {
+        $entities += entity_load($type, $ids);
+      }
       // Make sure to keep the array keys as present in the list.
-      foreach ($list as $key => $id) {
+      foreach ($list as $key => $val) {
         // In case the entity cannot be loaded, we return NULL just as for empty
         // properties.
+        if (is_numeric($val)) {
+          $id = $val;
+        }
+        elseif (is_array($val) && isset($val['id'])) {
+          $id = $val['id'];
+        }
+        else {
+          // Revisions that couldn't be loaded were not added anyway.
+          continue;
+        }
         $list[$key] = isset($entities[$id]) ? $entities[$id] : NULL;
       }
       return $list;
@@ -1039,7 +1083,13 @@ class EntityListWrapper extends EntityMetadataWrapper implements IteratorAggrega
     if ($this->isEntityList && $values && is_object(reset($values))) {
       foreach ($values as $key => $value) {
         list($id, $vid, $bundle) = entity_extract_ids($this->itemType, $value);
-        $values[$key] = $id;
+        list( , $current_vid, ) = entity_extract_ids($this->itemType, entity_load_single($this->itemType, $id));
+        if ($current_vid != $vid) {
+          $values[$key] = array('id' => $id, 'vid' => $vid);
+        }
+        else {
+          $values[$key] = $id;
+        }
       }
     }
     return parent::set($values);
