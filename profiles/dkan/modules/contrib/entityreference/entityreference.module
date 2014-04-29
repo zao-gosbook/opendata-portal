@@ -711,10 +711,11 @@ function entityreference_metadata_field_get_revision_data($entity, array $option
   if (isset($entity->{$name}[$langcode])) {
     foreach ($entity->{$name}[$langcode] as $delta => $data) {
       if (isset($data['revision_id'])) {
-        $values[$delta] = array('id' => $data['target_id'], 'vid' => $data['revision_id']);
+        $values[$delta] = entity_load($entity_type, array($data['target_id']), array('vid' => $data['revision_id']));
+        $values[$delta] = reset($values[$delta]);
       }
       else {
-        $values[$delta] = $data['target_id'];
+        $values[$delta] = entity_load_single($entity_type, $data['target_id']);
       }
     }
   }
