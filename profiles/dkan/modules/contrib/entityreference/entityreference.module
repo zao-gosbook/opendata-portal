@@ -710,15 +710,22 @@ function entityreference_metadata_field_get_revision_data($entity, array $option
   $values = array();
   if (isset($entity->{$name}[$langcode])) {
     foreach ($entity->{$name}[$langcode] as $delta => $data) {
+//      if (isset($data['revision_id'])) {
+//        $values[$delta] = entity_load($field['settings']['target_type'], array($data['target_id']), array('vid' => $data['revision_id']));
+//        $values[$delta] = reset($values[$delta]);
+//      }
+//      else {
+//        $values[$delta] = entity_load_single($field['settings']['target_type'], $data['target_id']);
+//      }
       if (isset($data['revision_id'])) {
-        $values[$delta] = entity_load($field['settings']['target_type'], array($data['target_id']), array('vid' => $data['revision_id']));
-        $values[$delta] = reset($values[$delta]);
+          $values[$delta] = array('id' => $data['target_id'], 'vid' => $data['revision_id']);
       }
       else {
-        $values[$delta] = entity_load_single($field['settings']['target_type'], $data['target_id']);
+          $values[$delta] = $data['target_id'];
       }
     }
   }
+
   // For an empty single-valued field, we have to return NULL.
   return $field['cardinality'] == 1 ? ($values ? reset($values) : NULL) : $values;
 }

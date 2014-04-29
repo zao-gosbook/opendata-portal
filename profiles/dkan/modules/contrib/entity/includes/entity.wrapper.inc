@@ -718,8 +718,21 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
       return $this->id;
     }
     elseif (!$this->data && !empty($this->id)) {
+      /* @fixme: Begins hack for support revisions */
+      $conditions = array();
+      if (isset($this->entityInfo['entity keys']['revision']) && isset($this->id[$this->entityInfo['entity keys']['revision']])) {
+        $conditions[$this->entityInfo['entity keys']['revision']] = $this->id[$this->entityInfo['entity keys']['revision']];
+      }
+
+      $id = $this->id;
+      if (is_array($id)) {
+        $id = $id['id'];
+      }
+
       // Lazy load the entity if necessary.
-      $return = entity_load($this->type, array($this->id));
+      $return = entity_load($this->type, array($id), $conditions);
+      /* @fixme: /Ends hack for supporting revisions */
+
       // In case the entity cannot be loaded, we return NULL just as for empty
       // properties.
       $this->data = $return ? reset($return) : NULL;
