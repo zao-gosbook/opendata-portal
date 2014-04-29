@@ -709,15 +709,13 @@ function entityreference_metadata_field_get_revision_data($entity, array $option
   $langcode = entity_metadata_field_get_language($entity_type, $entity, $field, $langcode, TRUE);
   $values = array();
   if (isset($entity->{$name}[$langcode])) {
-    $ids = entity_extract_ids($entity_type, $entity);
-    $instance = field_info_instance($entity_type, $name, isset($ids[2]) ? $ids[2] : $entity_type);
     foreach ($entity->{$name}[$langcode] as $delta => $data) {
       if (isset($data['revision_id'])) {
-        $values[$delta] = entity_load($instance['entity_type'], array($data['target_id']), array('vid' => $data['revision_id']));
+        $values[$delta] = entity_load($field['settings']['target_type'], array($data['target_id']), array('vid' => $data['revision_id']));
         $values[$delta] = reset($values[$delta]);
       }
       else {
-        $values[$delta] = entity_load_single($instance['entity_type'], $data['target_id']);
+        $values[$delta] = entity_load_single($field['settings']['target_type'], $data['target_id']);
       }
     }
   }
