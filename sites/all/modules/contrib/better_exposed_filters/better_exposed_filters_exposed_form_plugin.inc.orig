@@ -157,7 +157,6 @@ Title Desc|Z -> A</pre> Leave the replacement value blank to remove an option al
           'default' => t('Default select list'),
           'bef' => t('Radio Buttons'),
           'bef_links' => t('Links'),
-          'bef_toggle_links' => t('Toggle Links'),
         ),
         '#description' => t('Select a format for the exposed pager options.'),
       );
@@ -717,17 +716,6 @@ Title Desc|Z -> A</pre> Leave the replacement value blank to remove an option al
               else {
                 $options[$index] = $rewrite[$option];
               }
-            }
-           if ($settings['sort']['bef_format'] == 'bef_toggle_links') {
-             if (isset($used_sort_keys[$by_key])
-               || (!empty($form_state['input']['sort_bef_combine']) && $form_state['input']['sort_bef_combine'] == "$by_key $order_key")
-               || (empty($form_state['input']['sort_bef_combine']) && $selected == "$by_key $order_key")
-             ) {
-                //$hidden_options["$by_key $order_key"] = "$by_val $order_val";
-             }
-             else {
-                $used_sort_keys[$by_key] = $order_key;
-             }
             }
           }
         }

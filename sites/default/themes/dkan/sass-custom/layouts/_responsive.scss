@@ -1389,9 +1389,26 @@ $zen-auto-include-item-base: false;
     }
   }
   .page-taxonomy-term .view-rubric-nodes .views-row {
-    width: 100%;
-    font-size: 9px;
+    width: 100% !important;
+    font-size: 10px;
+    position: static !important;
   }
+  .page-taxonomy-term .view-rubric-nodes .views-row .field-name-field-image, 
+  .page-taxonomy-term .rubric-content .view .views-row .field-name-field-image  {
+    margin-bottom: 10px;
+  }
+  .page-taxonomy-term .view-rubric-nodes .views-row h2, 
+  .page-taxonomy-term .rubric-content .view .views-row h2 {
+    padding-bottom: 7px;
+  }
+  .page-taxonomy-term .view-rubric-nodes .views-row .field-name-body, 
+  .page-taxonomy-term .view-rubric-nodes .views-row .field-name-field-teaser, 
+  .page-taxonomy-term .rubric-content .view .views-row .field-name-body, 
+  .page-taxonomy-term .rubric-content .view .views-row .field-name-field-teaser {
+    height: 2.25em;
+    line-height: 1.25em;
+    margin: 0 0 1.0em;
+  }  
   .rubric-content {
     margin-left: 0;
     /*display: none;*/
@@ -1694,6 +1711,14 @@ $zen-auto-include-item-base: false;
    * Organization
    */
   .view-organizations {
+    .view-header a.btn[href="/datasets-map"] {
+      display: inline-block;
+      width: auto;
+    }
+    .od-organization-page-switcher-wrapper {
+      float: none;
+      padding-right: 0;
+    }
     .view-filters,
     .view-header {
       label {
@@ -2070,6 +2095,30 @@ $zen-auto-include-item-base: false;
   .ui-tabs .ui-tabs-nav li {
     font-size: 14px;
   }
+  
+  /* moderation */  
+  .redaction-tabs {
+    font-size: 14px;
+  
+    #edit-status-wrapper {
+      width: 45%;
+    }
+    #edit-type-1-wrapper {
+      width: 45%;
+    }
+    .views-exposed-form .views-exposed-widget .form-submit {
+      margin-top: .4em;
+      margin-bottom: .4em;
+    }  
+    .form-item-operation {
+      .form-select {
+        margin-bottom: 1em;
+      }
+    }
+  }
+  .page-user-moderation #edit-combine-wrapper .form-text {
+    padding: .64em;
+  }  
 }
 
 
@@ -2412,6 +2461,25 @@ $zen-auto-include-item-base: false;
   .page-apps .pane-page-content .right-column .popular-apps {
       width: 100%;
   } 
+  
+  /* moderation */  
+  .redaction-tabs {
+    #edit-status-wrapper {
+      width: 45%;
+    }
+    #edit-type-1-wrapper {
+      width: 45%;
+    }
+    .views-exposed-form .views-exposed-widget .form-submit {
+      margin-top: .4em;
+      margin-bottom: .4em;
+    }  
+    .form-item-operation {
+      .form-select {
+        margin-bottom: 1em;
+      }
+    }
+  }  
   
   /* about */
   .section-about {
