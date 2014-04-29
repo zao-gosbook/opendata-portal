@@ -329,7 +329,7 @@ function od_common_rules_actions_od_common_file_get_extension_term($file, $vocab
     $term = NULL;
   }
 
-  return array('extension_term' => $term);
+  return array('extension_term' => $term ? entity_load_single('taxonomy_term', $term->tid) : $term);
 }
 
 /**
