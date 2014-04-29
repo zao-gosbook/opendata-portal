@@ -425,11 +425,11 @@ function _passport_structured_description($nid) {
   $output = NULL;
   if ($resource->value() && $resource->getBundle() == 'resource') {
       foreach ($dataset_revisions as $key => $revision) {
-        $revision_object = od_dataset_get_wrapper($node->nid, $revision->vid); //'node', node_load($node->nid, $revision->vid));
+        $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
         $revision_object_resource = $revision_object->field_resources->get(0); // Получаем ресурс из паспорта.
-
-        $revision_date = date("Ymd\THi", $revision->timestamp);
-        $revision_date_iso = date("Y-m-d", $revision->timestamp);
+        $revision_data = $revision_object->field_dataset_latest_update->value() ? $revision_object->field_dataset_latest_update->value() : $revision->timestamp;
+        $revision_date = gmdate("Ymd\THi", $revision_data);
+        $revision_date_iso = gmdate("Y-m-d", $revision_data);
         //Информация о последнем изменении в паспорте
         if ($revision_object_resource->getBundle() == 'resource' && $revision_object_resource->field_provenance->value()) {
           $revision_provenence = $revision_object_resource->field_provenance->value();
@@ -438,8 +438,8 @@ function _passport_structured_description($nid) {
         }
         //если это первая версия набора, то записываем значения из полей паспорта
         if ($first_revision->vid == $revision->vid) {
-          $revision_date = date("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
-          $revision_date_iso = date("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
+          $revision_date = gmdate("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
+          $revision_date_iso = gmdate("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
           $revision_provenence = t('Date of first publication');
         }
 
