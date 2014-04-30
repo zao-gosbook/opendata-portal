@@ -17,6 +17,7 @@ class ODDetectEncodingMimeProcessorFactory {
    * @return bool|ODDetectEncodingMimeProcessorInterface
    */
   public static function getProcessor($mime) {
+    $processor = FALSE;
     if (static::inc($mime)) {
       $parts = static::mimeParse($mime);
 
@@ -27,7 +28,7 @@ class ODDetectEncodingMimeProcessorFactory {
 
       $processor = FALSE;
       foreach ($class_paths as $_class_path) {
-        if ($processor = static::instanceRouter($mime, $_class_path)) {
+        if ($processor = static::instanceRouter($_class_path, $mime)) {
           break;
         }
       }
@@ -37,7 +38,7 @@ class ODDetectEncodingMimeProcessorFactory {
   }
 
   protected static function instanceRouter($classpath, $mime = NULL) {
-    if (!isset(static::$cached['classes'][$classpath]) && (static::$cached['classes'][$classpath] = FALSE) && ($mime === NULL || (static::inc($mime) && class_exists($classpath)))) {
+    if (!isset(static::$cached['classes'][$classpath]) && (static::$cached['classes'][$classpath] = FALSE) === FALSE && ($mime === NULL || static::inc($mime)) && class_exists($classpath)) {
       static::$cached['classes'][$classpath] = new $classpath();
     }
 
@@ -60,28 +61,32 @@ class ODDetectEncodingMimeProcessorFactory {
    * @return ODDetectEncodingMimeProcessorInterface
    */
   public static function getProcessorDefault() {
-    return static::instanceRouter(NULL, static::$default_processor_class);
+    return static::instanceRouter(static::$default_processor_class);
   }
 
   public static function inc($mime) {
     $parts = static::mimeParse($mime);
     $env = static::env();
+    $status = FALSE; // The reality is always bad :-(
 
-    $filepath = NULL;
-    // Default handler for group type e.g. Text,Application, Image and etc
-    if ($parts[1] === NULL) {
-      $path = "classes/{$parts[0]}Default.inc";
-      $filepath = "{$env}/{$path}";
-    }
-    else {
-      // Search for a definite processor
+    $filepaths = array();
+
+    // Search for a definite processor first
+    if ($parts[1] !== NULL) {
       $path = "classes/{$parts[0]}/{$parts[1]}.inc";
-      $filepath = "{$env}/{$path}";
+      $filepaths[] = "{$env}/{$path}";
     }
 
-    // Try to load require file
-    if ($status = file_exists($filepath)) {
-      require_once $filepath;
+    // Default handler for group type e.g. Text,Application, Image and etc
+    $path = "classes/{$parts[0]}Default.inc";
+    $filepaths[] = "{$env}/{$path}";
+
+    foreach ($filepaths as $filepath) {
+      // Try to load require file
+      if ($status = file_exists($filepath)) {
+        require_once $filepath;
+        break;
+      }
     }
 
     return $status;
