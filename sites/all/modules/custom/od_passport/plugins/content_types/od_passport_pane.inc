@@ -430,8 +430,10 @@ function _passport_structured_description($nid) {
         $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
         $revision_object_resource = $revision_object->field_resources->get(0); // Получаем ресурс из паспорта.
         $revision_data = $revision_object->field_dataset_latest_update->value() ? $revision_object->field_dataset_latest_update->value() : $revision->timestamp;
+        $revision_structure_data =  $revision_object->field_structure_latest_update->value() ? $revision_object->field_structure_latest_update->value() : $revision->timestamp;
         $revision_date = gmdate("Ymd\THi", $revision_data);
         $revision_date_iso = gmdate("Y-m-d", $revision_data);
+        $revision_structure_date = gmdate("Ymd\THi", $revision_structure_data);
         //Информация о последнем изменении в паспорте
         if ($revision_object_resource->getBundle() == 'resource' && $revision_object_resource->field_provenance->value()) {
           $revision_provenence = $revision_object_resource->field_provenance->value();
@@ -441,14 +443,15 @@ function _passport_structured_description($nid) {
         //если это первая версия набора, то записываем значения из полей паспорта
         if ($first_revision->vid == $revision->vid) {
           //берем дату из поля field_dataset_latest_update вместо поля field_date_first_time_publ, так как оно более актуально для rdf разметки.
-          $revision_date = gmdate("Ymd\THi", $node_wrapper->field_dataset_latest_update->value());
-          $revision_date_iso = date("Y-m-d", $node_wrapper->field_dataset_latest_update->value());
+          $revision_date = gmdate("Ymd\THi", $revision_object->field_dataset_latest_update->value());
+          $revision_date_iso = date("Y-m-d", $revision_object->field_dataset_latest_update->value());
           $revision_provenence = t('Date of first publication');
         }
 
         $url_datasets_revisions[$key]['date'] = $revision_date;
         $url_datasets_revisions[$key]['date_iso'] = $revision_date_iso;
         $url_datasets_revisions[$key]['field_content_last_change'] = $revision_provenence;
+        $url_datasets_revisions[$key]['date_structure'] = $revision_structure_date;
 
 
         //ссылки на файлы наборов
@@ -482,11 +485,12 @@ function _passport_markup_structured_description($dataset_data) {
   foreach ($dataset_data as $rev_id => $rev_value) {
     $date = $rev_value['date'];
     $date_iso = $rev_value['date_iso'];
+    $date_structure = $rev_value['date_structure'];
     $uri = t('No info');
     if (isset($rev_value['uri'])) $uri = $rev_value['uri'];
     $provenance = $rev_value['field_content_last_change'];
     $structure = $rev_value['structure'];
-    $structure_url = $structure ? "<div rel='dc:conformsTo' resource='#structure-$date'></div>" : '';
+    $structure_url = $structure ? "<div rel='dc:conformsTo' resource='#structure-$date_structure'></div>" : '';
     //Структура наборов
     $divs_versions[$rev_id] = array('div' => array(
       '#type' => 'markup',
@@ -502,9 +506,9 @@ function _passport_markup_structured_description($dataset_data) {
     );
     //Структура файлов структуры 
     if ($structure) {
-      $divs_structures[$rev_id] = array('div' => array(
+      $divs_structures[$date_structure] = array('div' => array(
       '#type' => 'markup',
-      '#markup' => "<div typeof='foaf:Document' about='#structure-$date'>
+      '#markup' => "<div typeof='foaf:Document' about='#structure-$date_structure'>
                       <div property='dc:source' content='$structure'></div>
                       <div property='dc:created' content='$date_iso'></div>
                    </div>",
