@@ -838,6 +838,8 @@ function od_dataset_entity_load_unsafe($entities, $type) {
             if ($wrapper->field_resources->raw()) {
               $newdata = array();
               $to_set_or_not_to_set = FALSE;
+              $revs = node_revision_list($entity);
+              $rev = reset($revs);
               foreach ($wrapper->field_resources as $iw) {
                 if (($item = $iw->raw()) && (!is_array($item) || !isset($item['vid']))) {
                   $vid = db_query('
@@ -866,6 +868,14 @@ function od_dataset_entity_load_unsafe($entities, $type) {
 
                   unset($rw);
                   $rw = null;
+                }
+                elseif ($rev->vid == $entity->vid && ($latest_resource = node_load($item['id'])) && $item['vid'] != $latest_resource->vid) {
+                  $newdata[] = array('id' => $item['id'], 'vid' => $latest_resource->vid);
+                  $to_set_or_not_to_set = TRUE;
+
+                  $rw = od_dataset_get_wrapper($latest_resource);
+                  $rw->field_dataset_ref->set(array('id' => $entity->nid, 'vid' => $entity->vid));
+                  od_dataset_save_important_fields($rw, NULL, array('field_dataset_ref' => TRUE));
                 }
                 else {
                   $newdata[] = $item;
