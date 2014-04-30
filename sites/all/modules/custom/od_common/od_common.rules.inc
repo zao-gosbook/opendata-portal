@@ -321,7 +321,9 @@ function od_common_rules_actions_od_common_file_get_extension_term($file, $vocab
   try {
     if ($ext = pathinfo($file->filename, PATHINFO_EXTENSION)) {
       od_common_module('core');
-      $term = od_common_file_get_extension_term($ext, $vocabulary);
+      if ($term = od_common_file_get_extension_term($ext, $vocabulary)) {
+        $term = entity_load_single('taxonomy_term', $term->tid);
+      }
     }
   }
   catch (Exception $e) {
@@ -329,7 +331,7 @@ function od_common_rules_actions_od_common_file_get_extension_term($file, $vocab
     $term = NULL;
   }
 
-  return array('extension_term' => $term ? entity_load_single('taxonomy_term', $term->tid) : $term);
+  return array('extension_term' => $term);
 }
 
 /**
