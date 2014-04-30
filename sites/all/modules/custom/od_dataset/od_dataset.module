@@ -856,6 +856,7 @@ function od_dataset_entity_load_unsafe($entities, $type) {
                     ':tsend' => $entity->changed,
                   ))->fetchField();
 
+                  $vid = $vid ? $vid : $iw->vid->value();
                   $newdata[] = array('id' => $item, 'vid' => $vid);
                   $to_set_or_not_to_set = TRUE;
 
