@@ -95,12 +95,13 @@ function od_dataset_get_revision_id_by_alias($alias, $type = '%') {
     SELECT
       revision_id
     FROM
-      {{$table}}
+      {{$table}} f
+    INNER JOIN {node_revision} nr ON nr.vid=f.revision_id
     WHERE (
-      {$column_info['value']}{$operator}:field_value
+      f.{$column_info['value']}{$operator}:field_value
     )
     ORDER BY
-      revision_id DESC
+      f.revision_id DESC
     LIMIT 1
     ";
 
@@ -485,18 +486,9 @@ function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
   $links = FALSE;
   if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
     $alias = drupal_get_path_alias("node/{$wrapper->nid->value()}");
-    $stamp_data = gmdate('Ymd\THi', od_dataset_last_update_time($node_or_nid, $revision_id, 'data'));
-    $stamp_structure = gmdate('Ymd\THi', od_dataset_last_update_time($node_or_nid, $revision_id, 'structure'));
     //$format = $wrapper->field_resources->get(0)->field_format->name->value();
     $format = od_dataset_get_format($node_or_nid, $revision_id);
     $suffix = $format ? '.' . $format : '';
-    $links = array();
-    //@todo: Control data availability somewhere else not here
-    //if ($wrapper->field_resources->count() > 0 && $wrapper->field_resources->get(0)->getBundle() == 'resource') {
-      // Build data link
-      //if ($wrapper->field_resources->get(0)->field_upload->value()) {
-        $links['data'] = od_dataset_alias_build('data', "{$alias}/data-{$stamp_data}-structure-{$stamp_structure}{$suffix}");
-      //}
 
     $structure_format = 'csv';
     if ($wrapper->field_resources->count() > 0 && $wrapper->field_resources->get(0)->getBundle() == 'resource') {
@@ -504,10 +496,30 @@ function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
         $structure_format = $ext;
       }
     }
-      //if ($wrapper->field_resources->get(0)->field_upload_structure->value()) {//@fixme: Correct structure format
-        $links['structure'] = od_dataset_alias_build('structure', "{$alias}/structure-{$stamp_structure}.{$structure_format}");
-      //}
-    //}
+
+    $links = array();
+    $offset = 0;
+    do {
+      $ts_data = od_dataset_last_update_time($node_or_nid, $revision_id, 'data') + $offset;
+      $ts_structure = od_dataset_last_update_time($node_or_nid, $revision_id, 'structure') + $offset;
+      $stamp_data = gmdate('Ymd\THi', $ts_data);
+      $stamp_structure = gmdate('Ymd\THi', $ts_structure);
+
+      $data_alias = "{$alias}/data-{$stamp_data}-structure-{$stamp_structure}{$suffix}";
+      $structure_alias = "{$alias}/structure-{$stamp_structure}.{$structure_format}";
+
+      $paths_exist = path_load(array('alias' => $data_alias)) | path_load(array('alias' => $structure_alias));
+      if ($offset > 0) {
+        $a = 1;
+      }
+    }
+    while ($paths_exist !== 0 && $offset+=60);
+    //@todo: Control data availability somewhere else not here
+
+    od_dataset_last_update_time($node_or_nid, $revision_id, 'data', $ts_data);
+    od_dataset_last_update_time($node_or_nid, $revision_id, 'structure', $ts_structure);
+    $links['data'] = od_dataset_alias_build('data', $data_alias);
+    $links['structure'] = od_dataset_alias_build('structure', $structure_alias);
   }
 
   return $links;
@@ -755,7 +767,8 @@ function _od_dataset_update_batch_process($options, &$context) {
     $context['sandbox']['current'] += $batch_count;
     foreach (($rows = $query->execute()) as $row) {
       if ($wrapper = od_dataset_get_wrapper($row->nid)) {
-        foreach (node_revision_list($wrapper->value()) as $rev) {
+        $revs = node_revision_list($wrapper->value());
+        foreach (array_reverse($revs) as $rev) {
           $twrp = od_dataset_get_wrapper($wrapper, $rev->vid);
           $fields_to_update = array(
             OD_DATASET_DOWNLOAD_FIELD => array(),
