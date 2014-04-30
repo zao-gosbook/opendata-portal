@@ -816,3 +816,72 @@ class ODDatasetDownloadUriObject extends stdClass {
     return (string) $this->internal_uri;
   }
 }
+
+function od_dataset_entity_load($entities, $type) {
+  try {
+    od_dataset_entity_load_unsafe($entities, $type);
+  }
+  catch (Exception $e) {
+    watchdog_exception('od_dataset_smartagent', $e);
+  }
+}
+
+function od_dataset_entity_load_unsafe($entities, $type) {
+  static $processed = array();
+  if ($type == 'node') {
+    foreach ($entities as $entity) {
+      if (!isset($processed[$entity->nid])) {
+        $processed[$entity->nid] = TRUE;
+        $wrapper = od_dataset_get_wrapper($entity);
+        switch ($wrapper->getBundle()) {
+          case 'dataset':
+            if ($wrapper->field_resources->raw()) {
+              $newdata = array();
+              $to_set_or_not_to_set = FALSE;
+              foreach ($wrapper->field_resources as $iw) {
+                if (($item = $iw->raw()) && (!is_array($item) || !isset($item['vid']))) {
+                  $vid = db_query('
+                  SELECT
+                    vid
+                  FROM
+                    {node_revision} n
+                  WHERE
+                    n.nid=:nid
+                    AND n.timestamp<=:tsend
+                   ORDER BY
+                    n.timestamp DESC
+                   LIMIT 1
+                  ', array(
+                    ':nid' => $item,
+                    ':tsend' => $entity->changed,
+                  ))->fetchField();
+
+                  $newdata[] = array('id' => $item, 'vid' => $vid);
+                  $to_set_or_not_to_set = TRUE;
+
+                  $rw = od_dataset_get_wrapper($item, $vid);
+                  $rw->field_dataset_ref->set(array('id' => $entity->nid, 'vid' => $entity->vid));
+                  od_dataset_save_important_fields($rw, NULL, array('field_dataset_ref' => TRUE));
+
+                  unset($rw);
+                  $rw = null;
+                }
+                else {
+                  $newdata[] = $item;
+                }
+              }
+
+              if ($to_set_or_not_to_set) {
+                $wrapper->field_resources->set($newdata);
+                od_dataset_save_important_fields($wrapper, NULL, array('field_resources' => TRUE));
+                watchdog('od_dataset_smartagent', 'Updated resource revisions for :nid', array(':nid' => $entity->nid));
+              }
+            }
+        }
+
+        unset($wrapper);
+        $wrapper = null;
+      }
+    }
+  }
+}
