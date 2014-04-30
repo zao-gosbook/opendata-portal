@@ -111,7 +111,7 @@ class ODDetectEncoding {
     return $processor->convertFile($input_file, $output_file, $out_charset, $in_charset);
   }
 
-  function convertFileAdvanced($input_file, $output_file,$out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
+  function convertFileAdvanced($input_file, $output_file, $out_charset, $in_charset = ODDetectEncoding::ENC_AUTO) {
     $processor = ODDetectEncodingMimeProcessorFactory::getProcessorFile($input_file);
     if (!$processor) {
       return FALSE;
