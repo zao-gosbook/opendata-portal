@@ -290,6 +290,8 @@ function _passport_table_rows($nid, $options = array()) {
   $value = $node_wrapper->field_date_dataset_actual->value();
   $data = array(
     'data' => isset($value) ? date("d.m.Y", $node_wrapper->field_date_dataset_actual->value()) : t('No info'),
+    'property' => 'dc:valid',
+    'content' => isset($value) ? date("d-m-Y", $node_wrapper->field_date_dataset_actual->value()) : t('No info'),
   );
 
   $label = '<span class="label">' . t('Date relevance dataset') . '</span>';
@@ -303,7 +305,7 @@ function _passport_table_rows($nid, $options = array()) {
   $rows['field_date_dataset_actual'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Периодичность актуализации набора данных
-  $value = $node_wrapper->field_frequency->value();
+  /*$value = $node_wrapper->field_frequency->value();
   $data = array(
     'data' => isset($value) ? $value : t('No info'),
     'property' => 'dc:valid',
@@ -318,7 +320,7 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['field_frequency'] = array('<div class="label">' . $label  . '</div>', $data);
+  $rows['field_frequency'] = array('<div class="label">' . $label  . '</div>', $data);*/
   
   //Содержание последнего изменения
   if ($resource->value() && $resource->getBundle() == 'resource') {
@@ -438,8 +440,9 @@ function _passport_structured_description($nid) {
         }
         //если это первая версия набора, то записываем значения из полей паспорта
         if ($first_revision->vid == $revision->vid) {
-          $revision_date = gmdate("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
-          $revision_date_iso = gmdate("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
+          //берем дату из поля field_dataset_latest_update вместо поля field_date_first_time_publ, так как оно более актуально для rdf разметки.
+          $revision_date = gmdate("Ymd\THi", $node_wrapper->field_dataset_latest_update->value());
+          $revision_date_iso = date("Y-m-d", $node_wrapper->field_dataset_latest_update->value());
           $revision_provenence = t('Date of first publication');
         }
 
