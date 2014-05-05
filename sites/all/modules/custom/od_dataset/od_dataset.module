@@ -394,9 +394,9 @@ function od_dataset_views_api() {
 function od_dataset_save_aliases($node_or_nid, $revision_id = NULL) {
   if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
     foreach ($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
-      list($type, $alias) = od_dataset_alias_parse($_val_wr->value());
+      list($type, $alias, $vid) = od_dataset_alias_parse($_val_wr->value());
       $path = array(
-        'source' => OD_DATASET_DOWNLOAD_ROUTER_PATH. "/{$type}/{$wrapper->nid->value()}",
+        'source' => OD_DATASET_DOWNLOAD_ROUTER_PATH. "/{$type}/{$wrapper->nid->value()}/{$vid}",
         'alias' => $alias,
       );
 
@@ -434,7 +434,7 @@ function od_dataset_save_important_fields($node_or_nid, $revision_id = NULL, $fi
   if (empty($fields)) {
     return FALSE;
   }
-
+//data:7710349494-mfclist/data-20140326T1245-structure-20140326T1245.csv 5126
   $entity = $wrapper->value();
   $entity_type = $wrapper->type();
   // Collect the storage backends used by the remaining fields in the entities.
@@ -518,8 +518,8 @@ function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
 
     od_dataset_last_update_time($node_or_nid, $revision_id, 'data', $ts_data);
     od_dataset_last_update_time($node_or_nid, $revision_id, 'structure', $ts_structure);
-    $links['data'] = od_dataset_alias_build('data', $data_alias);
-    $links['structure'] = od_dataset_alias_build('structure', $structure_alias);
+    $links['data'] = od_dataset_alias_build('data', $data_alias, $wrapper->vid->value());
+    $links['structure'] = od_dataset_alias_build('structure', $structure_alias, $wrapper->vid->value());
   }
 
   return $links;
@@ -636,7 +636,7 @@ function od_dataset_entity_delete($entity, $type) {
 function od_dataset_delete_aliases($node_or_nid, $revision_id = NULL) {
   if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
     foreach ($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
-      list(, $alias) = od_dataset_alias_parse($_val_wr->value());
+      list(, $alias, ) = od_dataset_alias_parse($_val_wr->value());
       path_delete(array('alias' => $alias));
     }
   }
@@ -646,8 +646,8 @@ function od_dataset_alias_parse($alias) {
   return explode(OD_DATASET_ALIAS_DELIMITER, $alias);
 }
 
-function od_dataset_alias_build($type, $alias) {
-  return ($type . OD_DATASET_ALIAS_DELIMITER . $alias);
+function od_dataset_alias_build($type, $alias, $vid) {
+  return ($type . OD_DATASET_ALIAS_DELIMITER . $alias . OD_DATASET_ALIAS_DELIMITER . $vid);
 }
 
 function od_dataset_last_update_time($node_or_nid, $revision_id = NULL, $type = 'data', $newtime = NULL) {
@@ -750,7 +750,8 @@ function _od_dataset_update_batch_process($options, &$context) {
     $query = db_select('node', 'n');
     $query
       ->fields('n', array('nid'))
-      ->condition('n.type', 'dataset');
+      ->condition('n.type', 'dataset')
+      ->condition('n.nid', 185);
 
     // Get the total amount of items to process.
     if (!isset($context['sandbox']['total'])) {
@@ -791,9 +792,10 @@ function _od_dataset_update_batch_process($options, &$context) {
 
           // Handle real field values
           if (!empty($fields_to_update)) {
-            $twrp->value()->revision = 0;
+            $twrp->value()->revision = 1;
             try {
               od_dataset_save_important_fields($twrp, NULL, $fields_to_update);
+              unset($transaction);
             }
             catch (Exception $e) {
               watchdog_exception('od_dataset', $e);
@@ -819,7 +821,10 @@ function _od_dataset_update_batch_process($options, &$context) {
     unset($transaction);
   }
   catch (Exception $e) {
-    $transaction->rollback();
+    if (isset($transaction)) {
+      $transaction->rollback();
+    }
+
     throw $e;
   }
 }
