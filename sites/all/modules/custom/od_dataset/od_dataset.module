@@ -750,8 +750,8 @@ function _od_dataset_update_batch_process($options, &$context) {
     $query = db_select('node', 'n');
     $query
       ->fields('n', array('nid'))
-      ->condition('n.type', 'dataset')
-      ->condition('n.nid', 185);
+      ->condition('n.type', 'dataset');
+      //->condition('n.nid', 185);
 
     // Get the total amount of items to process.
     if (!isset($context['sandbox']['total'])) {
