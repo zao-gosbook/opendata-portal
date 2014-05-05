@@ -83,6 +83,18 @@ function od_common_library() {
     ),
   );
 
+  $libraries['jquery.fastLiveFilter'] = array(
+    'title' => 'jQuery fastLiveFilter',
+    'website' => 'https://github.com/awbush/jquery-fastLiveFilter',
+    'version' => '1.0.3',
+    'js' => array(
+      "{$path}/libraries/jquery/jquery-fastLiveFilter/jquery.fastLiveFilter.js"  => array(),
+    ),
+//    'css' => array(
+//      "{$path}/libraries/jquery/jquery-fastLiveFilter/jquery.tooltip.css"  => array(),
+//    ),
+  );
+
   return $libraries;
 }
 
