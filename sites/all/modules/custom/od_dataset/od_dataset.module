@@ -945,3 +945,43 @@ function od_dataset_revision($node_or_nid, $revision_id = NULL) {
     return $wrapper->value();
   }
 }
+
+/**
+ * Clones entityform_types with their field.
+ * @param $source_machine_name
+ * @param $new_machine_name
+ * @param $overwrite_fields
+ * @return bool
+ */
+function od_dataset_clone_ef_type($source_machine_name, $new_machine_name, $overwrite_fields = FALSE) {
+  $source = entityform_type_load($source_machine_name);
+  if (!$source) {
+    return FALSE;
+  }
+
+  $ids = entity_extract_ids('entityform_type', $source);
+  $entityform = entityform_type_load($new_machine_name);
+  if (!$entityform) {
+    $entityform = clone $source;
+    $entityform->type = $new_machine_name;
+    unset($entityform->id);
+    $entityform->is_new = TRUE;
+    $entityform->label .= '(cloned djedaically)';
+    entity_save('entityform_type', $entityform);
+  }
+
+  $instances = field_info_instances('entityform', $source->type);
+  foreach ($instances as $field_name => $instance) {
+    $existing = field_info_instance('entityform', $field_name, $entityform->type);
+    if ($overwrite_fields && $existing) {
+      field_delete_instance($existing, FALSE);
+    }
+
+    if ($overwrite_fields || !$existing) {
+      $instance['bundle'] = $entityform->type;
+      unset($instance['id']);
+      field_create_instance($instance);
+    }
+  }
+
+}
