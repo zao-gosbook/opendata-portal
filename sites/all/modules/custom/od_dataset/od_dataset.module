@@ -125,18 +125,24 @@ function od_dataset_do_download($node_or_nid, $revision_id = NULL, $type = 'data
       return FALSE; // just exit from function and let parent function to end up with drupal_not_found();
     }
 
+    $download_links = array();
+    foreach ($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $vw) {
+      list ($_type, $alias, ) = od_dataset_alias_parse($vw->value());
+      $download_links[$_type] = pathinfo($alias, PATHINFO_BASENAME);
+    }
+
     switch ($type) {
       case 'data':
         if ((boolean) $wrapper->field_multivolume->value() === TRUE) {
-          return od_dataset_download_package_page_callback($wrapper);
+          return od_dataset_download_package_page_callback($wrapper, $download_links[$type]);
         }
         elseif ($file = $wrapper->field_resources->get(0)->field_upload->value()) {
-          return od_dataset_download_file_page_callback($file);
+          return od_dataset_download_file_page_callback($file, $download_links[$type]);
         }
         break;
       case 'structure':
         if ($file = $wrapper->field_resources->get(0)->field_upload_structure->value()) {
-          return od_dataset_download_file_page_callback($file);
+          return od_dataset_download_file_page_callback($file, $download_links[$type]);
         }
         break;
     }
@@ -289,7 +295,7 @@ function od_dataset_get_wrapper_by_resource($node_or_nid, $revision_id = NULL) {
 /**
  * Page callback for downloading zip file.
  */
-function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
+function od_dataset_download_package_page_callback($node, $revision_id = NULL, $filename = NULL) {
   od_common_module('core');
   $target_encoding = isset($_GET['encoding']) ? $_GET['encoding'] : NULL;
   $wrapper = od_dataset_get_wrapper($node, $revision_id);
@@ -346,7 +352,8 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL) {
     return FALSE;
   }
 
-  return od_dataset_download_file_page_callback($drupal_file, drupal_substr($wrapper->title->value(), 0, 200). '.zip', TRUE);
+  $filename = $filename === NULL ? drupal_substr($wrapper->title->value(), 0, 200). '.zip' : $filename;
+  return od_dataset_download_file_page_callback($drupal_file, $filename, TRUE);
 }
 
 function od_dataset_download_file_page_callback($file, $filename = NULL, $skip_converting = FALSE) {
@@ -912,5 +919,29 @@ function od_dataset_entity_load_unsafe($entities, $type) {
         $wrapper = null;
       }
     }
+  }
+}
+
+function od_dataset_revision($node_or_nid, $revision_id = NULL) {
+  if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
+    $wrapper->value()->revision = 1;
+    // Say that it is a clean revision, permitted to show on passport page
+    $wrapper->field_revision_dirty->set(FALSE);
+    $wrapper->save();
+    //$wrapper = od_dataset_get_wrapper($wrapper->nid->value());
+    $new_resources = array();
+    foreach ($wrapper->field_resources as $rw) {
+      $rw->value()->revision = 1;
+      $rw->field_dataset_ref->set($wrapper->value()); // Now points to new dataset revision
+      $rw->save();
+
+      $new_resources[] = $rw->value();
+    }
+
+    $wrapper->field_resources->set($new_resources);
+    $wrapper->value()->revision = 0;
+    $wrapper->save();
+
+    return $wrapper->value();
   }
 }
