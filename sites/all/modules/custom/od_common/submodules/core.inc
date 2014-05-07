@@ -230,11 +230,16 @@ function od_common_list_dir($directory, &$raw = NULL) {
   return (object) $list;
 }
 
-function od_common_tmpfilename($directory, $seed = '') {
+function od_common_tmpfilename($directory, $seed = '', $create_file = FALSE) {
   $temp_dir = $tmp = $directory . '/' . substr(md5($seed . microtime(TRUE). time() . srand(time())), 0, 8);
   $i = 0;
   while (file_exists($tmp) && $i <= 50) {
     $tmp = $temp_dir. $i++;
+  }
+
+  if ($create_file) {
+    $fp = fopen($tmp, 'w');
+    fclose($fp);
   }
 
   return $tmp;

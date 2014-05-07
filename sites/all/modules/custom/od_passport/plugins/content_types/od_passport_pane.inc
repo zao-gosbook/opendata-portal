@@ -290,6 +290,8 @@ function _passport_table_rows($nid, $options = array()) {
   $value = $node_wrapper->field_date_dataset_actual->value();
   $data = array(
     'data' => isset($value) ? date("d.m.Y", $node_wrapper->field_date_dataset_actual->value()) : t('No info'),
+    'property' => 'dc:valid',
+    'content' => isset($value) ? date("d-m-Y", $node_wrapper->field_date_dataset_actual->value()) : t('No info'),
   );
 
   $label = '<span class="label">' . t('Date relevance dataset') . '</span>';
@@ -303,7 +305,7 @@ function _passport_table_rows($nid, $options = array()) {
   $rows['field_date_dataset_actual'] = array('<div class="label">' . $label  . '</div>', $data);
   
   //Периодичность актуализации набора данных
-  $value = $node_wrapper->field_frequency->value();
+  /*$value = $node_wrapper->field_frequency->value();
   $data = array(
     'data' => isset($value) ? $value : t('No info'),
     'property' => 'dc:valid',
@@ -318,7 +320,7 @@ function _passport_table_rows($nid, $options = array()) {
     $label .= $label_tip;
   }
 
-  $rows['field_frequency'] = array('<div class="label">' . $label  . '</div>', $data);
+  $rows['field_frequency'] = array('<div class="label">' . $label  . '</div>', $data);*/
   
   //Содержание последнего изменения
   if ($resource->value() && $resource->getBundle() == 'resource') {
@@ -417,22 +419,21 @@ function _passport_table_rows($nid, $options = array()) {
 function _passport_structured_description($nid) {
   $node = node_load($nid);
   $node_wrapper = entity_metadata_wrapper('node', $node);
-  $resource = $node_wrapper->field_resources; // Получаем ресурс из паспорта.
-  $resource = $resource->get(0);
-
+  $resource = $node_wrapper->field_resources->get(0); // Получаем ресурс из паспорта.
   $dataset_revisions = node_revision_list($node);
-
 
   $first_revision = end($dataset_revisions); //Самая первая версия набора
   $url_datasets_revisions = array();
+  $output = NULL;
   if ($resource->value() && $resource->getBundle() == 'resource') {
       foreach ($dataset_revisions as $key => $revision) {
         $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
-        $revision_object_resource = $revision_object->field_resources; // Получаем ресурс из паспорта.
-        $revision_object_resource = $revision_object_resource->get(0);
-
-        $revision_date = date("Ymd\THi", $revision->timestamp);
-        $revision_date_iso = date("Y-m-d", $revision->timestamp);
+        $revision_object_resource = $revision_object->field_resources->get(0); // Получаем ресурс из паспорта.
+        $revision_data = $revision_object->field_dataset_latest_update->value() ? $revision_object->field_dataset_latest_update->value() : $revision->timestamp;
+        $revision_structure_data =  $revision_object->field_structure_latest_update->value() ? $revision_object->field_structure_latest_update->value() : $revision->timestamp;
+        $revision_date = gmdate("Ymd\THi", $revision_data);
+        $revision_date_iso = gmdate("Y-m-d", $revision_data);
+        $revision_structure_date = gmdate("Ymd\THi", $revision_structure_data);
         //Информация о последнем изменении в паспорте
         if ($revision_object_resource->getBundle() == 'resource' && $revision_object_resource->field_provenance->value()) {
           $revision_provenence = $revision_object_resource->field_provenance->value();
@@ -441,14 +442,16 @@ function _passport_structured_description($nid) {
         }
         //если это первая версия набора, то записываем значения из полей паспорта
         if ($first_revision->vid == $revision->vid) {
-          $revision_date = date("Ymd\THi", $node_wrapper->field_date_first_time_publ->value());
-          $revision_date_iso = date("Y-m-d", $node_wrapper->field_date_first_time_publ->value());
+          //берем дату из поля field_dataset_latest_update вместо поля field_date_first_time_publ, так как оно более актуально для rdf разметки.
+          $revision_date = gmdate("Ymd\THi", $revision_object->field_dataset_latest_update->value());
+          $revision_date_iso = date("Y-m-d", $revision_object->field_dataset_latest_update->value());
           $revision_provenence = t('Date of first publication');
         }
 
         $url_datasets_revisions[$key]['date'] = $revision_date;
         $url_datasets_revisions[$key]['date_iso'] = $revision_date_iso;
         $url_datasets_revisions[$key]['field_content_last_change'] = $revision_provenence;
+        $url_datasets_revisions[$key]['date_structure'] = $revision_structure_date;
 
 
         //ссылки на файлы наборов
@@ -456,10 +459,24 @@ function _passport_structured_description($nid) {
         $url_datasets_revisions[$key]['structure'] = url(od_dataset_download_path($node, $revision->vid,'structure')->__toString(),array('absolute' => true));;
 
         isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = NULL;
+
+
+        unset($revision_object);
+        unset($revision_object_resource);
+
+        // Force gc collect to clear this
+        $revision_object = $revision_object_resource = NULL;
     }
-    return _passport_markup_structured_description($url_datasets_revisions);
+    $output = _passport_markup_structured_description($url_datasets_revisions);
   }
-  return NULL;
+
+  unset($node_wrapper);
+  unset($url_datasets_revisions);
+  unset($resource);
+
+  $node_wrapper = $url_datasets_revisions = $resource = NULL;
+
+  return $output;
 }
 
 function _passport_markup_structured_description($dataset_data) {
@@ -468,11 +485,12 @@ function _passport_markup_structured_description($dataset_data) {
   foreach ($dataset_data as $rev_id => $rev_value) {
     $date = $rev_value['date'];
     $date_iso = $rev_value['date_iso'];
+    $date_structure = $rev_value['date_structure'];
     $uri = t('No info');
     if (isset($rev_value['uri'])) $uri = $rev_value['uri'];
     $provenance = $rev_value['field_content_last_change'];
     $structure = $rev_value['structure'];
-    $structure_url = $structure ? "<div rel='dc:conformsTo' resource='#structure-$date'></div>" : '';
+    $structure_url = $structure ? "<div rel='dc:conformsTo' resource='#structure-$date_structure'></div>" : '';
     //Структура наборов
     $divs_versions[$rev_id] = array('div' => array(
       '#type' => 'markup',
@@ -488,9 +506,9 @@ function _passport_markup_structured_description($dataset_data) {
     );
     //Структура файлов структуры 
     if ($structure) {
-      $divs_structures[$rev_id] = array('div' => array(
+      $divs_structures[$date_structure] = array('div' => array(
       '#type' => 'markup',
-      '#markup' => "<div typeof='foaf:Document' about='#structure-$date'>
+      '#markup' => "<div typeof='foaf:Document' about='#structure-$date_structure'>
                       <div property='dc:source' content='$structure'></div>
                       <div property='dc:created' content='$date_iso'></div>
                    </div>",

@@ -68,18 +68,6 @@ class EntityReference_SelectionHandler_Views implements EntityReference_Selectio
         )) . '</p>',
       );
     }
-
-    // Provide an option to lock the entity reference to the latest revision
-    // if the entity supports it.
-    if (!empty($entity_info['revision table'])) {
-      $form['lock_revision'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Lock the field to the revision of the entity at the time it was referenced.'),
-        '#default_value' => !empty($field['settings']['handler_settings']['lock_revision']) ? TRUE : FALSE,
-        '#description' => t('When this is enabled, the reference will track the latest revision to that entity when this field is saved. This, combined with e.g. the <a href="!url">Workbench Moderation module</a>, can be used to provide limited workflow functionality around the referenced content.', array('!url' => 'http://drupal.org/project/workbench_moderation'))
-      );
-    }
-
     return $form;
   }
 

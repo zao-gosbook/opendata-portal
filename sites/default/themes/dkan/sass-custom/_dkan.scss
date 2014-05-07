@@ -489,6 +489,8 @@ div.horizontal-tabs .form-text {
                 &.nolink {
                   display: none;
                 }
+                /*
+                 Пожалуйста, не надо этот кусок больше вставлять! он неправильный)
                 &[href$=bezopasnost]{
                   background-image: url("../images/ico-taxonomy-security.png");
                 }
@@ -523,6 +525,42 @@ div.horizontal-tabs .form-text {
                   background-image: url("../images/ico-taxonomy-ecology.png");
                 }
                 &[href$=ekonomika]{
+                  background-image: url("../images/ico-taxonomy-economy.png");
+                }*/
+                &.ico-taxonomy-security {
+                  background-image: url("../images/ico-taxonomy-security.png");
+                }
+                &.ico-taxonomy-geography {
+                  background-image: url("../images/ico-taxonomy-geography.png");
+                }
+                &.ico-taxonomy-gov {
+                  background-image: url("../images/ico-taxonomy-gov.png");
+                }
+                &.ico-taxonomy-health {
+                  background-image: url("../images/ico-taxonomy-health.png");
+                }
+                &.ico-taxonomy-housing {
+                  background-image: url("../images/ico-taxonomy-housing.png");
+                }
+                &.ico-taxonomy-culture {
+                  background-image: url("../images/ico-taxonomy-culture.png");
+                }
+                &.ico-taxonomy-sport {
+                  background-image: url("../images/ico-taxonomy-sport.png");
+                }
+                &.ico-taxonomy-building {
+                  background-image: url("../images/ico-taxonomy-building.png");
+                }
+                &.ico-taxonomy-trade {
+                  background-image: url("../images/ico-taxonomy-trade.png");
+                }
+                &.ico-taxonomy-transport {
+                  background-image: url("../images/ico-taxonomy-transport.png");
+                }
+                &.ico-taxonomy-ecology {
+                  background-image: url("../images/ico-taxonomy-ecology.png");
+                }
+                &.ico-taxonomy-economy {
                   background-image: url("../images/ico-taxonomy-economy.png");
                 }
               }
