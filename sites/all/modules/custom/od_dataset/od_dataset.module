@@ -357,6 +357,7 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL, $
 }
 
 function od_dataset_download_file_page_callback($file, $filename = NULL, $skip_converting = FALSE) {
+  $file = (object) $file;
   $filename = $filename !== NULL ? $filename : $file->filename;
   $target_encoding = isset($_GET['encoding']) ? $_GET['encoding'] : NULL;
   if (!$skip_converting && $target_encoding) {
@@ -843,12 +844,12 @@ class ODDatasetDownloadUriObject extends stdClass {
 }
 
 function od_dataset_entity_load($entities, $type) {
-  try {
-    od_dataset_entity_load_unsafe($entities, $type);
-  }
-  catch (Exception $e) {
-    watchdog_exception('od_dataset_smartagent', $e);
-  }
+//  try {
+//    od_dataset_entity_load_unsafe($entities, $type);
+//  }
+//  catch (Exception $e) {
+//    watchdog_exception('od_dataset_smartagent', $e);
+//  }
 }
 
 function od_dataset_entity_load_unsafe($entities, $type) {
@@ -984,4 +985,5 @@ function od_dataset_clone_ef_type($source_machine_name, $new_machine_name, $over
     }
   }
 
+  return TRUE;
 }
