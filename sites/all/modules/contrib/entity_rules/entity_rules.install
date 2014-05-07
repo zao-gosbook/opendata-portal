@@ -89,6 +89,8 @@ function entity_rules_update_7101() {
 
   $schema = entity_rules_schema();
   db_create_table('entity_rule_setting', $schema['entity_rule_setting']);
+  cache_clear_all('*', 'cache', TRUE);
+  drupal_static_reset('entity_get_info');
   foreach (entity_get_info() as $entity_type => $entity_info) {
     if (!empty($entity_info['fieldable'])) {
       foreach ($entity_info['bundles'] as $bundle_name => $bundle_info) {

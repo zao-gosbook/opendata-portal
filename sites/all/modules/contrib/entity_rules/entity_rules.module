@@ -46,23 +46,6 @@ function entity_rules_entity_info() {
  */
 function entity_rules_menu() {
   $items = array();
-  $items['admin/config/workflow/entity_rules'] = array(
-    'title' => 'Entity Rules',
-    'page callback' => 'entity_rules_entity_type_list',
-    'access arguments' => array('administer rules'),
-    'file path' => drupal_get_path('module', 'entity_rules'),
-    'file' => 'entity_rules.admin.inc',
-    'type' => MENU_NORMAL_ITEM,
-  );
-  $items['admin/config/workflow/entity_rules/entity-types'] = array(
-    'title' => 'Entity Types',
-    'page callback' => 'entity_rules_entity_type_list',
-    'access arguments' => array('administer rules'),
-    'file path' => drupal_get_path('module', 'entity_rules'),
-    'file' => 'entity_rules.admin.inc',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -100
-  );
   $items['admin/config/workflow/entity_rules/settings'] = array(
     'title' => 'Settings',
     'description' => '',
@@ -74,6 +57,7 @@ function entity_rules_menu() {
     'weight' => 1000,
   );
   $rule_types = _entity_rules_get_rule_types();
+  $first_rule_type = TRUE;
   foreach ($rule_types as $op => $rule_type) {
     // Add the menu items for the various Rules forms.
     $controller = new RulesUIController();
@@ -89,6 +73,14 @@ function entity_rules_menu() {
       'file' => 'entity_rules.admin.inc',
       'type' => MENU_LOCAL_TASK,
     );
+    if ($first_rule_type) {
+      $items['admin/config/workflow/entity_rules'] = $items[$rule_path];
+      $items[$rule_path]['type'] = MENU_DEFAULT_LOCAL_TASK;
+      $items['admin/config/workflow/entity_rules']['type'] = MENU_NORMAL_ITEM;
+      $items['admin/config/workflow/entity_rules']['title'] = 'Entity Rules';
+      $items['admin/config/workflow/entity_rules']['description'] = 'Manage Rule components available for Entity Rules';
+      $first_rule_type = FALSE;
+    }
     $items["$rule_path/add"] = array(
       'title' => 'Add a @op rule',
       'title arguments' => array('@op' => $rule_type['label']),
@@ -245,6 +237,7 @@ function entity_rules_menu() {
       }
     }
   }
+
   return $items;
 }
 
@@ -491,6 +484,7 @@ function _entity_rules_get_type_settings($entity_type = NULL, $reset = FALSE) {
       // Do your expensive calculations here, and populate $my_data
       // with the correct stuff..
       $all_type_settings = module_invoke_all('entity_rules_info');
+      $site_entity_types = array_keys(entity_get_info());
       $enabled_types = variable_get('entity_rules_types', explode(',' , ENTITY_RULES_DEFAULT_TYPES));
       // Filter out types that weren't enabled via settings
       $all_type_settings = array_intersect_key($all_type_settings, array_flip($enabled_types));
@@ -499,8 +493,20 @@ function _entity_rules_get_type_settings($entity_type = NULL, $reset = FALSE) {
           'exclude_validation_ops' => array('delete'),
         ),
       );
-      foreach ($all_type_settings as &$type_setting) {
-        $type_setting += $default_settings;
+      $enabled_types = array_filter($enabled_types);
+      // Loop through all entity types enabled by this module.
+      foreach ($enabled_types as $entity_type => $entity_type_info) {
+        // Make sure the entity type is still available.
+        if (in_array($entity_type, $site_entity_types)) {
+          if (isset ($all_type_settings[$entity_type])) {
+            // If we got setting from hook_entity_rules_info add defaults.
+            $all_type_settings[$entity_type] += $default_settings;
+          }
+          else {
+            // If no setting from hook_entity_rules_info then just use defaults.
+            $all_type_settings[$entity_type] = $default_settings;
+          }
+        }
       }
       cache_set('entity_rules_type_settings', $all_type_settings, 'cache');
     }
@@ -561,7 +567,7 @@ function _entity_rules_get_form_entity_type_settings($form_state) {
   }
   $type_settings = _entity_rules_get_type_settings();
   foreach ($type_settings as $entity_type => $settings) {
-    if (is_array($settings['forms'])) {
+    if (isset($settings['forms']) && is_array($settings['forms'])) {
       if (in_array($form_id, $settings['forms']) || (isset($base_form_id) && in_array($base_form_id, $settings['forms']))) {
         return array_merge(array('entity_type' => $entity_type), $settings['form_settings']);
       }

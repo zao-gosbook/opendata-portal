@@ -18,5 +18,13 @@ function od_facets_facetapi_widgets() {
     ),
   );
 
+  $items['od_facetapi_ajax_links_with_search'] = array(
+    'handler' => array(
+      'label' => 'Opendata Widget Checkboxes (with search)',
+      'class' => 'FacetapiOdFacetsAjaxWidgetLinksSearchable',
+      'query types' => array('term'),
+    ),
+  );
+
   return $items;
 }

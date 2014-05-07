@@ -131,6 +131,25 @@ function od_file_process_rules_action_info() {
       ),
       'base' => 'od_file_process_rule_callback_od_copy_recline_visualization_data',
     ),
+    'od_copy_recline_visualization_data_dataset' => array(
+      'label' => t('Copy recline visualization data to all resources of a dataset'),
+      'group' => t('Opendata process'),
+      'arguments' => array(
+        'data' => array(
+          'type' => 'list<text>',
+          'label' => t('Visualization data'),
+        ),
+        'entity' => array(
+          'type' => 'entity',
+          'label' => t('An entity that\'s field will be changed'),
+        ),
+        'field_name' => array(
+          'type' => 'text',
+          'label' => t('Field name that represents recline file')
+        ),
+      ),
+      'base' => 'od_file_process_rule_callback_od_copy_recline_visualization_data_dataset',
+    ),
   );
 
 
@@ -410,7 +429,7 @@ function od_file_process_rule_callback_get_files($file_2process,  $can_expire) {
 
 function od_file_process_rule_callback_od_copy_recline_visualization_data($data, $entity, $entity_type, $field_name) {
   try {
-    $wrapper = entity_metadata_wrapper($entity_type, $entity);
+    $wrapper = $entity;
     $entity_full = $wrapper->value();
     if (($pi = $wrapper->{$field_name}->getPropertyInfo()) && is_array($data) && !empty($data)) {
       $langcode = $entity->{$field_name}->getPropertyLanguage();
@@ -421,6 +440,22 @@ function od_file_process_rule_callback_od_copy_recline_visualization_data($data,
         }
       }
     }
+  }
+  catch (Exception $e) {
+    watchdog_exception('od_file_process', $e);
+    return NULL;
+  }
+}
+
+function od_file_process_rule_callback_od_copy_recline_visualization_data_dataset($data, $wrapper, $field_name) {
+  try {
+    foreach ($wrapper->field_resources as $rw) {
+      od_file_process_rule_callback_od_copy_recline_visualization_data($data, $rw, $rw->type(), $field_name);
+      $rw->value()->revision = 0;
+      $rw->save();
+    }
+
+    unset($rw);
   }
   catch (Exception $e) {
     watchdog_exception('od_file_process', $e);

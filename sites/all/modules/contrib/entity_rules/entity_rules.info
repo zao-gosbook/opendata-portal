@@ -4,9 +4,9 @@ core = 7.x
 dependencies[] = entity
 dependencies[] = rules
 
-; Information added by Drupal.org packaging script on 2014-01-19
-version = "7.x-1.0-alpha4+2-dev"
+; Information added by Drupal.org packaging script on 2014-03-08
+version = "7.x-1.0-alpha4+7-dev"
 core = "7.x"
 project = "entity_rules"
-datestamp = "1390153705"
+datestamp = "1394257111"
 

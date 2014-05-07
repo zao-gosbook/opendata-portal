@@ -177,7 +177,7 @@ function entity_rules_bundle_rules_form($form, &$form_state, $entity_type, $bund
           '#cols' => 15,
           '#rows' => 3,
           '#title' => t('Rule returns false message'),
-          '#default_value' => isset($rule_setting['false_msg']['value']) ? $rule_setting['false_msg']['value'] : NULL,
+          '#default_value' => isset($rule_setting->false_msg['value']) ? $rule_setting->false_msg['value'] : NULL,
           '#format' => isset($rule_setting->false_msg['format']) ? $rule_setting->false_msg['format'] : NULL,
           '#description' => t('This message will be displayed if this Rule evalutes to FALSE.'),
         );
