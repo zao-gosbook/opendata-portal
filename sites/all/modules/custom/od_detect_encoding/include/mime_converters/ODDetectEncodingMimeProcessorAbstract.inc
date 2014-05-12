@@ -30,7 +30,8 @@ abstract class ODDetectEncodingMimeProcessorAbstract implements ODDetectEncoding
 
     // Read file contents
     // @fixme: replace file_get_contents() with adapter's getContent method
-    if (!($converted = file_get_contents($input_file))) {
+    $rp = $this->realpath($input_file);
+    if (FALSE === ($converted = file_get_contents($rp))) {
       // @fixme: Set an error for this operation
       return FALSE;
     }
@@ -88,5 +89,14 @@ abstract class ODDetectEncodingMimeProcessorAbstract implements ODDetectEncoding
     }
 
     return $status;
+  }
+
+  public function realpath($filepath) {
+    $realpath = $filepath;
+    if ($wrapper = file_stream_wrapper_get_instance_by_uri($filepath)) {
+      $realpath = $wrapper->realpath();
+    }
+
+    return $realpath;
   }
 }

@@ -252,8 +252,14 @@ function ajax_facets_process_facet_blocks($searcher, $realm_name = 'block') {
         sort($blocks['active_items'][$facet_name]);
       }
 
+      $identity = $builds[$group][$facet_name]['#attributes']['id'];
+
+      if (isset($builds[$group][$facet_name]['#identity_class'])) {
+        $identity = $builds[$group][$facet_name]['#identity_class'];
+      }
+
       // Skip currently checked facet - we will not refresh them.
-      $blocks['facet_blocks'][$builds[$group][$facet_name]['#attributes']['id']] = drupal_render($builds[$group][$facet_name]);
+      $blocks['facet_blocks'][$identity] = drupal_render($builds[$group][$facet_name]);
     }
     else {
       $facet_name = urlencode($facet_name);
