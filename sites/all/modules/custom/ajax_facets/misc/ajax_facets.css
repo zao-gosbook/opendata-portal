@@ -1,0 +1,39 @@
+#ajax-facets-tooltip {
+  position: absolute;
+  width:140px;
+  background: #FFFFFF;
+  border: 2px solid rgb(255, 189, 74);
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  display: none;
+  border-radius: 4px;
+}
+#ajax-facets-tooltip span:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -12px;
+  width: 0; height: 0;
+  border-left: 12px solid rgb(255, 189, 74);
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+}
+#ajax-facets-tooltip span:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -8px;
+  width: 0; height: 0;
+  border-left: 8px solid #FFFFFF;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
+a.reset-link {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
