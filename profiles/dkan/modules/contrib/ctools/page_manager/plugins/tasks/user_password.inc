@@ -54,9 +54,9 @@ function page_manager_user_user_password() {
    // If we aren't admin but already logged on, go to the user page instead.
   global $user;
   $admin = user_access('administer users');
-  if (!$admin && $user->uid) {
-    drupal_goto('user/'. $user->uid);
-  }
+//  if (!$admin && $user->uid) {
+//    drupal_goto('user/'. $user->uid);
+//  }
   // Load my task plugin
   $task = page_manager_get_task('user_password');
 
