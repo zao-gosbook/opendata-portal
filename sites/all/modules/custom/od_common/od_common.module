@@ -154,6 +154,8 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       od_common_module('od_idea_node_form_alter');
       _od_common_idea_node_form_alter($form, $form_state);
       break;
+    case 'opendata_query_entityform_edit_form':
+      unset($form['field_od_query_data_trbl_reason']['und']['#default_value']);
   }
   //Translate submit button
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
