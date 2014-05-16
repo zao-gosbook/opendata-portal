@@ -212,8 +212,8 @@ function _passport_table_rows($nid, $options = array()) {
   //Гиперссылка(URL) на набор (Link file + Link API + Upload)
   // формируем массив ссылок из трех полей. По логике должно быть заполнено только одно из них.
   if ($resource->value()) {
-    $uri = od_dataset_download_path($node);
 
+    $uri = od_dataset_download_path($node);
     $label = '<span class="label">' . t('Dataset URL') . '</span>';
     if ($options['addtip']) {
       $label_tip = '<span class="info-tooltip" title="';
@@ -223,7 +223,7 @@ function _passport_table_rows($nid, $options = array()) {
     }
 
     $rows['dataset_urls'] = array('<div class="label">' . $label  . '</div>', $uri ? l(url($uri, array('absolute' => true)), url($uri, array('absolute' => true))) : t('No info'));
-    
+
     //Формат данных
     $value = $resource->field_format->value()->name;
     $data = array(
@@ -246,7 +246,7 @@ function _passport_table_rows($nid, $options = array()) {
     //Описание структуры набора данных
     $uri = od_dataset_download_path($node, NULL,'structure');
     $data = array(
-      'data' =>  $uri ? l(url($uri, array('absolute' => true)), url($uri, array('absolute' => true))) : t('No info'),
+      'data' => $uri->exists() ? l(url($uri, array('absolute' => true)), url($uri, array('absolute' => true))) : t('No info'),
     );
 
     $label = '<span class="label">' . t('Hyperlink (URL) on the dataset structure') . '</span>';
@@ -364,20 +364,21 @@ function _passport_table_rows($nid, $options = array()) {
     foreach ($dataset_revisions as $revision) {
       $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
       if($revision->vid != $node->vid) {
-        $url_data[] = od_dataset_download_path($node, $revision->vid,'data')->__toString();
-        $url_structure[] = od_dataset_download_path($node, $revision->vid,'structure')->__toString();
+        $url_data[$revision->vid] = od_dataset_download_path($node, $revision->vid,'data')->__toString();
+        $url_structure[$revision->vid] = od_dataset_download_path($node, $revision->vid,'structure')->__toString();
       }
     }
 
-    $url_data= array_unique($url_data);
-    $url_structure = array_unique($url_structure);
+    $url_data= array_filter($url_data);
+    $url_structure = array_filter($url_structure);
 
     //Гиперссылки (URL) на версии набора данных
     foreach ($url_data as $key=>$url) {
-      $url_datasets_revisions[$key] = '<li>' . l(url($url, array('absolute' => true)), url($url, array('absolute' => true))) . '</li>';
+      $url_datasets_revisions[$key] = '<li>' . l(url(ltrim($url, '/\\'), array('absolute' => true)), url($url, array('absolute' => true))) . '</li>';
     }
     $url_datasets_string_revisions = implode('', $url_datasets_revisions);
     $url_datasets_string_revisions_list = "<ul>$url_datasets_string_revisions</ul>";
+
     $data = array(
       'data' => !empty($url_datasets_string_revisions) ? $url_datasets_string_revisions_list : t('No info'),
     );
@@ -394,7 +395,7 @@ function _passport_table_rows($nid, $options = array()) {
     
     //Гиперссылки (URL) на версии структуры набора данных	
     foreach ($url_structure as $key=>$url) {
-      $url_datasets_structure_revisions[$key] = '<li>' . l(url($url, array('absolute' => true)), url($url, array('absolute' => true))) . '</li>';
+      $url_datasets_structure_revisions[$key] = '<li>' . l(url(ltrim($url, '/\\'), array('absolute' => true)), url($url, array('absolute' => true))) . '</li>';
     }
     $url_datasets_structure_string_revisions = implode('', $url_datasets_structure_revisions);
     $url_datasets_structure_revisions_list = "<ul>$url_datasets_structure_string_revisions</ul>";
@@ -430,10 +431,12 @@ function _passport_structured_description($nid) {
         $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
         $revision_object_resource = $revision_object->field_resources->get(0); // Получаем ресурс из паспорта.
         $revision_data = $revision_object->field_dataset_latest_update->value() ? $revision_object->field_dataset_latest_update->value() : $revision->timestamp;
+
         $revision_structure_data =  $revision_object->field_structure_latest_update->value() ? $revision_object->field_structure_latest_update->value() : $revision->timestamp;
         $revision_date = gmdate("Ymd\THi", $revision_data);
         $revision_date_iso = gmdate("Y-m-d", $revision_data);
         $revision_structure_date = gmdate("Ymd\THi", $revision_structure_data);
+
         //Информация о последнем изменении в паспорте
         if ($revision_object_resource->getBundle() == 'resource' && $revision_object_resource->field_provenance->value()) {
           $revision_provenence = $revision_object_resource->field_provenance->value();
@@ -455,10 +458,13 @@ function _passport_structured_description($nid) {
 
 
         //ссылки на файлы наборов
-        $url_datasets_revisions[$key]['uri'] = url(od_dataset_download_path($node, $revision->vid,'data')->__toString(),array('absolute' => true));
-        $url_datasets_revisions[$key]['structure'] = url(od_dataset_download_path($node, $revision->vid,'structure')->__toString(),array('absolute' => true));;
+        foreach (array('uri' => 'data', 'structure' => 'structure') as $_key => $_type) {
+          $url_datasets_revisions[$key][$_key] = FALSE !== ($path = od_dataset_download_path($node, $revision->vid, $_type)->checkReturn()) ? url((string) $path, array('absolute' => true)) : '';
+        }
 
-        isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = NULL;
+        //$url_datasets_revisions[$key]['structure'] = url(od_dataset_download_path($node, $revision->vid,'structure')->__toString(),array('absolute' => true));;
+
+        //isset($url_datasets_revisions[$key]['structure']) ? $url_datasets_revisions[$key]['structure'] : $url_datasets_revisions[$key]['structure'] = NULL;
 
 
         unset($revision_object);

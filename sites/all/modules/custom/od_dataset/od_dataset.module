@@ -171,23 +171,43 @@ function od_dataset_download_path($node_dataset, $revision_id = NULL, $target_ty
   // Change download callback to od_dataset's callback to support encodings
   //$download_uri = 'dataset-actions/download_file/'. $item['fid'];
   $result = new ODDatasetDownloadUriObject();
-  $result->internal_uri = od_dataset_download_path_internal($node_dataset, $revision_id, $target_type);
   try {
-    if ($result->internal_uri && !drupal_lookup_path('source', $result->internal_uri)) {
-      $result->internal_uri = FALSE; // Source doesn't exist. Orphaned alias.
+    $wrapper = od_dataset_get_wrapper($node_dataset, $revision_id);
+    if ($wrapper->field_resources->count() > 0 && ($resource = $wrapper->field_resources[0]) && ($resource->value())) {
+      // Check external link first
+      if (($target_type == 'data' && ($remote_link = $resource->field_link_remote_file->value())) || ($target_type == 'structure' && ($remote_link = $resource->field_link_structure_file->value()))) {
+        $result->data($remote_link['uri']);
+        $result->type(ODDatasetDownloadUriObject::LINK_EXTERNAL);
+      }
+      elseif ($target_type == 'data' && ($api_link = $resource->field_link_api->value()) && ($parsed = parse_url($api_link['url']))) {
+//        $build = $parsed;
+//        $build['scheme'] = !empty($build['scheme']) ? $build['scheme']. '://' : 'http://';
+//        $build['host'] = !empty($build['host']) ? $build['host'] : $_SERVER['HTTP_HOST'];
+//        $build['path'] = !empty($build['path']) ? '/'. $build['path'] : '';
+//
+//        $api_link['attributes'] += array('absolute')
+//        $url_built = url("{$build['scheme']}{$build['host']}{$build['path']}", $api_link['attributes']); //@fixme: Check attributes' behaviour
+        $url_built = url($api_link['url'], $api_link['attributes']);
+        $result->data($url_built);
+        $result->type(ODDatasetDownloadUriObject::LINK_EXTERNAL);
+      }
+      else {
+        // Fallback to internal
+        $result->data(od_dataset_download_path_internal($node_dataset, $revision_id, $target_type));
+        $result->type(ODDatasetDownloadUriObject::LINK_INTERNAL);
+      }
     }
-    elseif (!$result->internal_uri && ($wrapper = od_dataset_get_wrapper($node_dataset, $revision_id))) {
-      $result->internal_uri = 'http://example.com/this_is_a_link_to_external_'. $target_type; //@fixme: Implement in correct way
-      $result->type = 'external';
+
+    if ($result->exists() && $result->type() == ODDatasetDownloadUriObject::LINK_INTERNAL && !drupal_lookup_path('source', $result->data())) {
+      $result->invalidate(); // Source doesn't exist. Orphaned alias.
     }
   }
   catch (Exception $e) {
     // @fixme: prevent errors here.
     watchdog_exception('od_common', $e);
-    $result->internal_uri = FALSE;
+    $result->invalidate();
   }
 
-  $result->type = $result->internal_uri ? 'internal' : 'not_found';
   return $result;
 }
 
@@ -207,11 +227,24 @@ function od_dataset_download_path_internal($node_dataset, $revision_id = NULL, $
   try {
     $wrapper = od_dataset_get_wrapper($node_dataset, $revision_id);
     if ($wrapper->field_resources->count() > 0) {
-      foreach($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
-        list($type, $alias) = od_dataset_alias_parse($_val_wr->value());
-        if ($target_type == $type) {
-          $download_uri = $alias;
+      $exists = FALSE;
+      // Firstly check if we have any data in fact
+      switch ($target_type) {
+        case 'data':
+          $exists = $wrapper->field_resources[0]->field_upload->value() ? TRUE : FALSE;
           break;
+        case 'structure':
+          $exists = $wrapper->field_resources[0]->field_upload_structure->value() ? TRUE : FALSE;
+          break;
+      }
+
+      if ($exists) {
+        foreach($wrapper->{OD_DATASET_DOWNLOAD_FIELD} as $_val_wr) {
+          list($type, $alias) = od_dataset_alias_parse($_val_wr->value());
+          if ($target_type == $type) {
+            $download_uri = $alias;
+            break;
+          }
         }
       }
     }
@@ -840,8 +873,65 @@ function _od_dataset_update_batch_process($options, &$context) {
 }
 
 class ODDatasetDownloadUriObject extends stdClass {
+  /*
+   * Constants
+   */
+  const LINK_EXTERNAL = 'external';
+  const LINK_INTERNAL = 'internal';
+
+  /**
+   * @var string Main storage of all properties @fixme: Change to another variable
+   */
+  protected $_properties = array();
+
+  /**
+   * Magic converting to string
+   * @return string
+   */
   public function __toString() {
-    return (string) $this->internal_uri;
+    return (string) $this->data();
+  }
+
+  /**
+   * Correctly check if it has valid url.
+   * @return bool
+   */
+  public function exists() {
+    return $this->data() !== FALSE && $this->data() !== NULL;
+  }
+
+  public function checkReturn() {
+    return $this->exists() ? $this : FALSE;
+  }
+
+  /**
+   * Set/get wrapper for lazy people like me
+   * @param $property
+   * @param null $value
+   * @param null $default
+   * @return null
+   */
+  protected function setGet($property, $value = NULL, $default = NULL) {
+    if ($value !== NULL) {
+      $this->_properties[$property] = $value;
+    }
+
+    return isset($this->_properties[$property]) ? $this->_properties[$property] : $default;
+  }
+
+  public function type($type = NULL) {
+    return $this->setGet('type', $type);
+  }
+
+  public function data($data = NULL) {
+    return $this->setGet('link', $data);
+  }
+
+  /**
+   * Clear all properties and make whole object invalid
+   */
+  public function invalidate() {
+    $this->_properties = array();
   }
 }
 
@@ -925,6 +1015,12 @@ function od_dataset_entity_load_unsafe($entities, $type) {
   }
 }
 
+/**
+ * Creates new revision of a node with new resource revisions
+ * @param $node_or_nid
+ * @param null $revision_id
+ * @return mixed
+ */
 function od_dataset_revision($node_or_nid, $revision_id = NULL) {
   if ($wrapper = od_dataset_get_wrapper($node_or_nid, $revision_id)) {
     $wrapper->value()->revision = 1;
