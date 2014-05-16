@@ -10,9 +10,11 @@
  *
  * Links make it easy for users to narrow down their search results by clicking
  * on them. The render arrays use theme_item_list() to generate the HTML markup.
+ * @todo: Create common abstract class for this
  */
 class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
   protected $preprocessors_store = array();
+
   public function init() {
     parent::init();
 
@@ -21,6 +23,10 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
 
     // Add default class for facet block.
     $this->build['#attributes']['class'][] = 'opendata-ajax-links-facet';
+
+    // Set identity by unique class
+    $this->build['#identity_class'] = $this->settings->settings['shared_settings']['widget']['identity_class'];
+    //$this->build['#attributes']['class'][] = $this->build['#identity_class'];
   }
 
 
@@ -65,6 +71,7 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
    */
   function settingsForm(&$form, &$form_state) {
     parent::settingsForm($form, $form_state);
+    unset($form['widget']['widget_settings']['links'][$this->id]['wrapper_container']);
 
     $form['widget']['widget_settings']['links'][$this->id]['preprocessors'] = array(
       '#type' => 'checkboxes',
@@ -82,6 +89,11 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
     $settings = parent::getDefaultSettings();
 
     $settings['preprocessors'] = array();
+    $settings['empty_behavior'] = 'od_facets_empty_behavior';
+    $settings['shared_settings']['widget'] = array(
+      'identity_class' => drupal_html_class("identity-{$this->settings->searcher}-{$this->settings->facet}"),
+    );
+
     return $settings;
   }
 
@@ -191,5 +203,47 @@ class FacetapiOdFacetsAjaxWidgetLinks extends FacetapiAjaxWidgetCheckboxes {
     }
 	
     return $items;
+  }
+
+  /**
+   * Implements FacetapiWidget::execute().
+   *
+   * Transforms the render array into something that can be themed by
+   * theme_item_list().
+   *
+   * @see FacetapiWidgetLinks::setThemeHooks()
+   * @see FacetapiWidgetLinks::buildListItems()
+   */
+  public function execute() {
+    $element = &$this->build[$this->facet['field alias']];
+
+    // Sets each item's theme hook, builds item list.
+    $this->setThemeHooks($element);
+    $item_list = array(
+      '#theme' => 'item_list',
+      '#items' => $this->buildListItems($element),
+      '#attributes' => $this->build['#attributes'],
+    );
+
+    $reset_link = '';
+    if (!empty($this->settings->settings['show_reset_link']) && $this->settings->settings['show_reset_link']) {
+      $reset_link = '<a class="reset-link" href="#">' . t('Reset filter') . '</a>';
+    }
+
+    $identity_class = $this->settings->settings['shared_settings']['widget']['identity_class'];
+    $attributes = array(
+      'class' => array(
+        'facet-wrapper-checkboxes',
+        $this->build['#attributes']['id'],
+        $identity_class,
+      ),
+    );
+
+    $element = array(
+      '#markup' => '<div '.drupal_attributes($attributes).'>'
+        . $reset_link
+        . render($item_list)
+        . '</div>'
+    );
   }
 }

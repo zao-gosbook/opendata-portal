@@ -1,0 +1,118 @@
+<?php
+/**
+ * @file
+ */
+
+/*
+ * Constants
+ */
+define('OD_GEOCODER_DEFAULT_SERVICE', 'gisgraphy_online'); //Default geocoding service @fixme: Replace with gisgraphy_online
+
+/*
+ * We don't need no auto load
+ * tudu-tititz tu-tududu-titz
+ * We don't need no drupal way
+ * tudu-tititz tu-tududu-titz
+ * Drupal let us to make a choice
+ * tudu-tititz tu-tududu-titz
+ * Drupal! Leave them kids alone!
+ */
+define('OD_GEOCODER_ROOT', dirname(__FILE__));
+require_once OD_GEOCODER_ROOT. '/include/ODGeocoder.inc';
+require_once OD_GEOCODER_ROOT. '/include/ODGeocoder/LocationInterface.inc';
+require_once OD_GEOCODER_ROOT. '/include/ODGeocoder/LocationAbstract.inc';
+require_once OD_GEOCODER_ROOT. '/include/ODGeocoder/LocationDefault.inc';
+require_once OD_GEOCODER_ROOT. '/include/ODGeocoder/ServiceInterface.inc';
+require_once OD_GEOCODER_ROOT. '/include/ODGeocoder/ServiceAbstract.inc';
+
+/**
+ * Auto test
+ */
+function od_geocoder_test() {
+  $address = 'Москва, 117628';
+
+  $gc = od_geocoder_object();
+  $gc->setCountry(ODGeocoder::COUNTRY_RUSSIA);
+
+
+  $addr_loc = $gc->location(array('address' => $address));
+
+  // Geocoding with special location object
+  $location = $gc->geocode($addr_loc);
+
+  // Reverse geocoding from special location object
+  //@fixme: Implement
+  //$reversed = $gc->geocodeReverse($location);
+
+  // Address parser
+  //@fixme: Implement
+  //$address_parsed = $gc->geocodeAddress($addr_loc);
+
+  // Find nearby
+  //@fixme: Implement
+  //$nearby_points = $gc->geocodeNearby($location);
+
+  // Fulltext, zipcode search
+  //@fixme: Implement
+  //$location_by_fulltext = $gc->geocodeFulltextZip($addr_loc);
+}
+
+/**
+ * @return ODGeocoder
+ */
+function od_geocoder_object() {
+  $gc = new ODGeocoder();
+  $gc->setService(OD_GEOCODER_DEFAULT_SERVICE);
+  $gc->setCountry(ODGeocoder::COUNTRY_RUSSIA);
+
+  return $gc;
+}
+
+function od_geocoder_geocode_xls($uri, $address_cell, $skip_first = TRUE) {
+  $processor = ODDetectEncodingMimeProcessorFactory::getProcessor(file_get_mimetype($uri));
+  $realpath = $processor->realpath($uri);
+  if (is_readable($realpath) && ($library = libraries_load('PHPExcel')) && !empty($library['loaded'])) {
+    $gc = od_geocoder_object();
+    $xls_reader = PHPExcel_IOFactory::createReaderForFile($realpath);
+    $xls_output = $xls_reader->load($realpath);
+    $ruins = explode('_', get_class($xls_reader));
+    $xls_writer = PHPExcel_IOFactory::createWriter($xls_output, end($ruins));
+
+    $xls_reader->setReadDataOnly(TRUE);
+
+    //$xls_data = $xls_reader->load($path);
+    foreach ($xls_output->getWorkSheetIterator() as $_sheet_index => $_worksheet) {
+      $_worksheet_write = $xls_output->getSheet($_sheet_index);
+      $lat_cell = PHPExcel_Cell::stringFromColumnIndex(PHPExcel_Cell::columnIndexFromString($_worksheet_write->getHighestColumn()));
+      $lng_cell = PHPExcel_Cell::stringFromColumnIndex(PHPExcel_Cell::columnIndexFromString($lat_cell));
+      foreach ($_worksheet->getRowIterator() as $_row_index => $_xls_row) {
+        if ($skip_first && $_row_index == 1) {
+          $_worksheet_write->setCellValue("{$lat_cell}{$_row_index}", t('Latitude'));
+          $_worksheet_write->setCellValue("{$lng_cell}{$_row_index}", t('Longitude'));
+          continue;
+        }
+
+        $raw_address = $_worksheet->getCellByColumnAndRow($address_cell, $_row_index)->getValue();
+        $location = $gc->geocode($gc->location(array('address' => trim($raw_address))));
+
+        $_worksheet_write->setCellValue("{$lat_cell}{$_row_index}", $location->getLat());
+        $_worksheet_write->setCellValue("{$lng_cell}{$_row_index}", $location->getLong());
+      }
+
+      break;
+    }
+
+    od_common_module('core');
+    $tmpfile = od_common_tmpfilename('temporary:/', time(), TRUE);
+    $tmpfile = $processor->realpath($tmpfile);
+    $xls_writer->save($tmpfile);
+
+    unset($xls_writer);
+    unset($xls_output);
+    unset($xls_reader);
+
+    $pathinfo = pathinfo($realpath);
+    od_dataset_download_file($tmpfile, 'processed.xlsx');
+    drupal_exit();
+  }
+}

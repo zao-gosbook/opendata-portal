@@ -1,0 +1,17 @@
+name = Opendata geocoder
+description = "Geocoding functionality"
+package = "Gosbook"
+core = 7.x
+
+dependencies[] = od_common
+
+; Features
+
+; Views handlers
+
+; Classes autoload -- Sucks! Disabled.
+;files[] = include/ODGeocoder/ServiceInterface.inc
+;files[] = include/ODGeocoder/ServiceAbstract.inc
+;files[] = include/ODGeocoder/LocationAbstract.inc
+;files[] = include/ODGeocoder/LocationDefault.inc
+;files[] = include/ODGeocoder.inc
