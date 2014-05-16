@@ -70,7 +70,6 @@ scripts[] = js/jhints.js
 scripts[] = js/masonry.pkgd.min.js
 scripts[] = js/livequery.js
 scripts[] = js/script.js
-scripts[] = js/hide-link-titles.js
 
 
 

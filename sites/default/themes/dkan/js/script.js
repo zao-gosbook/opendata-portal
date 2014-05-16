@@ -28,16 +28,9 @@
   */
 
   Drupal.behaviors.HintFormElemements = {
-    attach: function (context, settings) {
+    attach: function (context) {
       $('body.page-dataset .exposed-search-form .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for datasets'));
       $('body.page-apps .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for applications'));
-
-      //if (settings.facetapi && settings.facetapi.facets && settings.facetapi.facets.length > 0) {
-        /*$('body.page-dataset .exposed-search-form .views-exposed-form .views-submit-button input').unbind('click').click(function(e) {
-          Drupal.ajax_facets.sendAjaxQuery($(this), new Array());
-          e.preventDefault();
-        });*/
-      //}
 
       if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
         $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
