@@ -130,3 +130,23 @@ function STARTERKIT_preprocess_block(&$variables, $hook) {
   //}
 }
 // */
+
+/**
+ * Implements MYTHEME_preprocess_field().
+ * @param $vars
+ */
+function dkan_preprocess_field(&$vars) {
+  if ($vars['element']['#field_name'] == 'field_od_query_data_trbl_reason') {
+    foreach ($vars['element']['#items'] as $key=>$value) {
+      if ($value = 'other') $value_key = $key;
+    }
+    $vars['items'][$value_key]['#markup'] = $vars['element']['#object']->field_od_query_data_trbl_other['und'][0]['value'];
+  }
+
+  if ($vars['element']['#field_name'] == 'field_od_query_data_use') {
+    foreach ($vars['element']['#items'] as $key=>$value) {
+      if ($value = 'other_user') $value_key = $key;
+    }
+    $vars['items'][$value_key]['#markup'] = $vars['element']['#object']->field_od_query_data_use_other['und'][0]['value'];
+  }
+}

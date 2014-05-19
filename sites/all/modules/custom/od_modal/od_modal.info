@@ -1,0 +1,5 @@
+name = Opendata portal modal customization
+description = Adds custom visual details to modal windows.
+core = 7.x
+package = Gosbook
+dependencies[] = modal

@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function od_modal_init() {
+  if (drupal_is_front_page()) {
+    od_modal_init_modal_themes();
+  }
+}
+
+function od_modal_init_modal_themes() {
+  $js_settings = array(
+    'modal-popup-add-dataset' => array(
+      'modalSize' => array(
+        'type' => 'dynamic',
+        'width' => 480.0,
+        'height' => 200.0,
+      ),
+      'modalOptions' => array(
+        'opacity' => 0.3,
+        'background' => '#000',
+      ),
+      'animation' => 'fadeIn',
+      'modalTheme' => 'CToolsModalDialog',
+      'closeText' => t('Close'),
+    ),
+  );
+
+  drupal_add_js($js_settings, 'setting');
+}
+
+/**
+ * Implements hook_modal_node_view_alter().
+ */
+function od_modal_modal_node_view_alter(&$commands, &$node_view, $node) {
+  if ($node->type == 'page' && $node->title == 'Add dataset') {
+    $commands[] = ajax_command_invoke('#modalContent', 'addClass', array('add-dataset-dialog'));
+  }
+}
