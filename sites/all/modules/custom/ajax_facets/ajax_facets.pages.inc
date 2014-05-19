@@ -9,19 +9,6 @@
  * Callback to update facets content by AJAX.
  */
 function ajax_facets_refresh_facets_content() {
-  if (1==2 && !empty($_GET['f'])) {
-    $searcher = 'search_api@' . $_GET['index_id'];
-    $adapter = facetapi_adapter_load($searcher);
-    $enabled_facets = facetapi_get_enabled_facets($searcher, 'block');
-    $adapter->buildRealm('block');
-    foreach ($enabled_facets as $facet) {
-      $build = $adapter->getFacet(array('name' => $facet['name']))->getBuild();
-    }
-  }
-
-  //$_GET['query'] = '';
-  //$_GET['search_api_views_fulltext'] = 'реестр';
-
   $name = $_GET['view_name'];
   $display_id = $_GET['display_name'];
   // Execute view query to fill facets.
@@ -33,8 +20,6 @@ function ajax_facets_refresh_facets_content() {
   $adapter = facetapi_adapter_load($searcher);
   $blocks = ajax_facets_process_facet_blocks($searcher);
   $facet_query = !empty($_GET['f']) ? $_GET['f'] : '';
-
-  $facet_tags = $adapter->getFacet(array('name' => 'field_tags'));
 
   $result = array(
     'applyUrl' => ajax_facets_facet_build_apply_path($adapter),
