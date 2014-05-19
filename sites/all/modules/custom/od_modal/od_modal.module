@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function od_modal_init() {
+  if (drupal_is_front_page()) {
+    od_modal_init_modal_themes();
+  }
+}
+
+function od_modal_init_modal_themes() {
+  $js_settings = array(
+    'modal-popup-add-dataset' => array(
+      'modalSize' => array(
+        'type' => 'dynamic',
+        'width' => 480.0,
+        'height' => 340.0,
+      ),
+      'modalOptions' => array(
+        'opacity' => 0.85,
+        'background' => '#000',
+      ),
+      'animation' => 'fadeIn',
+      'modalTheme' => 'CToolsModalDialog',
+      'closeText' => t('Close'),
+    ),
+  );
+
+  drupal_add_js($js_settings, 'setting');
+}
