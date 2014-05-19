@@ -28,9 +28,16 @@
   */
 
   Drupal.behaviors.HintFormElemements = {
-    attach: function (context) {
+    attach: function (context, settings) {
       $('body.page-dataset .exposed-search-form .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for datasets'));
       $('body.page-apps .views-exposed-form .views-widget-filter-search_api_views_fulltext input').attr('placeholder', Drupal.t('Search for applications'));
+
+      //if (settings.facetapi && settings.facetapi.facets && settings.facetapi.facets.length > 0) {
+        /*$('body.page-dataset .exposed-search-form .views-exposed-form .views-submit-button input').unbind('click').click(function(e) {
+          Drupal.ajax_facets.sendAjaxQuery($(this), new Array());
+          e.preventDefault();
+        });*/
+      //}
 
       if ($('.pane-gb-search-pane .form-text, .pane-datasets-search-dataset-search .view-filters .form-text').length > 0) {
         $('.pane-gb-search-pane .form-text').attr("placeholder", Drupal.t("Search for data"));
@@ -204,14 +211,30 @@
           } 
           if($(this).hasClass("sf-item-4")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
-              ul.css({
-                "margin-left": "-259px"
-              });              
+              // custom position for english version
+              if($('body').hasClass('i18n-en')) {
+                ul.css({
+                  "margin-left": "-22px"
+                });                  
+              }
+              else {
+                ul.css({
+                  "margin-left": "-259px"
+                });                  
+              }           
             } 
             else {           
-              ul.css({
-                "margin-left": "-306px"
-              });  
+              // custom position for english version
+              if($('body').hasClass('i18n-en')) {
+                ul.css({
+                  "margin-left": "-26px"
+                });                 
+              }
+              else {
+                ul.css({
+                  "margin-left": "-306px"
+                });                  
+              }                
             }
           } 
           if($(this).hasClass("sf-item-6")) { //
@@ -290,16 +313,32 @@
           } 
           if($(this).hasClass("sf-item-4")) { //
             if($('body').width() > 765 && $('body').width() < 1200) {
-              ul.css({
-                "margin-left": "-259px"
-              });              
+              // custom position for english version
+              if($('body').hasClass('i18n-en')) {
+                ul.css({
+                  "margin-left": "-22px"
+                });                  
+              }
+              else {
+                ul.css({
+                  "margin-left": "-259px"
+                });                  
+              }           
             } 
             else {           
-              ul.css({
-                "margin-left": "-306px"
-              });  
+              // custom position for english version
+              if($('body').hasClass('i18n-en')) {
+                ul.css({
+                  "margin-left": "-26px"
+                });                 
+              }
+              else {
+                ul.css({
+                  "margin-left": "-306px"
+                });                  
+              }                
             }
-          } 
+          }  
           if($(this).hasClass("sf-item-6")) { //
              if($('body').width() > 765 && $('body').width() < 1200) {
               ul.css({

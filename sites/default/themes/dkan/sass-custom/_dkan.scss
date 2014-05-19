@@ -489,6 +489,8 @@ div.horizontal-tabs .form-text {
                 &.nolink {
                   display: none;
                 }
+                /*
+                 Пожалуйста, не надо этот кусок больше вставлять! он неправильный)
                 &[href$=bezopasnost]{
                   background-image: url("../images/ico-taxonomy-security.png");
                 }
@@ -523,6 +525,42 @@ div.horizontal-tabs .form-text {
                   background-image: url("../images/ico-taxonomy-ecology.png");
                 }
                 &[href$=ekonomika]{
+                  background-image: url("../images/ico-taxonomy-economy.png");
+                }*/
+                &.ico-taxonomy-security {
+                  background-image: url("../images/ico-taxonomy-security.png");
+                }
+                &.ico-taxonomy-geography {
+                  background-image: url("../images/ico-taxonomy-geography.png");
+                }
+                &.ico-taxonomy-gov {
+                  background-image: url("../images/ico-taxonomy-gov.png");
+                }
+                &.ico-taxonomy-health {
+                  background-image: url("../images/ico-taxonomy-health.png");
+                }
+                &.ico-taxonomy-housing {
+                  background-image: url("../images/ico-taxonomy-housing.png");
+                }
+                &.ico-taxonomy-culture {
+                  background-image: url("../images/ico-taxonomy-culture.png");
+                }
+                &.ico-taxonomy-sport {
+                  background-image: url("../images/ico-taxonomy-sport.png");
+                }
+                &.ico-taxonomy-building {
+                  background-image: url("../images/ico-taxonomy-building.png");
+                }
+                &.ico-taxonomy-trade {
+                  background-image: url("../images/ico-taxonomy-trade.png");
+                }
+                &.ico-taxonomy-transport {
+                  background-image: url("../images/ico-taxonomy-transport.png");
+                }
+                &.ico-taxonomy-ecology {
+                  background-image: url("../images/ico-taxonomy-ecology.png");
+                }
+                &.ico-taxonomy-economy {
                   background-image: url("../images/ico-taxonomy-economy.png");
                 }
               }
@@ -2272,6 +2310,19 @@ td div.label {
         } 
       }
     }
+  }
+  .search-block-wrapper input {
+    @include box-sizing(padding-box);
+    background: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    color: #4D4D4D;
+    font-size: 1.25em;
+    margin-right: 20px;
+    padding: 1em;
+    width: 60%;
+  }  
+  .facetapi-od-facetapi-ajax-links-with-search {
+    padding: 0;
   }
   .facetapi-facetapi-links,
   .facetapi-od-facetapi-ajax-links,
@@ -8565,5 +8616,58 @@ div.forum-post {
     margin: 0 0 12px;
     font-size: 16px;
     line-height: 22px;
+  }
+}
+
+/**
+ * modal windows
+ */
+div.ctools-modal-content {
+  .modal-header {
+    background-color: #0C87E8;
+    padding: .5em 1em;
+    overflow: hidden;
+  }  
+  .modal-title {
+    font-size: 140%;
+  }
+  .modal-content {
+    font-size: 14px;
+  }
+  a.close {
+    width: 24px;
+    height: 24px;
+    text-indent: -10000px;
+    overflow: hidden;
+    background: url("../images/modal-close.png") no-repeat;
+    margin-top: -2px;
+    
+    img {
+      display: none;
+    }
+  }
+  
+  /* custom task */
+  .anonymous-users,
+  .not-publishers  {
+    text-align: center;
+    
+    a {
+      display: inline-block;
+      margin: 10px 2px;
+      padding: 0 12px;
+      height: 35px;
+      line-height: 35px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      background: #0c87e8;
+    }
+  }
+}
+/* custom task */
+.add-dataset-dialog {
+  .modal-title {
+    display: none;
   }
 }
