@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Define max opendata file size.
+ */
+define('OD_IMPORT_OPENDATA_MAX_SIZE', 30 * 1024 * 1024);
+
+/**
  * Opendata API object types.
  */
 define('OD_IMPORT_DATA_TYPE', 'data');

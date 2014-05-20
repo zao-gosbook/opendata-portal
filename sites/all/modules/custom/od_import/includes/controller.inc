@@ -39,10 +39,6 @@ function od_import_load_or_create_subject_by_name($name) {
 }
 
 function od_import_load_file($uri) {
-  if (!file_valid_uri($uri)) {
-    return FALSE;
-  }
-
   // Get file by url.
   $files = od_import_get_file_by_uri($uri);
   $file = !empty($files) ? reset($files) : FALSE;
@@ -50,34 +46,84 @@ function od_import_load_file($uri) {
   return $file;
 }
 
-function od_import_create_file($uri, $origin_uri) {
-  if (!file_valid_uri($uri)) {
+function od_import_convert_to_utf8(&$data) {
+  $encoder = od_detect_encoding_get_detector();
+  $converted_data = $encoder->convertString($data, 'UTF-8');
+
+  if ($converted_data) {
+    $data = $converted_data;
+  }
+
+  return (bool) $converted_data;
+}
+
+function od_import_create_local_file($destination, $origin_uri) {
+  $data = od_import_get_url_content($origin_uri);
+  if ($data === FALSE) {
     return FALSE;
   }
 
-  file_prepare_directory(drupal_dirname($uri), FILE_CREATE_DIRECTORY);
+  $exists = file_prepare_directory(drupal_dirname($destination), FILE_CREATE_DIRECTORY);
+  if ($exists === FALSE) {
+    return FALSE;
+  }
 
-  $file_content = od_import_get_url_content($origin_uri);
-  $encoder = od_detect_encoding_get_detector();
-  $converted_file_content = $encoder->convertString($file_content, 'UTF-8');
-  $is_utf8 = $converted_file_content !== FALSE;
-  $file_content = $is_utf8 ? $converted_file_content : $file_content;
+  $is_utf8 = od_import_convert_to_utf8($data);
 
-  $file = file_save_data($file_content, $uri);
+  // Save file.
+  $uri = file_unmanaged_save_data($data, $destination, FILE_EXISTS_REPLACE);
+  if ($uri === FALSE) {
+    return FALSE;
+  }
 
-  $file->uid = OD_COMMON_IMPORT_USER_ID;
-  $file->utf8 = $is_utf8;
-  file_save($file);
+  $file = od_import_create_file($uri);
+
+  $file->utf8 = (integer) $is_utf8;
 
   return $file;
+}
+
+function od_import_create_remote_file($uri) {
+  $file_exists = od_import_check_file_exists($uri);
+  if ($file_exists === FALSE) {
+    return FALSE;
+  }
+
+  $file = od_import_create_file($uri);
+
+  return $file;
+}
+
+function od_import_create_file($uri) {
+  // Create a file object.
+  $file = new stdClass();
+  $file->fid = NULL;
+  $file->uri = $uri;
+  $file->filename = drupal_basename($uri);
+  $file->filemime = file_get_mimetype($uri);
+  $file->uid = OD_COMMON_IMPORT_USER_ID;
+  $file->status = FILE_STATUS_PERMANENT;
+
+  // If we are replacing an existing file re-use its database record.
+  $existing_files = file_load_multiple(array(), array('uri' => $uri));
+  if (count($existing_files)) {
+    $existing = reset($existing_files);
+    $file->fid = $existing->fid;
+    $file->filename = $existing->filename;
+  }
+
+  return file_save($file);
 }
 
 function od_import_get_url_content($url) {
   $curl = curl_init();
   curl_setopt($curl, CURLOPT_URL, $url);
+  curl_setopt($curl, CURLOPT_BUFFERSIZE, '1024');
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($curl, CURLOPT_FRESH_CONNECT, 1);
   curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($curl, CURLOPT_NOPROGRESS, 0);
+  curl_setopt($curl, CURLOPT_PROGRESSFUNCTION, '_od_import_curl_progress_function_size_limit_checker_callback');
 
   $content = curl_exec($curl);
 
@@ -86,6 +132,25 @@ function od_import_get_url_content($url) {
   curl_close($curl);
 
   return $http_code < 400 ? $content : FALSE;
+}
+
+function od_import_check_file_exists($url) {
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_URL, $url);
+  curl_setopt($curl, CURLOPT_BUFFERSIZE, '1024');
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_FRESH_CONNECT, 1);
+  curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($curl, CURLOPT_NOPROGRESS, 0);
+  curl_setopt($curl, CURLOPT_PROGRESSFUNCTION, '_od_import_curl_progress_function_file_existing_checker_callback');
+
+  curl_exec($curl);
+
+  $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+  curl_close($curl);
+
+  return $http_code < 400 ? TRUE : FALSE;
 }
 
 function od_import_build_file_uri($type, $data, $meta) {
@@ -124,24 +189,17 @@ function od_import_build_file_uri($type, $data, $meta) {
 
   $uri = file_build_uri(implode('/', $path));
 
+  if (!file_valid_uri($uri)) {
+    return FALSE;
+  }
+
   return $uri;
 }
 
 function od_import_format_date_iso_url($created) {
-  $date = new DateTime($created);
-  return strtolower($date->format('Y-m-d\TH-i-s'));
-}
+  $created = strtotime($created);
 
-function od_import_format_date_unix_timestamp($created) {
-  if (strtotime($created)) {
-    $date = new DateTime($created);
-    $created = (string) $date->getTimestamp();
-  }
-  else {
-    $created = FALSE;
-  }
-
-  return $created;
+  return $created ? date('Y-m-d\TH-i-s', $created) : FALSE;
 }
 
 function od_import_get_source_revisions($nid) {
@@ -162,4 +220,12 @@ function od_import_get_source_revisions($nid) {
     $revisions[$vid] = node_load($nid, $vid);
   }
   return $revisions;
+}
+
+function _od_import_curl_progress_function_size_limit_checker_callback($resource, $download_size) {
+  return $download_size > OD_IMPORT_OPENDATA_MAX_SIZE;
+}
+
+function _od_import_curl_progress_function_file_existing_checker_callback($resource, $download_size) {
+  return $download_size > (1024 * 1024);
 }

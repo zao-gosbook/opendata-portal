@@ -40,17 +40,20 @@ function od_import_import_opendata_action($entities) {
   // Include helper opendata parser functions.
   require_once OD_IMPORT . '/' . 'includes/helper/opendata_parser.inc';
 
-  // Check "Opendata API" library.
-  $od_library = libraries_load('od_api');
-  if (!$od_library['loaded']) {
-    $error = 'Библиотека "Opendata API" не установлена.';
-    od_log($error, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA);
+  if (empty($entities)) {
     return;
   }
 
-  foreach ($entities as $entity) {
-    _od_import_organization_opendata($entity);
-  }
+  $operations = array();
+  $operations[] = array('_od_import_organization_opendata', array($entities));
+
+  $batch = array(
+    'title' => t('Import meta'),
+    'operations' => $operations,
+    'file' => drupal_get_path('module', 'od_import') . '/includes/helper/opendata_parser.inc',
+  );
+  batch_set($batch);
+  batch_process();
 }
 
 /**

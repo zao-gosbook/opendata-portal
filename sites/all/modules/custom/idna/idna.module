@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * Implements hook_libraries_info().
+ */
+function idna_libraries_info() {
+  // Init output variable.
+  $items = array();
+
+  $items['idna'] = array(
+    'name' => 'Idna',
+    'version' => '1.0',
+    'files' => array(
+      'php' => array(
+        'idna_convert.class.php',
+      ),
+    ),
+  );
+
+  return $items;
+}

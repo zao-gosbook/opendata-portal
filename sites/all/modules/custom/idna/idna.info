@@ -1,0 +1,4 @@
+name = Idna
+description = Internationalized Domain Names decoder.
+dependencies[] = libraries (2.x)
+core = 7.x

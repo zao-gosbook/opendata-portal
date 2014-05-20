@@ -31,10 +31,12 @@ define('ODP_FIELD_RESOURCE_DATASET', 'field_dataset_ref');
 define('ODP_FIELD_RESOURCE_CREATED', 'field_created');
 define('ODP_FIELD_RESOURCE_PROVENANCE', 'field_provenance');
 define('ODP_FIELD_RESOURCE_FORMAT', 'field_format');
-define('ODP_FIELD_RESOURCE_DATA', 'field_upload');
+define('ODP_FIELD_RESOURCE_LOCAL_DATA', 'field_upload');
+define('ODP_FIELD_RESOURCE_LOCAL_STRUCTURE', 'field_upload_structure');
+define('ODP_FIELD_RESOURCE_REMOTE_DATA', 'field_link_remote_file');
+define('ODP_FIELD_RESOURCE_REMOTE_STRUCTURE', 'field_link_structure_file');
 define('ODP_FIELD_RESOURCE_CSV_DELIMITER', 'field_csv_delimiter');
 define('ODP_FIELD_RESOURCE_UTF8_ENCODING', 'field_utf8_encoding');
-define('ODP_FIELD_RESOURCE_STRUCTURE', 'field_upload_structure');
 
 /**
  * Organization fields.

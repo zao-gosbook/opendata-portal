@@ -1,5 +1,5 @@
 name = Opendata API
 description = Provides opendata API library and its basic functionality.
 dependencies[] = libraries (2.x)
-dependencies[] = arc2
+dependencies[] = easyrdf
 core = 7.x
