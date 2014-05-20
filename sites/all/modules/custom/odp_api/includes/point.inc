@@ -92,7 +92,7 @@ function odp_api_point_api_dataset($args, $params = array()) {
       $content = odp_api_point_api_dataset_publisher($args);
       break;
     case 'data':
-      $content = odp_api_point_api_dataset_data($args);
+      $content = odp_api_point_api_dataset_version($args);
       break;
     case NULL:
       switch ($identifier) {
@@ -120,32 +120,14 @@ function odp_api_point_api_dataset_publisher($args) {
   return $content;
 }
 
-function odp_api_point_api_dataset_data($args) {
-  $identifier = array_shift($args);
-  $version = array_shift($args);
-  array_unshift($args, $version);
-  array_unshift($args, $identifier);
-
-  switch ($version) {
-    case NULL:
-      $content = odp_api_get_dataset_data($identifier);
-      break;
-    default:
-      $content = odp_api_point_api_dataset_data_version($args);
-      break;
-  }
-
-  return $content;
-}
-
-function odp_api_point_api_dataset_data_version($args) {
+function odp_api_point_api_dataset_version($args) {
   $identifier = array_shift($args);
   $version = array_shift($args);
   $point = array_shift($args);
   array_unshift($args, $version);
   array_unshift($args, $identifier);
 
-  // ISO8601 validation pattern.
+  // ISO 8601 validation pattern. See https://www.debuggex.com/r/3rZt9hgYEIE5RaI2
   $pattern = '/^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/';
 
   if (!empty($version) && !preg_match($pattern, $version)) {
@@ -154,18 +136,18 @@ function odp_api_point_api_dataset_data_version($args) {
 
   switch ($point) {
     case 'structure':
-      $content = odp_api_point_api_dataset_data_version_structure($args);
+      $content = odp_api_point_api_dataset_version_structure($args);
       break;
     case 'content':
-      $content = odp_api_point_api_dataset_data_version_content($args);
+      $content = odp_api_point_api_dataset_version_content($args);
       break;
     case NULL:
       switch ($version) {
         case NULL:
-          $content = odp_api_get_text('Неверный запрос!');
+          $content = odp_api_get_dataset_versions($identifier);
           break;
         default:
-          $content = odp_api_get_dataset_data_version($identifier, $version);
+          $content = odp_api_get_dataset_version($identifier, $version);
           break;
       }
       break;
@@ -177,20 +159,20 @@ function odp_api_point_api_dataset_data_version($args) {
   return $content;
 }
 
-function odp_api_point_api_dataset_data_version_structure($args) {
+function odp_api_point_api_dataset_version_structure($args) {
   $identifier = array_shift($args);
   $version = array_shift($args);
 
-  $content = odp_api_get_dataset_data_version_structure($identifier, $version);
+  $content = odp_api_get_dataset_version_structure($identifier, $version);
 
   return $content;
 }
 
-function odp_api_point_api_dataset_data_version_content($args) {
+function odp_api_point_api_dataset_version_content($args) {
   $identifier = array_shift($args);
   $version = array_shift($args);
 
-  $content = odp_api_get_dataset_data_version_content($identifier, $version);
+  $content = odp_api_get_dataset_version_content($identifier, $version);
 
   return $content;
 }

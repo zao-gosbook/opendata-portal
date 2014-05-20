@@ -535,7 +535,7 @@ function od_dataset_build_alias_links($node_or_nid, $revision_id = NULL) {
 
     $structure_format = 'csv';
     if ($wrapper->field_resources->count() > 0 && $wrapper->field_resources->get(0)->getBundle() == 'resource') {
-      if (($file = $wrapper->field_resources->get(0)->field_upload_structure->value()) && $ext = pathinfo($file->uri, PATHINFO_EXTENSION)) {
+      if (($file = $wrapper->field_resources->get(0)->field_upload_structure->value()) && ($ext = pathinfo($file->uri, PATHINFO_EXTENSION))) {
         $structure_format = $ext;
       }
     }

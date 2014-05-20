@@ -12,6 +12,9 @@ require_once ODP_API . '/includes/constants.inc';
 require_once ODP_API . '/includes/model.inc';
 require_once ODP_API . '/includes/controller.inc';
 
+/**
+ * Implements hook_menu().
+ */
 function odp_api_menu() {
   // Init output variable.
   $items = array();

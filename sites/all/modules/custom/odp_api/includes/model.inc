@@ -183,20 +183,20 @@ function odp_api_get_dataset_publisher($identifier) {
 /**
  * Get dataset data.
  */
-function odp_api_get_dataset_data($identifier) {
+function odp_api_get_dataset_versions($identifier) {
   $content = new stdClass();
 
   $format = odp_api_detect_format();
 
-  $data = _odp_api_get_dataset_data($identifier);
+  $data = _odp_api_get_dataset_versions($identifier);
   switch ($format) {
     case ODP_API_FORMAT_JSON;
       $content = $data;
       break;
     case ODP_API_FORMAT_XML;
       $content = new stdClass();
-      $content->data = $data;
-      $content->data['#tag'] = 'version';
+      $content->versions = $data;
+      $content->versions['#tag'] = 'version';
       break;
   }
 
@@ -206,12 +206,12 @@ function odp_api_get_dataset_data($identifier) {
 /**
  * Get dataset data version.
  */
-function odp_api_get_dataset_data_version($identifier, $version) {
+function odp_api_get_dataset_version($identifier, $version) {
   $content = new stdClass();
 
   $format = odp_api_detect_format();
   $version = strtotime($version);
-  $data = _odp_api_get_dataset_data_version($identifier, $version);
+  $data = _odp_api_get_dataset_version($identifier, $version);
   switch ($format) {
     case ODP_API_FORMAT_JSON;
       $content = $data;
@@ -221,7 +221,7 @@ function odp_api_get_dataset_data_version($identifier, $version) {
         $data->source = htmlentities($data->source);
       }
       $content = new stdClass();
-      $content->data = $data;
+      $content->version = $data;
       break;
   }
 
@@ -231,12 +231,12 @@ function odp_api_get_dataset_data_version($identifier, $version) {
 /**
  * Get dataset data version.
  */
-function odp_api_get_dataset_data_version_structure($identifier, $version) {
+function odp_api_get_dataset_version_structure($identifier, $version) {
   $content = new stdClass();
 
   $format = odp_api_detect_format();
   $version = strtotime($version);
-  $structure = _odp_api_get_dataset_data_version_structure($identifier, $version);
+  $structure = _odp_api_get_dataset_version_structure($identifier, $version);
   switch ($format) {
     case ODP_API_FORMAT_JSON;
       $content = $structure;
@@ -256,14 +256,14 @@ function odp_api_get_dataset_data_version_structure($identifier, $version) {
 /**
  * Get dataset data content.
  */
-function odp_api_get_dataset_data_version_content($identifier, $version) {
+function odp_api_get_dataset_version_content($identifier, $version) {
   $content = new stdClass();
 
   $params = drupal_get_query_parameters();
 
   $format = odp_api_detect_format();
   $version = strtotime($version);
-  $data = _odp_api_get_dataset_data_version_content($identifier, $version, $params);
+  $data = _odp_api_get_dataset_version_content($identifier, $version, $params);
   switch ($format) {
     case ODP_API_FORMAT_JSON;
       $header = array_shift($data);
@@ -752,7 +752,7 @@ function _odp_api_get_dataset_publisher($identifier) {
   return $result;
 }
 
-function _odp_api_get_dataset_data($identifier) {
+function _odp_api_get_dataset_versions($identifier) {
   // Main content table.
   $query = db_select('node', 'dataset');
   // Content is dataset.
@@ -821,7 +821,7 @@ function _odp_api_get_dataset_data($identifier) {
   return $result;
 }
 
-function _odp_api_get_dataset_data_version($identifier, $version) {
+function _odp_api_get_dataset_version($identifier, $version) {
   // Main content table.
   $query = db_select('node', 'dataset');
   // Content is dataset.
@@ -869,7 +869,7 @@ function _odp_api_get_dataset_data_version($identifier, $version) {
   )));
 
   // Join content from resource: data.
-  $query->leftJoin('field_data_' . ODP_FIELD_RESOURCE_DATA, 'field_resource_source', implode(' AND ', array(
+  $query->leftJoin('field_data_' . ODP_FIELD_RESOURCE_LOCAL_DATA, 'field_resource_source', implode(' AND ', array(
     'field_resource_source.entity_id = resource.nid',
     'field_resource_source.revision_id = resource.vid',
     'field_resource_source.entity_type = \'node\'',
@@ -877,7 +877,7 @@ function _odp_api_get_dataset_data_version($identifier, $version) {
     'field_resource_source.deleted = \'0\'',
   )));
   $query->leftJoin('file_managed', 'data', implode(' AND ', array(
-    'data.fid = field_resource_source.' . ODP_FIELD_RESOURCE_DATA . '_fid',
+    'data.fid = field_resource_source.' . ODP_FIELD_RESOURCE_LOCAL_DATA . '_fid',
   )));
 
   // Join content from resource: format.
@@ -939,7 +939,7 @@ function _odp_api_get_dataset_data_version($identifier, $version) {
   return $result;
 }
 
-function _odp_api_get_dataset_data_version_structure($identifier, $version) {
+function _odp_api_get_dataset_version_structure($identifier, $version) {
   // Main content table.
   $query = db_select('node', 'dataset');
   // Content is dataset.
@@ -978,7 +978,7 @@ function _odp_api_get_dataset_data_version_structure($identifier, $version) {
   )));
 
   // Join content from resource: file.
-  $query->leftJoin('field_data_' . ODP_FIELD_RESOURCE_STRUCTURE, 'field_structure_source', implode(' AND ', array(
+  $query->leftJoin('field_data_' . ODP_FIELD_RESOURCE_LOCAL_STRUCTURE, 'field_structure_source', implode(' AND ', array(
     'field_structure_source.entity_id = resource.nid',
     'field_structure_source.revision_id = resource.vid',
     'field_structure_source.entity_type = \'node\'',
@@ -986,7 +986,7 @@ function _odp_api_get_dataset_data_version_structure($identifier, $version) {
     'field_structure_source.deleted = \'0\'',
   )));
   $query->leftJoin('file_managed', 'structure', implode(' AND ', array(
-    'structure.fid = field_structure_source.' . ODP_FIELD_RESOURCE_STRUCTURE . '_fid',
+    'structure.fid = field_structure_source.' . ODP_FIELD_RESOURCE_LOCAL_STRUCTURE . '_fid',
   )));
 
   // Select dataset property: nid.
@@ -1031,7 +1031,7 @@ function _odp_api_get_dataset_data_version_structure($identifier, $version) {
   return $result;
 }
 
-function _odp_api_get_dataset_data_version_for_content($identifier, $version) {
+function _odp_api_get_dataset_version_for_content($identifier, $version) {
   // Main content table.
   $query = db_select('node', 'dataset');
   // Content is dataset.
@@ -1061,7 +1061,7 @@ function _odp_api_get_dataset_data_version_for_content($identifier, $version) {
   )));
 
   // Join content from resource: data.
-  $query->leftJoin('field_data_' . ODP_FIELD_RESOURCE_DATA, 'field_resource_source', implode(' AND ', array(
+  $query->leftJoin('field_data_' . ODP_FIELD_RESOURCE_LOCAL_DATA, 'field_resource_source', implode(' AND ', array(
     'field_resource_source.entity_id = resource.nid',
     'field_resource_source.revision_id = resource.vid',
     'field_resource_source.entity_type = \'node\'',
@@ -1069,7 +1069,7 @@ function _odp_api_get_dataset_data_version_for_content($identifier, $version) {
     'field_resource_source.deleted = \'0\'',
   )));
   $query->leftJoin('file_managed', 'data', implode(' AND ', array(
-    'data.fid = field_resource_source.' . ODP_FIELD_RESOURCE_DATA . '_fid',
+    'data.fid = field_resource_source.' . ODP_FIELD_RESOURCE_LOCAL_DATA . '_fid',
   )));
 
   // Join resource field: csv delimiter.
@@ -1146,18 +1146,18 @@ function _odp_api_get_dataset_data_version_for_content($identifier, $version) {
   return $result;
 }
 
-function _odp_api_get_dataset_data_version_content($identifier, $version, $params = array()) {
+function _odp_api_get_dataset_version_content($identifier, $version, $params = array()) {
   $result = array();
 
-  $data = _odp_api_get_dataset_data_version_for_content($identifier, $version);
+  $data = _odp_api_get_dataset_version_for_content($identifier, $version);
 
   switch ($data->format) {
     case 'csv':
       if (empty($data->source)) {
         break;
       }
-      $content = _odp_api_get_dataset_data_version_content_trash1($data->source);
-      $result = _odp_api_get_dataset_data_version_content_trash2($content, $params);
+      $content = _odp_api_get_dataset_version_content_trash1($data->source);
+      $result = _odp_api_get_dataset_version_content_trash2($content, $params);
       break;
     default:
       break;
@@ -1166,7 +1166,7 @@ function _odp_api_get_dataset_data_version_content($identifier, $version, $param
   return $result;
 }
 
-function _odp_api_get_dataset_data_version_content_trash1($path) {
+function _odp_api_get_dataset_version_content_trash1($path) {
   $content = file_get_contents($path);
   $in_encode = od_detect_encoding_guess_file($path);
   $out_encode = 'UTF-8';
@@ -1175,7 +1175,7 @@ function _odp_api_get_dataset_data_version_content_trash1($path) {
   return $content;
 }
 
-function _odp_api_get_dataset_data_version_content_trash2($content, $params) {
+function _odp_api_get_dataset_version_content_trash2($content, $params) {
   if (empty($content)) {
     return array();
   }

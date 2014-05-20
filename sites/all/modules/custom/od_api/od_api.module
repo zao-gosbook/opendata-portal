@@ -9,14 +9,28 @@ function od_api_libraries_info() {
 
   $items['od_api'] = array(
     'name' => 'Opendata API',
-    'dependencies' => array('arc'),
+    'dependencies' => array('easyrdf', 'idna'),
     'version' => '1.0',
     'files' => array(
       'php' => array(
-        'od_api.php',
+        'odApi.php',
       ),
     ),
   );
 
   return $items;
+}
+
+/**
+ * Invokes Opendata API library.
+ */
+function od_api() {
+  $library = libraries_load('od_api');
+
+  // Try to load the library and check if that worked.
+  if (($library) && !empty($library['loaded'])) {
+    return TRUE;
+  }
+
+  return FALSE;
 }
