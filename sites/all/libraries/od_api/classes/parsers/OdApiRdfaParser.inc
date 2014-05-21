@@ -11,7 +11,7 @@ class OdApiRDFaParser extends OdApiParser {
   protected function parseUrl($url) {
     $subjects = array();
 
-    $parser = new EasyRdf_Graph();
+    $parser = new EasyRdf_Graph($url);
     try {
       $parser->load($url);
     } catch (Exception $exception) {
@@ -26,11 +26,10 @@ class OdApiRDFaParser extends OdApiParser {
     foreach ($resources as $resource) {
       $uri = $resource->getUri();
       $property_names = $resource->properties();
-      $full_property_names = $resource->propertyUris();
 
-      foreach ($property_names as $index => $property_name) {
+      foreach ($property_names as $property_name) {
         $property_values = $resource->all($property_name);
-        $full_property_name = $full_property_names[$index];
+        $full_property_name = EasyRdf_Namespace::expand($property_name);
 
         $resource_subjects = array();
         foreach ($property_values as $property) {

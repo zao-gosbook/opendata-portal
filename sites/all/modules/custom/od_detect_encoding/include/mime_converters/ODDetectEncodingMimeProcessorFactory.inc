@@ -54,7 +54,7 @@ class ODDetectEncodingMimeProcessorFactory {
       return static::getProcessor($mime);
     }
 
-    return FALSE;
+    return static::getProcessorDefault();
   }
 
   /**

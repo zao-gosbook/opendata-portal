@@ -31,4 +31,10 @@ interface ODDetectEncodingMimeProcessorInterface {
    * @return mixed
    */
   public function copyFile($input_file, $output_file);
+
+  /**
+   * Gets mime type for this type of file
+   * @return string
+   */
+  public function getMimeType();
 }
