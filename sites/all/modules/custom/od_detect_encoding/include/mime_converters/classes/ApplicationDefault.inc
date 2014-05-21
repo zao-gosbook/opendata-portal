@@ -5,4 +5,8 @@
  */
 
 namespace ODDetectEncodingMimeProcessor\Processors;
-class ApplicationDefault extends \ODDetectEncodingMimeProcessorDefault {}
+class ApplicationDefault extends \ODDetectEncodingMimeProcessorDefault {
+  public function getMimeType() {
+    return 'application/undefined';
+  }
+}

@@ -230,11 +230,14 @@ function od_common_list_dir($directory, &$raw = NULL) {
   return (object) $list;
 }
 
-function od_common_tmpfilename($directory, $seed = '', $create_file = FALSE) {
-  $temp_dir = $tmp = $directory . '/' . substr(md5($seed . microtime(TRUE). time() . srand(time())), 0, 8);
+function od_common_tmpfilename($directory, $seed = '', $create_file = FALSE, $extension = NULL) {
+  $temp_dir = $tmp = ($directory . '/' . substr(md5($seed . microtime(TRUE). time() . srand(time())), 0, 8));
+  $suffix = ($extension ? '.'. $extension : '');
+  $temp_dir.= $suffix;
+
   $i = 0;
-  while (file_exists($tmp) && $i <= 50) {
-    $tmp = $temp_dir. $i++;
+  while (file_exists($tmp.$suffix) && $i <= 50) {
+    $tmp = $temp_dir. $suffix. $i++;
   }
 
   if ($create_file) {
