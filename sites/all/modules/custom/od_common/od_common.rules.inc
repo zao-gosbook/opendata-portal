@@ -206,6 +206,23 @@ function od_common_rules_action_info() {
       'group' => t('Gosbook'),
       'base' => 'od_common_rules_actions_od_common_convert_geolocation_to_geofield',
     ),
+    'generate_api_key' => array(
+      'label' => t('Generate key to api'),
+      'parameter' => array(
+        'user' => array(
+          'type' => 'user',
+          'label' => t('For which user generate a key'),
+        ),
+      ),
+      'group' => t('Gosbook'),
+      'base' => 'od_common_rules_actions_generate_api_key',
+      'provides' => array(
+        'api_key_generated' => array(
+          'type' => 'text',
+          'label' => t('Generated key'),
+        ),
+      ),
+    ),
   );
 }
 
@@ -299,6 +316,13 @@ function common_rules_actions_generate_pass($length = 10) {
   $info = array();
   $info['password_generated'] = user_password($length);
 
+  return $info;
+}
+
+function od_common_rules_actions_generate_api_key($user) {
+  $info = array();
+  $string = $user->uid . 'key' . time() . 'api';
+  $info['api_key_generated'] = md5($string);
   return $info;
 }
 
