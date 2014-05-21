@@ -12,4 +12,8 @@ class Xml extends Processors\TextDefault {
   public function postConvert(&$string, $out_charset, $in_charset) {
     $string = preg_replace('/(<\?xml[^>]+encoding\=[\'\"])[^\'\"]+([\'\"][^>]+>)/i', "$1{$out_charset}$2", $string);
   }
+
+  public function getMimeType() {
+    return 'text/xml';
+  }
 }

@@ -364,8 +364,10 @@ function _passport_table_rows($nid, $options = array()) {
     foreach ($dataset_revisions as $revision) {
       $revision_object = entity_metadata_wrapper('node', node_load($node->nid, $revision->vid));
       if($revision->vid != $node->vid) {
-        $url_data[$revision->vid] = od_dataset_download_path($node, $revision->vid,'data')->__toString();
-        $url_structure[$revision->vid] = od_dataset_download_path($node, $revision->vid,'structure')->__toString();
+        $url_data[$revision->vid] = (string) od_dataset_download_path($node, $revision->vid,'data');
+
+        $structure_url = (string) od_dataset_download_path($node, $revision->vid,'structure');
+        $url_structure[$structure_url] = $structure_url;
       }
     }
 
