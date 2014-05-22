@@ -52,3 +52,8 @@ define('ODP_FIELD_LOG_DATASET', 'field_dataset');
 define('ODP_FIELD_LOG_IMPORTANCE_TYPE', 'field_log_importance_type');
 define('ODP_FIELD_LOG_EVENT_TYPE', 'field_log_event_type');
 define('ODP_FIELD_LOG_CURATOR_WAS_NOTIFIED', 'field_curator_was_notified');
+
+/**
+ * User fields.
+ */
+define('ODP_FIELD_USER_API_KEY', 'field_user_current_api_key');
