@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Generation api key feature.
+ */
+
+include_once 'generation_api_key.features.inc';
