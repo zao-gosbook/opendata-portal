@@ -165,6 +165,13 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'comment') {
     unset($form['author']['_author']);
   }
+  // Add Captcha form to get-api-key page.
+  if ($form['#form_id'] == 'get_api_key_entityform_edit_form' && current_path()  == 'get-api-key') {
+    $form['my_captcha_element'] = array(
+      '#type' => 'captcha',
+      '#captcha_type' => 'draggable_captcha/Draggable Captcha',
+    );
+  }
 }
 
 /**
@@ -775,6 +782,6 @@ function od_common_language_switcher_links($type, $path) {
       'query' => array('language' => $language->language),
     );
   }
-  
+
   return $links;
 }

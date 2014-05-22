@@ -5,4 +5,8 @@
  */
 
 namespace ODDetectEncodingMimeProcessor\Processors;
-class TextDefault extends \ODDetectEncodingMimeProcessorDefault {}
+class TextDefault extends \ODDetectEncodingMimeProcessorDefault {
+  public function getMimeType() {
+    return 'text/plain';
+  }
+}
