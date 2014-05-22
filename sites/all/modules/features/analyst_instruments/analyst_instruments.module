@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Analyst instruments feature.
+ */
+
+include_once 'analyst_instruments.features.inc';
