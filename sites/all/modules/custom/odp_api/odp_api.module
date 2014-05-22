@@ -22,7 +22,7 @@ function odp_api_menu() {
   $items['api/json'] = array(
     'title' => 'Api',
     'page callback' => 'odp_api_page',
-    'access arguments' => array('access content'),
+    'access callback' => 'odp_api_access',
     'delivery callback' => 'odp_api_json_deliver',
     'type' => MENU_CALLBACK,
     'file' => 'includes/pages/api.inc',
@@ -30,7 +30,7 @@ function odp_api_menu() {
   $items['api/xml'] = array(
     'title' => 'Api',
     'page callback' => 'odp_api_page',
-    'access arguments' => array('access content'),
+    'access callback' => 'odp_api_access',
     'delivery callback' => 'odp_api_xml_deliver',
     'type' => MENU_CALLBACK,
     'file' => 'includes/pages/api.inc',
@@ -38,4 +38,16 @@ function odp_api_menu() {
   $items['api'] = $items['api/json'];
 
   return $items;
+}
+
+/**
+ * Access callback.
+ */
+function odp_api_access() {
+  $get = drupal_get_query_parameters();
+  $access_token = isset($get['access_token']) ? $get['access_token'] : FALSE;
+
+  $result = $access_token !== FALSE ? odp_api_get_user_by_key($access_token) : FALSE;
+
+  return $result;
 }

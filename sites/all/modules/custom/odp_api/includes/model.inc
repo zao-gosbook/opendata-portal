@@ -1200,3 +1200,28 @@ function _odp_api_get_dataset_version_content_trash2($content, $params) {
 
   return $content;
 }
+
+function odp_api_get_user_by_key($key) {
+  // Main content table: key.
+  $query = db_select('field_data_' . ODP_FIELD_USER_API_KEY, 'api_key');
+
+  // Select key property: uid.
+  $query->addField('api_key', 'entity_id', 'uid');
+
+  // Key owner is user.
+  $query->condition('api_key.entity_type', 'user');
+  $query->condition('api_key.bundle', 'user');
+
+  // Key is not deleted.
+  $query->condition('api_key.deleted', 0);
+
+  // Select by key.
+  $query->condition('api_key.' . ODP_FIELD_USER_API_KEY . '_value', $key);
+
+  $resource = $query->execute();
+  $result = $resource->fetchAll();
+
+  $result = count($result) ? reset($result)->uid : FALSE;
+
+  return $result;
+}
