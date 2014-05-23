@@ -107,7 +107,7 @@
             .data(data)
             .enter()
             .append("g")
-            .attr("class", "city")
+            .attr("class", function(d) { return "city city-code-" + d.Code; })
             .attr("transform", function(d) { return "translate(" + projection([d.lon, d.lat]) + ")"; })
             .attr('data-city-code', function(d) { return d.Code; });
 
