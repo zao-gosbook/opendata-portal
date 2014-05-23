@@ -172,6 +172,9 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       '#captcha_type' => 'draggable_captcha/Draggable Captcha',
     );
   }
+  if ($form_id = 'request_to_become_a_publisher_entityform_edit_form') {
+    $form['field_pubreq_created_org']['und']['form']['title']['#required'] = TRUE;
+  }
 }
 
 /**
