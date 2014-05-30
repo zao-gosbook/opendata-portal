@@ -1,0 +1,20 @@
+<?php
+/**
+ * @file
+ */
+
+/*
+ * Find root. Include files
+ */
+define('CACHED_ENTITY_VIEW_ROOT', dirname(__FILE__));
+require_once CACHED_ENTITY_VIEW_ROOT. '/cached_entity_view.views.inc';
+
+/**
+ * Implements hook_views_api().
+ */
+function cached_entity_view_views_api() {
+  return array(
+    'api' => '3.0-alpha1',
+    'path' => drupal_get_path('module', 'entity') . '/views',
+  );
+}

@@ -1,0 +1,7 @@
+name = Cached entity view
+description = I'm lazy
+core = 7.x
+
+; Views
+files[] = cached_entity_view.views.inc
+files[] = plugins/cached_entity_view_views_plugin_row_entity_cached_view.inc
