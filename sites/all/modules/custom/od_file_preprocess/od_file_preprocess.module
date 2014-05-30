@@ -299,11 +299,10 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE, $inde
           else {
             module_load_include('inc', 'phpexcel');
             $data = od_file_preprocess_excel_import($path, FALSE);
-            //$data = phpexcel_import($path, FALSE);
           }
 
+          od_file_preprocess_array_cleanup($data);
           if (empty($data)) return NULL;
-          $data = array_map('array_filter', $data);
 
           if (is_numeric($index)) {
             if (isset($data[$index])) {
@@ -320,7 +319,7 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE, $inde
             $_data = array_map('array_filter', $_data); //clear empty rows and cells
             $headers = array_shift($_data);
 
-            $col_types = array_fill(0, count($headers), 'undefined');
+            //$col_types = array_fill(0, count($headers), 'undefined');
             $col_desc = ($process_2nd_row) ? NULL : array_shift($_data);
 
             $data_type_weight = array(
@@ -332,18 +331,24 @@ function od_file_preprocess_get_structure($file, $process_2nd_row = FALSE, $inde
               'string' => 50,
             );
 
+            $col_types = array();
             $structure = array();
             foreach ($headers as $col => $header) {
-              foreach ($data as $row) {
-                $cell = $row[$col];
+              foreach ($data as $_list_index => &$_rows) {
+                foreach ($_rows as $row) {
+                  $cell = $row[$col];
+                  if (!isset($col_types[$col])) {
+                    $col_types[$col] = 'undefined';
+                  }
 
-                if ($col_types[$col] == 'undefined') {
-                  $col_types[$col] = od_file_preprocess_get_data_type($cell);
-                }
-                else {
-                  $cell_type = od_file_preprocess_get_data_type($cell);
-                  if ($data_type_weight[$cell_type] > $data_type_weight[$col_types[$col]]) {
-                    $col_types[$col] = $cell_type;
+                  if ($col_types[$col] == 'undefined') {
+                    $col_types[$col] = od_file_preprocess_get_data_type($cell);
+                  }
+                  else {
+                    $cell_type = od_file_preprocess_get_data_type($cell);
+                    if ($data_type_weight[$cell_type] > $data_type_weight[$col_types[$col]]) {
+                      $col_types[$col] = $cell_type;
+                    }
                   }
                 }
               }
@@ -727,9 +732,23 @@ function od_file_preprocess_excel_import($path, $keyed_by_headers = TRUE, $keyed
   if (!isset($cache->data)) {
     $cache->data = phpexcel_import($path, $keyed_by_headers, $keyed_by_worksheet, $custom_calls);
     $cache->data = $cache->data ? $cache->data : FALSE;
+    od_file_preprocess_array_cleanup($cache->data);
 
     cache_set($cache->cid, $cache->data, $cache->bin, $cache->expire);
   }
 
   return $cache->data;
+}
+
+function od_file_preprocess_array_cleanup(&$data) {
+  if (!$data) return array();
+
+  $data = array_map(function($arr) {
+    $arr = array_map('array_filter', $arr);
+    return array_filter($arr);
+  }, $data);
+
+  $data = array_filter($data);
+
+  return $data;
 }

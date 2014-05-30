@@ -18,3 +18,9 @@ function cached_entity_view_views_api() {
     'path' => drupal_get_path('module', 'entity') . '/views',
   );
 }
+
+function cached_entity_view_entity_update($entity, $type) {
+  $cache_default = array(
+    'cid' => 'cached_entity_view_entity_update',
+  );
+}
