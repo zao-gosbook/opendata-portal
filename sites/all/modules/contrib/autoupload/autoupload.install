@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions of the AutoUpload module
+ */
+
+/**
+ * Implements hook_install().
+ */
+function autoupload_install() {
+  require_once 'autoupload.admin.inc';
+
+  $media_enabled = module_exists('media') ? 1 : 0;
+  $predefined = array(
+    'managed_file' => 1,
+    'media' => $media_enabled,
+    'media_library' => $media_enabled,
+  );
+
+  variable_set('autoupload_userdefined', NULL);
+  variable_set('autoupload_predefined', $predefined);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function autoupload_uninstall() {
+  variable_del('autoupload_userdefined');
+  variable_del('autoupload_userdefined_disabled');
+  variable_del('autoupload_predefined');
+}
+
+/**
+ * Support multiple field types. Store as a variable in database.
+ */
+function autoupload_update_7101() {
+  variable_del('autoupload_selectors');
+
+  $media_enabled = module_exists('media') ? 1 : 0;
+  $predefined = array(
+    'managed_file' => 1,
+    'media' => $media_enabled,
+    'media_library' => $media_enabled,
+  );
+
+  variable_set('autoupload_userdefined', NULL);
+  variable_set('autoupload_predefined', $predefined);
+}
