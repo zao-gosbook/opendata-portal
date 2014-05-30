@@ -1,0 +1,154 @@
+<?php
+
+/**
+ * @file
+ * Allows users to upload files without clicking the upload button
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function autoupload_menu() {
+  $items['admin/config/media/autoupload'] = array(
+    'title'            => 'Auto Upload settings',
+    'description'      => 'Configure the file fields which should use Auto Upload',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('autoupload_admin_form'),
+    'access arguments' => array('administer autoupload'),
+    'file'             => 'autoupload.admin.inc',
+    'weight'           => 20,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function autoupload_permission() {
+  return array(
+    'administer autoupload' => array(
+      'title' => 'Administer the Auto Upload settings',
+    ),
+  );
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function autoupload_form_alter(&$form, &$form_state, $form_id) {
+  static $autoupload_form_alter_called;
+  if (isset($autoupload_form_alter_called)) {
+    return;
+  }
+  $autoupload_form_alter_called = TRUE;
+  drupal_add_js(drupal_get_path('module', 'autoupload') . '/js/autoupload.js');
+
+  /*
+   * Add the JavaScript settings
+   *   selectors: array of element selectors and settings.
+   *   predefined: array of enabled predefined field types.
+   *     key: name of predefined file field type
+   *     value: 0/1 indicator whether predefined type is enabled
+   */
+
+  $settings_userdefined = variable_get('autoupload_userdefined');
+  $settings_predefined = variable_get('autoupload_predefined');
+
+  $selectors = array();
+  $predefined_types = _autoupload_get_predefined();
+  foreach ($settings_predefined as $predefined_type => $predefined_type_enabled) {
+    if ($predefined_type_enabled && isset($predefined_types[$predefined_type])) {
+      $selectors[$predefined_type] = $predefined_types[$predefined_type];
+    }
+  }
+
+  $selectors = array_merge($settings_userdefined, $selectors);
+
+  array_walk_recursive($selectors, 'check_plain');
+
+  $autoupload_settings = array(
+    'selectors' => $selectors,
+    'predefined' => $settings_predefined,
+  );
+  drupal_add_js(array('autoupload' => $autoupload_settings), 'setting');
+}
+
+/**
+ * Implements hook_theme().
+ */
+function autoupload_theme() {
+  return array(
+    'autoupload_custom' => array(
+      'render element' => 'form',
+      'file' => 'autoupload.admin.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_help().
+ */
+function autoupload_help($path, $arg) {
+  if ($path == 'admin/help#autoupload') {
+    $output = file_get_contents(dirname(__FILE__) . '/README.txt');
+    return module_exists('markdown') ? filter_xss_admin(module_invoke('markdown', 'filter', 'process', 0, -1, $output)) : '<pre>' . check_plain($output) . '</pre>';
+  }
+}
+
+/**
+ * Admin helper function to return the predefined file field types.
+ *
+ * The $types array data is passed to the autoUpload JavaScript var selectors
+ *   index : type of file handled
+ *   value : Array containing selectors for file input and submit button
+ *     context  - context of the file select elements
+ *     file_input - file input selector
+ *     file_event - file input event
+ *     submit_input - submit input selector
+ *     submit_event - event type on submit input to trigger upload/selection
+ *     error  - error element selector
+ *     error_remove - indicates how to handle error removal.
+ *       empty - error removal is not needed, already handled
+ *       'id' - selector is an id. remove the id from the element
+ *       'class' - selector is a class. remove the class from the element
+ *       'element' - remove the entire error element
+ */
+function _autoupload_get_predefined($type = NULL) {
+  $types = array(
+    'managed_file' => array(
+      'context' => 'div.form-managed-file',
+      'file_input' => 'input.form-file',
+      'file_event' => 'change',
+      'submit_input' => 'input.form-submit[value=Upload]',
+      'submit_event' => 'mousedown',
+      'error' => 'div.error',
+      'error_remove' => '',
+    ),
+    'media' => array(
+      'context' => '#media-add-upload',
+      'file_input' => '#edit-upload',
+      'file_event' => 'change',
+      'submit_input' => '#edit-submit',
+      'submit_event' => 'click',
+      'error' => 'input.error',
+      'error_remove' => 'class',
+    ),
+    'media_library' => array(
+      'context' => '#media-tab-library',
+      'file_input' => 'li',
+      'file_event' => 'mouseup',
+      'submit_input' => 'a.button-yes',
+      'submit_event' => 'click',
+      'error' => '',
+      'error_remove' => '',
+    ),
+  );
+  return $type ? (isset($types[$type]) ? $types[$type] : NULL) : $types;
+}
+
+/**
+ * Helper function that returns names of all the predefined field types.
+ */
+function _autoupload_get_predefined_names() {
+  return array_keys(_autoupload_get_predefined());
+}
