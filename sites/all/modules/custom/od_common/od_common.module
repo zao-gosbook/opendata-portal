@@ -164,10 +164,10 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
     case 'get_api_key_entityform_edit_form':
       _od_commmon_form_get_api_key_form_alter($form, $form_state);
       break;
-    case 'potential_organization_node_form';
+    case 'potential_organization_node_form':
       _od_common_potential_organization_node_form_alter($form, $form_state);
       break;
-    case 'organization_node_form';
+    case 'organization_node_form':
       _od_common_organization_node_form_alter($form, $form_state);
       break;
   }
