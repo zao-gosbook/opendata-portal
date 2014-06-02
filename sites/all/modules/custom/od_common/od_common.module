@@ -10,6 +10,9 @@ define('OD_COMMON', dirname(__FILE__));
  */
 require_once OD_COMMON . '/od_common.ajax_commands.inc';
 require_once OD_COMMON . '/submodules/od_user_register_alter.inc';
+require_once OD_COMMON . '/submodules/od_get_api_key_alter.inc';
+require_once OD_COMMON . '/submodules/od_potential_organization_node_form_alter.inc';
+
 
 /**
  * Implements hook_module_implements_alter()
@@ -157,6 +160,16 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
       break;
     case 'opendata_query_entityform_edit_form':
       unset($form['field_od_query_data_trbl_reason']['und']['#default_value']);
+      break;
+    case 'get_api_key_entityform_edit_form':
+      _od_commmon_form_get_api_key_form_alter($form, $form_state);
+      break;
+    case 'potential_organization_node_form';
+      _od_common_potential_organization_node_form_alter($form, $form_state);
+      break;
+    case 'organization_node_form';
+      _od_common_organization_node_form_alter($form, $form_state);
+      break;
   }
   //Translate submit button
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
@@ -166,15 +179,11 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'comment') {
     unset($form['author']['_author']);
   }
-  // Add Captcha form to get-api-key page.
-  if ($form['#form_id'] == 'get_api_key_entityform_edit_form' && current_path()  == 'get-api-key') {
-    $form['my_captcha_element'] = array(
-      '#type' => 'captcha',
-      '#captcha_type' => 'draggable_captcha/Draggable Captcha',
-    );
-  }
+
   if ($form_id = 'request_to_become_a_publisher_entityform_edit_form') {
-    $form['field_pubreq_created_org']['und']['form']['title']['#required'] = TRUE;
+    $form['field_pubreq_created_org'][LANGUAGE_NONE]['form']['title']['#required'] = TRUE;
+    // функция валидации вызывается из файла '/submodules/od_potential_organization_node_form_alter.inc'.
+    $form['field_pubreq_created_org']['und']['form']['field_organization_type']['#element_validate'] = array('organization_type_validation');
   }
 }
 
