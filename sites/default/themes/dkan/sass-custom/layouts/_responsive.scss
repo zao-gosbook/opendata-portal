@@ -2133,8 +2133,11 @@ $zen-auto-include-item-base: false;
     margin: 0 auto;
     clear: both;
   }
+  .page-get-api-key .your-key {
+    height: auto;
+  }
   .page-get-api-key .your-key .key {
-    font-size: 30px;
+    font-size: 25px;
   }  
 }
 
