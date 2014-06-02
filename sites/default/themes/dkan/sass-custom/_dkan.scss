@@ -2808,6 +2808,133 @@ td div.label {
   }
 }
 
+/* calendar */
+.view-calendar {
+  
+  .view-filters {
+    float: left;
+    position: relative;
+    z-index: 3;
+    
+    .form-type-bef-checkbox {
+      float: left;
+      margin-right: 0; 
+      position: relative;
+      overflow: hidden;
+      margin-right: 30px;
+      
+
+      input {
+        position: absolute;
+        left: -100px;
+      }
+      label {
+        padding: 0 0 0 37px;
+        height: 27px;
+        line-height: 27px;
+        position: relative;
+        font-size: 16px;
+        display: block;
+        cursor: pointer;
+        color: #000;
+        
+        &:before {
+          position: absolute;
+          content: '';
+          left: 0;
+          top: 0;
+          width: 27px;
+          height: 27px;
+          background: url("../images/calendar-select.png") no-repeat 0 0;
+        }        
+      }
+      input:checked + label:before {
+        background-position: -27px 0;
+      }
+      &.form-item-edit-type-event {
+        
+        label:before {
+          background-position: 0 -27px;
+        }
+        input:checked + label:before {
+          background-position: -27px -27px;
+        }        
+      }
+    }
+  }
+  .date-nav-wrapper {
+    .date-heading h3 {
+      font-size: 16px;
+      float: left;
+      line-height: 38px;
+    }
+    .pager {
+      clear: none;
+      margin: 0;
+    }
+    .date-nav {
+      clear: none;
+    }
+    .date-prev {
+      background: transparent;
+      @include border-radius(0);
+      float: none;
+      font-size: 16px;
+      left: auto;
+      padding: 0;
+      right: 140px;
+      text-align: left;
+      top: 0;
+      width: 130px;
+      z-index: 1;
+      
+      a {
+        font-weight: normal;
+        display: block;
+        height: 43px;
+        padding: 0 0 0 0;
+        text-align: center;
+        background: #e5e5e5;
+        color: #666;
+        font-size: 16px;
+        border: 1px solid #b2b2b2;
+      }
+    }
+    .date-next {
+      background: transparent;
+      @include border-radius(0);
+      float: none;
+      font-size: 16px;
+      left: auto;
+      padding: 0;
+      right: 0;
+      text-align: left;
+      top: 0;
+      width: 130px;
+      z-index: 1;
+      
+      a {
+        font-weight: normal;
+        display: block;
+        height: 43px;
+        padding: 0 0 0 0;
+        text-align: center;
+        background: #0c87e8;
+        border: 1px solid #0c87e8;
+        color: #fff;
+        font-size: 16px;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+    }
+  }
+  table {
+    
+  }
+}
+
 /* rules and recomendations */
 .section-pravila-i-rekomendacii {
 
