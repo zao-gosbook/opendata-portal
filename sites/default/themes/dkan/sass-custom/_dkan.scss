@@ -2930,7 +2930,112 @@ td div.label {
       }
     }
   }
+  .month-view .full td.single-day .calendar-empty,  
+  .month-view .full td.single-day.empty,  
+  .month-view .full td.date-box.empty {
+    background: #f0f0f0;
+  }
+  .month-view .full tr td.single-day.today,
+  .month-view .full td.date-box.today  {
+    border-color: #ffa200;
+    background: #f0f0f0;
+  }
+  .month-view .full tr.single-day .no-entry, 
+  .month-view .full tr.single-day .no-entry .inner {
+    height: 21px !important;
+    line-height: 21px;
+  }
+  .month-view .full td.multi-day div.monthview, 
+  .week-view .full td.multi-day div.weekview, 
+  .day-view .full td.multi-day div.dayview {
+    height: 9px;
+    @include border-radius(0);
+    margin-top: 2px;
+    
+    * {
+      display: none;
+    }
+    &.competition {
+      background: #ccccff;
+    }
+    &.event {
+      background: #cccc66;
+    }    
+  }
+  .month-view .full td.single-day div.monthview, 
+  .week-view .full td.single-day div.weekview, 
+  .day-view .full td.single-day div.dayview {
+    @include border-radius(0);
+    height: 9px;
+    margin: 2px 0 .25em;
+    
+    * {
+      display: none;
+    }
+    &.competition {
+      background: #ccccff;
+    }
+    &.event {
+      background: #cccc66;
+    }
+    
+  }  
+  .month-view .full tr.date-box, 
+  .month-view .full tr.date-box td, 
+  .month-view .full tr.multi-day, 
+  .month-view .full tr.multi-day td {
+    height: auto;
+    max-height: auto;
+  }  
+  
   table {
+    th.days {
+      padding: 13px 0;
+      background: #fff;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: #000;
+      font-weight: normal;
+      border: 0;
+      border-bottom: 3px solid #e6e6e6;
+      border-right: 1px solid #a5a5a5;
+      
+      &:last-child {
+        border-right: 0;
+      }
+    }
+    tr {
+      td, 
+      td.empty,
+      td.past {
+        border: 0;
+        border-bottom: 1px solid #e6e6e6;
+        border-right: 1px solid #a5a5a5;     
+        background: #f0f0f0;
+        color: #000;
+
+        &:last-child {
+          border-right: 0;
+        } 
+        .day {
+          float: none;
+          margin: 0 auto;
+        }        
+      }
+      td.empty,
+      td.past {
+        color: #666;
+      }     
+      &.date-box td {
+        text-align: center;
+        font-size: 16px;
+        
+        &.empty {
+          color: #ababab;
+        }
+      }
+
+    }
     
   }
 }
