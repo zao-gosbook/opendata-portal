@@ -2948,9 +2948,25 @@ td div.label {
   .month-view .full td.multi-day div.monthview, 
   .week-view .full td.multi-day div.weekview, 
   .day-view .full td.multi-day div.dayview {
-    height: 9px;
+    height: 9px !important;
     @include border-radius(0);
     margin-top: 2px;
+    
+    * {
+      display: none;
+    }
+    &.competition {
+      background: #ccccff;
+    }
+    &.event {
+      background: #cccc66;
+    }    
+  }
+  .week-view .full div.single-day div.weekview, 
+  .day-view .full div.single-day div.dayview {
+    @include border-radius(0);
+    margin: 2px 0 .25em;
+    border-color: rgba(255, 255, 255, .25);
     
     * {
       display: none;
@@ -2966,7 +2982,7 @@ td div.label {
   .week-view .full td.single-day div.weekview, 
   .day-view .full td.single-day div.dayview {
     @include border-radius(0);
-    height: 9px;
+    height: 9px !important;
     margin: 2px 0 .25em;
     
     * {
@@ -3001,6 +3017,9 @@ td div.label {
         }
       }      
     }
+    .calendar-hour {
+      padding-right: 4px;
+    }
   }
   #single-day-container {
     tr {
@@ -3010,11 +3029,17 @@ td div.label {
         }
       }      
     } 
-    .single-day-container     {
+    .calendar-agenda-hour     {
       padding-right: 6px;
     }
   }
   #header-container {
+    .holder {
+      .margin-right {
+        padding: 0;
+        border: 0;
+      }
+    }
     .sun {
       border-right: 0;
     }
@@ -3028,6 +3053,9 @@ td div.label {
       border: 0;
       border-bottom: 3px solid #e6e6e6;
     }
+  }
+  div.calendar {
+    background-color: transparent;
   }
   .week-view div.single-day .half-hour, 
   .day-view div.single-day .half-hour {
@@ -3084,7 +3112,31 @@ td div.label {
       }
 
     }
+  }
+  
+  /* single day */
+  &.view-display-id-calendar_day {
     
+    .week-view .full div.single-day div.weekview, 
+    .day-view .full div.single-day div.dayview {
+      
+      div {
+        display: block;
+      }
+      span {
+        display: inline;
+      }
+      .contents {
+        padding-top: 7px;
+        padding-bottom: 7px;
+        font-size: 16px;
+        color: #000;
+        line-height: 19px;
+      }
+      span[class^="date"] {
+        font-weight: normal;
+      }
+    }
   }
 }
 
