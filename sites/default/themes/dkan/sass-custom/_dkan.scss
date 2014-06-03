@@ -2987,7 +2987,52 @@ td div.label {
     height: auto;
     max-height: auto;
   }  
-  
+  #multi-day-container {
+    tr {
+      td {
+        background: #fff;
+        border-right-color: #a5a5a5;
+        
+        &:last-child {
+          border-right: 0;
+        }
+        &.first-child {
+          border-left: 0;
+        }
+      }      
+    }
+  }
+  #single-day-container {
+    tr {
+      td {
+        &.first-child {
+          border-left: 0;
+        }
+      }      
+    } 
+    .single-day-container     {
+      padding-right: 6px;
+    }
+  }
+  #header-container {
+    .sun {
+      border-right: 0;
+    }
+    .margin-right {
+      padding: 13px 0;
+      background: #fff;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: #000;
+      font-weight: normal;
+      border: 0;
+      border-bottom: 3px solid #e6e6e6;
+    }
+  }
+  .week-view div.single-day .half-hour, 
+  .day-view div.single-day .half-hour {
+    border-bottom: 1px dashed #CCCCCC;
+  }
   table {
     th.days {
       padding: 13px 0;
@@ -3003,6 +3048,9 @@ td div.label {
       &:last-child {
         border-right: 0;
       }
+    }
+    th.calendar-agenda-hour {
+      border-bottom: 3px solid #e6e6e6;
     }
     tr {
       td, 
