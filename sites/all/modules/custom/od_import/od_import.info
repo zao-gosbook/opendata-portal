@@ -5,3 +5,4 @@ core = 7.x
 dependencies[] = od_api
 dependencies[] = odp
 dependencies[] = od_log
+dependencies[] = idna
