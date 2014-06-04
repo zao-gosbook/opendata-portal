@@ -2119,6 +2119,26 @@ $zen-auto-include-item-base: false;
   .page-user-moderation #edit-combine-wrapper .form-text {
     padding: .64em;
   }  
+  
+  /* add key */
+  .page-get-api-key .captcha {
+    padding-bottom: 20px;
+  }
+  .page-get-api-key .captcha label {
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 10px;
+  }  
+  .page-get-api-key .captcha #captchaWrapper {
+    margin: 0 auto;
+    clear: both;
+  }
+  .page-get-api-key .your-key {
+    height: auto;
+  }
+  .page-get-api-key .your-key .key {
+    font-size: 25px;
+  }  
 }
 
 
@@ -2719,7 +2739,17 @@ $zen-auto-include-item-base: false;
       background-color: #0c87e8;
     }
   }
- 
+  
+  /* add key */
+  .page-get-api-key .captcha label {
+    width: 33%;
+  }  
+  .page-get-api-key .captcha #captchaWrapper {
+    margin-left: 35%;
+  }
+  .page-get-api-key .your-key .key {
+    font-size: 34px;
+  }
 }
 
 
