@@ -611,7 +611,6 @@ function _od_import_resource_set_data($resource_node, $data, $dataset_node, $org
 
       // Get validations.
       $local_valid = $local_valid_extensions;
-      $remote_valid = empty($new_field_local_value) && $remote_valid_extensions;
 
       if ($local_valid) {
         // Get correct system file uri.
@@ -650,6 +649,9 @@ function _od_import_resource_set_data($resource_node, $data, $dataset_node, $org
           }
         }
       }
+
+      // Get validations.
+      $remote_valid = empty($new_field_local_value) && $remote_valid_extensions;
 
       if ($remote_valid) {
         // Get existing opendata data file.
@@ -733,7 +735,6 @@ function _od_import_resource_set_structure($resource_node, $data, $dataset_node,
 
       // Get validations.
       $local_valid = $local_valid_extensions && !empty($field_data_local_value);
-      $remote_valid = empty($new_field_local_value) && $remote_valid_extensions && !empty($field_data_remote_value);
 
       if ($local_valid) {
         // Get correct system file uri.
@@ -757,6 +758,9 @@ function _od_import_resource_set_structure($resource_node, $data, $dataset_node,
           }
         }
       }
+
+      // Get validations.
+      $remote_valid = empty($new_field_local_value) && $remote_valid_extensions && !empty($field_data_remote_value);
 
       if ($remote_valid) {
         // Get existing opendata data file.
