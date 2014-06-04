@@ -13,13 +13,11 @@ function _od_commmon_form_get_api_key_form_alter(&$form, &$form_state) {
       '#captcha_type' => 'draggable_captcha/Draggable Captcha',
     );
 
-    /*$form['key_message'] = array(
+    $form['key_message'] = array(
       '#markup' => _api_key_message(),
-      '#prefix' => '<div class="your-key">',
-      '#suffix' => '</div>',
-    );*/
+    );
 
-    //$form['#validate'][] = 'od_common_session_writer_user_got_key_validate';
+    $form['#validate'][] = 'od_common_session_writer_user_got_key_validate';
   }
 }
 
@@ -30,7 +28,7 @@ function _api_key_message() {
   if (isset($_SESSION['got_key'])) {
     global $user;
     $user = user_load($user->uid);
-    return t("Your key: <span class='key'>@key</span>", array('@key' => $user->field_user_current_api_key['und'][0]['value']));
+    return t("<div class='your-key'>Your key: <span class='key'>@key</span></div>", array('@key' => $user->field_user_current_api_key['und'][0]['value']));
   }
 }
 
