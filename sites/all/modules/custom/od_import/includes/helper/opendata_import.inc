@@ -11,7 +11,6 @@ function _od_import_create_dataset($meta, $organization) {
   $dataset_node->language = LANGUAGE_NONE;
   $dataset_node->uid = OD_COMMON_IMPORT_USER_ID;
   $dataset_node->promote = NODE_NOT_PROMOTED;
-  $dataset_node->comment = COMMENT_NODE_OPEN;
   $dataset_node->status = NODE_NOT_PUBLISHED;
 
   // Meta identifier.
@@ -399,7 +398,6 @@ function _od_import_create_resource($dataset_node) {
   $resource_node->uid = OD_COMMON_IMPORT_USER_ID;
   $resource_node->status = NODE_PUBLISHED;
   $resource_node->promote = NODE_NOT_PROMOTED;
-  $resource_node->comment = COMMENT_NODE_OPEN;
 
   $resource_node->{ODP_FIELD_RESOURCE_DATASET}[LANGUAGE_NONE][0] = array(
     'target_id' => $dataset_node->nid,
