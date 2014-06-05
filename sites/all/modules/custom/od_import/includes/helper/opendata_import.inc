@@ -11,7 +11,6 @@ function _od_import_create_dataset($meta, $organization) {
   $dataset_node->language = LANGUAGE_NONE;
   $dataset_node->uid = OD_COMMON_IMPORT_USER_ID;
   $dataset_node->promote = NODE_NOT_PROMOTED;
-  $dataset_node->comment = COMMENT_NODE_OPEN;
   $dataset_node->status = NODE_NOT_PUBLISHED;
 
   // Meta identifier.
@@ -399,7 +398,6 @@ function _od_import_create_resource($dataset_node) {
   $resource_node->uid = OD_COMMON_IMPORT_USER_ID;
   $resource_node->status = NODE_PUBLISHED;
   $resource_node->promote = NODE_NOT_PROMOTED;
-  $resource_node->comment = COMMENT_NODE_OPEN;
 
   $resource_node->{ODP_FIELD_RESOURCE_DATASET}[LANGUAGE_NONE][0] = array(
     'target_id' => $dataset_node->nid,
@@ -611,7 +609,6 @@ function _od_import_resource_set_data($resource_node, $data, $dataset_node, $org
 
       // Get validations.
       $local_valid = $local_valid_extensions;
-      $remote_valid = empty($new_field_local_value) && $remote_valid_extensions;
 
       if ($local_valid) {
         // Get correct system file uri.
@@ -650,6 +647,9 @@ function _od_import_resource_set_data($resource_node, $data, $dataset_node, $org
           }
         }
       }
+
+      // Get validations.
+      $remote_valid = empty($new_field_local_value) && $remote_valid_extensions;
 
       if ($remote_valid) {
         // Get existing opendata data file.
@@ -733,7 +733,6 @@ function _od_import_resource_set_structure($resource_node, $data, $dataset_node,
 
       // Get validations.
       $local_valid = $local_valid_extensions && !empty($field_data_local_value);
-      $remote_valid = empty($new_field_local_value) && $remote_valid_extensions && !empty($field_data_remote_value);
 
       if ($local_valid) {
         // Get correct system file uri.
@@ -757,6 +756,9 @@ function _od_import_resource_set_structure($resource_node, $data, $dataset_node,
           }
         }
       }
+
+      // Get validations.
+      $remote_valid = empty($new_field_local_value) && $remote_valid_extensions && !empty($field_data_remote_value);
 
       if ($remote_valid) {
         // Get existing opendata data file.

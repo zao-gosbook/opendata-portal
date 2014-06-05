@@ -28,7 +28,7 @@ function _api_key_message() {
   if (isset($_SESSION['got_key'])) {
     global $user;
     $user = user_load($user->uid);
-    return t("<div class='your-key'>Your key: <span class='key'>@key</span></div>", array('@key' => $user->field_user_current_api_key['und'][0]['value']));
+    return '<div class="your-key">' . t('Your key: <span class="key">@key</span>', array('@key' => $user->field_user_current_api_key['und'][0]['value'])) . '</div>';
   }
 }
 
