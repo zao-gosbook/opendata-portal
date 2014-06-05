@@ -47,7 +47,7 @@ abstract class OdApiMetaListDefault extends OdApiObject {
   static function processArg($arg, &$decoded_url = NULL, &$encoded_url = NULL) {
     // Check redirect.
     $redirect = OdApiHelper::getUrlRedirect($arg);
-    if ($redirect !== FALSE) {
+    if ($redirect !== FALSE && !in_array(substr($redirect, 0, 1), array('/', '\\', '.'), TRUE)) {
       $arg = $redirect;
     }
 

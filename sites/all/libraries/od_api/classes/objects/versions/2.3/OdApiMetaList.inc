@@ -6,7 +6,7 @@
  */
 
 class OdApiMetaList23 extends OdApiMetaListDefault {
-  const REGEXP_URL = '/^https?:\/\/[a-zа-яё0-9\-]+(\.[a-zа-яё0-9\-]+)*\.[a-zа-яё]{2,4}(\/[a-zA-Zа-яА-ЯёЁ0-9_\-]+)*\/$/u';
+  const REGEXP_URL = '/^https?:\/\/[a-zа-яё0-9\-]+(\.[a-zа-яё0-9\-]+)*\.[a-zа-яё]{2,4}\/$/u';
 
   public function validateArg() {
     $this::processArg($this->args[$this::OBJECT_TYPE_IS_META_LIST], $decoded_url, $encoded_url);
@@ -47,9 +47,6 @@ class OdApiMetaList23 extends OdApiMetaListDefault {
 
     // File CSV representation.
     $urls['file_csv'] = strtr($file_url, array('!extension' => 'csv'));
-
-    // File XML representation.
-    $urls['file_xml'] = strtr($file_url, array('!extension' => 'xml'));
 
     $this->urls = $urls;
   }
@@ -99,6 +96,10 @@ class OdApiMetaList23 extends OdApiMetaListDefault {
     $content['meta'] = array();
     foreach ($this->parserRDFa->result[$dc_hasPart] as $item) {
       $item = rtrim(OdApiHelper::trim($item), '/');
+      if (!isset($this->parserRDFa->subjects[$item])) {
+        continue;
+      }
+
       if (!isset($this->parserRDFa->subjects[$item][$dc_title])) {
         continue;
       }
@@ -130,9 +131,6 @@ class OdApiMetaList23 extends OdApiMetaListDefault {
       switch ($this->parserCSV->error) {
         case 'fileNotExists':
           $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
-          break;
-        case 'notUtf8':
-          $this->setValidator($this::FORMAT_CSV_IS_UTF8, FALSE);
           break;
       }
       return;
