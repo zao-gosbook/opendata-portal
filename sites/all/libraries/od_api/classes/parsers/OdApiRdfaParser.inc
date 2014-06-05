@@ -81,6 +81,12 @@ class OdApiRDFaParser extends OdApiParser {
 
     $subjects = $this->parseUrl($parsing_url);
 
+    // Detect empty result.
+    if (!$subjects) {
+      $this->error = 'rdfaNotDetected';
+      return $this;
+    }
+
     if (!empty($actual_url)) {
       $actual_url = rtrim($actual_url, '/');
       $subjects[$this->url] = isset($subjects[$this->url]) ? array_merge($subjects[$this->url], $subjects[$actual_url]) : $subjects[$actual_url];

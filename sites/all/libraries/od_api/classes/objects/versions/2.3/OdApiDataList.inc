@@ -49,16 +49,22 @@ class OdApiDataList23 extends OdApiDataListDefault {
       $content['data'] = array();
       foreach ($this->parserRDFa->result[$dc_hasPart] as $item) {
         $item = rtrim(OdApiHelper::trim($item), '/');
-        if (isset($this->parserRDFa->subjects[$item][$dc_created])) {
-          $version = strtotime(reset($this->parserRDFa->subjects[$item][$dc_created]));
-          if ($version === FALSE) {
-            continue;
-          }
-
-          $content['data'][] = array(
-            'version' => (string) $version,
-          );
+        if (!isset($this->parserRDFa->subjects[$item])) {
+          continue;
         }
+
+        if (!isset($this->parserRDFa->subjects[$item][$dc_created])) {
+          continue;
+        }
+
+        $version = strtotime(reset($this->parserRDFa->subjects[$item][$dc_created]));
+        if ($version === FALSE) {
+          continue;
+        }
+
+        $content['data'][] = array(
+          'version' => (string) $version,
+        );
       }
     }
 

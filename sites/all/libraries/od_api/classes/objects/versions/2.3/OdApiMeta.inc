@@ -6,7 +6,7 @@
  */
 
 class OdApiMeta23 extends OdApiMetaDefault {
-  const REGEXP_IDENTIFIER = '/^[0-9]{10}-[a-zA-Z0-9_]+$/u';
+  const REGEXP_IDENTIFIER = '/^[0-9]{10}-[a-zA-Z0-9_-]+$/u';
 
   public function validateArg() {
     // Check searching meta arg is valid.

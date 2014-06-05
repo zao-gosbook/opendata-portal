@@ -40,10 +40,6 @@ class OdApiCSVParser extends OdApiParser {
         // Used "@" because mixed encoding text returns error always.
         $content = @iconv($encoding, "utf-8//IGNORE", $content);
       }
-      else {
-        $this->error = 'notUtf8';
-        return $this;
-      }
     }
 
     $available_delimiters = array(',', ';');
