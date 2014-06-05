@@ -379,8 +379,10 @@ abstract class OdApiObject {
   }
 
   public function checkUrlSuccess($url) {
-    $http_status = OdApiHelper::getUrlStatus($url);
-    return $http_status < 400;
+    $http_status = OdApiHelper::getUrlHttpStatus($url);
+    $data_status = OdApiHelper::getUrlDataStatus($url);
+
+    return $http_status < 400 && $data_status;
   }
 
   public function checkErrorExists() {

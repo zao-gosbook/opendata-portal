@@ -6,11 +6,35 @@
  */
 
 class OdApiHelper {
-  static function getUrlStatus($url) {
+  static function getUrlHttpStatus($url) {
     // Collect options.
     $options = array(
       CURLOPT_RETURNTRANSFER => TRUE,
       CURLOPT_FRESH_CONNECT => TRUE,
+    );
+
+    // Init connect.
+    $curl = curl_init($url);
+    curl_setopt_array($curl, $options);
+
+    // Execute connect.
+    curl_exec($curl);
+
+    // Get http code.
+    $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+    // Close connect.
+    curl_close($curl);
+
+    return $http_code;
+  }
+
+  static function getUrlDataStatus($url) {
+    // Collect options.
+    $options = array(
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_FRESH_CONNECT => TRUE,
+      CURLOPT_FOLLOWLOCATION => TRUE,
       CURLOPT_NOPROGRESS => FALSE,
       CURLOPT_PROGRESSFUNCTION => function ($resource, $download_size) {
         return $download_size > (1 * 1024 * 1024);
@@ -21,14 +45,12 @@ class OdApiHelper {
     $curl = curl_init($url);
     curl_setopt_array($curl, $options);
 
-    // Execute connect.
     $data = curl_exec($curl);
-    $http_code = !empty($data) ? curl_getinfo($curl, CURLINFO_HTTP_CODE) : 404;
 
     // Close connect.
     curl_close($curl);
 
-    return $http_code;
+    return !empty($data);
   }
 
   static function getUrlRedirect($url) {
