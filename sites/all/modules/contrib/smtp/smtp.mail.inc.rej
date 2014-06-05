@@ -1,0 +1,14 @@
+--- /dev/null
++++ /dev/null
+@@ -374,7 +374,11 @@
+                 $mailer->ContentType = 'multipart/mixed';
+               }
+             }
++            
++            if(base64_decode($mailer->Body) !== FALSE){
++              $mailer->Body = base64_decode($mailer->Body);
++            }
+          }
+           // If text/plain within the body part, add it to $mailer->Body.
+           elseif (strpos($body_part, 'text/plain')) {
+             // Clean up the text.

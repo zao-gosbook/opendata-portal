@@ -1,0 +1,46 @@
+diff --git a/queue_mail.module b/queue_mail.module
+index f794734..da387e1 100644
+--- a/queue_mail.module
++++ b/queue_mail.module
+@@ -90,7 +90,24 @@ function queue_mail_module_implements_alter(&$implementations, $hook) {
+  * @see queue_mail_mail_alter()
+  */
+ function queue_mail_send($message = array()) {
+-
++	$max_rejects = 3;
++	$store_var = 'mailq:rejected';
++	$rejected = variable_get($store_var, array());
++	$clean = $message;
++	
++	// Perform little cleaning from dynamic content
++	foreach (array('language', 'send', 'body', 'subject', 'params') as $clean_key) {
++		if (isset($clean[$clean_key])) {
++			unset($clean[$clean_key]);
++		}
++	}
++	
++	// Form unique hash
++	$hash = substr(md5(serialize($clean)), 0, 16);
++	if (isset($rejected[$hash]) && $rejected[$hash] >= $max_rejects) {
++		return;
++	}
++	
+   // Invoke hook_queue_mail_send_alter() to allow all modules to alter the
+   // queued e-mail.
+   drupal_alter('queue_mail_send', $message);
+@@ -109,9 +126,15 @@ function queue_mail_send($message = array()) {
+   }
+   // Sending was originally requested and was not canceled.
+   else {
++  	sleep(2); // Sleep at least 2 seconds in order to prevent sending more than 5 emails per second
+     $message['result'] = $system->mail($message);
+     // Log errors.
+     if (!$message['result']) {
++    	$rejected[$hash] = isset($rejected[$hash]) ? ++$rejected[$hash] : 0;
++    	variable_set($store_var, $rejected);
++    	
++    	// Attempt again next time
++    	queue_mail_mail_alter($message);
+       watchdog('mail', 'Error sending e-mail (from %from to %to).', array('%from' => $message['from'], '%to' => $message['to']), WATCHDOG_ERROR);
+     }
+   }
