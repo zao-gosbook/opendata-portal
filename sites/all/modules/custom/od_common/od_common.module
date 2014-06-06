@@ -12,6 +12,7 @@ require_once OD_COMMON . '/od_common.ajax_commands.inc';
 require_once OD_COMMON . '/submodules/od_user_register_alter.inc';
 require_once OD_COMMON . '/submodules/od_get_api_key_alter.inc';
 require_once OD_COMMON . '/submodules/od_potential_organization_node_form_alter.inc';
+require_once OD_COMMON . '/submodules/od_preprocess_wizard_entityform_edit_form.inc';
 
 
 /**
@@ -170,6 +171,12 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
     case 'organization_node_form':
       _od_common_organization_node_form_alter($form, $form_state);
       break;
+    case 'od_preprocess_wizard_entityform_edit_form':
+      _od_common_preprocess_wizard_form_alter($form, $form_state);
+      break;
+    case 'dataset_actualization_entityform_edit_form':
+      _od_common_dataset_actualization_form_alter($form, $form_state);
+      break;
   }
   //Translate submit button
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'entityform') {
@@ -180,7 +187,7 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
     unset($form['author']['_author']);
   }
 
-  if ($form_id = 'request_to_become_a_publisher_entityform_edit_form') {
+  if ($form_id == 'request_to_become_a_publisher_entityform_edit_form') {
     $form['field_pubreq_created_org'][LANGUAGE_NONE]['form']['title']['#required'] = TRUE;
     // функция валидации вызывается из файла '/submodules/od_potential_organization_node_form_alter.inc'.
     $form['field_pubreq_created_org']['und']['form']['field_organization_type']['#element_validate'] = array('organization_type_validation');
