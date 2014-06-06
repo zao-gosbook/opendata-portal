@@ -2336,7 +2336,7 @@ function antispam_api_cmd_comment_check($content_type, $content) {
   else {
     $comment_data = array_merge(_antispam_api_prepare_request_data(), $comment_data);
     $query_string = _antispam_api_build_query_string($comment_data);
-    $host = $api_key . ' . ' . $api_host;
+    $host = $api_key . '.' . $api_host;
     $response = _antispam_api_http_post($query_string, $host, '/' . AKISMET_API_VERSION . '/comment-check');
 
     if (!isset($response[1])) {
