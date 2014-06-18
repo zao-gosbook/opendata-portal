@@ -73,7 +73,7 @@ class OdApiMeta23 extends OdApiMetaDefault {
     $dc_identifier = $this->localNamespaceUnwrap('dc:identifier');
     $dc_title = $this->localNamespaceUnwrap('dc:title');
     $dc_description = $this->localNamespaceUnwrap('dc:description');
-    $dc_owner = $this->localNamespaceUnwrap('dc:owner');
+    $dc_creator = $this->localNamespaceUnwrap('dc:creator');
     $dc_created = $this->localNamespaceUnwrap('dc:created');
     $dc_valid = $this->localNamespaceUnwrap('dc:valid');
     $dc_subject = $this->localNamespaceUnwrap('dc:subject');
@@ -96,8 +96,8 @@ class OdApiMeta23 extends OdApiMetaDefault {
     if (isset($this->parserRDFa->result[$dc_description])) {
       $content['description'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_description]));
     }
-    if (isset($this->parserRDFa->result[$dc_owner])) {
-      $content['owner'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_owner]));
+    if (isset($this->parserRDFa->result[$dc_creator])) {
+      $content['owner'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_creator]));
     }
     if (isset($this->parserRDFa->result[$dc_created])) {
       $content['created'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_created]));
