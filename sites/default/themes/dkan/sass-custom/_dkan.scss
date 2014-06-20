@@ -6448,10 +6448,14 @@ div.fivestar-widget .star {
     font-weight: normal;
     float: left;
   }
+  .field-items {
+    display: table;
+  }
   .field-name-field-site-url,
   .field-name-field-org-site-od-section,
   .field-name-field-opendata-portal-url {
-    a {
+
+  a {
       display: block;
       width: 25px;
       height: 21px;
