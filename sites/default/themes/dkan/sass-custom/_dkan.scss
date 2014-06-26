@@ -5199,6 +5199,11 @@ table {
       text-decoration: none;
     }
   }
+  .views-field-field-od-query-data-description {
+    p {
+      margin: 0 0 10px;
+    }
+  }
   .views-field-ops {
     margin-left: 70px;
     
@@ -5496,7 +5501,7 @@ div.fivestar-widget .star {
   .panel-pane {
     margin-bottom: 40px;
   }
-  .flag-wrapper a {
+  .flag-subscribe-dataset a {
     font-size: 16px;
     text-decoration: none;
     display: block;
@@ -5505,12 +5510,15 @@ div.fivestar-widget .star {
     padding-left: 85px;
     background: url("../images/ico-subscribe.png") no-repeat 0 50%;
   }
+  .flag-throbber {
+    display: none;
+  }
   .flag-message {
     font-size: 16px;
     text-decoration: none;
-    display: block;
+    display: none !important;
     height: 56px;
-    display: table-cell;
+    /*display: table-cell;*/
     width: 100%;
     vertical-align: middle;
     padding-left: 85px;
