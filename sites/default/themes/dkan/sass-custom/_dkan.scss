@@ -1598,7 +1598,7 @@ td div.label {
       text-align: center;
     }
     tbody {
-      tr.odd td,
+      tr.odd,
       tr:nth-child(odd) {
         background: #f4f4f4;
       }
