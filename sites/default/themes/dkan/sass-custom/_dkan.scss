@@ -1570,6 +1570,10 @@ td div.label {
   .ui-widget-content {
     padding-left: 0;
     padding-right: 0;
+    
+    .pane-piwik-report-iframe iframe {
+      min-height: 500px;
+    }
   }
   table {
     width: 100%;
@@ -1659,6 +1663,11 @@ td div.label {
       margin-bottom: 1em;
     }
   }
+}
+
+/* suggestion */
+.pane-add-suggestion .entity > h2 {
+  display: none;
 }
 
 .page-user-moderation {
