@@ -28,11 +28,19 @@ function _od_import_organization_opendata($organizations) {
     $vars = array();
 
     // Get organization opendata site url.
+    $opendata_site_url = array();
+
     if (!empty($organization->field_opendata_portal_url[LANGUAGE_NONE][0]['url'])) {
-      $opendata_site_url = $organization->field_opendata_portal_url[LANGUAGE_NONE][0]['url'];
+      $opendata_site_url['portal'] = $organization->field_opendata_portal_url[LANGUAGE_NONE][0]['url'];
     }
     else {
-      $opendata_site_url = $organization->field_site_url[LANGUAGE_NONE][0]['url'];
+      $opendata_site_url['site-url'] = $organization->field_site_url[LANGUAGE_NONE][0]['url'];
+    }
+
+    if (!empty($organization->field_organization_system[LANGUAGE_NONE][0]['url'])) {
+      foreach($organization->field_organization_system[LANGUAGE_NONE] as $key => $system_url) {
+        $opendata_site_url[$key . '-system url'] = $system_url['url'];
+      }
     }
 
     // Get organization opendata page url.
@@ -40,26 +48,28 @@ function _od_import_organization_opendata($organizations) {
       $vars['semantic_list_url'] = $organization->field_opendata_page_url[LANGUAGE_NONE][0]['value'];
     }
 
-    $list_vars = array(
-      'args' => array('meta-list' => $opendata_site_url),
-      'vars' => $vars,
-      'org_nid' => $organization->nid,
-      'org_name' => $organization->title,
-    );
-    $list = _od_import_meta_list($list_vars);
+    foreach ($opendata_site_url as $site_url) {
+      $list_vars = array(
+        'args' => array('meta-list' => $site_url),
+        'vars' => $vars,
+        'org_nid' => $organization->nid,
+        'org_name' => $organization->title,
+      );
+      $list = _od_import_meta_list($list_vars);
 
-    if (is_array($list) && !empty($list)) {
-      // Meta object.
-      foreach ($list as $meta) {
-        $meta_vars = array(
-          'args' => $meta['#api'],
-          'vars' => $vars,
-          'org_nid' => $organization->nid,
-          'org_name' => $organization->title,
-          'meta' => $meta,
-          'time_start' => $time_start,
-        );
-        $operations[] = array('_od_import_meta', array($meta_vars));
+      if (is_array($list) && !empty($list)) {
+        // Meta object.
+        foreach ($list as $meta) {
+          $meta_vars = array(
+            'args' => $meta['#api'],
+            'vars' => $vars,
+            'org_nid' => $organization->nid,
+            'org_name' => $organization->title,
+            'meta' => $meta,
+            'time_start' => $time_start,
+          );
+          $operations[] = array('_od_import_meta', array($meta_vars));
+        }
       }
     }
   }
