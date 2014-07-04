@@ -485,11 +485,11 @@ function suggestions_default_page_manager_pages() {
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
-  $page->name = 'suggestions';
+  $page->name = 'list_suggestions';
   $page->task = 'page';
-  $page->admin_title = 'Предложения';
+  $page->admin_title = 'Предложения (список на странице)';
   $page->admin_description = '';
-  $page->path = 'list-suggestions';
+  $page->path = 'suggestions';
   $page->access = array();
   $page->menu = array();
   $page->arguments = array();
@@ -500,22 +500,21 @@ function suggestions_default_page_manager_pages() {
   $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
-  $handler->name = 'page_suggestions_panel_context';
+  $handler->name = 'page_list_suggestions_panel_context';
   $handler->task = 'page';
-  $handler->subtask = 'suggestions';
+  $handler->subtask = 'list_suggestions';
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Предложения',
+    'title' => 'Панель',
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
+    'body_classes_to_add' => 'page-ideas',
     'css_id' => '',
     'css' => '',
     'contexts' => array(),
     'relationships' => array(),
-    'panels_everywhere_site_template' => 'site_template_panel_context_9',
   );
   $display = new panels_display();
   $display->layout = 'onecol';
@@ -528,11 +527,11 @@ function suggestions_default_page_manager_pages() {
   );
   $display->cache = array();
   $display->title = 'Suggestions';
-  $display->uuid = '326d6b51-534d-41b3-9f77-f2daddd1d247';
+  $display->uuid = 'd2c034ab-961b-4910-9ab5-103d7f886b58';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-7d4739f9-9b83-43ba-9c04-718542d6c4af';
+    $pane->pid = 'new-6410b0d5-f8b6-4e5e-9ede-2897b3e7d4f9';
     $pane->panel = 'middle';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -573,11 +572,11 @@ function suggestions_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '7d4739f9-9b83-43ba-9c04-718542d6c4af';
-    $display->content['new-7d4739f9-9b83-43ba-9c04-718542d6c4af'] = $pane;
-    $display->panels['middle'][0] = 'new-7d4739f9-9b83-43ba-9c04-718542d6c4af';
+    $pane->uuid = '6410b0d5-f8b6-4e5e-9ede-2897b3e7d4f9';
+    $display->content['new-6410b0d5-f8b6-4e5e-9ede-2897b3e7d4f9'] = $pane;
+    $display->panels['middle'][0] = 'new-6410b0d5-f8b6-4e5e-9ede-2897b3e7d4f9';
     $pane = new stdClass();
-    $pane->pid = 'new-217f3300-2a00-4bba-82ca-06ec1f0b50b5';
+    $pane->pid = 'new-f655738f-2281-42f7-a060-6baf0c7da86d';
     $pane->panel = 'middle';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -620,11 +619,11 @@ function suggestions_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '217f3300-2a00-4bba-82ca-06ec1f0b50b5';
-    $display->content['new-217f3300-2a00-4bba-82ca-06ec1f0b50b5'] = $pane;
-    $display->panels['middle'][1] = 'new-217f3300-2a00-4bba-82ca-06ec1f0b50b5';
+    $pane->uuid = 'f655738f-2281-42f7-a060-6baf0c7da86d';
+    $display->content['new-f655738f-2281-42f7-a060-6baf0c7da86d'] = $pane;
+    $display->panels['middle'][1] = 'new-f655738f-2281-42f7-a060-6baf0c7da86d';
     $pane = new stdClass();
-    $pane->pid = 'new-d92131d9-e577-4d43-b8af-97e026f0cee2';
+    $pane->pid = 'new-d933e202-0be7-4fac-a063-382700367192';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'suggestions-list_suggestions';
@@ -639,14 +638,14 @@ function suggestions_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = 'd92131d9-e577-4d43-b8af-97e026f0cee2';
-    $display->content['new-d92131d9-e577-4d43-b8af-97e026f0cee2'] = $pane;
-    $display->panels['middle'][2] = 'new-d92131d9-e577-4d43-b8af-97e026f0cee2';
+    $pane->uuid = 'd933e202-0be7-4fac-a063-382700367192';
+    $display->content['new-d933e202-0be7-4fac-a063-382700367192'] = $pane;
+    $display->panels['middle'][2] = 'new-d933e202-0be7-4fac-a063-382700367192';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
-  $pages['suggestions'] = $page;
+  $pages['list_suggestions'] = $page;
 
   return $pages;
 
