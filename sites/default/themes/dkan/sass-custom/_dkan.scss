@@ -1570,6 +1570,10 @@ td div.label {
   .ui-widget-content {
     padding-left: 0;
     padding-right: 0;
+    
+    .pane-piwik-report-iframe iframe {
+      min-height: 500px;
+    }
   }
   table {
     width: 100%;
@@ -1598,7 +1602,7 @@ td div.label {
       text-align: center;
     }
     tbody {
-      tr.odd td,
+      tr.odd,
       tr:nth-child(odd) {
         background: #f4f4f4;
       }
@@ -1659,6 +1663,11 @@ td div.label {
       margin-bottom: 1em;
     }
   }
+}
+
+/* suggestion */
+.pane-add-suggestion .entity > h2 {
+  display: none;
 }
 
 .page-user-moderation {
@@ -7208,8 +7217,24 @@ div.fivestar-widget .star {
   }  
   g.city > text.city-label {
     fill: #000;
+  } 
+}
+.view-od-map-organizations {
+  .moderation-tabs {
+    border: 1px solid #fff;
   }
-} 
+  .views-field-created {
+    width: 200px;
+    text-align: center;
+  }
+  tr {
+    border-bottom: 1px solid #fff;
+    
+    td {
+      border-bottom: 1px solid #fff;
+    }
+  }
+}
  
 /**
  * forum 
