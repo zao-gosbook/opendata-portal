@@ -7217,8 +7217,24 @@ div.fivestar-widget .star {
   }  
   g.city > text.city-label {
     fill: #000;
+  } 
+}
+.view-od-map-organizations {
+  .moderation-tabs {
+    border: 1px solid #fff;
   }
-} 
+  .views-field-created {
+    width: 200px;
+    text-align: center;
+  }
+  tr {
+    border-bottom: 1px solid #fff;
+    
+    td {
+      border-bottom: 1px solid #fff;
+    }
+  }
+}
  
 /**
  * forum 
