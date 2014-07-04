@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Suggestions feature.
+ */
+
+include_once 'suggestions.features.inc';
