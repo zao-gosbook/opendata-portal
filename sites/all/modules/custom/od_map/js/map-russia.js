@@ -50,7 +50,6 @@
       //Start of Choropleth drawing
 
       function ready(error, map, data) {
-        console.log(map);
         var portalsById = {};
 
         // Gather info
