@@ -619,6 +619,8 @@ function od_common_js_alter(&$javascript) {
       );
     }
   }
+  drupal_add_js(drupal_get_path('module', 'od_common') .'/js/od-page-datasets-map-google.js');
+
 }
 
 /**
