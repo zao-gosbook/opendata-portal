@@ -2,7 +2,7 @@
   Drupal.behaviors.od_cell_popup_popup = {
     attach: function (context, settings) {
       var check = $('.od-map-map-russia-wrapper').once('od-map-russia');
-      if (!check.length() == 0) {
+      if (!check.length == 0) {
         return;
       }
 
