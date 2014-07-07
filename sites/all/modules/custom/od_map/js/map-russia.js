@@ -1,6 +1,11 @@
 (function ($) {
   Drupal.behaviors.od_cell_popup_popup = {
     attach: function (context, settings) {
+      var check = $('.od-map-map-russia-wrapper').once('od-map-russia');
+      if (!check.length() == 0) {
+        return;
+      }
+
       var config = settings.od_map.russia;
       var width = 960,
         height = 500;
@@ -15,6 +20,7 @@
         .range(["#adfcad", "#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]);
 
       window.color = color;
+
 
       var wrapper = d3.select(".od-map-map-russia-wrapper");
       var infoDiv = wrapper.append('div')
@@ -44,7 +50,6 @@
       //Start of Choropleth drawing
 
       function ready(error, map, data) {
-        console.log(map);
         var portalsById = {};
 
         // Gather info
