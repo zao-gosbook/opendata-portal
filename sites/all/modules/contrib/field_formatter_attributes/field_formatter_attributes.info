@@ -1,0 +1,14 @@
+name = Field Formatter Attributes
+description = "Allows custom HTML attributes for field formatters."
+core = 7.x
+package = Fields
+dependencies[] = field
+dependencies[] = field_formatter_settings
+dependencies[] = options_element
+
+; Information added by drupal.org packaging script on 2013-06-19
+version = "7.x-1.0-beta2"
+core = "7.x"
+project = "field_formatter_attributes"
+datestamp = "1371662751"
+
