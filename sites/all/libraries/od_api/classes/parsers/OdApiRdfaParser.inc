@@ -14,6 +14,14 @@ class OdApiRDFaParser extends OdApiParser {
     $data = OdApiHelper::getUrlData($url);
     // Fix DOMDocument loadHTML encoding bug.
     $data = preg_replace('/<meta\s+charset="([\w-]+)"/', '/<meta http-equiv="Content-Type" content="text/html; charset=$1"/', $data, 1);
+    if (strpos($data, '<meta http-equiv="Content-Type" content="text/html; charset=') === FALSE) {
+      if (strpos($data, '<head>') !== FALSE) {
+        $data = preg_replace('/<head>/', '/<head>' . "\n" . '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />', $data, 1);
+      }
+      else {
+        $data = '';
+      }
+    }
     $parser = new EasyRdf_Graph($url, $data);
 
     $resources = $parser->resources();
