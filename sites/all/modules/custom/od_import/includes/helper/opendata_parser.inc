@@ -109,14 +109,10 @@ function _od_import_meta_list($list_vars) {
   $od = new OdApi($list_vars['vars']);
   $meta_list = $od->getResult($list_vars['args']);
 
-  $errors = array();
-  foreach ($od->getErrors() as $error) {
-    $errors[] = t($error['description']);
-  }
-  $errors = implode(', ', $errors);
+  $error = $od->getError();
 
-  if (!empty($errors)) {
-    $message = 'Ошибка в реестре раздела открытых данных организации "' . $list_vars['org_name'] . '": ' . $errors;
+  if (!empty($error)) {
+    $message = 'Ошибка в реестре раздела открытых данных организации "' . $list_vars['org_name'] . '": ' . $error;
     od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $list_vars['org_nid']);
   }
 
@@ -146,9 +142,9 @@ function _od_import_meta($meta_vars, &$context) {
   // Meta object.
   $meta = $od->getResult($meta_vars['args']);
 
-  $errors = _od_import_get_errors($od);
+  $error = $od->getError();
 
-  if (empty($errors)) {
+  if (empty($error)) {
     OdApiHelper::clearProperties($meta);
 
     _od_import_publisher($od, $meta);
@@ -163,7 +159,7 @@ function _od_import_meta($meta_vars, &$context) {
       $meta['title'] = $meta_vars['meta']['title'];
     }
 
-    $meta['#errors'] = $errors;
+    $meta['#error'] = $error;
   }
 
   $context['results']['data'][] = $meta;
@@ -179,9 +175,9 @@ function _od_import_publisher(OdApi $od, &$meta) {
   $publisher_args = $meta['publisher']['#api'];
   $publisher = $od->getResult($publisher_args);
 
-  $errors = _od_import_get_errors($od);
+  $error = $od->getError();
 
-  if (empty($errors)) {
+  if (empty($error)) {
     $meta['publisher'] = $publisher;
     OdApiHelper::clearProperties($meta['publisher']);
   }
@@ -196,9 +192,9 @@ function _od_import_data_list(OdApi $od, &$meta) {
   $data_args = $meta['data']['#api'];
   $data_list = $od->getResult($data_args);
 
-  $errors = _od_import_get_errors($od);
+  $error = $od->getError();
 
-  if (empty($errors)) {
+  if (empty($error)) {
     $meta['data'] = $data_list['data'];
     OdApiHelper::clearProperties($meta['data']);
 
@@ -216,9 +212,9 @@ function _od_import_data(OdApi $od, &$meta) {
     $data_args = $data['#api'];
     $data = $od->getResult($data_args);
 
-    $errors = _od_import_get_errors($od);
+    $error = $od->getError();
 
-    if (empty($errors)) {
+    if (empty($error)) {
       OdApiHelper::clearProperties($data);
 
       _od_import_structure($od, $data);
@@ -235,26 +231,12 @@ function _od_import_structure(OdApi $od, &$data) {
   $structure_args = $data['structure']['#api'];
   $structure_result = $od->getResult($structure_args);
 
-  $errors = array();
-  foreach ($od->getErrors() as $error) {
-    $errors[] = t($error['description']);
-  }
-  $errors = implode(', ', $errors);
+  $error = $od->getError();
 
-  if (empty($errors)) {
+  if (empty($error)) {
     $data['structure'] = $structure_result;
     OdApiHelper::clearProperties($data['structure']);
   }
-}
-
-function _od_import_get_errors(OdApi $od) {
-  $errors = array();
-  foreach ($od->getErrors() as $error) {
-    $errors[] = t($error['description']);
-  }
-  $errors = implode(', ', $errors);
-
-  return $errors;
 }
 
 function _od_import_meta_from_data($results) {
@@ -273,8 +255,8 @@ function _od_import_meta_from_data($results) {
 
   foreach ($results['data'] as $meta) {
     // Skip opendata meta with error.
-    if (isset($meta['#errors'])) {
-      $message = 'Ошибка в паспорте набора открытых данных "' . $meta['title'] . '" организации "' . $results['org_name'] . '" (' . $meta['#errors'] . ').';
+    if (isset($meta['#error'])) {
+      $message = 'Ошибка в паспорте набора открытых данных "' . $meta['title'] . '" организации "' . $results['org_name'] . '" (' . $meta['#error'] . ').';
       od_log($message, OD_LOG_IMPORTANCE_ERROR, OD_LOG_EVENT_IMPORT_DATA, $results['org_nid']);
       $dataset_list_failed[] = $meta['title'];
       continue;
