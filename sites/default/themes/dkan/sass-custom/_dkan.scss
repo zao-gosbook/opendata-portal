@@ -2510,10 +2510,6 @@ td div.label {
         }
       }
       .field-name-resource-format {
-        text-transform: none;      
-        position: absolute;
-        top: -10px;
-        right: -25px;
         
         .views-field-field-format {
           display: inline-block;
@@ -2521,7 +2517,11 @@ td div.label {
           color: #fff;
           background: #ffa200;
           text-decoration: none;
-          font-size: 1.2em;          
+          font-size: 1.2em;   
+          text-transform: none;      
+          position: absolute;
+          top: -10px;
+          right: -25px;          
         }
       }
       .field-name-field-date-last-change {
@@ -5179,12 +5179,35 @@ table {
   .views-field-field-od-query-id {
     font-size: 18px;
     text-decoration: underline;
+    
+    * {
+      display: inline;
+    }
   }
-  .views-field-field-query-state {
+  .views-field-field-query-state-1 {
     @include clearfix;
     font-size: 16px;
-    color: #666;
+    color: #000;
     
+    .views-field {
+      display: inline-block;
+      
+      .field-content {
+        text-shadow: 1px 1px 1px rgba(0,0,0, .6);
+      }
+      &.approved .field-content {
+        color: yellow;
+      }
+      &.discussion .field-content {
+        color: green;
+      }
+      &.answered .field-content {
+        color: orange;
+      }
+      * {
+        display: inline;
+      }
+    }
     span {
       float: left;
       padding-right: 7px;
