@@ -1,0 +1,17 @@
+name = message about commet to dataset
+core = 7.x
+package = Dataset
+version = 7.x-1.0-beta1
+project = message_about_commet_to_dataset
+dependencies[] = comment
+dependencies[] = entity
+dependencies[] = privatemsg_rules
+dependencies[] = rb_misc
+dependencies[] = rules
+dependencies[] = rules_conditional
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[rules_config][] = rules_message_about_comment_to_dataset
+features[views_view][] = dataset_list_comment_authors
+features_exclude[dependencies][ctools] = ctools
