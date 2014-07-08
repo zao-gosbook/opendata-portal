@@ -6,138 +6,125 @@
  */
 
 class OdApiMeta23 extends OdApiMetaDefault {
-  const REGEXP_IDENTIFIER = '/^[0-9]{10}-[a-zA-Z0-9_-]+$/u';
-
-  public function validateArg() {
+  protected function _validateArg() {
     // Check searching meta arg is valid.
-    $meta_arg_is_valid = (bool) preg_match($this::REGEXP_IDENTIFIER, $this->args[$this::OBJECT_TYPE_IS_META]);
+    $meta_arg_is_valid = preg_match($this::REGEXP_META_IDENTIFIER, $this->arg);
 
-    $meta_exists = FALSE;
-    if ($meta_arg_is_valid) {
-      // Check searching meta exists.
-      foreach ($this->parent->content['meta'] as $meta) {
-        if ($meta['identifier'] === $this->args[$this::OBJECT_TYPE_IS_META]) {
-          $meta_exists = TRUE;
-          break;
-        }
-      }
-    }
+    // Check searching meta exists.
+    $meta_correct = $meta_arg_is_valid && isset($this->parent->content[$this::$type][$this->arg]);
 
-    $this->setValidator($this::SITE_OPENDATA_META_ARG_IS_VALID, $meta_exists);
+    $this->setValidator($this::SITE_OPENDATA_META_ARG_IS_VALID, $meta_correct);
   }
 
-  public function validateVersion() {
-    return TRUE;
-  }
-
-  public function setPossibleUrls() {
-    // Collect available urls.
-    $urls = array();
-
+  protected function _validateUrl() {
     // Get meta arg.
-    $meta_arg = $this->args[$this::OBJECT_TYPE_IS_META];
+    $meta_arg = $this->arg;
 
-    $this->url = $this->od_api->list_url . '/' . $meta_arg;
+    $meta_list = $this->parent;
 
-    // Visual representation.
-    $urls['semantic'] = $this->url;
+    // Define opendata meta page url.
+    $url = rtrim($meta_list->url, '/') . '/' . $meta_arg;
 
-    // File url template.
-    $file_url = $this->url . '.!extension';
-
-    // File CSV representation.
-    $urls['file_csv'] = strtr($file_url, array('!extension' => 'csv'));
-
-    // File XML representation.
-    $urls['file_xml'] = strtr($file_url, array('!extension' => 'xml'));
-
-    $this->urls = $urls;
-  }
-
-  public function validateObject() {
     // Check opendata meta page url.
-    $site_opendata_meta_page_exists = $this->checkUrlSuccess($this->url);
-    if (!$site_opendata_meta_page_exists) {
-      $site_opendata_meta_page_exists = $this->checkUrlSuccess($this->url . '/');
+    if (OdApiHelper::checkUrlSuccess($url)) {
+      $this->urls[] = $url;
     }
-    $this->setValidator($this::SITE_OPENDATA_META_PAGE_EXISTS, $site_opendata_meta_page_exists);
+
+    $this->setValidator($this::SITE_OPENDATA_META_PAGE_EXISTS, !empty($this->urls));
   }
 
-  protected function _parseRdf() {
-    // Check RDFa object existing.
-    if ($this->parserRDFa->error) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
+  protected function _getFormatUrl($format) {
+    $result = FALSE;
+    switch ($format) {
+      case $this::OBJECT_FORMAT_RDFA;
+        $result = $this->url;
+        break;
+      case $this::OBJECT_FORMAT_CSV;
+        $result = $this->url . '.csv';
+        break;
+    }
+
+    return $result;
+  }
+
+  protected function _parseRdfa() {
+    if ($this->parserRdfa['error']) {
       return;
     }
 
-    $dc_identifier = $this->localNamespaceUnwrap('dc:identifier');
-    $dc_title = $this->localNamespaceUnwrap('dc:title');
-    $dc_description = $this->localNamespaceUnwrap('dc:description');
-    $dc_creator = $this->localNamespaceUnwrap('dc:creator');
-    $dc_created = $this->localNamespaceUnwrap('dc:created');
-    $dc_valid = $this->localNamespaceUnwrap('dc:valid');
-    $dc_subject = $this->localNamespaceUnwrap('dc:subject');
-    $dc_publisher = $this->localNamespaceUnwrap('dc:publisher');
-    $dc_source = $this->localNamespaceUnwrap('dc:source');
+    $result = $this->parserRdfa['result'];
 
-    $identifier = isset($this->parserRDFa->result[$dc_identifier]) ? OdApiHelper::trim(reset($this->parserRDFa->result[$dc_identifier])) : FALSE;
-    if ($identifier === FALSE || $identifier !== $this->args[$this::OBJECT_TYPE_IS_META]) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
+    $dc_identifier = OdApiHelper::namespaceUnwrap('dc:identifier');
+    $dc_title = OdApiHelper::namespaceUnwrap('dc:title');
+    $dc_description = OdApiHelper::namespaceUnwrap('dc:description');
+    $dc_creator = OdApiHelper::namespaceUnwrap('dc:creator');
+    $dc_created = OdApiHelper::namespaceUnwrap('dc:created');
+    $dc_valid = OdApiHelper::namespaceUnwrap('dc:valid');
+    $dc_subject = OdApiHelper::namespaceUnwrap('dc:subject');
+    $dc_publisher = OdApiHelper::namespaceUnwrap('dc:publisher');
+    $dc_source = OdApiHelper::namespaceUnwrap('dc:source');
+
+    if (!isset($result[$dc_identifier])) {
+      return;
+    }
+
+    $identifier = OdApiHelper::trim(reset($result[$dc_identifier]));
+    if ($identifier !== $this->arg) {
       return;
     }
 
     $content = array();
-    if (isset($this->parserRDFa->result[$dc_identifier])) {
+    if (isset($result[$dc_identifier])) {
       $content['identifier'] = $identifier;
     }
-    if (isset($this->parserRDFa->result[$dc_title])) {
-      $content['title'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_title]));
+    if (isset($result[$dc_title])) {
+      $content['title'] = OdApiHelper::trim(reset($result[$dc_title]));
     }
-    if (isset($this->parserRDFa->result[$dc_description])) {
-      $content['description'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_description]));
+    if (isset($result[$dc_description])) {
+      $content['description'] = OdApiHelper::trim(reset($result[$dc_description]));
     }
-    if (isset($this->parserRDFa->result[$dc_creator])) {
-      $content['owner'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_creator]));
+    if (isset($result[$dc_creator])) {
+      $content['owner'] = OdApiHelper::trim(reset($result[$dc_creator]));
     }
-    if (isset($this->parserRDFa->result[$dc_created])) {
-      $content['created'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_created]));
+    if (isset($result[$dc_created])) {
+      $content['created'] = OdApiHelper::trim(reset($result[$dc_created]));
     }
-    if (isset($this->parserRDFa->result[$dc_valid])) {
-      $content['valid'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_valid]));
+    if (isset($result[$dc_valid])) {
+      $content['valid'] = OdApiHelper::trim(reset($result[$dc_valid]));
     }
-    if (isset($this->parserRDFa->result[$dc_subject])) {
-      $content['subject'] = OdApiHelper::trim(reset($this->parserRDFa->result[$dc_subject]));
+    if (isset($result[$dc_subject])) {
+      $content['subject'] = OdApiHelper::trim(reset($result[$dc_subject]));
     }
 
-    if (isset($this->parserRDFa->result[$dc_publisher])) {
+    if (isset($result[$dc_publisher])) {
       $content['publisher'][] = array();
     }
-    if (isset($this->parserRDFa->result[$dc_source])) {
+    if (isset($result[$dc_source])) {
       $content['data'][] = array();
     }
 
-    if (!$content) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
-      return;
-    }
-
-    $this->content = $content;
-
-    $this->setValidator($this::FORMAT_RDFA_DETECTED, TRUE);
+    $this->content = !empty($content) ? $content : NULL;
   }
 
+  protected function _parseMicrodata() {}
+
+  protected function _parseJson() {}
+
+  protected function _parseXml() {}
+
   protected function _parseCsv() {
-    // Check CSV object existing.
-    if ($this->parserCSV->error) {
-      $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
+    if ($this->parserCsv['error']) {
       return;
     }
 
-    $result = $this->parserCSV->result;
+    $result = $this->parserCsv['result'];
 
-    $identifier = isset($result['1']['2']) ? OdApiHelper::trim($result['1']['2']) : FALSE;
-    if ($identifier === FALSE || $identifier !== $this->args[$this::OBJECT_TYPE_IS_META]) {
-      $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
+    if (!isset($result['1']['2'])) {
+      return;
+    }
+
+    $identifier = OdApiHelper::trim($result['1']['2']);
+    if ($identifier !== $this->arg) {
       return;
     }
 
@@ -164,21 +151,14 @@ class OdApiMeta23 extends OdApiMetaDefault {
       $content['subject'] = OdApiHelper::trim($result['15']['2']);
     }
 
-    if (isset($result['5']['2']) && isset($result['6']['2']) && isset($result['7']['2'])) {
+    if (isset($result['5']['2']) || isset($result['6']['2']) || isset($result['7']['2'])) {
       $content['publisher'][] = array();
     }
     if (isset($result['8']['2'])) {
       $content['data'][] = array();
     }
 
-    if (!$content) {
-      $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
-      return;
-    }
-
-    $this->content = $content;
-
-    $this->setValidator($this::FORMAT_CSV_DETECTED, TRUE);
+    $this->content = !empty($content) ? $content : NULL;
   }
 
   protected function _getResult() {

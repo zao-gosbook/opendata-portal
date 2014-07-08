@@ -11,17 +11,11 @@ class OdApiRDFaParser extends OdApiParser {
   protected function parseUrl($url) {
     $subjects = array();
 
-    $parser = new EasyRdf_Graph($url);
-    try {
-      $parser->load($url);
-    } catch (Exception $exception) {
-      try {
-        $parser->load($url . '/');
-      }
-      catch (Exception $exception) {
-        return $subjects;
-      }
-    }
+    $data = OdApiHelper::getUrlData($url);
+    // Fix DOMDocument loadHTML encoding bug.
+    $data = preg_replace('/<meta\s+charset="([\w-]+)"/', '/<meta http-equiv="Content-Type" content="text/html; charset=$1"/', $data, 1);
+    $parser = new EasyRdf_Graph($url, $data);
+
     $resources = $parser->resources();
     foreach ($resources as $resource) {
       $uri = $resource->getUri();
@@ -74,28 +68,34 @@ class OdApiRDFaParser extends OdApiParser {
   }
 
   public function parse($url, $actual_url = NULL) {
-    $this->url = $url;
-    // Using "@" for ignoring ARC2 library errors.
+    $url = rtrim($url, '/');
+    $parsing_url = !empty($actual_url) ? $actual_url : $url;
+    $parsing_url = OdApiHelper::formatUrl($parsing_url, PHP_URL_QUERY);
 
-    $parsing_url = !empty($actual_url) ? $actual_url : $this->url;
+    if (isset($this->results[$parsing_url])) {
+      return $this->results[$parsing_url];
+    }
+
+    $this->results[$parsing_url] = array();
+    $error = &$this->results[$parsing_url]['error'];
+    $subjects = &$this->results[$parsing_url]['subjects'];
+    $result = &$this->results[$parsing_url]['result'];
 
     $subjects = $this->parseUrl($parsing_url);
 
     // Detect empty result.
     if (!$subjects) {
-      $this->error = 'rdfaNotDetected';
-      return $this;
+      $error = 'rdfaNotDetected';
+      return $this->results[$parsing_url];
     }
 
     if (!empty($actual_url)) {
       $actual_url = rtrim($actual_url, '/');
-      $subjects[$this->url] = isset($subjects[$this->url]) ? array_merge($subjects[$this->url], $subjects[$actual_url]) : $subjects[$actual_url];
+      $subjects[$url] = isset($subjects[$url]) ? array_merge($subjects[$url], $subjects[$actual_url]) : $subjects[$actual_url];
       unset($subjects[$actual_url]);
     }
 
-    $this->subjects = $subjects;
-
-    $this->result = isset($this->subjects[$this->url]) ? $this->subjects[$this->url] : array();
-    return $this;
+    $result = isset($subjects[$url]) ? $subjects[$url] : array();
+    return $this->results[$parsing_url];
   }
 }
