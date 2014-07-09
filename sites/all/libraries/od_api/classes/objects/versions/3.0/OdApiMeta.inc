@@ -21,6 +21,18 @@ class OdApiMeta30 extends OdApiMeta23 {
     return $result;
   }
 
+  protected function _parseRdfa() {
+    parent::_parseRdfa();
+
+    if (empty($this->content)) {
+      return;
+    }
+
+    if (!isset($this->content['valid'])) {
+      unset($this->content['valid']);
+    }
+  }
+
   protected function _parseCsv() {
     if ($this->parserCsv['error']) {
       return;
@@ -73,13 +85,10 @@ class OdApiMeta30 extends OdApiMeta23 {
       $content['description'] = OdApiHelper::trim($result['description']['value']);
     }
     if (isset($result['creator']['value'])) {
-      $content['owner'] = OdApiHelper::trim($result['creator']['value']);
+      $content['creator'] = OdApiHelper::trim($result['creator']['value']);
     }
     if (isset($result['created']['value'])) {
       $content['created'] = OdApiHelper::trim($result['created']['value']);
-    }
-    if (isset($result['valid']['value'])) {
-      $content['valid'] = OdApiHelper::trim($result['valid']['value']);
     }
     if (isset($result['subject']['value'])) {
       $content['subject'] = OdApiHelper::trim($result['subject']['value']);

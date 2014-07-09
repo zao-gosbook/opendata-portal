@@ -84,7 +84,7 @@ class OdApiMeta23 extends OdApiMetaDefault {
       $content['description'] = OdApiHelper::trim(reset($result[$dc_description]));
     }
     if (isset($result[$dc_creator])) {
-      $content['owner'] = OdApiHelper::trim(reset($result[$dc_creator]));
+      $content['creator'] = OdApiHelper::trim(reset($result[$dc_creator]));
     }
     if (isset($result[$dc_created])) {
       $content['created'] = OdApiHelper::trim(reset($result[$dc_created]));
@@ -139,7 +139,7 @@ class OdApiMeta23 extends OdApiMetaDefault {
       $content['description'] = OdApiHelper::trim($result['3']['2']);
     }
     if (isset($result['4']['2'])) {
-      $content['owner'] = OdApiHelper::trim($result['4']['2']);
+      $content['creator'] = OdApiHelper::trim($result['4']['2']);
     }
     if (isset($result['11']['2'])) {
       $content['created'] = OdApiHelper::trim($result['11']['2']);
