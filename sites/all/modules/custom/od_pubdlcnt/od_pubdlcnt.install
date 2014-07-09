@@ -83,7 +83,7 @@ function od_pubdlcnt_schema() {
       'utime' => array(
         'description' => 'dowload date in unix timestamp',
         'type' => 'int',
-        'not null' => TRUE,
+        'not null' => FALSE,
       ),
       'count' => array(
         'description' => 'total download count',
@@ -141,3 +141,23 @@ function od_pubdlcnt_schema() {
   return $schema;
 }
 
+/**
+ * Recreates table `od_pubdlcnt`
+ */
+function od_pubdlcnt_update_7001() {
+  $transaction = db_transaction();
+  try {
+    $table = 'od_pubdlcnt';
+    db_drop_table($table);
+    $schema = drupal_get_schema($table, TRUE);
+    db_create_table($table, $schema);
+
+    // Commit it RIGHT NOW! Please.
+    unset($transaction);
+    $transaction = null;
+  }
+  catch (Exception $e) {
+    $transaction->rollback();
+    throw $e;
+  }
+}
