@@ -43,6 +43,8 @@ function _od_import_update_dataset($dataset_node, $meta, $organization, &$datase
   // Init messages variable.
   $messages = array();
 
+  $dataset_node = od_dataset_revision($dataset_node);
+
   // Set dataset title field.
   _od_import_dataset_set_title($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset description field.
@@ -422,6 +424,10 @@ function _od_import_update_resource($resource_node, $meta, $dataset_node, $organ
 
   $revisions_created = array();
   foreach ($revisions as $revision) {
+    if (empty($revision->{ODP_FIELD_RESOURCE_CREATED})) {
+      continue;
+    }
+
     $created = $revision->{ODP_FIELD_RESOURCE_CREATED}['und'][0]['value'];
     $revisions_created[$created] = $revision->vid;
   }
@@ -439,12 +445,6 @@ function _od_import_update_resource($resource_node, $meta, $dataset_node, $organ
 
     if (isset($revisions_created[$created])) {
       continue;
-    }
-
-    $resource_updated = TRUE;
-
-    if (!empty($revisions_created)) {
-      $resource_node->revision = TRUE;
     }
 
     // Set resource created field.
