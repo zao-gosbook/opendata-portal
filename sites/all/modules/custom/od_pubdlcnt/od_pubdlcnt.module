@@ -3,52 +3,65 @@
  * @file
  */
 
-function od_pubdlcnt_stream_wrappers_mod_get_external_url_alter(&$sandbox, StreamWrappersModInterface $wrapper) {
-  static $mime_prohibited = array(
-    'image/*',
-  );
+define('OD_PUBDLCNT_ROOT', dirname(__FILE__));
 
-  // Glue it only once
-  if (is_array($mime_prohibited)) {
-    $mime_prohibited = implode("\n", $mime_prohibited);
-  }
+/*
+ * Constants
+ */
+define('OD_PUBDLCNT_TABLE', 'od_pubdlcnt');
+define('OD_PUBDLCNT_CALLBACK_URL', 'od_pubdlcnt/ajax_update_download_count'); // Ajax callback url
 
-  // Do not apply to images
-  $mime = $wrapper->getMimeType($wrapper->getUri());
-  if (drupal_match_path($mime, $mime_prohibited)) {
-    return;
-  }
+/*
+ * Inclusions
+ */
+require_once OD_PUBDLCNT_ROOT. '/od_pubdlcnt.entity.inc';
 
-  static $alter = TRUE;
-  if (!$alter || !($fid = od_pubdlcnt_fid_by_uri($wrapper->getUri()))) {
-    return;
-  }
-
-  // Prohibit altering with this function in order to properly use next function.
-  // And to provide a recursion protection
-  $alter = FALSE;
-  $original_url = $wrapper->getExternalUrl(); // Get original external url
-  /*if (($parsed = parse_url($original_url)) && isset($parsed['scheme']) && isset($parsed['host']) && isset($parsed['path'])) {
-    $original_url = $parsed['path'];
-  }*/
-
-  $env_path = drupal_get_path('module', 'od_pubdlcnt');
-
-  $sandbox['result'] = $GLOBALS['base_url'] . '/' . url("{$env_path}/download.php", array(
-    'external' => TRUE,
-    'query' => array(
-      'fid' => $fid,
-      'goto' => $original_url,
-    ),
-  ));
-
-//  $links = &stream_wrappers_mod_context('od_pundlcnt__links');
-//  $link_hash = od_pubdlcnt_hash('link', $sandbox['result']);
-//  $links[$link_hash] = $sandbox;
-
-  //Permit altering for further operations
-  $alter = TRUE;
-}
+//function od_pubdlcnt_stream_wrappers_mod_get_external_url_alter(&$sandbox, StreamWrappersModInterface $wrapper) {
+//  static $mime_prohibited = array(
+//    'image/*',
+//  );
+//
+//  // Glue it only once
+//  if (is_array($mime_prohibited)) {
+//    $mime_prohibited = implode("\n", $mime_prohibited);
+//  }
+//
+//  // Do not apply to images
+//  $mime = $wrapper->getMimeType($wrapper->getUri());
+//  if (drupal_match_path($mime, $mime_prohibited)) {
+//    return;
+//  }
+//
+//  static $alter = TRUE;
+//  if (!$alter || !($fid = od_pubdlcnt_fid_by_uri($wrapper->getUri()))) {
+//    return;
+//  }
+//
+//  // Prohibit altering with this function in order to properly use next function.
+//  // And to provide a recursion protection
+//  $alter = FALSE;
+//  $original_url = $wrapper->getExternalUrl(); // Get original external url
+//  /*if (($parsed = parse_url($original_url)) && isset($parsed['scheme']) && isset($parsed['host']) && isset($parsed['path'])) {
+//    $original_url = $parsed['path'];
+//  }*/
+//
+//  $env_path = drupal_get_path('module', 'od_pubdlcnt');
+//
+//  $sandbox['result'] = $GLOBALS['base_url'] . '/' . url("{$env_path}/download.php", array(
+//    'external' => TRUE,
+//    'query' => array(
+//      'fid' => $fid,
+//      'goto' => $original_url,
+//    ),
+//  ));
+//
+////  $links = &stream_wrappers_mod_context('od_pundlcnt__links');
+////  $link_hash = od_pubdlcnt_hash('link', $sandbox['result']);
+////  $links[$link_hash] = $sandbox;
+//
+//  //Permit altering for further operations
+//  $alter = TRUE;
+//}
 //
 //function od_pubdlcnt_preprocess_link(&$vars) {
 //  $links = &stream_wrappers_mod_context('od_pundlcnt__links');
@@ -82,32 +95,170 @@ function od_pubdlcnt_stream_wrappers_mod_get_external_url_alter(&$sandbox, Strea
 //}
 //
 
-function od_pubdlcnt_hash($type, $data) {
-  return substr(md5($data), 0, 8);
-}
+//function od_pubdlcnt_hash($type, $data) {
+//  return substr(md5($data), 0, 8);
+//}
+//
+//function od_pubdlcnt_file_load_by_uri($uri) {
+//  $files = file_load_multiple(FALSE, array('uri' => $uri));
+//  return reset($files);
+//}
 
-function od_pubdlcnt_file_load_by_uri($uri) {
-  $files = file_load_multiple(FALSE, array('uri' => $uri));
-  return reset($files);
-}
-
-/**
- * @param $uri
- * @return mixed
- * @todo: Static cache
- */
-function od_pubdlcnt_fid_by_uri($uri) {
-  return db_query('SELECT fid FROM {file_managed} WHERE uri=:uri', array('uri' => $uri))->fetchField();
-}
+///**
+// * @param $uri
+// * @return mixed
+// * @todo: Static cache
+// */
+//function od_pubdlcnt_fid_by_uri($uri) {
+//  return db_query('SELECT fid FROM {file_managed} WHERE uri=:uri', array('uri' => $uri))->fetchField();
+//}
 
 /**
  * Gets count of file downloads.
  * @param $fid_or_file
  * @return integer
  */
-function od_pubdlcnt_download_count($fid_or_file) {
-  $fid = is_numeric($fid_or_file) ? $fid_or_file : $fid_or_file->fid;
-  $count = db_query('SELECT `count` FROM {od_pubdlcnt} WHERE fid=:fid', array(':fid' => $fid))->fetchField();
+function od_pubdlcnt_download_count($id) {
+  $id = is_numeric($id) ? $id : $id->fid;
+  $count = db_query('SELECT `count` FROM {od_pubdlcnt} WHERE id=:id', array(':id' => $id))->fetchField();
 
   return $count ? $count : 0;
+}
+
+function od_pubdlcnt_menu() {
+  $items = array();
+
+  $items[OD_PUBDLCNT_CALLBACK_URL] = array(
+    'title' => '',
+    'page callback' => 'od_pubdlcnt_download_count_update_page_callback_ajax',
+    'access callback' => TRUE,
+    'delivery callback' => 'ajax_deliver',
+  );
+
+  return $items;
+}
+
+function od_pubdlcnt_load_stat_object($conditions = array()) {
+  static $check_conditions = array(
+    'entity_id' => TRUE,
+    'entity_type' => TRUE,
+    'context' => TRUE,
+    'revision_id' => TRUE,
+  );
+
+  if (!($object = entity_load('od_pubdlcnt', FALSE, $conditions))) {
+    $object = (object) entity_create('od_pubdlcnt', $conditions);
+    if (!entity_save('od_pubdlcnt', $object)) {
+      $object = FALSE;
+    }
+  }
+  else {
+    $object = reset($object);
+  }
+
+  return $object ? $object : FALSE;
+}
+
+function od_pubdlcnt_update_count($id) {
+  $result = db_query('
+    UPDATE
+      {od_pubdlcnt}
+    SET
+      `count`=`count`+1,
+      utime=:utime
+    WHERE
+      id=:id
+  ', array(
+    ':id' => $id,
+    ':utime' => time(),
+  ));
+
+  $a = 1;
+}
+
+function od_pubdlcnt_download_count_update_page_callback_ajax() {
+  $commands = array();
+  if (isset($_POST['stat_id'])) {
+    $stat_id = $_POST['stat_id'];
+    $status = od_pubdlcnt_update_count($stat_id);
+    $commands[] = array(
+      'command' => 'odPubdlcntAttacherJS',
+      'data' => array(
+        'stat_id' => $_POST['stat_id'],
+        'status' => $status,
+        'count' => od_pubdlcnt_download_count($stat_id),
+      ),
+    );
+  }
+
+  return array(
+    '#type' => 'ajax',
+    '#commands' => $commands,
+  );
+}
+
+function od_pubdlcnt_preprocess_html(&$vars) {
+  $contexts = drupal_static('od_pubdlcnt_api_attacher_context_add', array());
+  $env = drupal_get_path('module', 'od_pubdlcnt');
+  if (!empty($contexts)) {
+    drupal_add_js($env. '/js/attacher.js');
+    drupal_add_js(array(
+      'od_pubdlcnt' => array(
+        'attacherjs' => array(
+          'contexts' => $contexts,
+          'callback_url' => OD_PUBDLCNT_CALLBACK_URL,
+        ),
+      ),
+    ), 'setting');
+  }
+}
+
+function od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id = NULL, $context = NULL, $options = array()) {
+  $contexts = &drupal_static(__FUNCTION__, array());
+  $conditions = array(
+    'entity_type' => $entity_type,
+    'entity_id' => $entity_id,
+    'revision_id' => $revision_id,
+    'context' => $context,
+  );
+
+  if ($stat_object = od_pubdlcnt_load_stat_object($conditions)) {
+    $context = $options + array(
+      'stat_id' => $stat_object->id,
+    );
+
+    $contexts[] = $context;
+    return $context;
+  }
+
+  return FALSE;
+}
+
+function od_pubdlcnt_field_extra_fields() {
+  $extra['node']['dataset'] = array(
+    'display' => array(
+      'dataset_title' => array(
+        'label' => t('Dataset name'),
+        'description' => t('Shows title of this dataset as a field.'),
+        'weight' => 0,
+      ),
+      'dataset_resource_data_url' => array(
+        'label' => t('Data URL'),
+        'description' => t('Shows resource data URL as a field.'),
+        'weight' => 0,
+      ),
+      'dataset_resource_data_format' => array(
+        'label' => t('Data format'),
+        'description' => t('Shows resource data format as a field.'),
+        'weight' => 0,
+      ),
+      'dataset_resource_structure_url' => array(
+        'label' => t('Structure URL'),
+        'description' => t('Shows resource structure URL as a field.'),
+        'weight' => 0,
+      ),
+    ),
+  );
+
+  return $extra;
 }

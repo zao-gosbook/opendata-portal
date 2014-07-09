@@ -3,3 +3,6 @@ description = Public download count modification with super cow powers
 core = 7.x
 
 dependencies[] = stream_wrappers_mod
+
+; Class autoload
+files[] = include/ODPubdlcntEntityController.inc
