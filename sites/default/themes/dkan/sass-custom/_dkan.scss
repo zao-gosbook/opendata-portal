@@ -1570,6 +1570,10 @@ td div.label {
   .ui-widget-content {
     padding-left: 0;
     padding-right: 0;
+    
+    .pane-piwik-report-iframe iframe {
+      min-height: 500px;
+    }
   }
   table {
     width: 100%;
@@ -1598,7 +1602,7 @@ td div.label {
       text-align: center;
     }
     tbody {
-      tr.odd td,
+      tr.odd,
       tr:nth-child(odd) {
         background: #f4f4f4;
       }
@@ -1659,6 +1663,11 @@ td div.label {
       margin-bottom: 1em;
     }
   }
+}
+
+/* suggestion */
+.pane-add-suggestion .entity > h2 {
+  display: none;
 }
 
 .page-user-moderation {
@@ -2501,10 +2510,6 @@ td div.label {
         }
       }
       .field-name-resource-format {
-        text-transform: none;      
-        position: absolute;
-        top: -10px;
-        right: -25px;
         
         .views-field-field-format {
           display: inline-block;
@@ -2512,8 +2517,19 @@ td div.label {
           color: #fff;
           background: #ffa200;
           text-decoration: none;
-          font-size: 1.2em;          
+          font-size: 1.2em;   
+          text-transform: none;      
+          position: absolute;
+          top: -10px;
+          right: -25px;          
         }
+      }
+      .field-name-field-date-last-change {
+        position: absolute;
+        top: -10px;
+        right: 15px;   
+        font-size: 1.2em;
+        padding: .4em .6em;
       }
       .data-and-resources {
         .form-item {
@@ -3138,6 +3154,14 @@ td div.label {
       }
     }
   }
+}
+
+/* tooltip */
+.tipsy-inner {
+  font-size: 15px;
+  color: #fff;
+  text-align: left;
+  padding: 8px;
 }
 
 /* rules and recomendations */
@@ -5155,12 +5179,35 @@ table {
   .views-field-field-od-query-id {
     font-size: 18px;
     text-decoration: underline;
+    
+    * {
+      display: inline;
+    }
   }
-  .views-field-field-query-state {
+  .views-field-field-query-state-1 {
     @include clearfix;
     font-size: 16px;
-    color: #666;
+    color: #000;
     
+    .views-field {
+      display: inline-block;
+      
+      .field-content {
+        text-shadow: 1px 1px 1px rgba(0,0,0, .6);
+      }
+      &.approved .field-content {
+        color: yellow;
+      }
+      &.discussion .field-content {
+        color: green;
+      }
+      &.answered .field-content {
+        color: orange;
+      }
+      * {
+        display: inline;
+      }
+    }
     span {
       float: left;
       padding-right: 7px;
@@ -5189,6 +5236,11 @@ table {
     a {
       color: #0c87e8;
       text-decoration: none;
+    }
+  }
+  .views-field-field-od-query-data-description {
+    p {
+      margin: 0 0 10px;
     }
   }
   .views-field-ops {
@@ -5488,7 +5540,7 @@ div.fivestar-widget .star {
   .panel-pane {
     margin-bottom: 40px;
   }
-  .flag-wrapper a {
+  .flag-subscribe-dataset a {
     font-size: 16px;
     text-decoration: none;
     display: block;
@@ -5497,17 +5549,39 @@ div.fivestar-widget .star {
     padding-left: 85px;
     background: url("../images/ico-subscribe.png") no-repeat 0 50%;
   }
+  .flag-throbber {
+    display: none;
+  }
   .flag-message {
     font-size: 16px;
     text-decoration: none;
-    display: block;
+    display: none !important;
     height: 56px;
-    display: table-cell;
+    /*display: table-cell;*/
     width: 100%;
     vertical-align: middle;
     padding-left: 85px;
     background: url("../images/ico-subscribe.png") no-repeat 0 50%;    
   }
+  .flag-dataset-reworked  {
+    
+    .flag-action,
+    .unflag-disabled {
+      color: #FFFFFF;
+      display: inline-block;
+      font-size: 18px;
+      line-height: 1em;
+      padding: 0.75em 1.6em;
+      position: relative;
+      text-decoration: none;
+      text-transform: none;
+      background: red;
+    }
+    .unflag-disabled {
+      background: green;
+    }
+  }
+  
   .field-name-field-spatial,
   .field-type-geofield,
   .field-name-field-geolocation {
@@ -6440,10 +6514,14 @@ div.fivestar-widget .star {
     font-weight: normal;
     float: left;
   }
+  .field-items {
+    display: table;
+  }
   .field-name-field-site-url,
   .field-name-field-org-site-od-section,
   .field-name-field-opendata-portal-url {
-    a {
+
+  a {
       display: block;
       width: 25px;
       height: 21px;
@@ -7169,8 +7247,24 @@ div.fivestar-widget .star {
   }  
   g.city > text.city-label {
     fill: #000;
+  } 
+}
+.view-od-map-organizations {
+  .moderation-tabs {
+    border: 1px solid #fff;
   }
-} 
+  .views-field-created {
+    width: 200px;
+    text-align: center;
+  }
+  tr {
+    border-bottom: 1px solid #fff;
+    
+    td {
+      border-bottom: 1px solid #fff;
+    }
+  }
+}
  
 /**
  * forum 
