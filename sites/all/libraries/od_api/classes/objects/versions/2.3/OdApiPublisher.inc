@@ -6,75 +6,76 @@
  */
 
 class OdApiPublisher23 extends OdApiPublisherDefault {
-  public function validateArg() {
+  protected function _validateArg() {
     // Check publisher arg is valid.
-    $publisher_arg_is_valid = $this->args[$this::OBJECT_TYPE_IS_PUBLISHER] === 'publisher';
-    $this->setValidator($this::SITE_OPENDATA_PUBLISHER_ARG_IS_VALID, $publisher_arg_is_valid);
+    $publisher_arg_is_valid = $this->arg === 'publisher';
+
+    // Check searching publisher exists.
+    $publisher_correct = $publisher_arg_is_valid && isset($this->parent->content[$this::OBJECT_TYPE_IS_PUBLISHER]);
+
+    $this->setValidator($this::SITE_OPENDATA_PUBLISHER_ARG_IS_VALID, $publisher_correct);
   }
 
-  public function validateVersion() {
-    return TRUE;
+  protected function _validateUrl() {
+    $dc_publisher = OdApiHelper::namespaceUnwrap('dc:publisher');
+
+    if (isset($this->parent->parserRdfa['result'][$dc_publisher])) {
+      $this->urls[] = reset($this->parent->parserRdfa['result'][$dc_publisher]);
+    }
   }
 
-  public function setPossibleUrls() {
-    // Collect available urls.
-    $urls = array();
-
-    $dc_publisher = $this->localNamespaceUnwrap('dc:publisher');
-
-    if (isset($this->parent->parserRDFa->subjects[$this->parent->url][$dc_publisher])) {
-      $this->url = reset($this->parent->parserRDFa->subjects[$this->parent->url][$dc_publisher]);
-      $urls['semantic'] = $this->url;
+  protected function _getFormatUrl($format) {
+    $result = FALSE;
+    switch ($format) {
+      case $this::OBJECT_FORMAT_RDFA;
+        $result = $this->url ? $this->url : FALSE;
+        break;
+      case $this::OBJECT_FORMAT_CSV;
+        $result = TRUE;
+        break;
     }
 
-    $urls['file_csv'] = TRUE;
-
-    $this->urls = $urls;
+    return $result;
   }
 
-  public function validateObject() {}
-
-  protected function _parseRdf() {
-    // Check RDFa object existing.
-    if ($this->parserRDFa->error) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
+  protected function _parseRdfa() {
+    if ($this->parserRdfa['error']) {
       return;
     }
 
-    $foaf_name = $this->localNamespaceUnwrap('foaf:name');
-    $foaf_phone = $this->localNamespaceUnwrap('foaf:phone');
-    $foaf_mbox = $this->localNamespaceUnwrap('foaf:mbox');
+    $result = $this->parserRdfa['result'];
+
+    $foaf_name = OdApiHelper::namespaceUnwrap('foaf:name');
+    $foaf_phone = OdApiHelper::namespaceUnwrap('foaf:phone');
+    $foaf_mbox = OdApiHelper::namespaceUnwrap('foaf:mbox');
 
     $content = array();
-    if (isset($this->parserRDFa->result[$foaf_name])) {
-      $content['name'] = OdApiHelper::trim(reset($this->parserRDFa->result[$foaf_name]));
+    if (isset($result[$foaf_name])) {
+      $content['name'] = OdApiHelper::trim(reset($result[$foaf_name]));
     }
-    if (isset($this->parserRDFa->result[$foaf_phone])) {
-      $content['phone'] = OdApiHelper::trim(reset($this->parserRDFa->result[$foaf_phone]));
+    if (isset($result[$foaf_phone])) {
+      $content['phone'] = OdApiHelper::trim(reset($result[$foaf_phone]));
     }
-    if (isset($this->parserRDFa->result[$foaf_mbox])) {
-      $content['mbox'] = OdApiHelper::trim(reset($this->parserRDFa->result[$foaf_mbox]));
-    }
-
-    if (!$content) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
-      return;
+    if (isset($result[$foaf_mbox])) {
+      $content['mbox'] = OdApiHelper::trim(reset($result[$foaf_mbox]));
     }
 
-    $this->content = $content;
-
-    $this->setValidator($this::FORMAT_RDFA_DETECTED, TRUE);
+    $this->content = !empty($content) ? $content : NULL;
   }
 
+  protected function _parseMicrodata() {}
+
+  protected function _parseJson() {}
+
+  protected function _parseXml() {}
+
   protected function _parseCsv() {
-    // Check RDFa object existing.
     $meta = $this->parent;
-    if ($meta->format !== $this::OBJECT_FORMAT_CSV || $meta->parserCSV->error) {
-      $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
+    if ($meta->parserCsv['error']) {
       return;
     }
 
-    $result = $meta->parserCSV->result;
+    $result = $meta->parserCsv['result'];
 
     $content = array();
     if (isset($result['5']['2'])) {
@@ -87,13 +88,7 @@ class OdApiPublisher23 extends OdApiPublisherDefault {
       $content['mbox'] = OdApiHelper::trim($result['7']['2']);
     }
 
-    if (!$content) {
-      $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
-      return;
-    }
-    $this->content = $content;
-
-    $this->setValidator($this::FORMAT_CSV_DETECTED, TRUE);
+    $this->content = !empty($content) ? $content : NULL;
   }
 
   protected function _getResult() {
