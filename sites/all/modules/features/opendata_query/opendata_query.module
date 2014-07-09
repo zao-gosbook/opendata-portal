@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Opendata query feature.
+ */
+
+include_once 'opendata_query.features.inc';
