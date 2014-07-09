@@ -6,29 +6,23 @@
  */
 
 class OdApi {
-  public $vars;
-  public $root;
-  public $main_url;
-  public $list_url;
+  private $currentArgs;
+  private $versions;
 
-  public $args;
-  public $currentArgs;
-  public $page;
-  public $valid;
-  public $result;
-  public $version;
+  public $vars;
 
   public $objects;
-
-  public $validators = array();
 
   public function __construct($vars = array()) {
     // Save vars.
     if (!empty($vars)) {
       $this->vars = $vars;
     }
-    $this->versions = array_values(array_diff(scandir(__DIR__ . '/objects/versions'), array('..', '.')));
-    $this->root = OdApiObject::OBJECT_TYPE_IS_META_LIST;
+    $versions = array_values(array_diff(scandir(__DIR__ . '/objects/versions'), array('..', '.')));
+    usort($versions, function($a, $b) {
+      return version_compare($a, $b, '<');
+    });
+    $this->versions = $versions;
 
     return $this;
   }
@@ -39,8 +33,8 @@ class OdApi {
       $this->vars = $vars;
     }
 
-    // Get root type.
-    $type = $this->root;
+    // Get root object type.
+    $type = OdApiObject::OBJECT_TYPE_IS_META_LIST;
 
     // Init current args.
     $this->currentArgs = array();
@@ -53,15 +47,16 @@ class OdApi {
 
     // Walk through args to children objects.
     while ($arg !== NULL) {
-      // Add current type to current args.
-      $this->currentArgs[$type] = $args[$type];
-
-      // Get current object, which nesting depends on cardinality.
-      $class_name = $this->getClassNameByType($type);
+      // Prepare and format arg by current type.
+      $class_name = OdApiHelper::getClassNameByType($type);
       if (method_exists($class_name, 'processArg')) {
         $arg = $class_name::processArg($arg);
       }
 
+      // Add current arg to current args.
+      $this->currentArgs[$type] = $arg;
+
+      // Get current object, which nesting depends on cardinality.
       $multiple_cardinality = $class_name::$typeCardinality === OdApiObject::OBJECT_CARDINALITY_IS_MULTIPLE;
       $object_exists = $multiple_cardinality ? !empty($objects[$type][$arg]) : !empty($objects[$type]);
 
@@ -71,44 +66,40 @@ class OdApi {
         // Get parent object. Parent object may be only class extended from OdApiObject class only.
         $parent_object = !empty($object) ? $object : NULL;
 
-        // Unset current object class.
-        unset($object);
-
+        $current = array();
+        $current['validVersion'] = FALSE;
+        $current['allVersions'] = array();
         foreach ($this->versions as $version) {
-          $possible_object = $this->createNewObjectByType($type, $version, $parent_object);
+          $object = $this->createNewObjectByType($type, $version, $parent_object);
+          $current['allVersions'][$version] = $object;
 
-          $this->validators = array_merge($this->validators, array_values($possible_object->getValidators()));
-          if (!$possible_object->argIsValid || !$possible_object->versionIsValid) {
-            continue;
+          if ($object->objectIsValid) {
+            $current['validVersion'] = $object;
           }
-          $object = clone $possible_object;
-          $object->version = (float) $version;
-
-          $multiple_cardinality = $class_name::$typeCardinality === OdApiObject::OBJECT_CARDINALITY_IS_MULTIPLE;
 
           if ($multiple_cardinality) {
             if (!isset($parent->objects[$type])) {
               $parent->objects[$type] = array();
             }
 
-            $parent->objects[$type][$arg] = $object;
+            $parent->objects[$type][$arg] = $current;
           }
           else {
-            $parent->objects[$type] = $object;
+            $parent->objects[$type] = $current;
           }
 
-          break;
+          if ($object->objectIsValid) {
+            break;
+          }
+
+          unset($object);
         }
       }
       else {
-        $object = $multiple_cardinality ? $objects[$type][$arg] : $objects[$type];
+        $object = $multiple_cardinality ? $objects[$type][$arg]['validVersion'] : $objects[$type]['validVersion'];
       }
 
       if (empty($object)) {
-        break;
-      }
-
-      if ($object->objectIsValid === FALSE) {
         break;
       }
 
@@ -119,7 +110,7 @@ class OdApi {
         if (isset($args[$children_type])) {
           $children = TRUE;
           $type = $children_type;
-          $arg = $args[$children_type];
+          $arg = $args[$type];
           $objects = $object->objects;
         }
       }
@@ -134,13 +125,12 @@ class OdApi {
    * @param null|array $args
    * @param array $vars
    *
-   * @return boolean|OdApiObject
+   * @return boolean|array
    */
-  public function _getObject($args = NULL, $vars = array()) {
-    // Save vars.
-    if (!empty($vars)) {
-      $this->vars = $vars;
-    }
+  private function getObjectCollection($args = NULL, $vars = array()) {
+    $object_collection = FALSE;
+
+    $this->saveVars($vars);
 
     // Get current args if incoming args is missing.
     if (empty($args)) {
@@ -154,21 +144,23 @@ class OdApi {
 
     $this->execute($args);
 
-    $type = $this->root;
+    $type = OdApiObject::OBJECT_TYPE_IS_META_LIST;
+
     $arg = isset($args[$type]) ? $args[$type] : NULL;
     $objects = $this->objects;
 
     while ($arg !== NULL) {
       // Get current object, which nesting depends on cardinality.
-      $class_name = $this->getClassNameByType($type);
+      $class_name = OdApiHelper::getClassNameByType($type);
       if (method_exists($class_name, 'processArg')) {
         $arg = $class_name::processArg($arg);
       }
 
       $multiple_cardinality = $class_name::$typeCardinality === OdApiObject::OBJECT_CARDINALITY_IS_MULTIPLE;
-      $object = $multiple_cardinality ? $objects[$type][$arg] : $objects[$type];
+      $object_collection = $multiple_cardinality ? $objects[$type][$arg] : $objects[$type];
+      $object = $object_collection['validVersion'];
 
-      if (!$object || !$object->objectIsValid) {
+      if ($object === FALSE) {
         break;
       }
 
@@ -180,7 +172,7 @@ class OdApi {
         if (isset($args[$children_type])) {
           $children = TRUE;
           $type = $children_type;
-          $arg = $args[$children_type];
+          $arg = $args[$type];
           $objects = $object->objects;
         }
       }
@@ -190,29 +182,45 @@ class OdApi {
       }
     }
 
-    return (!empty($object) && $object->objectIsValid) ? $object : FALSE;
+    return $object_collection;
+  }
+
+  /**
+   * @param null|array $args
+   * @param array $vars
+   *
+   * @return boolean|OdApiObject
+   */
+  private function getValidObject($args = NULL, $vars = array()) {
+    $object_collection = $this->getObjectCollection($args, $vars);
+
+    return !empty($object_collection) ? $object_collection['validVersion'] : FALSE;
   }
 
   public function getResult($args, $vars = array()) {
-    // Save vars.
-    if (!empty($vars)) {
-      $this->vars = $vars;
-    }
-
-    $object = $this->_getObject($args);
+    $this->saveVars($vars);
+    $object = $this->getValidObject($args);
 
     return is_object($object) ? $object->getResult() : FALSE;
   }
 
-  public function getContent($args, $vars = array()) {
+  public function getError() {
+    $error = NULL;
+    $object_collection = $this->getObjectCollection();
+
+    if (!empty($object_collection) && $object_collection['validVersion'] === FALSE) {
+      $object = reset($object_collection['allVersions']);
+      $error = $object->getError();
+    }
+
+    return $error;
+  }
+
+  public function saveVars($vars = array()) {
     // Save vars.
     if (!empty($vars)) {
       $this->vars = $vars;
     }
-
-    $object = $this->_getObject($args);
-
-    return is_object($object) ? $object->content : FALSE;
   }
 
   public function getOpendata($site, $vars = array()) {
@@ -278,30 +286,60 @@ class OdApi {
     return $meta_list_result;
   }
 
-  public function getErrors() {
-    $errors = array();
-    foreach ($this->validators as $validator) {
-      if ($validator['type'] === OdApiObject::MESSAGE_TYPE_IS_ERROR && $validator['value'] === FALSE) {
-        $errors[] = $validator;
-      }
-    }
-    return $errors;
-  }
-
-  public function getValidators() {
-    return $this->validators;
-  }
-
-  private function getClassNameByType($type, $version = NULL) {
-    $type = preg_replace('/(^|-)([a-z])/e', 'strtoupper("\\2")', $type);
-    $version = empty($version) ? 'Default' : filter_var($version, FILTER_SANITIZE_NUMBER_INT);
-    return 'OdApi' . $type . $version;
-  }
-
+  /**
+   * @param $type
+   * @param $version
+   * @param OdApiObject
+   * @return OdApiObject
+   */
   private function createNewObjectByType($type, $version, $parent_object) {
-    $class_name = $this->getClassNameByType($type, $version);
-    $object = new $class_name($this, $parent_object);
+    $class_name = OdApiHelper::getClassNameByType($type, $version);
+    $object = new $class_name($this, $parent_object, $this->currentArgs);
 
     return $object;
+  }
+
+  /**
+   * @param null $arg
+   * @return array|OdApiObject|bool
+   *
+   * @todo Refactor this.
+   */
+  public function getChildren($arg = NULL) {
+    $type = OdApiObject::OBJECT_TYPE_IS_META_LIST;
+    $class_name = OdApiHelper::getClassNameByType($type);
+
+    if (empty($this->objects[$type])) {
+      return FALSE;
+    }
+
+    $multiple_cardinality = $class_name::$typeCardinality === $class_name::OBJECT_CARDINALITY_IS_MULTIPLE;
+    if ($multiple_cardinality) {
+      $objects = array();
+      foreach ($this->objects[$type] as $key => $object) {
+        $objects[$key] = $object['validVersion'];
+      }
+
+      if (!empty($arg)) {
+        if (method_exists($class_name, 'processArg')) {
+          $arg = $class_name::processArg($arg);
+        }
+
+        if (isset($objects[$arg])) {
+          $result = $objects[$arg];
+        }
+        else {
+          return FALSE;
+        }
+      }
+      else {
+        $result = $objects;
+      }
+    }
+    else {
+      $result = $this->objects[$type]['validVersion'];
+    }
+
+    return $result;
   }
 }

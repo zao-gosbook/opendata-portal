@@ -25,4 +25,8 @@ abstract class OdApiDataListDefault extends OdApiObject {
       ),
     ),
   );
+
+  protected function _getAvailableFormats() {
+    return array($this->parent->format);
+  }
 }

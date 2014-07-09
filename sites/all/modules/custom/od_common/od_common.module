@@ -619,6 +619,8 @@ function od_common_js_alter(&$javascript) {
       );
     }
   }
+  drupal_add_js(drupal_get_path('module', 'od_common') .'/js/od-page-datasets-map-google.js');
+
 }
 
 /**
@@ -804,4 +806,8 @@ function od_common_language_switcher_links($type, $path) {
   }
 
   return $links;
+}
+
+function od_common_user_insert(&$edit, $account, $category) {
+  drupal_set_message(t('<b>Вы успешно зарегистрировались на Портале открытых данных РФ!</b><br /><br /> Для завершения регистрации Вам необходимо перейти по ссылке в письме, которое было отправлено на указанную Вами электронную почту. В случае, если письмо по каким-то причинам не дошло до Вас в течение 5 минут, проверьте спам или позвоните в службу технической поддержки.'), 'status');
 }

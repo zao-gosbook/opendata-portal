@@ -6,6 +6,9 @@
  */
 
 abstract class OdApiMetaListDefault extends OdApiObject {
+  protected $site_encoded_url;
+  protected $site_decoded_url;
+
   public static $title = 'Реестр открытых данных';
   public static $type = self::OBJECT_TYPE_IS_META_LIST;
   public static $typeCardinality = self::OBJECT_CARDINALITY_IS_MULTIPLE;
@@ -16,6 +19,8 @@ abstract class OdApiMetaListDefault extends OdApiObject {
   const SITE_OPENDATA_ARG_IS_VALID = 11;
   const SITE_MAIN_PAGE_EXISTS = 12;
   const SITE_OPENDATA_PAGE_EXISTS = 13;
+
+  const REGEXP_META_LIST_URL = '/^https?:\/\/[a-zа-яё0-9\-]+(\.[a-zа-яё0-9\-]+)*\.[a-zа-яё]{2,4}\/$/u';
 
   protected static $validatorsInfo = array(
     self::SITE_OPENDATA_ARG_IS_VALID => array(
@@ -44,7 +49,7 @@ abstract class OdApiMetaListDefault extends OdApiObject {
     ),
   );
 
-  static function processArg($arg, &$decoded_url = NULL, &$encoded_url = NULL) {
+  static function processArg($arg) {
     // Check redirect.
     $redirect = OdApiHelper::getUrlRedirect($arg);
     if ($redirect !== FALSE && !in_array(substr($redirect, 0, 1), array('/', '\\', '.'), TRUE)) {
@@ -52,21 +57,12 @@ abstract class OdApiMetaListDefault extends OdApiObject {
     }
 
     // Check format.
-    // Add default http:// scheme if it is empty.
-    $parsed_url = parse_url($arg);
-    if (!isset($parsed_url['scheme'])) {
-      $arg = 'http://' . $arg;
-    }
-    $parsed_url = parse_url($arg);;
-    $arg = $parsed_url['scheme'] . '://' . $parsed_url['host'] . '/';
-
-    // Check idna.
-    $result = OdApiHelper::convertIdna($arg, $decoded_url, $encoded_url);
-    if ($result === FALSE) {
-      $decoded_url = $arg;
-      $encoded_url = $arg;
-    }
+    $arg = OdApiHelper::formatUrl($arg, PHP_URL_HOST);
 
     return $arg;
+  }
+
+  protected function _getAvailableFormats() {
+    return array_keys($this::$allFormats);
   }
 }

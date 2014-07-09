@@ -2510,10 +2510,6 @@ td div.label {
         }
       }
       .field-name-resource-format {
-        text-transform: none;      
-        position: absolute;
-        top: -10px;
-        right: -25px;
         
         .views-field-field-format {
           display: inline-block;
@@ -2521,8 +2517,19 @@ td div.label {
           color: #fff;
           background: #ffa200;
           text-decoration: none;
-          font-size: 1.2em;          
+          font-size: 1.2em;   
+          text-transform: none;      
+          position: absolute;
+          top: -10px;
+          right: -25px;          
         }
+      }
+      .field-name-field-date-last-change {
+        position: absolute;
+        top: -10px;
+        right: 15px;   
+        font-size: 1.2em;
+        padding: .4em .6em;
       }
       .data-and-resources {
         .form-item {
@@ -5172,12 +5179,38 @@ table {
   .views-field-field-od-query-id {
     font-size: 18px;
     text-decoration: underline;
+    
+    * {
+      display: inline;
+    }
   }
-  .views-field-field-query-state {
+  .views-field-field-query-state-1 {
     @include clearfix;
     font-size: 16px;
-    color: #666;
+    color: #000;
     
+    .views-field {
+      display: inline-block;
+      
+      .field-content {
+        text-shadow: 1px 1px 1px rgba(0,0,0, .4);
+      }
+      &.approved .field-content {
+        color: yellow;
+      }
+      &.discussion .field-content {
+        color: orange;
+      }
+      &.answered .field-content {
+        color: green;
+      }
+      &.registred .field-content {
+        color: red;
+      }
+      * {
+        display: inline;
+      }
+    }
     span {
       float: left;
       padding-right: 7px;
@@ -6161,6 +6194,28 @@ div.fivestar-widget .star {
   line-height: 22px;
   color: #666;
   
+  .pane-entity-field-extra {
+    float: left;
+    padding-right: 10px;
+    
+    a {
+      background: none repeat scroll 0 0 #0C87E8;
+      border: 0 none;
+      color: #FFFFFF;
+      display: inline-block;
+      font-size: .75em;
+      padding: 1.25em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }    
+  }
+  .pane-node-field-od-query-vote-up-down {
+    clear: both;
+  }
+  .pane-node-field-od-query-data-name {
+    clear: left;
+  }
+  
   div[class*='-comments']{
     width: 100%;
   }
@@ -6180,25 +6235,28 @@ div.fivestar-widget .star {
       font-size: 13px;
     }
   }
-  .panel-pane {
-    @include clearfix;
-    padding-bottom: 10px;
-    
-    h2 {
-      float: left;
-      width: 200px;
-      color: #000;
-      font-weight: normal;
-      margin: 0;
-      font-size: 16px;
-      line-height: 22px; 
-    }
-    .field-items,
-    .addtoany_list,
-    .view {
-      margin-left: 200px;
-      display: block;
-    }
+ 
+  .query-wrapper {
+    .panel-pane {
+      @include clearfix;
+      padding-bottom: 10px;
+      
+      h2 {
+        float: left;
+        width: 200px;
+        color: #000;
+        font-weight: normal;
+        margin: 0;
+        font-size: 16px;
+        line-height: 22px; 
+      }
+      .field-items,
+      .addtoany_list,
+      .view {
+        margin-left: 200px;
+        display: block;
+      }
+    }  
   }  
   .pane-node-field-query-state {
     text-transform: uppercase;

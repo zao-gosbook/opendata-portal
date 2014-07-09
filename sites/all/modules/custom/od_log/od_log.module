@@ -23,7 +23,7 @@ function od_log_node_insert($node) {
 
   switch ($node->type) {
     case 'dataset':
-      $organization_id = !empty($node->{ODP_FIELD_DATASET_OWNER}) ? $node->{ODP_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+      $organization_id = !empty($node->{ODP_FIELD_DATASET_ORGANIZATION}) ? $node->{ODP_FIELD_DATASET_ORGANIZATION}[LANGUAGE_NONE][0]['target_id'] : NULL;
 
       $message = 'Набор открытых данных создан';
       od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_DATASET_ADDED, $organization_id, $node->nid, $user_id);
@@ -33,7 +33,7 @@ function od_log_node_insert($node) {
 
       $dataset = node_load($dataset_id);
 
-      $organization_id = (!empty($dataset) && !empty($dataset->{ODP_FIELD_DATASET_OWNER})) ? $dataset->{ODP_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+      $organization_id = (!empty($dataset) && !empty($dataset->{ODP_FIELD_DATASET_ORGANIZATION})) ? $dataset->{ODP_FIELD_DATASET_ORGANIZATION}[LANGUAGE_NONE][0]['target_id'] : NULL;
 
       $message = 'Ресурс набора открытых данных создан';
       od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_RESOURCE_ADDED, $organization_id, $dataset_id, $user_id);
@@ -55,7 +55,7 @@ function od_log_node_update($node) {
   $user_id = isset($node->od_log['user']) ? $node->od_log['user'] : NULL;
   switch ($node->type) {
     case 'dataset':
-      $organization_id = !empty($node->{ODP_FIELD_DATASET_OWNER}) ? $node->{ODP_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+      $organization_id = !empty($node->{ODP_FIELD_DATASET_ORGANIZATION}) ? $node->{ODP_FIELD_DATASET_ORGANIZATION}[LANGUAGE_NONE][0]['target_id'] : NULL;
 
       $message = 'Набор открытых данных изменен';
 
@@ -66,7 +66,7 @@ function od_log_node_update($node) {
 
       $dataset = node_load($dataset_id);
 
-      $organization_id = (!empty($dataset) && !empty($dataset->{ODP_FIELD_DATASET_OWNER})) ? $dataset->{ODP_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+      $organization_id = (!empty($dataset) && !empty($dataset->{ODP_FIELD_DATASET_ORGANIZATION})) ? $dataset->{ODP_FIELD_DATASET_ORGANIZATION}[LANGUAGE_NONE][0]['target_id'] : NULL;
 
       $message = 'Ресурс набора открытых данных изменен';
       od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_RESOURCE_CHANGED, $organization_id, $dataset_id, $user_id);
@@ -92,7 +92,7 @@ function od_log_node_delete($node) {
 
       $dataset = node_load($dataset_id);
 
-      $organization_id = (!empty($dataset) && !empty($dataset->{ODP_FIELD_DATASET_OWNER})) ? $dataset->{ODP_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0]['target_id'] : NULL;
+      $organization_id = (!empty($dataset) && !empty($dataset->{ODP_FIELD_DATASET_ORGANIZATION})) ? $dataset->{ODP_FIELD_DATASET_ORGANIZATION}[LANGUAGE_NONE][0]['target_id'] : NULL;
 
       $message = 'Ресурс набора открытых данных удален';
       od_log($message, OD_LOG_IMPORTANCE_STATUS, OD_LOG_EVENT_RESOURCE_DELETED, $organization_id, $dataset_id, $user_id);

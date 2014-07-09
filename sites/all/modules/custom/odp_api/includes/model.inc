@@ -451,7 +451,7 @@ function _odp_api_get_datasets($params) {
   )));
 
   // Join content from dataset: organization.
-  $query->leftJoin('field_data_' . ODP_FIELD_DATASET_OWNER, 'field_dataset_organization', implode(' AND ', array(
+  $query->leftJoin('field_data_' . ODP_FIELD_DATASET_ORGANIZATION, 'field_dataset_organization', implode(' AND ', array(
     'field_dataset_organization.entity_id = dataset.nid',
     'field_dataset_organization.revision_id = dataset.vid',
     'field_dataset_organization.entity_type = \'node\'',
@@ -459,7 +459,7 @@ function _odp_api_get_datasets($params) {
     'field_dataset_organization.deleted = \'0\'',
   )));
   $query->leftJoin('node', 'organization', implode(' AND ', array(
-    'organization.nid = field_dataset_organization.' . ODP_FIELD_DATASET_OWNER . '_target_id',
+    'organization.nid = field_dataset_organization.' . ODP_FIELD_DATASET_ORGANIZATION . '_target_id',
   )));
 
   // Join organization field: id.
@@ -588,7 +588,7 @@ function _odp_api_get_dataset($identifier) {
   )));
 
   // Join content from dataset: organization.
-  $query->leftJoin('field_data_' . ODP_FIELD_DATASET_OWNER, 'field_dataset_organization', implode(' AND ', array(
+  $query->leftJoin('field_data_' . ODP_FIELD_DATASET_ORGANIZATION, 'field_dataset_organization', implode(' AND ', array(
     'field_dataset_organization.entity_id = dataset.nid',
     'field_dataset_organization.revision_id = dataset.vid',
     'field_dataset_organization.entity_type = \'node\'',
@@ -596,7 +596,7 @@ function _odp_api_get_dataset($identifier) {
     'field_dataset_organization.deleted = \'0\'',
   )));
   $query->leftJoin('node', 'organization', implode(' AND ', array(
-    'organization.nid = field_dataset_organization.' . ODP_FIELD_DATASET_OWNER . '_target_id',
+    'organization.nid = field_dataset_organization.' . ODP_FIELD_DATASET_ORGANIZATION . '_target_id',
   )));
 
   // Join content from dataset: resource.
