@@ -123,7 +123,7 @@ $handler->display->display_options['fields']['views_bulk_operations']['vbo_opera
     'override_label' => 0,
     'label' => '',
   ),
-  'action::od_import_import_opendata_action' => array(
+  'action::odp_import_import_opendata_action' => array(
     'selected' => 1,
     'skip_confirmation' => 0,
     'override_label' => 0,

@@ -1,28 +1,28 @@
 <?php
 
-function od_import_get_subject_id($subject) {
-  return od_import_get_term_id_by_name(strtolower($subject), OD_IMPORT_VOCABULARY_SUBJECTS);
+function odp_import_get_subject_id($subject) {
+  return odp_import_get_term_id_by_name(strtolower($subject), ODP_IMPORT_VOCABULARY_SUBJECTS);
 }
 
-function od_import_get_format_id($format) {
-  return od_import_get_term_id_by_name(strtolower($format), OD_IMPORT_VOCABULARY_FORMATS);
+function odp_import_get_format_id($format) {
+  return odp_import_get_term_id_by_name(strtolower($format), ODP_IMPORT_VOCABULARY_FORMATS);
 }
 
-function od_import_get_term_id_by_name($name, $vocabulary) {
+function odp_import_get_term_id_by_name($name, $vocabulary) {
   // Get terms by name.
   $terms = taxonomy_get_term_by_name($name, $vocabulary);
 
   return !empty($terms) ? reset($terms)->tid : FALSE;
 }
 
-function od_import_get_file_by_uri($uri) {
+function odp_import_get_file_by_uri($uri) {
   $conditions = array('uri' => trim($uri));
 
   return file_load_multiple(array(), $conditions);
 }
 
-function od_import_load_or_create_subject_by_name($name) {
-  $subject_id = od_import_get_subject_id($name);
+function odp_import_load_or_create_subject_by_name($name) {
+  $subject_id = odp_import_get_subject_id($name);
 
   if ($subject_id) {
     $subject = taxonomy_term_load($subject_id);
@@ -31,22 +31,22 @@ function od_import_load_or_create_subject_by_name($name) {
   if (empty($subject)) {
     $subject = new stdClass();
     $subject->name = $name;
-    $subject->vid = OD_IMPORT_VOCABULARY_SUBJECTS_ID;
+    $subject->vid = ODP_IMPORT_VOCABULARY_SUBJECTS_ID;
     taxonomy_term_save($subject);
   }
 
   return $subject;
 }
 
-function od_import_load_file($uri) {
+function odp_import_load_file($uri) {
   // Get file by url.
-  $files = od_import_get_file_by_uri($uri);
+  $files = odp_import_get_file_by_uri($uri);
   $file = !empty($files) ? reset($files) : FALSE;
 
   return $file;
 }
 
-function od_import_convert_to_utf8(&$data) {
+function odp_import_convert_to_utf8(&$data) {
   $encoder = od_detect_encoding_get_detector();
   $converted_data = $encoder->convertString($data, 'UTF-8');
 
@@ -57,8 +57,8 @@ function od_import_convert_to_utf8(&$data) {
   return (bool) $converted_data;
 }
 
-function od_import_create_local_file($destination, $origin_uri) {
-  $data = od_import_get_url_content($origin_uri);
+function odp_import_create_local_file($destination, $origin_uri) {
+  $data = odp_import_get_url_content($origin_uri);
   if ($data === FALSE) {
     return FALSE;
   }
@@ -68,7 +68,7 @@ function od_import_create_local_file($destination, $origin_uri) {
     return FALSE;
   }
 
-  $is_utf8 = od_import_convert_to_utf8($data);
+  $is_utf8 = odp_import_convert_to_utf8($data);
 
   // Save file.
   $uri = file_unmanaged_save_data($data, $destination, FILE_EXISTS_REPLACE);
@@ -76,25 +76,25 @@ function od_import_create_local_file($destination, $origin_uri) {
     return FALSE;
   }
 
-  $file = od_import_create_file($uri);
+  $file = odp_import_create_file($uri);
 
   $file->utf8 = (integer) $is_utf8;
 
   return $file;
 }
 
-function od_import_create_remote_file($uri) {
-  $file_exists = od_import_check_file_exists($uri);
+function odp_import_create_remote_file($uri) {
+  $file_exists = odp_import_check_file_exists($uri);
   if ($file_exists === FALSE) {
     return FALSE;
   }
 
-  $file = od_import_create_file($uri);
+  $file = odp_import_create_file($uri);
 
   return $file;
 }
 
-function od_import_create_file($uri) {
+function odp_import_create_file($uri) {
   // Create a file object.
   $file = new stdClass();
   $file->fid = NULL;
@@ -115,7 +115,7 @@ function od_import_create_file($uri) {
   return file_save($file);
 }
 
-function od_import_get_url_content($url) {
+function odp_import_get_url_content($url) {
   $curl = curl_init();
   curl_setopt($curl, CURLOPT_URL, $url);
   curl_setopt($curl, CURLOPT_BUFFERSIZE, '1024');
@@ -123,7 +123,7 @@ function od_import_get_url_content($url) {
   curl_setopt($curl, CURLOPT_FRESH_CONNECT, 1);
   curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
   curl_setopt($curl, CURLOPT_NOPROGRESS, 0);
-  curl_setopt($curl, CURLOPT_PROGRESSFUNCTION, '_od_import_curl_progress_function_size_limit_checker_callback');
+  curl_setopt($curl, CURLOPT_PROGRESSFUNCTION, '_odp_import_curl_progress_function_size_limit_checker_callback');
 
   $content = curl_exec($curl);
 
@@ -134,7 +134,7 @@ function od_import_get_url_content($url) {
   return $http_code < 400 ? $content : FALSE;
 }
 
-function od_import_check_file_exists($url) {
+function odp_import_check_file_exists($url) {
   $curl = curl_init();
   curl_setopt($curl, CURLOPT_URL, $url);
   curl_setopt($curl, CURLOPT_BUFFERSIZE, '1024');
@@ -142,7 +142,7 @@ function od_import_check_file_exists($url) {
   curl_setopt($curl, CURLOPT_FRESH_CONNECT, 1);
   curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
   curl_setopt($curl, CURLOPT_NOPROGRESS, 0);
-  curl_setopt($curl, CURLOPT_PROGRESSFUNCTION, '_od_import_curl_progress_function_file_existing_checker_callback');
+  curl_setopt($curl, CURLOPT_PROGRESSFUNCTION, '_odp_import_curl_progress_function_file_existing_checker_callback');
 
   curl_exec($curl);
 
@@ -153,23 +153,23 @@ function od_import_check_file_exists($url) {
   return $http_code < 400 ? TRUE : FALSE;
 }
 
-function od_import_build_file_uri($type, $data, $meta) {
+function odp_import_build_file_uri($type, $data, $meta) {
   switch ($type) {
-    case OD_IMPORT_STRUCTURE_TYPE:
+    case ODP_IMPORT_STRUCTURE_TYPE:
       if (empty($data['structure']['source']) || empty($data['structure']['created'])) {
         return FALSE;
       }
       $origin_uri = $data['structure']['source'];
-      $structure_created = od_import_format_date_iso_url($data['structure']['created']);
+      $structure_created = odp_import_format_date_iso_url($data['structure']['created']);
       $name = 'structure-' . $structure_created;
       break;
-    case OD_IMPORT_DATA_TYPE:
+    case ODP_IMPORT_DATA_TYPE:
       if (empty($data['source']) || empty($data['created']) || empty($data['structure']['created'])) {
         return FALSE;
       }
       $origin_uri = $data['source'];
-      $data_created = od_import_format_date_iso_url($data['created']);
-      $structure_created = od_import_format_date_iso_url($data['structure']['created']);
+      $data_created = odp_import_format_date_iso_url($data['created']);
+      $structure_created = odp_import_format_date_iso_url($data['structure']['created']);
       $name = 'data-' . $data_created . '-structure-' . $structure_created;
       break;
     default:
@@ -196,13 +196,13 @@ function od_import_build_file_uri($type, $data, $meta) {
   return $uri;
 }
 
-function od_import_format_date_iso_url($created) {
+function odp_import_format_date_iso_url($created) {
   $created = strtotime($created);
 
   return $created ? date('Y-m-d\TH-i-s', $created) : FALSE;
 }
 
-function od_import_get_source_revisions($nid) {
+function odp_import_get_source_revisions($nid) {
   $revisions = array();
 
   $query = db_select('node_revision', 'r');
@@ -222,10 +222,10 @@ function od_import_get_source_revisions($nid) {
   return $revisions;
 }
 
-function _od_import_curl_progress_function_size_limit_checker_callback($resource, $download_size) {
-  return $download_size > OD_IMPORT_OPENDATA_MAX_SIZE;
+function _odp_import_curl_progress_function_size_limit_checker_callback($resource, $download_size) {
+  return $download_size > ODP_IMPORT_OPENDATA_MAX_SIZE;
 }
 
-function _od_import_curl_progress_function_file_existing_checker_callback($resource, $download_size) {
+function _odp_import_curl_progress_function_file_existing_checker_callback($resource, $download_size) {
   return $download_size > (1024 * 1024);
 }

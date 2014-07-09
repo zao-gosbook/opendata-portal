@@ -3,7 +3,7 @@
 /**
  * Create dataset for organization by identifier for.
  */
-function _od_import_create_dataset($meta, $organization) {
+function _odp_import_create_dataset($meta, $organization) {
   $dataset_node = new stdClass();
 
   $dataset_node->type = 'dataset';
@@ -39,32 +39,32 @@ function _od_import_create_dataset($meta, $organization) {
 /**
  * Update dataset with meta values.
  */
-function _od_import_update_dataset($dataset_node, $meta, $organization, &$dataset_updated, &$resource_updated) {
+function _odp_import_update_dataset($dataset_node, $meta, $organization, &$dataset_updated, &$resource_updated) {
   // Init messages variable.
   $messages = array();
 
   // Set dataset title field.
-  _od_import_dataset_set_title($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_title($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset description field.
-  _od_import_dataset_set_description($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_description($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset creator field.
-  _od_import_dataset_set_creator($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_creator($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset created field.
-  _od_import_dataset_set_created($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_created($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset updated field.
-  _od_import_dataset_set_updated($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_updated($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset valid field.
-  _od_import_dataset_set_valid($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_valid($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset subject field.
-  _od_import_dataset_set_subject($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_subject($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset publisher name field.
-  _od_import_dataset_set_publisher_name($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_publisher_name($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset publisher phone field.
-  _od_import_dataset_set_publisher_phone($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_publisher_phone($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset publisher email field.
-  _od_import_dataset_set_publisher_mbox($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  _odp_import_dataset_set_publisher_mbox($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset resource.
-  _od_import_dataset_set_resource($dataset_node, $meta, $organization, $messages, $dataset_updated, $resource_updated);
+  _odp_import_dataset_set_resource($dataset_node, $meta, $organization, $messages, $dataset_updated, $resource_updated);
 
   // Set opendata log variables if log has not disabled.
   if (empty($dataset_node->od_logged)) {
@@ -88,7 +88,7 @@ function _od_import_update_dataset($dataset_node, $meta, $organization, &$datase
 /**
  * Set dataset title field.
  */
-function _od_import_dataset_set_title($dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_title($dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_TITLE};
 
@@ -120,7 +120,7 @@ function _od_import_dataset_set_title($dataset_node, $meta, $organization, &$mes
 /**
  * Set dataset description field.
  */
-function _od_import_dataset_set_description($dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_description($dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_DESCRIPTION};
 
@@ -152,7 +152,7 @@ function _od_import_dataset_set_description($dataset_node, $meta, $organization,
 /**
  * Set dataset creator field.
  */
-function _od_import_dataset_set_creator($dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_creator($dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_CREATOR};
 
@@ -182,7 +182,7 @@ function _od_import_dataset_set_creator($dataset_node, $meta, $organization, &$m
 /**
  * Set dataset created field.
  */
-function _od_import_dataset_set_created(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_created(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_CREATED};
 
@@ -225,7 +225,7 @@ function _od_import_dataset_set_created(&$dataset_node, $meta, $organization, &$
 /**
  * Set dataset updated field.
  */
-function _od_import_dataset_set_updated(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_updated(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_UPDATED};
 
@@ -268,7 +268,7 @@ function _od_import_dataset_set_updated(&$dataset_node, $meta, $organization, &$
 /**
  * Set dataset valid field.
  */
-function _od_import_dataset_set_valid(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_valid(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_VALID};
 
@@ -311,7 +311,7 @@ function _od_import_dataset_set_valid(&$dataset_node, $meta, $organization, &$me
 /**
  * Set dataset subject field.
  */
-function _od_import_dataset_set_subject(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_subject(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_SUBJECT};
 
@@ -320,7 +320,7 @@ function _od_import_dataset_set_subject(&$dataset_node, $meta, $organization, &$
     $subjects = explode(',', $meta['subject']);
     $new_field_value = array(LANGUAGE_NONE => array());
     foreach ($subjects as $subject) {
-      $subject = od_import_load_or_create_subject_by_name(trim($subject)); //dk
+      $subject = odp_import_load_or_create_subject_by_name(trim($subject)); //dk
       $new_field_value[LANGUAGE_NONE][] = array(
         'tid' => $subject->tid,
       );
@@ -344,7 +344,7 @@ function _od_import_dataset_set_subject(&$dataset_node, $meta, $organization, &$
 /**
  * Set dataset publisher name field.
  */
-function _od_import_dataset_set_publisher_name(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_publisher_name(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_PUBLISHER_NAME};
 
@@ -374,7 +374,7 @@ function _od_import_dataset_set_publisher_name(&$dataset_node, $meta, $organizat
 /**
  * Set dataset publisher phone field.
  */
-function _od_import_dataset_set_publisher_phone(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_publisher_phone(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_PUBLISHER_PHONE};
 
@@ -404,7 +404,7 @@ function _od_import_dataset_set_publisher_phone(&$dataset_node, $meta, $organiza
 /**
  * Set dataset publisher email field.
  */
-function _od_import_dataset_set_publisher_mbox(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+function _odp_import_dataset_set_publisher_mbox(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_PUBLISHER_EMAIL};
 
@@ -441,7 +441,7 @@ function _od_import_dataset_set_publisher_mbox(&$dataset_node, $meta, $organizat
 /**
  * Set dataset resource. It requires existing dataset node.
  */
-function _od_import_dataset_set_resource(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated, &$resource_updated) {
+function _odp_import_dataset_set_resource(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated, &$resource_updated) {
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_RESOURCES};
 
@@ -454,7 +454,7 @@ function _od_import_dataset_set_resource(&$dataset_node, $meta, $organization, &
     }
     // Or create if it has not created yet.
     else {
-      $resource_node = _od_import_create_resource($dataset_node);
+      $resource_node = _odp_import_create_resource($dataset_node);
 
       $dataset_node->{ODP_FIELD_DATASET_RESOURCES}[LANGUAGE_NONE][0] = array(
         'target_id' => $resource_node->nid,
@@ -462,7 +462,7 @@ function _od_import_dataset_set_resource(&$dataset_node, $meta, $organization, &
       $dataset_updated = TRUE;
     }
 
-    _od_import_update_resource($resource_node, $meta, $dataset_node, $organization, $messages, $resource_updated);
+    _odp_import_update_resource($resource_node, $meta, $dataset_node, $organization, $messages, $resource_updated);
   }
   else {
     if (empty($field_value)) {
@@ -475,7 +475,7 @@ function _od_import_dataset_set_resource(&$dataset_node, $meta, $organization, &
 /**
  * Create resource for dataset.
  */
-function _od_import_create_resource($dataset_node) {
+function _odp_import_create_resource($dataset_node) {
   $resource_node = new stdClass();
 
   $resource_node->type = 'resource';
@@ -503,8 +503,8 @@ function _od_import_create_resource($dataset_node) {
 /**
  * Update resource with data values.
  */
-function _od_import_update_resource($resource_node, $meta, $dataset_node, $organization, &$messages, &$resource_updated) {
-  $revisions = od_import_get_source_revisions($resource_node->nid);
+function _odp_import_update_resource($resource_node, $meta, $dataset_node, $organization, &$messages, &$resource_updated) {
+  $revisions = odp_import_get_source_revisions($resource_node->nid);
 
   $revisions_created = array();
   foreach ($revisions as $revision) {
@@ -532,15 +532,15 @@ function _od_import_update_resource($resource_node, $meta, $dataset_node, $organ
     }
 
     // Set resource created field.
-    _od_import_resource_set_created($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated);
+    _odp_import_resource_set_created($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated);
     // Set resource provenance field.
-    _od_import_resource_set_provenance($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated);
+    _odp_import_resource_set_provenance($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated);
     // Set resource format field.
-    _od_import_resource_set_format($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated);
+    _odp_import_resource_set_format($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated);
     // Set resource data file field.
-    _od_import_resource_set_data($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated, $meta);
+    _odp_import_resource_set_data($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated, $meta);
     // Set resource structure field.
-    _od_import_resource_set_structure($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated, $meta);
+    _odp_import_resource_set_structure($resource_node, $data, $dataset_node, $organization, $messages, $resource_updated, $meta);
 
     // Set opendata log variables if log has not disabled.
     if (empty($resource_node->od_logged)) {
@@ -561,7 +561,7 @@ function _od_import_update_resource($resource_node, $meta, $dataset_node, $organ
 /**
  * Set resource created field.
  */
-function _od_import_resource_set_created($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated) {
+function _odp_import_resource_set_created($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated) {
   // Get the current field value.
   $field_value = &$resource_node->{ODP_FIELD_RESOURCE_CREATED};
 
@@ -606,7 +606,7 @@ function _od_import_resource_set_created($resource_node, $data, $dataset_node, $
 /**
  * Set resource provenance field.
  */
-function _od_import_resource_set_provenance($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated) {
+function _odp_import_resource_set_provenance($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated) {
   // Get the current field value.
   $field_value = &$resource_node->{ODP_FIELD_RESOURCE_PROVENANCE};
 
@@ -636,13 +636,13 @@ function _od_import_resource_set_provenance($resource_node, $data, $dataset_node
 /**
  * Set resource format field.
  */
-function _od_import_resource_set_format($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated) {
+function _odp_import_resource_set_format($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated) {
   // Get the current field value.
   $field_value = &$resource_node->{ODP_FIELD_RESOURCE_FORMAT};
 
   if (isset($data['format'])) {
     // Get format tid.
-    $format = od_import_get_format_id($data['format']);
+    $format = odp_import_get_format_id($data['format']);
 
     if ($format) {
       // Get the new field value.
@@ -676,7 +676,7 @@ function _od_import_resource_set_format($resource_node, $data, $dataset_node, $o
 /**
  * Set resource data file field.
  */
-function _od_import_resource_set_data($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated, $meta) {
+function _odp_import_resource_set_data($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated, $meta) {
   // Get the current field values.
   $field_local_value = &$resource_node->{ODP_FIELD_RESOURCE_LOCAL_DATA};
   $field_remote_value = &$resource_node->{ODP_FIELD_RESOURCE_REMOTE_DATA};
@@ -689,23 +689,23 @@ function _od_import_resource_set_data($resource_node, $data, $dataset_node, $org
       $new_field_remote_value = array();
 
       // Get file extension validators.
-      $local_valid_extensions = _od_import_resource_get_available_extensions(ODP_FIELD_RESOURCE_LOCAL_DATA, $url);
-      $remote_valid_extensions = _od_import_resource_get_available_extensions(ODP_FIELD_RESOURCE_REMOTE_DATA, $url);
+      $local_valid_extensions = _odp_import_resource_get_available_extensions(ODP_FIELD_RESOURCE_LOCAL_DATA, $url);
+      $remote_valid_extensions = _odp_import_resource_get_available_extensions(ODP_FIELD_RESOURCE_REMOTE_DATA, $url);
 
       // Get validations.
       $local_valid = $local_valid_extensions;
 
       if ($local_valid) {
         // Get correct system file uri.
-        $uri = od_import_build_file_uri(OD_IMPORT_DATA_TYPE, $data, $meta);
+        $uri = odp_import_build_file_uri(ODP_IMPORT_DATA_TYPE, $data, $meta);
 
         if ($uri !== FALSE) {
           // Get existing opendata data file.
-          $file = od_import_load_file($uri);
+          $file = odp_import_load_file($uri);
 
           // Create file if it has not created yet.
           if (empty($file)) {
-            $file = od_import_create_local_file($uri, $url);
+            $file = odp_import_create_local_file($uri, $url);
 
             if (!empty($file)) {
               $resource_node->{ODP_FIELD_RESOURCE_UTF8_ENCODING}[LANGUAGE_NONE][0]['value'] = $file->utf8;
@@ -738,11 +738,11 @@ function _od_import_resource_set_data($resource_node, $data, $dataset_node, $org
 
       if ($remote_valid) {
         // Get existing opendata data file.
-        $file = od_import_load_file($url);
+        $file = odp_import_load_file($url);
 
         // Create file if it has not created yet.
         if (empty($file)) {
-          $file = od_import_create_remote_file($url);
+          $file = odp_import_create_remote_file($url);
 
           if (!empty($file)) {
             $resource_node->{ODP_FIELD_RESOURCE_UTF8_ENCODING} = array();
@@ -796,7 +796,7 @@ function _od_import_resource_set_data($resource_node, $data, $dataset_node, $org
 /**
  * Set resource structure field.
  */
-function _od_import_resource_set_structure($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated, $meta) {
+function _odp_import_resource_set_structure($resource_node, $data, $dataset_node, $organization, &$messages, &$resource_updated, $meta) {
   // Get the current field values.
   $field_local_value = &$resource_node->{ODP_FIELD_RESOURCE_LOCAL_STRUCTURE};;
   $field_remote_value = &$resource_node->{ODP_FIELD_RESOURCE_REMOTE_STRUCTURE};
@@ -813,23 +813,23 @@ function _od_import_resource_set_structure($resource_node, $data, $dataset_node,
       $field_data_remote_value = $resource_node->{ODP_FIELD_RESOURCE_REMOTE_DATA};
 
       // Get file extension validators.
-      $local_valid_extensions = _od_import_resource_get_available_extensions(ODP_FIELD_RESOURCE_LOCAL_STRUCTURE, $url);
-      $remote_valid_extensions = _od_import_resource_get_available_extensions(ODP_FIELD_RESOURCE_REMOTE_STRUCTURE, $url);
+      $local_valid_extensions = _odp_import_resource_get_available_extensions(ODP_FIELD_RESOURCE_LOCAL_STRUCTURE, $url);
+      $remote_valid_extensions = _odp_import_resource_get_available_extensions(ODP_FIELD_RESOURCE_REMOTE_STRUCTURE, $url);
 
       // Get validations.
       $local_valid = $local_valid_extensions && !empty($field_data_local_value);
 
       if ($local_valid) {
         // Get correct system file uri.
-        $uri = od_import_build_file_uri(OD_IMPORT_STRUCTURE_TYPE, $data, $meta);
+        $uri = odp_import_build_file_uri(ODP_IMPORT_STRUCTURE_TYPE, $data, $meta);
 
         if ($uri !== FALSE) {
           // Get existing opendata data file.
-          $file = od_import_load_file($uri);
+          $file = odp_import_load_file($uri);
 
           // Create file if it has not created yet.
           if (empty($file)) {
-            $file = od_import_create_local_file($uri, $url);
+            $file = odp_import_create_local_file($uri, $url);
           }
 
           if (!empty($file)) {
@@ -847,11 +847,11 @@ function _od_import_resource_set_structure($resource_node, $data, $dataset_node,
 
       if ($remote_valid) {
         // Get existing opendata data file.
-        $file = od_import_load_file($url);
+        $file = odp_import_load_file($url);
 
         // Create file if it has not created yet.
         if (empty($file)) {
-          $file = od_import_create_remote_file($url);
+          $file = odp_import_create_remote_file($url);
         }
 
         if (!empty($file)) {
@@ -897,7 +897,7 @@ function _od_import_resource_set_structure($resource_node, $data, $dataset_node,
   }
 }
 
-function _od_import_resource_get_available_extensions($field, $url) {
+function _odp_import_resource_get_available_extensions($field, $url) {
   $instance = field_info_instance('node', $field, 'resource');
   $extensions = trim((string) $instance['settings']['file_extensions']);
   $extensions = explode(',', str_replace(' ', ',', $extensions));

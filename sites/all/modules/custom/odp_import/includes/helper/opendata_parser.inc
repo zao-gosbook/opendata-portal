@@ -3,7 +3,7 @@
 /**
  * Parse opendata organization.
  */
-function _od_import_organization_opendata($organizations) {
+function _odp_import_organization_opendata($organizations) {
   // Check "Opendata API" library.
   if (!od_api()) {
     $error = 'Библиотека "Opendata API" не установлена.';
@@ -55,7 +55,7 @@ function _od_import_organization_opendata($organizations) {
         'org_nid' => $organization->nid,
         'org_name' => $organization->title,
       );
-      $list = _od_import_meta_list($list_vars);
+      $list = _odp_import_meta_list($list_vars);
 
       if (is_array($list) && !empty($list)) {
         // Meta object.
@@ -68,7 +68,7 @@ function _od_import_organization_opendata($organizations) {
             'meta' => $meta,
             'time_start' => $time_start,
           );
-          $operations[] = array('_od_import_meta', array($meta_vars));
+          $operations[] = array('_odp_import_meta', array($meta_vars));
         }
       }
     }
@@ -79,14 +79,14 @@ function _od_import_organization_opendata($organizations) {
   }
 
   if (!empty($organizations)) {
-    $operations[] = array('_od_import_organization_opendata', array($organizations));
+    $operations[] = array('_odp_import_organization_opendata', array($organizations));
   }
 
   if (!empty($operations)) {
     $batch = array(
       'operations' => $operations,
-      'finished' => '_od_import_batch_meta_finished',
-      'file' => drupal_get_path('module', 'od_import') . '/includes/helper/opendata_parser.inc',
+      'finished' => '_odp_import_batch_meta_finished',
+      'file' => drupal_get_path('module', 'odp_import') . '/includes/helper/opendata_parser.inc',
     );
     batch_set($batch);
     return TRUE;
@@ -95,16 +95,16 @@ function _od_import_organization_opendata($organizations) {
   return FALSE;
 }
 
-function _od_import_batch_meta_finished($success, $results) {
+function _odp_import_batch_meta_finished($success, $results) {
   // Include helper content import functions.
-  require_once OD_IMPORT . '/' . 'includes/helper/opendata_import.inc';
+  require_once ODP_IMPORT . '/' . 'includes/helper/opendata_import.inc';
 
   if (!empty($results['data'])) {
-    _od_import_meta_from_data($results);
+    _odp_import_meta_from_data($results);
   }
 }
 
-function _od_import_meta_list($list_vars) {
+function _odp_import_meta_list($list_vars) {
   // List object.
   $od = new OdApi($list_vars['vars']);
   $meta_list = $od->getResult($list_vars['args']);
@@ -119,7 +119,7 @@ function _od_import_meta_list($list_vars) {
   return $meta_list['meta'];
 }
 
-function _od_import_meta($meta_vars, &$context) {
+function _odp_import_meta($meta_vars, &$context) {
   // Init some variables.
   if (!isset($context['results']['data'])) {
     $context['results']['data'] = array();
@@ -147,9 +147,9 @@ function _od_import_meta($meta_vars, &$context) {
   if (empty($error)) {
     OdApiHelper::clearProperties($meta);
 
-    _od_import_publisher($od, $meta);
+    _odp_import_publisher($od, $meta);
 
-    _od_import_data_list($od, $meta);
+    _odp_import_data_list($od, $meta);
   }
   else {
     if (!is_array($meta)) {
@@ -166,7 +166,7 @@ function _od_import_meta($meta_vars, &$context) {
   return;
 }
 
-function _od_import_publisher(OdApi $od, &$meta) {
+function _odp_import_publisher(OdApi $od, &$meta) {
   if (!isset($meta['publisher'])) {
     return;
   }
@@ -183,7 +183,7 @@ function _od_import_publisher(OdApi $od, &$meta) {
   }
 }
 
-function _od_import_data_list(OdApi $od, &$meta) {
+function _odp_import_data_list(OdApi $od, &$meta) {
   if (!isset($meta['data'])) {
     return;
   }
@@ -198,11 +198,11 @@ function _od_import_data_list(OdApi $od, &$meta) {
     $meta['data'] = $data_list['data'];
     OdApiHelper::clearProperties($meta['data']);
 
-    _od_import_data($od, $meta);
+    _odp_import_data($od, $meta);
   }
 }
 
-function _od_import_data(OdApi $od, &$meta) {
+function _odp_import_data(OdApi $od, &$meta) {
   if (!isset($meta['data'])) {
     return;
   }
@@ -217,12 +217,12 @@ function _od_import_data(OdApi $od, &$meta) {
     if (empty($error)) {
       OdApiHelper::clearProperties($data);
 
-      _od_import_structure($od, $data);
+      _odp_import_structure($od, $data);
     }
   }
 }
 
-function _od_import_structure(OdApi $od, &$data) {
+function _odp_import_structure(OdApi $od, &$data) {
   if (!isset($data['structure'])) {
     return;
   }
@@ -239,7 +239,7 @@ function _od_import_structure(OdApi $od, &$data) {
   }
 }
 
-function _od_import_meta_from_data($results) {
+function _odp_import_meta_from_data($results) {
   // Set date format.
   $format = 'Y-m-d H:i:s';
 
@@ -267,12 +267,12 @@ function _od_import_meta_from_data($results) {
     $dataset_is_new = !$dataset_node ? TRUE : FALSE;
 
     if ($dataset_is_new) {
-      $dataset_node = _od_import_create_dataset($meta, $organization);
+      $dataset_node = _odp_import_create_dataset($meta, $organization);
     }
 
     $dataset_updated = FALSE;
     $resource_updated = FALSE;
-    $dataset_node = _od_import_update_dataset($dataset_node, $meta, $organization, $dataset_updated, $resource_updated);
+    $dataset_node = _odp_import_update_dataset($dataset_node, $meta, $organization, $dataset_updated, $resource_updated);
 
     if ($dataset_is_new) {
       $dataset_list_added[] = l($dataset_node->title, 'node/' . $dataset_node->nid);
