@@ -20,8 +20,8 @@ function _od_import_create_dataset($meta, $organization) {
     'safe_value' => check_plain($meta['identifier']),
   );
 
-  // Meta owner.
-  $dataset_node->{ODP_FIELD_DATASET_OWNER}[LANGUAGE_NONE][0] = array(
+  // Meta creator.
+  $dataset_node->{ODP_FIELD_DATASET_ORGANIZATION}[LANGUAGE_NONE][0] = array(
     'target_id' => $organization->nid,
   );
 
@@ -47,10 +47,14 @@ function _od_import_update_dataset($dataset_node, $meta, $organization, &$datase
   _od_import_dataset_set_title($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset description field.
   _od_import_dataset_set_description($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  // Set dataset creator field.
+  _od_import_dataset_set_creator($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset created field.
   _od_import_dataset_set_created($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset updated field.
   _od_import_dataset_set_updated($dataset_node, $meta, $organization, $messages, $dataset_updated);
+  // Set dataset valid field.
+  _od_import_dataset_set_valid($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset subject field.
   _od_import_dataset_set_subject($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset publisher name field.
@@ -86,21 +90,29 @@ function _od_import_update_dataset($dataset_node, $meta, $organization, &$datase
  */
 function _od_import_dataset_set_title($dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
   // Get the current field value.
-  $field_value = &$dataset_node->title;
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_TITLE};
 
   $str_len = mb_strlen($meta['title']);
 
   if ($str_len > 255) {
     // Set warning message.
-    $messages[] = 'Превышен допустимый размер в 255 символов для поля "Наименование набора данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '". Наименование набора не может быть записано в базу данных Портала ОД полностью. Значение поля обрезано до 255 символов.';
+    $messages[] = 'Превышен допустимый размер в 255 символов для поля "Наименование набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '". Наименование набора не может быть записано в базу данных Портала ОД полностью. Значение поля обрезано до 255 символов.';
   }
 
   // Get the new field value.
-  $new_field_value = $str_len > 255 ? mb_substr($meta['title'], 0, 255) : $meta['title'];
+  $title = $str_len > 255 ? mb_substr($meta['title'], 0, 255) : $meta['title'];
+
+  // Get the new field value.
+  $new_field_value = array(LANGUAGE_NONE => array('0' => array(
+    'value' => $title,
+    'format' => NULL,
+    'safe_value' => check_plain($title),
+  )));
 
   // Update the field if it has changed.
   if ($field_value !== $new_field_value) {
     $field_value = $new_field_value;
+    $dataset_node->title = $title;
     $dataset_updated = TRUE;
   }
 }
@@ -117,7 +129,7 @@ function _od_import_dataset_set_description($dataset_node, $meta, $organization,
     $new_field_value = array(LANGUAGE_NONE => array('0' => array(
       'value' => $meta['description'],
       'summary' => '',
-      'format' => 'full_html',
+      'format' => NULL,
       'safe_value' => check_plain($meta['description']),
       'safe_summary' => '',
     )));
@@ -133,7 +145,37 @@ function _od_import_dataset_set_description($dataset_node, $meta, $organization,
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Описание набора данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+    $messages[] = 'Не заполнено поле "Описание набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+  }
+}
+
+/**
+ * Set dataset creator field.
+ */
+function _od_import_dataset_set_creator($dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+  // Get the current field value.
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_CREATOR};
+
+  if (isset($meta['creator'])) {
+    // Get the new field value.
+    $new_field_value = array(LANGUAGE_NONE => array('0' => array(
+      'value' => $meta['creator'],
+      'format' => NULL,
+      'safe_value' => check_plain($meta['creator']),
+    )));
+
+    // Update the field if it has changed.
+    if ($field_value !== $new_field_value) {
+      $field_value = $new_field_value;
+      $dataset_updated = TRUE;
+    }
+  }
+  else {
+    // Set the field default value.
+    $field_value = array();
+
+    // Set warning message.
+    $messages[] = 'Не заполнено поле "Владелец набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
   }
 }
 
@@ -168,7 +210,7 @@ function _od_import_dataset_set_created(&$dataset_node, $meta, $organization, &$
       $field_value = array();
 
       // Set warning message.
-      $messages[] = 'Некорректно заполнено поле "Дата первой публикации набора данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+      $messages[] = 'Некорректно заполнено поле "Дата первой публикации набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
     }
   }
   else {
@@ -176,7 +218,7 @@ function _od_import_dataset_set_created(&$dataset_node, $meta, $organization, &$
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Дата первой публикации набора данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+    $messages[] = 'Не заполнено поле "Дата первой публикации набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
   }
 }
 
@@ -211,7 +253,7 @@ function _od_import_dataset_set_updated(&$dataset_node, $meta, $organization, &$
       $field_value = array();
 
       // Set warning message.
-      $messages[] = 'Некорректно заполнено поле "Дата последнего изменения" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+      $messages[] = 'Некорректно заполнено поле "Дата последнего изменения набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
     }
   }
   else {
@@ -219,7 +261,50 @@ function _od_import_dataset_set_updated(&$dataset_node, $meta, $organization, &$
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Дата последнего изменения" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+    $messages[] = 'Не заполнено поле "Дата последнего изменения набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+  }
+}
+
+/**
+ * Set dataset valid field.
+ */
+function _od_import_dataset_set_valid(&$dataset_node, $meta, $organization, &$messages, &$dataset_updated) {
+  // Get the current field value.
+  $field_value = &$dataset_node->{ODP_FIELD_DATASET_VALID};
+
+  if (isset($meta['data'][0]['valid'])) {
+    // Get created in unix timestamp format.
+    $created = (string) strtotime($meta['data'][0]['valid']);
+
+    if ($created) {
+      // Get the new field value.
+      $new_field_value = array(LANGUAGE_NONE => array(0 => array(
+        'value' => $created,
+        'timezone' => 'Europe/Moscow',
+        'timezone_db' => 'Europe/Moscow',
+        'date_type' => 'datestamp',
+      )));
+
+      // Update the field if it has changed.
+      if ($field_value !== $new_field_value) {
+        $field_value = $new_field_value;
+        $dataset_updated = TRUE;
+      }
+    }
+    else {
+      // Set the field default value.
+      $field_value = array();
+
+      // Set warning message.
+      $messages[] = 'Некорректно заполнено поле "Дата актуальности набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+    }
+  }
+  else {
+    // Set the field default value.
+    $field_value = array();
+
+    // Set warning message.
+    $messages[] = 'Не заполнено поле "Дата актуальности набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
   }
 }
 
@@ -252,7 +337,7 @@ function _od_import_dataset_set_subject(&$dataset_node, $meta, $organization, &$
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Ключевые слова" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+    $messages[] = 'Не заполнено поле "Ключевые слова набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
   }
 }
 
@@ -282,7 +367,7 @@ function _od_import_dataset_set_publisher_name(&$dataset_node, $meta, $organizat
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Ответственное лицо" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+    $messages[] = 'Не заполнено поле "Ответственное лицо набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
   }
 }
 
@@ -312,7 +397,7 @@ function _od_import_dataset_set_publisher_phone(&$dataset_node, $meta, $organiza
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Номер телефона ответственного лица" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+    $messages[] = 'Не заполнено поле "Номер телефона ответственного лица набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
   }
 }
 
@@ -341,7 +426,7 @@ function _od_import_dataset_set_publisher_mbox(&$dataset_node, $meta, $organizat
       $field_value = array();
 
       // Set warning message.
-      $messages[] = 'Некорректно заполнено поле "Адрес электронной почты ответственного лица" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+      $messages[] = 'Некорректно заполнено поле "Адрес электронной почты ответственного лица набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
     }
   }
   else {
@@ -349,7 +434,7 @@ function _od_import_dataset_set_publisher_mbox(&$dataset_node, $meta, $organizat
     $field_value = array();
 
     // Set warning message.
-    $messages[] = 'Не заполнено поле "Адрес электронной почты ответственного лица" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+    $messages[] = 'Не заполнено поле "Адрес электронной почты ответственного лица набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
   }
 }
 
