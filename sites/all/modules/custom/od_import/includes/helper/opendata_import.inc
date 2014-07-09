@@ -43,8 +43,6 @@ function _od_import_update_dataset($dataset_node, $meta, $organization, &$datase
   // Init messages variable.
   $messages = array();
 
-  $dataset_node = od_dataset_revision($dataset_node);
-
   // Set dataset title field.
   _od_import_dataset_set_title($dataset_node, $meta, $organization, $messages, $dataset_updated);
   // Set dataset description field.
@@ -71,6 +69,7 @@ function _od_import_update_dataset($dataset_node, $meta, $organization, &$datase
 
   // Update dataset.
   if ($dataset_updated || $resource_updated) {
+    $dataset_node->revision = TRUE;
     node_save($dataset_node);
   }
 
@@ -464,6 +463,7 @@ function _od_import_update_resource($resource_node, $meta, $dataset_node, $organ
     }
 
     if ($resource_updated) {
+      $resource_node->revision = TRUE;
       node_save($resource_node);
     }
 
