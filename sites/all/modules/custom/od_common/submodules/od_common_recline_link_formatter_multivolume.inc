@@ -4,13 +4,13 @@
  */
 
 function od_common_module__recline_link_formatter_multivolume(&$element, $entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $dataset_wrapper = od_dataset_get_wrapper_by_resource($entity, $entity->vid);
   list($entity_id, $revision_id, $bundle) = entity_extract_ids($entity_type, $entity);
   $context = od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id, "{$bundle}:{$field['field_name']}", array(
     'selector' => '.multi-download-link-wrapper[data-stat-id="%STAT_ID%"] .dropdown-links .download a',
   ));
 
   foreach ($items as $delta => $item) {
-    $dataset_wrapper = od_dataset_get_wrapper_by_resource($entity, $entity->vid);
     // Change download callback to od_dataset's callback to support encodings
     $download_uri = (string) od_dataset_download_path($dataset_wrapper);
     $element[$delta]['links_container'] = array(
