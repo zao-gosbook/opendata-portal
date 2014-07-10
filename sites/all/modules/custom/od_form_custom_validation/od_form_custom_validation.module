@@ -15,8 +15,6 @@ function od_form_custom_validation_menu() {
   return $items;
 }
 
-
-
 /**
  * Implements hook_form_alter().
  */
