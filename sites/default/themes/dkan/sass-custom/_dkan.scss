@@ -5193,16 +5193,19 @@ table {
       display: inline-block;
       
       .field-content {
-        text-shadow: 1px 1px 1px rgba(0,0,0, .6);
+        text-shadow: 1px 1px 1px rgba(0,0,0, .4);
       }
       &.approved .field-content {
         color: yellow;
       }
       &.discussion .field-content {
-        color: green;
+        color: orange;
       }
       &.answered .field-content {
-        color: orange;
+        color: green;
+      }
+      &.registred .field-content {
+        color: red;
       }
       * {
         display: inline;
@@ -6191,6 +6194,28 @@ div.fivestar-widget .star {
   line-height: 22px;
   color: #666;
   
+  .pane-entity-field-extra {
+    float: left;
+    padding-right: 10px;
+    
+    a {
+      background: none repeat scroll 0 0 #0C87E8;
+      border: 0 none;
+      color: #FFFFFF;
+      display: inline-block;
+      font-size: .75em;
+      padding: 1.25em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }    
+  }
+  .pane-node-field-od-query-vote-up-down {
+    clear: both;
+  }
+  .pane-node-field-od-query-data-name {
+    clear: left;
+  }
+  
   div[class*='-comments']{
     width: 100%;
   }
@@ -6210,25 +6235,28 @@ div.fivestar-widget .star {
       font-size: 13px;
     }
   }
-  .panel-pane {
-    @include clearfix;
-    padding-bottom: 10px;
-    
-    h2 {
-      float: left;
-      width: 200px;
-      color: #000;
-      font-weight: normal;
-      margin: 0;
-      font-size: 16px;
-      line-height: 22px; 
-    }
-    .field-items,
-    .addtoany_list,
-    .view {
-      margin-left: 200px;
-      display: block;
-    }
+ 
+  .query-wrapper {
+    .panel-pane {
+      @include clearfix;
+      padding-bottom: 10px;
+      
+      h2 {
+        float: left;
+        width: 200px;
+        color: #000;
+        font-weight: normal;
+        margin: 0;
+        font-size: 16px;
+        line-height: 22px; 
+      }
+      .field-items,
+      .addtoany_list,
+      .view {
+        margin-left: 200px;
+        display: block;
+      }
+    }  
   }  
   .pane-node-field-query-state {
     text-transform: uppercase;

@@ -18,6 +18,9 @@ abstract class OdApiObject {
   const OBJECT_CARDINALITY_IS_MULTIPLE = 2;
 
   const OBJECT_FORMAT_RDFA = 'rdfa';
+  const OBJECT_FORMAT_MICRODATA = 'csv';
+  const OBJECT_FORMAT_JSON = 'json';
+  const OBJECT_FORMAT_XML = 'xml';
   const OBJECT_FORMAT_CSV = 'csv';
 
   const MESSAGE_TYPE_IS_WARNING = 1;
@@ -27,13 +30,35 @@ abstract class OdApiObject {
   const MACHINE_FORMAT_DETECTED = 1;
 
   // Warnings.
-  const FORMAT_MICRODATA_DETECTED = 2;
-  const FORMAT_RDFA_DETECTED = 3;
-  const FORMAT_CSV_DETECTED = 4;
-  const FORMAT_CSV_IS_UTF8 = 5;
-  const FORMAT_XML_DETECTED = 6;
-  const FORMAT_JSON_DETECTED = 7;
+  const FORMAT_RDFA_DETECTED = 2;
+  const FORMAT_MICRODATA_DETECTED = 3;
+  const FORMAT_JSON_DETECTED = 4;
+  const FORMAT_XML_DETECTED = 5;
+  const FORMAT_CSV_DETECTED = 6;
+  const FORMAT_CSV_IS_UTF8 = 7;
 
+  protected static $allFormats = array(
+    self::OBJECT_FORMAT_RDFA => array(
+      'validator' => self::FORMAT_RDFA_DETECTED,
+      'parser' => 'parseRdfa',
+    ),
+    self::OBJECT_FORMAT_MICRODATA => array(
+      'validator' => self::FORMAT_MICRODATA_DETECTED,
+      'parser' => 'parseMicrodata',
+    ),
+    self::OBJECT_FORMAT_JSON => array(
+      'validator' => self::FORMAT_JSON_DETECTED,
+      'parser' => 'parseJson',
+    ),
+    self::OBJECT_FORMAT_XML => array(
+      'validator' => self::FORMAT_XML_DETECTED,
+      'parser' => 'parseXml',
+    ),
+    self::OBJECT_FORMAT_CSV => array(
+      'validator' => self::FORMAT_CSV_DETECTED,
+      'parser' => 'parseCsv',
+    ),
+  );
   protected static $validatorsInfo = array(
     self::MACHINE_FORMAT_DETECTED => array(
       'type' => self::MESSAGE_TYPE_IS_ERROR,
@@ -99,34 +124,28 @@ abstract class OdApiObject {
     ),
   );
 
-  protected static $type;
-  protected static $parentType;
-  /**
-   * @var array
-   */
-  protected static $childrenTypes;
-  /**
-   * @var array
-   */
-  protected static $message_texts;
-
+  public static $type;
   public static $title;
+  public static $typeCardinality;
+  public static $parentType;
+  public static $childrenTypes;
 
   private $_validatorsInfo = array();
-  public $validators = array();
 
-  private $localNamespaces;
+  protected $validators = array();
+  public $error = NULL;
 
   /**
    * Root opendata api object.
    *
    * @var OdApi
    */
-  public $od_api;
+  public $odApi;
 
-  // Object api args.
+  // Object arg.
+  public $arg;
+  // Object args.
   public $args;
-  public $api;
 
   /**
    * Object parent.
@@ -143,26 +162,14 @@ abstract class OdApiObject {
 
   // Defined urls.
   public $url;
-  public $urls;
+  public $urls = array();
 
-  /**
-   * RDFa parser.
-   *
-   * @var OdApiRDFaParser
-   */
-  public $parserRDFa;
+  // Parsers.
+  public $parserRdfa;
   public $parserMicrodata;
-  /**
-   * CSV parser.
-   *
-   * @var OdApiCSVParser
-   */
-  public $parserCSV;
-  public $parserXML;
-  public $parserJSON;
-
-  // Messages.
-  public $messages = array();
+  public $parserCsv;
+  public $parserXml;
+  public $parserJson;
 
   // Result.
   public $content;
@@ -170,26 +177,33 @@ abstract class OdApiObject {
 
   // Validation status variables.
   public $argIsValid;
-  public $versionIsValid;
+  public $urlIsValid;
   public $parserIsValid;
-
   public $objectIsValid = TRUE;
 
-  abstract public function setPossibleUrls();
-  abstract public function validateArg();
-  abstract public function validateVersion();
-  abstract public function validateObject();
-  abstract protected function _parseRdf();
+  abstract protected function _getAvailableFormats();
+  abstract protected function _validateArg();
+  abstract protected function _validateUrl();
+  abstract protected function _getFormatUrl($format);
+  abstract protected function _parseRdfa();
+  abstract protected function _parseMicrodata();
+  abstract protected function _parseJson();
+  abstract protected function _parseXml();
   abstract protected function _parseCsv();
   abstract protected function _getResult();
 
   /**
-   * @param $od_api OdApi
+   * @param $odApi OdApi
    * @param $parent OdApiObject
+   * @param array $args
    */
-  public function __construct($od_api, $parent) {
+  public function __construct($odApi, $parent, $args) {
+    // Detect current version.
+    preg_match('/\d*$/', get_class($this), $matches);
+    $this->version = !empty($matches) ? implode('.', str_split(reset($matches))) : FALSE;
+
     $this->initValidators();
-    $this->od_api = $od_api;
+    $this->odApi = $odApi;
 
     if ($this::$parentType) {
       if ($parent && is_object($parent) && $parent::$type == $this::$parentType) {
@@ -197,36 +211,36 @@ abstract class OdApiObject {
       }
     }
 
-    $this->args = $od_api->currentArgs;
+    $this->arg = $args[$this::$type];
+    $this->args = $args;
 
-    $this->validateArg();
+    $this->_validateArg();
     $this->argIsValid = $this->objectIsValid;
     if (!$this->argIsValid) {
       return;
     }
 
-    $this->validateVersion();
-    $this->versionIsValid = $this->objectIsValid;
-    if (!$this->versionIsValid) {
+    $this->_validateUrl();
+    $this->urlIsValid = $this->objectIsValid;
+    if (!$this->urlIsValid) {
       return;
     }
 
-    $this->api = $this->getApi();
+    $i = 0;
+    do {
+      $this->objectIsValid = TRUE;
+      $this->error = NULL;
 
-    $this->setLocalNamespaces();
-    $this->setPossibleUrls();
+      $this->url = isset($this->urls[$i]) ? $this->urls[$i] : TRUE;
 
-    $this->validateObject();
-    $this->parserIsValid = $this->objectIsValid;
-    if (!$this->parserIsValid) {
-      return;
+      $this->parse();
+      $this->parserIsValid = $this->objectIsValid;
+      if ($this->parserIsValid) {
+        break;
+      }
+      $i++;
     }
-
-    $this->parse();
-    $this->parserIsValid = $this->objectIsValid;
-    if (!$this->parserIsValid) {
-      return;
-    }
+    while ($i < count($this->urls));
   }
 
   private function initValidators() {
@@ -251,16 +265,6 @@ abstract class OdApiObject {
     }
   }
 
-  private function setLocalNamespaces() {
-    $local_namespaces = array(
-      'rdf:' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-      'dc:' => 'http://purl.org/dc/terms/',
-      'foaf:' => 'http://xmlns.com/foaf/0.1/',
-    );
-
-    $this->localNamespaces = $local_namespaces;
-  }
-
   public function getResult() {
     if (!empty($this->result)) {
       return $this->result;
@@ -275,74 +279,80 @@ abstract class OdApiObject {
     return $this->result;
   }
 
-  public function getApi() {
-    $args = func_get_args();
+  public function getError() {
+    return $this->error;
+  }
 
-    $api = $this->args;
-    if ($args) {
-      foreach ($args as $arg) {
-        $api = array_merge($api, $arg);
+  public function getApi() {
+    $func_args = func_get_args();
+
+    $args = $this->args;
+    if ($func_args) {
+      foreach ($func_args as $arg) {
+        $args = array_merge($args, $arg);
       }
     }
 
-    return $api;
-  }
-
-  public function localNamespaceWrap($var) {
-    return strtr($var, array_flip($this->localNamespaces));
-  }
-
-  public function localNamespaceUnwrap($var) {
-    return strtr($var, $this->localNamespaces);
+    return $args;
   }
 
   public function parse() {
-    if (empty($this->format) && isset($this->urls['semantic'])) {
-      $this->parseRDFa();
+    foreach ($this->_getAvailableFormats() as $format) {
+      $allFormats = $this::$allFormats;
+      $value = $allFormats[$format];
 
-      if ($this->getValidator($this::FORMAT_RDFA_DETECTED)) {
-        $this->format = $this::OBJECT_FORMAT_RDFA;
+      $url = $this->_getFormatUrl($format);
+      if ($url === FALSE) {
+        continue;
       }
-    }
 
-    if (empty($this->format) && isset($this->urls['file_csv'])) {
-      $this->parseCSV();
+      $this->{$value['parser']}($url);
+      $this->{'_' . $value['parser']}($url);
 
-      if ($this->getValidator($this::FORMAT_CSV_DETECTED)) {
-        $this->format = $this::OBJECT_FORMAT_CSV;
+      $result = !empty($this->content);
+      $this->setValidator($value['validator'], $result);
+
+      if ($result) {
+        $this->format = $format;
+        break;
       }
     }
 
     $this->setValidator($this::MACHINE_FORMAT_DETECTED, !empty($this->format));
   }
 
-  public function parseRDFa() {
-    $this->parserRDFa = new OdApiRDFaParser();
+  protected function parseRdfa($url) {
+    $RDFaParser = new OdApiRDFaParser();
 
-    $actual_url = $this->url !== $this->urls['semantic'] ? $this->urls['semantic'] : NULL;
-    $this->parserRDFa->parse($this->url, $actual_url);
-
-    $this->_parseRdf();
+    $actual_url = $this->url !== $url ? $url : NULL; // @todo Check it.
+    $this->parserRdfa = $RDFaParser->parse($this->url, $actual_url);
   }
 
-  public function parseCSV() {
-    $encoding = !empty($this->od_api->vars['encoding']) ? $this->od_api->vars['encoding'] : NULL;
+  protected function parseMicrodata($url) {}
 
-    $this->parserCSV = new OdApiCSVParser();
-    $this->parserCSV->parse($this->urls['file_csv'], $encoding);
+  protected function parseJson($url) {}
 
-    $this->_parseCsv();
-  }
+  protected function parseXml($url) {}
 
-  public function getMessageText($message_id, $value, $args) {
-    $message_texts = $this::$message_texts;
+  protected function parseCsv($url) {
+    $encoding = !empty($this->odApi->vars['encoding']) ? $this->odApi->vars['encoding'] : NULL;
 
-    $message = isset($message_texts[$message_id]) ? format_string($message_texts[$message_id][$value], $args) : FALSE;
-
-    return $message;
+    if ($url !== TRUE) {
+      $CSVParser = new OdApiCsvParser();
+      switch ($this->version) {
+        case '2.3';
+          $this->parserCsv = $CSVParser->parse($url, $encoding, FALSE);
+          break;
+        default;
+          $this->parserCsv = $CSVParser->parse($url, $encoding);
+          break;
+      }
+    }
   }
 
   public function setValidator($validator_id, $value) {
+    $value = (bool) $value;
+
     // Set validator value.
     $validator = $this->_validatorsInfo[$validator_id];
     $this->validators[$validator_id] = array(
@@ -353,41 +363,58 @@ abstract class OdApiObject {
 
     if ($value === FALSE && $validator['type'] === $this::MESSAGE_TYPE_IS_ERROR) {
       $this->objectIsValid = FALSE;
+      $this->error = $validator['descriptions'][(integer) $value];
     }
   }
 
   public function getValidator($validator_id) {
-    $validator = !empty($this->validators[$validator_id]) ? (bool) $this->validators[$validator_id]['value'] : FALSE;
+    $validator = !empty($this->validators[$validator_id]) ? $this->validators[$validator_id]['value'] : FALSE;
 
     return $validator;
   }
 
-  public function getValidators() {
-    return $this->validators;
+  public function getParent() {
+    return $this->parent;
   }
 
-  public function getError() {
-    $error = NULL;
-    foreach ($this->validators as $validator) {
-      if ($validator['value'] === (integer) FALSE && $validator['type'] === $this::MESSAGE_TYPE_IS_ERROR) {
-        $error = $validator;
-        break;
-      }
+  public function getChildren($type, $arg = NULL) {
+    $class_name = OdApiHelper::getClassNameByType($type);
+
+    if (!in_array($type, $this::$childrenTypes)) {
+      return FALSE;
     }
 
-    return $error;
-  }
+    if (empty($this->objects[$type])) {
+      return FALSE;
+    }
 
-  public function checkUrlSuccess($url) {
-    $http_status = OdApiHelper::getUrlHttpStatus($url);
-    $data_status = OdApiHelper::getUrlDataStatus($url);
+    $multiple_cardinality = $class_name::$typeCardinality === $class_name::OBJECT_CARDINALITY_IS_MULTIPLE;
+    if ($multiple_cardinality) {
+      $objects = array();
+      foreach ($this->objects[$type] as $key => $object) {
+        $objects[$key] = $object['validVersion'];
+      }
 
-    return $http_status < 400 && $data_status;
-  }
+      if (!empty($arg)) {
+        if (method_exists($class_name, 'processArg')) {
+          $arg = $class_name::processArg($arg);
+        }
 
-  public function checkErrorExists() {
-    $error = $this->getError();
+        if (isset($objects[$arg])) {
+          $result = $objects[$arg];
+        }
+        else {
+          return FALSE;
+        }
+      }
+      else {
+        $result = $objects;
+      }
+    }
+    else {
+      $result = $this->objects[$type]['validVersion'];
+    }
 
-    return !empty($error);
+    return $result;
   }
 }

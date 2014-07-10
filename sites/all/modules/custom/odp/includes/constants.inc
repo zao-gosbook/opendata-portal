@@ -9,10 +9,13 @@ define('OD_COMMON_IMPORT_USER_ID', 107);
  * Dataset fields.
  */
 define('ODP_FIELD_DATASET_IDENTIFIER', 'field_dataset_id');
+define('ODP_FIELD_DATASET_TITLE', 'field_dataset_title');
 define('ODP_FIELD_DATASET_DESCRIPTION', 'field_dataset_body');
-define('ODP_FIELD_DATASET_OWNER', 'field_organization');
+define('ODP_FIELD_DATASET_CREATOR', 'field_owner');
+define('ODP_FIELD_DATASET_ORGANIZATION', 'field_organization');
 define('ODP_FIELD_DATASET_CREATED', 'field_date_first_time_publ');
 define('ODP_FIELD_DATASET_UPDATED', 'field_date_last_change');
+define('ODP_FIELD_DATASET_VALID', 'field_date_dataset_actual');
 define('ODP_FIELD_DATASET_SUBJECT', 'field_tags');
 define('ODP_FIELD_DATASET_RESOURCES', 'field_resources');
 define('ODP_FIELD_DATASET_RUBRIC', 'field_rubric');

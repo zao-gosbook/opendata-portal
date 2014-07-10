@@ -15,6 +15,8 @@ abstract class OdApiDataDefault extends OdApiObject {
   // Errors.
   const SITE_OPENDATA_DATA_EXISTS = 51;
 
+  const REGEXP_CSV_DATA = '/^data-(.*)-structure-(.*)$/u';
+
   protected static $validatorsInfo = array(
     self::SITE_OPENDATA_DATA_EXISTS => array(
       'type' => self::MESSAGE_TYPE_IS_ERROR,
@@ -25,4 +27,8 @@ abstract class OdApiDataDefault extends OdApiObject {
       ),
     ),
   );
+
+  protected function _getAvailableFormats() {
+    return array($this->parent->format);
+  }
 }
