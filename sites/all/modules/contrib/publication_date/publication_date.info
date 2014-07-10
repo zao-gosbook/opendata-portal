@@ -1,0 +1,16 @@
+name = Publication Date
+description = "Add a field containing the publication date."
+core = 7.x
+
+files[] = publication_date.install
+files[] = publication_date.module
+files[] = publication_date.tokens.inc
+files[] = includes/publication_date.views.inc
+files[] = tests/publication_date.test
+
+; Information added by Drupal.org packaging script on 2014-06-07
+version = "7.x-2.0"
+core = "7.x"
+project = "publication_date"
+datestamp = "1402180428"
+
