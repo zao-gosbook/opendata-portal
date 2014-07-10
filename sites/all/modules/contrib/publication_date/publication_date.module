@@ -1,0 +1,202 @@
+<?php
+
+/**
+ * @file
+ * Add a field to nodes containing the publication date.
+ */
+
+/**
+ * Implements hook_node_load().
+ */
+function publication_date_node_load($nodes, $types) {
+  foreach ($nodes as $node) {
+    $node->published_at = _publication_date_get_date($node->nid);
+
+    // We have to manage the 'old nodes', i.e nodes that have been published
+    // BEFORE the activation of this module.
+    if (!$node->published_at) {
+      $row = db_select('node', 'n')
+        ->fields('n', array('created', 'status'))
+        ->condition('nid', $node->nid)
+        ->execute()
+        ->fetchAssoc();
+      if ($row && $row['status'] == 1) {
+        $node->published_at = $row['created'];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function publication_date_node_insert($node) {
+  // Save the publication date.
+  _publication_date_set_date($node, 'insert');
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function publication_date_node_update($node) {
+  // Save the publication date.
+  _publication_date_set_date($node, 'update');
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function publication_date_node_delete($node) {
+  // Delete the publication date for the deleted node.
+  db_delete('publication_date')
+    ->condition('nid', $node->nid)
+    ->execute();
+}
+
+/**
+ * Worker function to save the published date to the database.
+ *
+ * @param object $node
+ *   The node object.
+ * @param string $op
+ *   The node opperation being performed:
+ *   - 'insert': a new node was created
+ *   - 'update': an existing node was updated
+ *
+ * @see hook_node_insert()
+ * @see hook_node_update()
+ */
+function _publication_date_set_date($node, $op = '') {
+  // Set a default publication date value.
+  $published_at = empty($node->published_at) ? 0 : $node->published_at;
+
+  // If no publication date has been set and the node is published then use
+  // REQUEST_TIME. Otherwise, use the default publication date.
+  $published_at = ($published_at == 0 && $node->status == 1) ? REQUEST_TIME : $published_at;
+
+  // Allow other modules to alter the publication date before it is saved.
+  drupal_alter('publication_date', $published_at, $node, $op);
+
+  // Update the node object.
+  $node->published_at = $published_at;
+
+  // Save the publication date to the database.
+  db_merge('publication_date')
+    ->key(array('nid' => $node->nid))
+    ->fields(array('published_at' => $published_at))
+    ->execute();
+}
+
+/**
+ * Worker function to get a published date from the database.
+ *
+ * @param int $nid
+ *   The node ID.
+ * @return the publication date for the given node, or false if the node is not
+ *   published.
+ *
+ * @see hook_node_load()
+ */
+function _publication_date_get_date($nid) {
+  $date = db_query("SELECT published_at FROM {publication_date} WHERE nid = :nid", array(':nid' => $nid))->fetchField();
+  return $date;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function publication_date_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'publication_date') . '/includes',
+  );
+}
+
+/**
+ * Implementation of hook_form_BASE_ID_alter().
+ *
+ * Display the publication date on the node edit form.
+ * @note: This won't work where you have Display Suite/REL enabled.
+ */
+function publication_date_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $node = $form["#node"];
+  $form['options']['pubdate'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Published on'),
+    '#maxlength' => 25,
+    '#description' => t('Format: %time. Leave blank to use the time of form submission.', array('%time' => format_date(REQUEST_TIME, 'custom', 'Y-m-d H:i:s O'))),
+    '#weight' => -1,
+  );
+  if ($form['nid'] !== NULL && isset($node->published_at) && $node->published_at) {
+    $form['options']['pubdate']['#default_value'] = format_date($node->published_at, 'custom', 'Y-m-d H:i:s O');
+  }
+  $form['options']['pubdate']['#access'] = user_access('set ' . $node->type . ' published on date');
+  if (user_access('set ' . $node->type . ' published on date')) {
+    $form['options']['#access'] = TRUE;
+  }
+  $form['#validate'][] = 'publication_date_pubdate_validate';
+  $form['#submit'][] = 'publication_date_pubdate_submit';
+}
+
+/**
+ * Node edit form validation handler.
+ *
+ * Validate the published date input.
+ */
+function publication_date_pubdate_validate($form, &$form_state) {
+  // Validate the "Published on" field. As of PHP 5.1.0, strtotime returns FALSE
+  // instead of -1 upon failure.
+  if (!empty($form_state['values']['pubdate'])) {
+    if (strtotime($form_state['values']['pubdate']) <= 0) {
+      form_set_error('pubdate', t('You have to specify a valid date for the published on field.'));
+    }
+  }
+}
+
+/**
+ * Node edit form submit handler.
+ *
+ * Update the published date to Epoch integer for other hook implementations to
+ * deal with.
+ */
+function publication_date_pubdate_submit($form, &$form_state) {
+  // Set $node->published_at to the publication date field value, if it was set,
+  // or zero if it was not.
+  $form_state['node']->published_at = empty($form_state['values']['pubdate']) ? 0 : strtotime(($form_state['values']['pubdate']));
+}
+
+/**
+ * Implements hook_permisson().
+ */
+function publication_date_permission() {
+  $permissions = array();
+
+  // Generate permissions to modify Published On date for all node types.
+  foreach (node_permissions_get_configured_types() as $type) {
+    $permissions += publication_date_list_permissions($type);
+  }
+
+  return $permissions;
+}
+
+/**
+ * Helper function to generate permission each content type.
+ *
+ * @param $type
+ *   The machine-readable name of the node type.
+ * @return
+ *   An array of permission names and description.
+ */
+function publication_date_list_permissions($type) {
+  $name = node_type_get_name($type);
+  $type = check_plain($type);
+
+  $permissions = array(
+    "set $type published on date" => array(
+      'title' => t('Modify %type_name "Published On" date.', array('%type_name' => $name)),
+      'description' => t('Change the "Published On" date for this content type.'),
+    ),
+  );
+
+  return $permissions;
+}
