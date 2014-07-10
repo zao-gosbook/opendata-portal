@@ -135,7 +135,7 @@ function od_dataset_do_download($node_or_nid, $revision_id = NULL, $type = 'data
     switch ($type) {
       case 'data':
         if ((boolean) $wrapper->field_multivolume->value() === TRUE) {
-          return od_dataset_download_package_page_callback($wrapper, $download_links[$type]);
+          return od_dataset_download_package_page_callback($wrapper, NULL, $download_links[$type]);
         }
         elseif ($file = $wrapper->field_resources->get(0)->field_upload->value()) {
           return od_dataset_download_file_page_callback($file, $download_links[$type]);
@@ -373,7 +373,6 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL, $
         if ($df = od_common_file_save_data_by_path($add_file, 'temporary://', FILE_EXISTS_RENAME, TRUE)) {
           // Clean orphaned files
           @unlink($out_file);
-          @unlink($realpath);
 
           $rp = file_stream_wrapper_get_instance_by_uri($df->uri)->realpath();
           $zip->addFile($rp, "resource_{$resource_index}{$suffix}");
@@ -384,9 +383,10 @@ function od_dataset_download_package_page_callback($node, $revision_id = NULL, $
     $resource_index++;
   }
 
-  if (!($zip->close() && $zip->numFiles > 0)) {
-    return FALSE;
-  }
+  $zip->close();
+//  if (!($zip->close() && $zip->numFiles > 0)) {
+//    return FALSE;
+//  }
 
   $filename = $filename === NULL ? drupal_substr($wrapper->title->value(), 0, 200). '.zip' : $filename;
   return od_dataset_download_file_page_callback($drupal_file, $filename, TRUE);

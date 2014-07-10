@@ -6,9 +6,7 @@
  */
 
 abstract class OdApiParser {
-  public $url;
-  public $error;
-  public $result = array();
+  protected $results = array();
 
   abstract public function parse($url);
   abstract protected function parseUrl($url);

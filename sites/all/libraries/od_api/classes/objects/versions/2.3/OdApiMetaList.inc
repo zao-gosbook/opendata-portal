@@ -6,19 +6,15 @@
  */
 
 class OdApiMetaList23 extends OdApiMetaListDefault {
-  const REGEXP_URL = '/^https?:\/\/[a-zа-яё0-9\-]+(\.[a-zа-яё0-9\-]+)*\.[a-zа-яё]{2,4}\/$/u';
+  protected function _validateArg() {
+    OdApiHelper::convertIdna($this->arg, $this->site_decoded_url, $this->site_encoded_url);
 
-  public function validateArg() {
-    $this::processArg($this->args[$this::OBJECT_TYPE_IS_META_LIST], $decoded_url, $encoded_url);
+    $url_is_valid = preg_match($this::REGEXP_META_LIST_URL, $this->site_decoded_url);
 
-    // Define main page url.
-    $this->od_api->main_url = $encoded_url;
-
-    $url_is_valid = (bool) preg_match($this::REGEXP_URL, $decoded_url);
-
-    if (isset($this->od_api->vars['semantic_list_url'])) {
-      $this::processArg($this->od_api->vars['semantic_list_url'], $decoded_semantic_url, $encoded_semantic_url);
-      $semantic_url_is_valid = (bool) preg_match($this::REGEXP_URL, $decoded_semantic_url);
+    if (isset($this->odApi->vars['semantic_list_url'])) {
+      $this::processArg($this->odApi->vars['semantic_list_url']);
+      OdApiHelper::convertIdna($this->arg, $decoded_semantic_url, $encoded_semantic_url);
+      $semantic_url_is_valid = preg_match($this::REGEXP_META_LIST_URL, $decoded_semantic_url);
     }
     else {
       $semantic_url_is_valid = TRUE;
@@ -27,120 +23,100 @@ class OdApiMetaList23 extends OdApiMetaListDefault {
     $this->setValidator($this::SITE_OPENDATA_ARG_IS_VALID, $url_is_valid && $semantic_url_is_valid);
   }
 
-  public function validateVersion() {
-    return TRUE;
-  }
-
-  public function setPossibleUrls() {
-    // Collect available urls.
-    $urls = array();
-
-    // Define opendata page url.
-    $this->url = $this->od_api->main_url . 'opendata';
-    $this->od_api->list_url = $this->url;
-
-    // Visual representation.
-    $urls['semantic'] = isset($this->od_api->vars['semantic_list_url']) ? $this->od_api->vars['semantic_list_url'] : $this->url;
-
-    // File url template.
-    $file_url = $this->url . '/opendatalist.!extension';
-
-    // File CSV representation.
-    $urls['file_csv'] = strtr($file_url, array('!extension' => 'csv'));
-
-    $this->urls = $urls;
-  }
-
-  public function validateObject() {
+  protected function _validateUrl() {
     // Check main page url.
-    $site_main_page_exists = $this->checkUrlSuccess($this->od_api->main_url);
+    $site_main_page_exists = OdApiHelper::checkUrlSuccess($this->site_encoded_url);
     $this->setValidator($this::SITE_MAIN_PAGE_EXISTS, $site_main_page_exists);
 
     if ($site_main_page_exists === FALSE) {
       return;
     }
 
+    // Define opendata page url.
+    $url = $this->site_encoded_url . 'opendata';
+
     // Check opendata page url.
-    $site_opendata_page_exists = $this->checkUrlSuccess($this->url);
-    if (!$site_opendata_page_exists) {
-      $site_opendata_page_exists = $this->checkUrlSuccess($this->url . '/');
+    if (OdApiHelper::checkUrlSuccess($url)) {
+      $this->urls[] = $url;
     }
-    $this->setValidator($this::SITE_OPENDATA_PAGE_EXISTS, $site_opendata_page_exists);
+
+    $this->setValidator($this::SITE_OPENDATA_PAGE_EXISTS, !empty($this->urls));
   }
 
-  protected function _parseRdf() {
-    // Check RDFa object existing.
-    if ($this->parserRDFa->error) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
+  protected function _getFormatUrl($format) {
+    $result = FALSE;
+    switch ($format) {
+      case $this::OBJECT_FORMAT_RDFA;
+        $result = isset($this->odApi->vars['semantic_list_url']) ? $this->odApi->vars['semantic_list_url'] : $this->url;
+        break;
+      case $this::OBJECT_FORMAT_CSV;
+        $result = $this->url . '/opendatalist.csv';
+        break;
+    }
+
+    return $result;
+  }
+
+  protected function _parseRdfa() {
+    if ($this->parserRdfa['error']) {
       return;
     }
 
-    // Declare used RDFa types.
-    $rdf_type = $this->localNamespaceUnwrap('rdf:type');
-    $dc_hasPart = $this->localNamespaceUnwrap('dc:hasPart');
-    $dc_title = $this->localNamespaceUnwrap('dc:title');
-    $dc_Collection = $this->localNamespaceUnwrap('dc:Collection');
+    $result = $this->parserRdfa['result'];
 
-    // If object is not DC Collection.
-    if (!isset($this->parserRDFa->result[$rdf_type]) || !in_array($dc_Collection, $this->parserRDFa->result[$rdf_type])) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
+    $rdf_type = OdApiHelper::namespaceUnwrap('rdf:type');
+    $dc_hasPart = OdApiHelper::namespaceUnwrap('dc:hasPart');
+    $dc_title = OdApiHelper::namespaceUnwrap('dc:title');
+    $dc_Collection = OdApiHelper::namespaceUnwrap('dc:Collection');
+
+    if (!isset($result[$rdf_type]) || !in_array($dc_Collection, $result[$rdf_type])) {
+      return;
+    }
+
+    if (!isset($result[$dc_hasPart])) {
       return;
     }
 
     $content = array();
-    if (!isset($this->parserRDFa->result[$dc_hasPart])) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
-      return;
-    }
-
-    $content['meta'] = array();
-    foreach ($this->parserRDFa->result[$dc_hasPart] as $item) {
+    foreach ($result[$dc_hasPart] as $item) {
       $item = rtrim(OdApiHelper::trim($item), '/');
-      if (!isset($this->parserRDFa->subjects[$item])) {
+      if (!isset($this->parserRdfa['subjects'][$item])) {
         continue;
       }
 
-      if (!isset($this->parserRDFa->subjects[$item][$dc_title])) {
+      if (!isset($this->parserRdfa['subjects'][$item][$dc_title])) {
         continue;
       }
 
-      $title = OdApiHelper::trim(reset($this->parserRDFa->subjects[$item][$dc_title]));
+      $title = OdApiHelper::trim(reset($this->parserRdfa['subjects'][$item][$dc_title]));
       if (empty($title)) {
         continue;
       }
 
-      $content['meta'][] = array(
-        'identifier' => end(explode('/', $item)),
+      $identifier = end(explode('/', $item));
+      $content[$identifier] = array(
+        'identifier' => $identifier,
         'title' => $title,
       );
     }
 
-    if (!$content) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
-      return;
-    }
-
-    $this->content = $content;
-
-    $this->setValidator($this::FORMAT_RDFA_DETECTED, TRUE);
+    $this->content = !empty($content) ? array('meta' => $content) : NULL;
   }
 
+  protected function _parseMicrodata() {}
+
+  protected function _parseJson() {}
+
+  protected function _parseXml() {}
+
   protected function _parseCsv() {
-    // Check CSV object existing.
-    if ($this->parserCSV->error) {
-      switch ($this->parserCSV->error) {
-        case 'fileNotExists':
-          $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
-          break;
-      }
+    if ($this->parserCsv['error']) {
       return;
     }
 
-    $result = $this->parserCSV->result;
+    $result = $this->parserCsv['result'];
 
     $content = array();
-    $content['meta'] = array();
-
     $row_counter = 0;
     foreach ($result as $row) {
       $row_counter++;
@@ -170,36 +146,27 @@ class OdApiMetaList23 extends OdApiMetaListDefault {
         }
 
         if (!isset($url_column)) {
-          $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
           return;
         }
       }
 
-      $content['meta'][] = array(
-        'identifier' => end(explode('/', rtrim(OdApiHelper::trim($row[$url_column]), '/'))),
+      $identifier = end(explode('/', rtrim(OdApiHelper::trim($row[$url_column]), '/')));
+      $content[$identifier] = array(
+        'identifier' => $identifier,
         'title' => $title,
       );
     }
 
-    if (!$content) {
-      $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
-      return;
-    }
-
-    $this->content = $content;
-
-    $this->setValidator($this::FORMAT_CSV_DETECTED, TRUE);
+    $this->content = !empty($content) ? array('meta' => $content) : NULL;
   }
 
   protected function _getResult() {
     $result = $this->content;
 
-    if (!empty($result['meta'])) {
-      foreach($result['meta'] as &$list) {
-        $meta_api = $this->getApi(array($this::OBJECT_TYPE_IS_META => $list['identifier']));
+    foreach($result['meta'] as &$list) {
+      $meta_api = $this->getApi(array($this::OBJECT_TYPE_IS_META => $list['identifier']));
 
-        $list['#api'] = $meta_api;
-      }
+      $list['#api'] = $meta_api;
     }
 
     return $result;

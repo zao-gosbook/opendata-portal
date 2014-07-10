@@ -6,96 +6,97 @@
  */
 
 class OdApiDataList23 extends OdApiDataListDefault {
-  public function validateArg() {
+  protected function _validateArg() {
     // Check publisher arg is valid.
-    $source_arg_is_valid = $this->args[$this::OBJECT_TYPE_IS_DATA_LIST] === 'data';
-    $this->setValidator($this::SITE_OPENDATA_SOURCE_ARG_IS_VALID, $source_arg_is_valid);
+    $source_arg_is_valid = $this->arg === 'data';
+
+    // Check searching publisher exists.
+    $source_correct = $source_arg_is_valid && isset($this->parent->content[$this::OBJECT_TYPE_IS_DATA]);
+
+    $this->setValidator($this::SITE_OPENDATA_SOURCE_ARG_IS_VALID, $source_correct);
   }
 
-  public function validateVersion() {
-    return TRUE;
+  protected function _validateUrl() {
+    $dc_source = OdApiHelper::namespaceUnwrap('dc:source');
+
+    if (isset($this->parent->parserRdfa['subjects'][$this->parent->url][$dc_source])) {
+      $this->urls[] = reset($this->parent->parserRdfa['subjects'][$this->parent->url][$dc_source]);
+    }
   }
 
-  public function setPossibleUrls() {
-    // Collect available urls.
-    $urls = array();
-
-    $dc_source = $this->localNamespaceUnwrap('dc:source');
-
-    if (isset($this->parent->parserRDFa->subjects[$this->parent->url][$dc_source])) {
-      $this->url = reset($this->parent->parserRDFa->subjects[$this->parent->url][$dc_source]);
-      $urls['semantic'] = $this->url;
+  protected function _getFormatUrl($format) {
+    $result = FALSE;
+    switch ($format) {
+      case $this::OBJECT_FORMAT_RDFA;
+        $result = $this->url ? $this->url : FALSE;
+        break;
+      case $this::OBJECT_FORMAT_CSV;
+        $result = TRUE;
+        break;
     }
 
-    $urls['file_csv'] = TRUE;
-
-    $this->urls = $urls;
+    return $result;
   }
 
-  public function validateObject() {}
-
-  protected function _parseRdf() {
-    // Check RDFa object existing.
-    if ($this->parserRDFa->error) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
+  protected function _parseRdfa() {
+    if ($this->parserRdfa['error']) {
       return;
     }
 
-    $dc_hasPart = $this->localNamespaceUnwrap('dc:hasPart');
-    $dc_created = $this->localNamespaceUnwrap('dc:created');
+    $result = $this->parserRdfa['result'];
+
+    $dc_hasPart = OdApiHelper::namespaceUnwrap('dc:hasPart');
+    $dc_created = OdApiHelper::namespaceUnwrap('dc:created');
+
+    if (!isset($result[$dc_hasPart])) {
+      return;
+    }
 
     $content = array();
-    if (isset($this->parserRDFa->result[$dc_hasPart])) {
-      $content['data'] = array();
-      foreach ($this->parserRDFa->result[$dc_hasPart] as $item) {
-        $item = rtrim(OdApiHelper::trim($item), '/');
-        if (!isset($this->parserRDFa->subjects[$item])) {
-          continue;
-        }
-
-        if (!isset($this->parserRDFa->subjects[$item][$dc_created])) {
-          continue;
-        }
-
-        $version = strtotime(reset($this->parserRDFa->subjects[$item][$dc_created]));
-        if ($version === FALSE) {
-          continue;
-        }
-
-        $content['data'][] = array(
-          'version' => (string) $version,
-        );
+    foreach ($result[$dc_hasPart] as $item) {
+      $item = rtrim(OdApiHelper::trim($item), '/');
+      if (!isset($this->parserRdfa['subjects'][$item])) {
+        continue;
       }
+
+      if (!isset($this->parserRdfa['subjects'][$item][$dc_created])) {
+        continue;
+      }
+
+      $version = strtotime(reset($this->parserRdfa['subjects'][$item][$dc_created]));
+      if ($version === FALSE) {
+        continue;
+      }
+
+      $content[] = array(
+        'version' => (string) $version,
+      );
     }
 
-    if (!$content) {
-      $this->setValidator($this::FORMAT_RDFA_DETECTED, FALSE);
-      return;
-    }
-
-    $this->content = $content;
-
-    $this->setValidator($this::FORMAT_RDFA_DETECTED, TRUE);
+    $this->content = !empty($content) ? array('data' => $content) : NULL;
   }
+
+  protected function _parseMicrodata() {}
+
+  protected function _parseJson() {}
+
+  protected function _parseXml() {}
 
   protected function _parseCsv() {
-    // Check CSV object existing.
     $meta = $this->parent;
-    if ($meta->format !== $this::OBJECT_FORMAT_CSV || $meta->parserCSV->error) {
-      $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
+    if ($meta->parserCsv['error']) {
       return;
     }
 
-    $result = $meta->parserCSV->result;
+    $result = $meta->parserCsv['result'];
 
     $content = array();
-    $content['data'] = array();
     if (isset($result['8']['2'])) {
-      $match = preg_match('/^.*data-([0-9-T]+)-structure-[0-9-T]+\.[a-z]*$/u', $result['8']['2'], $matches);
+      $match = preg_match('/^.*data-([0-9-T]+)-structure-[0-9-T]+\.[a-z]*$/u', OdApiHelper::trim($result['8']['2']), $matches);
       if ($match && isset($matches['1'])) {
         $version = $matches['1'];
-        $content['data'][] = array(
-          'version' => OdApiHelper::trim($version),
+        $content[$version] = array(
+          'version' => $version,
         );
       }
     }
@@ -103,24 +104,17 @@ class OdApiDataList23 extends OdApiDataListDefault {
     if (isset($result['16']['2'])) {
       $previous_versions = explode("\n", $result['16']['2']);
       foreach ($previous_versions as $previous_version) {
-        $match = preg_match('/^.*data-([0-9-T]+)-structure-[0-9-T]+\.[a-z]*$/u', $previous_version, $matches);
+        $match = preg_match('/^.*data-([0-9-T]+)-structure-[0-9-T]+\.[a-z]*$/u', OdApiHelper::trim($previous_version), $matches);
         if ($match && isset($matches['1'])) {
           $version = $matches['1'];
-          $content['data'][] = array(
-            'version' => OdApiHelper::trim($version),
+          $content[$version] = array(
+            'version' => $version,
           );
         }
       }
     }
 
-    if (!$content) {
-      $this->setValidator($this::FORMAT_CSV_DETECTED, FALSE);
-      return;
-    }
-
-    $this->content = $content;
-
-    $this->setValidator($this::FORMAT_CSV_DETECTED, TRUE);
+    $this->content = !empty($content) ? array('data' => $content) : NULL;
   }
 
   protected function _getResult() {
