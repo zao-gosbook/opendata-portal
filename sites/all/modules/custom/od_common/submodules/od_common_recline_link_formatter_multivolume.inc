@@ -5,11 +5,8 @@
 
 function od_common_module__recline_link_formatter_multivolume(&$element, $entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $dataset_wrapper = od_dataset_get_wrapper_by_resource($entity, $entity->vid);
-  $context = od_pubdlcnt_api_attacher_context_add(
-    $entity_type,
-    $dataset_wrapper->getIdentifier(),
-    $dataset_wrapper->vid->value(),
-    "{$dataset_wrapper->getBundle()}:{$field['field_name']}", array(
+  list($entity_id, $revision_id, $bundle) = entity_extract_ids($entity_type, $entity);
+  $context = od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id, "{$bundle}:{$field['field_name']}", array(
     'selector' => '.multi-download-link-wrapper[data-stat-id="%STAT_ID%"] .dropdown-links .download a',
   ));
 
