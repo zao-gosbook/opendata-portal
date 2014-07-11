@@ -1,3 +1,29 @@
 id	url	text
-643	http://data.mos.ru/	<span class="first">Портал открытых данных Правительства Москвы</span>
-840	http://opendata71.ru/	<span class="first">Портал открытых данных Правительства Тульской области</span>
+643	http://data.gov.ru/	<span class="first">Портал открытых данных РФ</span>
+840	http://data.gov/	<span class="first">Портал открытых данных США</span>
+682	http://www.saudi.gov.sa/wps/portal/yesserRoot/home/!ut/p/b1/04_Sj9CPykssy0xPLMnMz0vMAfGjzOId3Z2dgj1NjAz8zUMMDTxNzZ2NHU0NDd29DfWDU_P0_Tzyc1P1C7IdFQFV9YhO/dl4/d5/L2dBISEvZ0FBIS9nQSEh/	<span>Портал открытых данных Саудовской Аравии </span>
+
+124	http://data.gc.ca/eng?lang=En&n=F9B7A1E3-1	<span>Портал открытых данных Канады </span>
+724	http://datos.gob.es/datos/	<span>Портал открытых данных Испании</span>
+233	http://pub.stat.ee/px-web.2001/Dialog/statfile1.asp	<span>Портал открытых данных Эстонии</span>
+
+36	http://data.gov.au/	<span>Портал открытых данных Австралии</span>
+40	http://gov.opendata.at/site/	<span>Портал открытых данных Австрии</span>
+26	http://data.gov.be/fr	<span>Портал открытых данных Бельгии</span>
+76	http://dados.gov.br/	<span>Портал открытых данных Бразилии</span>
+724	http://datos.gob.es/datos/	<span>Портал открытых данных Испании</span>
+246	http://www.vm.fi/vm/en/05_projects/0238_ogp/index.jsp	<span>Портал открытых данных Финляндии</span>
+372	http://www.statcentral.ie/	<span>Портал открытых данных Ирландии</span>
+380	http://www.dati.gov.it/	<span>Портал открытых данных Италии</span>
+404	https://opendata.go.ke/	<span>Портал открытых данных Кении</span>
+498	http://data.gov.md/en	<span>Портал открытых данных Республики Молдова</span>
+504	http://data.gov.ma/Pages/Home.aspx	<span>Портал открытых данных Морокко</span>
+484	http://mapas.gob.mx/home.do	<span>Портал открытых данных Мексики</span>
+554	https://data.govt.nz/	<span>Портал открытых данных Новой Зеландии</span>
+578	http://data.norge.no/	<span>Портал открытых данных Норвегии</span>
+528	https://data.overheid.nl/	<span>Портал открытых данных Нидерландов</span>
+604	http://www.datosperu.org/	<span>Портал открытых данных Перу</span>
+826	http://data.gov.uk/	<span>Портал открытых данных Великобритании</span>
+788	http://www.data.gov.tn/	<span>Портал открытых данных Туниса</span>
+250	http://www.data.gouv.fr	<span>Портал открытых данных Франции</span>
+804	http://data.gov.ua/	<span>Портал открытых данных Украины</span>
