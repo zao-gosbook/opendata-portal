@@ -160,24 +160,3 @@ function odp_api_detect_format() {
 
   return $format;
 }
-
-function _odp_api_language_sort($language = NULL) {
-  static $language_sort;
-
-  if (!$language_sort && !$language) {
-    $language = 'ru';
-  }
-
-  if ($language) {
-    // Define language sorting.
-    $language_sort = array($language, LANGUAGE_NONE);
-
-    // Prepare language sorting for sql query.
-    foreach ($language_sort as &$item) {
-      $item = '\'' . $item . '\'';
-    }
-    $language_sort = implode(',', array_reverse($language_sort));
-  }
-
-  return $language_sort;
-}

@@ -134,7 +134,7 @@ function suggestions_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_organizations' => array(
+    'action::odp_import_organizations' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -519,7 +519,7 @@ function suggestions_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_import_opendata_action' => array(
+    'action::odp_import_import_opendata_action' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,

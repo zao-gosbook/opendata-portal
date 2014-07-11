@@ -1,5 +1,5 @@
-name = Opendata import
-description = Opendata import
+name = Opendata portal import
+description = Opendata portal import
 core = 7.x
 
 dependencies[] = od_api

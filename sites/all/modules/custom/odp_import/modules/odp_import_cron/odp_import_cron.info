@@ -1,0 +1,5 @@
+name = Opendata portal import cron
+description = Opendata portal import cron.
+core = 7.x
+
+dependencies[] = odp_import

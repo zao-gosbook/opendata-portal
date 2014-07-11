@@ -303,7 +303,7 @@ function _odp_api_get_organizations() {
   // Organization is published.
   $query->condition('organization.status', 1);
 
-  // Join dataset field: identifier.
+  // Join organization field: id.
   $query->leftJoin('field_data_' . ODP_FIELD_ORGANIZATION_ID, 'field_organization_id', implode(' AND ', array(
     'field_organization_id.entity_id = organization.nid',
     'field_organization_id.revision_id = organization.vid',
@@ -312,16 +312,17 @@ function _odp_api_get_organizations() {
     'field_organization_id.deleted = \'0\'',
   )));
 
-  // Select dataset property: nid.
+  // Select organization property: nid.
   $query->addField('organization', 'nid', 'nid');
-  // Select dataset field: identifier.
+  // Select organization field: id.
   $query->addField('field_organization_id', ODP_FIELD_ORGANIZATION_ID . '_value', 'id');
-  // Select dataset property: title.
+  // Select organization property: title.
   $query->addField('organization', 'title', 'title');
 
-  // Sort by language.
+  // Sort by date created.
   $query->orderBy('organization.created', 'DESC');
-  $query->orderBy('FIELD(field_organization_id.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  // Sort by language.
+  $query->orderBy('FIELD(field_organization_id.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
@@ -363,7 +364,7 @@ function _odp_api_get_organization($id) {
 
   // Sort by language.
   $query->orderBy('organization.created', 'DESC');
-  $query->orderBy('FIELD(field_organization_id.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_organization_id.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
@@ -512,10 +513,10 @@ function _odp_api_get_datasets($params) {
   // Sort by dataset created.
   $query->orderBy('dataset.created', 'DESC');
   // Sort by language.
-  $query->orderBy('FIELD(field_dataset_identifier.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_dataset_organization.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_organization_id.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_topic.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_identifier.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_organization.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_organization_id.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_topic.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
@@ -648,14 +649,14 @@ function _odp_api_get_dataset($identifier) {
   // Sort by dataset created.
   $query->orderBy('dataset.created', 'DESC');
   // Sort by language.
-  $query->orderBy('FIELD(field_dataset_identifier.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_dataset_description.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_dataset_created.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_dataset_modified.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_tags.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_dataset_organization.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_format.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_identifier.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_description.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_created.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_modified.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_tags.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_organization.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_format.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
@@ -734,9 +735,9 @@ function _odp_api_get_dataset_publisher($identifier) {
   // Sort by dataset created.
   $query->orderBy('dataset.created', 'DESC');
   // Sort by language.
-  $query->orderBy('FIELD(field_dataset_publisher_name.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_dataset_publisher_phone.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_dataset_publisher_mail.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_publisher_name.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_publisher_phone.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_publisher_mail.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
@@ -801,9 +802,9 @@ function _odp_api_get_dataset_versions($identifier) {
   // Sort by dataset created.
   $query->orderBy('dataset.created', 'DESC');
   // Sort by language.
-  $query->orderBy('FIELD(field_dataset_identifier.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_created.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_identifier.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_created.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
@@ -911,11 +912,11 @@ function _odp_api_get_dataset_version($identifier, $version) {
   // Sort by dataset created.
   $query->orderBy('dataset.created', 'DESC');
   // Sort by language.
-  $query->orderBy('FIELD(field_dataset_identifier.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_created.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_provenance.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_source.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_identifier.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_created.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_provenance.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_source.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
@@ -1004,10 +1005,10 @@ function _odp_api_get_dataset_version_structure($identifier, $version) {
   // Sort by dataset created.
   $query->orderBy('dataset.created', 'DESC');
   // Sort by language.
-  $query->orderBy('FIELD(field_dataset_identifier.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_structure.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_structure_created.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_structure_source.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_identifier.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_structure.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_structure_created.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_structure_source.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
@@ -1119,11 +1120,11 @@ function _odp_api_get_dataset_version_for_content($identifier, $version) {
   // Sort by dataset created.
   $query->orderBy('dataset.created', 'DESC');
   // Sort by language.
-  $query->orderBy('FIELD(field_dataset_identifier.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_source.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_csv_delimiter.language, ' . _odp_api_language_sort() . ')', 'DESC');
-  $query->orderBy('FIELD(field_resource_created.language, ' . _odp_api_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_dataset_identifier.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_source.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_csv_delimiter.language, ' . odp_query_language_sort() . ')', 'DESC');
+  $query->orderBy('FIELD(field_resource_created.language, ' . odp_query_language_sort() . ')', 'DESC');
 
   // Wrap query into query for grouping after order.
   $query = db_select($query, 'result');
