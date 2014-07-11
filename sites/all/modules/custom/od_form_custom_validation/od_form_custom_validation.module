@@ -20,6 +20,9 @@ function od_form_custom_validation_menu() {
  */
 function od_form_custom_validation_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'od_preprocess_wizard_entityform_edit_form') {
+    $form['#attached']['js'] = array(
+      drupal_get_path('module', 'od_form_custom_validation') . '/od_form_custom_validation.js',
+    );
     $form['messages'] = array(
       '#markup' => '<div id="ajax-forms-messages"></div>',
       '#weight' => -50,
@@ -30,6 +33,7 @@ function od_form_custom_validation_form_alter(&$form, &$form_state, $form_id) {
     );
   }
 }
+
 function od_form_custom_validation_ajax_callback() {
   module_load_include('pages.inc', 'entityform');
   list($form, $form_state) = ajax_get_form();
