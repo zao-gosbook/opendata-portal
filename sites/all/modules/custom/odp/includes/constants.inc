@@ -46,6 +46,7 @@ define('ODP_FIELD_RESOURCE_UTF8_ENCODING', 'field_utf8_encoding');
  */
 define('ODP_FIELD_ORGANIZATION_CURATOR', 'field_organization_curators');
 define('ODP_FIELD_ORGANIZATION_ID', 'field_organization_inn');
+define('ODP_FIELD_ORGANIZATION_URL', 'field_site_url');
 
 /**
  * Log fields.

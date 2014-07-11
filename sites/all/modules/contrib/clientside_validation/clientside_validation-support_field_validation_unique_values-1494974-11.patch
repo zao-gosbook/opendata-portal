@@ -1,0 +1,135 @@
+From a767052180cc3f25efb627e4e8302204b3ee9d05 Mon Sep 17 00:00:00 2001
+From: Capi Etheriel <barraponto@gmail.com>
+Date: Tue, 7 Jan 2014 15:25:06 -0200
+Subject: [PATCH] Issue #1494974 by barraponto: support field_validation
+ unique_values
+
+---
+ clientside_validation.module                       |  9 ++-
+ .../clientside_validation_field_validation.module  | 64 ++++++++++++++++++++++
+ jquery-validate/jquery.validate.js                 |  4 +-
+ 3 files changed, 73 insertions(+), 4 deletions(-)
+
+diff --git a/clientside_validation.module b/clientside_validation.module
+index 1275ebe..dcdebe8 100644
+--- a/clientside_validation.module
++++ b/clientside_validation.module
+@@ -965,12 +965,15 @@ function _clientside_validation_set_not_equal($name, $title, $elements, &$js_rul
+   $title = _clientside_validation_set_title($title);
+   $items = array('items' => array());
+   foreach ($elements as $element) {
+-     $items['items'][] = $element['name'];
++    $items['items'][] = $element['name'];
+     if ($webform) {
+-      $js_rules[$name]['notEqualTo'][] = 'input[name="' . $element['element_name'] . '"]';
++      $js_rules[$name]['notEqualTo'][] = '[name="' . $element['element_name'] . '"]';
++    }
++    elseif (!empty($element['except'])) {
++      $js_rules[$name]['notEqualTo'][] = '[name="' . $element['form_key'] . '"]:except_value("' . $element['except'] . '")';
+     }
+     else {
+-      $js_rules[$name]['notEqualTo'][] = 'input[name="' . $element['form_key'] . '"]';
++      $js_rules[$name]['notEqualTo'][] = '[name="' . $element['form_key'] . '"]';
+     }
+   }
+   if (empty($message)) {
+diff --git a/clientside_validation_field_validation/clientside_validation_field_validation.module b/clientside_validation_field_validation/clientside_validation_field_validation.module
+index 0c4dab8..b1ef722 100644
+--- a/clientside_validation_field_validation/clientside_validation_field_validation.module
++++ b/clientside_validation_field_validation/clientside_validation_field_validation.module
+@@ -136,6 +136,9 @@ function clientside_validation_field_validation_regular($form_id, $element, $rul
+     if (strpos($element['#name'], '[summary]') === strlen($element['#name']) - strlen('[summary]')) {
+       return;
+     }
++    if (strpos($element['#name'], '[_weight]') === strlen($element['#name']) - strlen('[_weight]')) {
++      return;
++    }
+   }
+   $el_name = $element['#name'];
+   if (isset($element['#multiple']) && $element['#multiple']) {
+@@ -146,6 +149,67 @@ function clientside_validation_field_validation_regular($form_id, $element, $rul
+     $el_title = $element['#title'];
+   }
+   switch ($rule['validator']) {
++    case 'field_validation_unique_values_validator':
++      // Load other field_validation rules with this validator type.
++      ctools_include('export');
++      $similar_rules = ctools_export_load_object('field_validation_rule', 'conditions', array(
++        'entity_type' => $rule['entity_type'],
++        'bundle' => $rule['bundle'],
++        'validator' => $rule['validator']));
++
++      // Filter out some of the rules.
++      $filtered_rules = array_filter($similar_rules,
++        function($filtered_rule) use ($rule) {
++          return ($filtered_rule->settings['data'] == $rule['settings']['data'])
++           && empty($filtered_rule->disabled);
++        });
++
++      // Get field names, field info and field instances from the filtered rules.
++      $group_fields = array_map(
++        function($rule) {
++          return array(
++            'field_info' => field_info_field($rule->field_name),
++            'field_instance' => field_info_instance($rule->entity_type, $rule->field_name, $rule->bundle),
++            'field_languages' => field_available_languages($rule->entity_type, field_info_field($rule->field_name)),
++          );
++        }, $filtered_rules);
++
++      $elements = array();
++      // Iterate fields data to generate possible form keys.
++      foreach ($group_fields as $field) {
++        foreach ($field['field_languages'] as $language) {
++          foreach (range(0, $field['field_info']['cardinality'] - 1) as $delta) {
++            $elements[] = array(
++              'name' => t('%field field value #!position', array(
++                '%field' => $field['field_instance']['label'],
++                '!position' => $delta)),
++              'form_key' => "{$field['field_info']['field_name']}[{$language}][{$delta}][value]",
++              'except' => "_none",
++            );
++          }
++        }
++      }
++
++      // Filter out current element match.
++      $elements = array_filter($elements,
++        function($e) use ($element) {
++          return $e['form_key'] != "{$element['#field_name']}[{$element['#language']}][{$element['#delta']}][value]";
++        });
++
++      // Get field labels for the error message.
++      $group_fields_labels = array_map(
++        function($field) {
++          return $field['field_instance']['label'];
++        }, $group_fields);
++
++      // Write a nice error message.
++      $message = t('%title field value #!position has to be different from any of %fields values.', array(
++        '%title' => $group_fields[$rule['name']]['field_instance']['label'],
++        '!position' => $element['#delta'] + 1,
++        '%fields' => implode(' '. t('and') . ' ', $group_fields_labels)));
++
++      _clientside_validation_set_not_equal($el_name, $el_title, $elements, $js_rules, $message);
++      break;
+     case 'regex':
+     case 'field_validation_regex_validator':
+       $message = (isset($rule['error_message']) && !empty($rule['error_message'])) ? $rule['error_message'] : t('Invalid value for !name', array('!name' => variable_get('clientside_validation_prefix', '') . $el_title . variable_get('clientside_validation_suffix', '')));
+diff --git a/jquery-validate/jquery.validate.js b/jquery-validate/jquery.validate.js
+index f3af308..6a85814 100644
+--- a/jquery-validate/jquery.validate.js
++++ b/jquery-validate/jquery.validate.js
+@@ -172,7 +172,9 @@ $.extend($.expr[":"], {
+ 	// http://docs.jquery.com/Plugins/Validation/filled
+ 	filled: function(a) {return !!$.trim("" + a.value);},
+ 	// http://docs.jquery.com/Plugins/Validation/unchecked
+-	unchecked: function(a) {return !a.checked;}
++	unchecked: function(a) {return !a.checked;},
++	// @XXX: https://drupal.org/node/1494974
++	except_value: function(element, index, match) {return element.value != match[3];}
+ });
+ 
+ // constructor for validator
+-- 
+1.8.5.2
+

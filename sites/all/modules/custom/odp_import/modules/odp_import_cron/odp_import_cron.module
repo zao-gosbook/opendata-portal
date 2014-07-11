@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * Define module root directory.
+ */
+define('ODP_IMPORT_CRON', dirname(__FILE__));
+
+/**
+ * Include API files.
+ */
+require_once ODP_IMPORT_CRON . '/includes/model.inc';
+require_once ODP_IMPORT_CRON . '/includes/controller.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function odp_import_cron_menu() {
+  // Init output variable.
+  $items = array();
+
+  $items['admin/config/opendata-portal/import-cron'] = array(
+    'title' => 'Opendata import cron settings',
+    'page callback' => 'odp_import_cron_configure_page',
+    'access arguments' => array('administer site configuration'),
+    'file' => 'includes/pages/configure.inc',
+  );
+  $items['admin/config/opendata-portal/import-cron/configure'] = array(
+    'title' => 'Settings',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/config/opendata-portal/import-cron/mapping'] = array(
+    'title' => 'Mapping',
+    'page callback' => 'odp_import_cron_mapping_page',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'includes/pages/mapping.inc',
+    'weight' => 0,
+  );
+
+  return $items;
+}
+
+function odp_import_cron_cron_queue_info() {
+  $items = array();
+
+  $items['odp_import_cron_import_organization'] = array(
+    'worker callback' => 'odp_import_cron_queue_import_organization',
+    'time' => 3600,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function odp_import_cron_cron() {
+  $configure = variable_get('odp-import-cron-configure', array());
+  $last_import = variable_get('odp-import-cron-last-import', array());
+
+  foreach ($configure as $nid => $period) {
+    $current_time = time();
+    $site_last_configured = isset($last_import[$nid]) ? $last_import[$nid] : 0;
+    $site_period = $configure[$nid];
+    if ($current_time - $site_last_configured > $site_period) {
+      odp_import_cron_import_site($nid);
+      $last_import[$nid] = $current_time;
+      variable_set('odp-import-cron-last-import', $last_import);
+    }
+  }
+}
