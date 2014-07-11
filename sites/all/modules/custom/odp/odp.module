@@ -15,3 +15,25 @@ require_once ODP . '/includes/constants.inc';
  */
 require_once ODP . '/includes/model.inc';
 require_once ODP . '/includes/controller.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function odp_menu() {
+  // Init output variable.
+  $items = array();
+
+  // System settings.
+  $items['admin/config/opendata-portal'] = array(
+    'title' => 'Opendata portal',
+    'description' => 'Opendata portal settings.',
+    'position' => 'left',
+    'weight' => -30,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file path' => drupal_get_path('module', 'system'),
+    'file' => 'system.admin.inc',
+  );
+
+  return $items;
+}
