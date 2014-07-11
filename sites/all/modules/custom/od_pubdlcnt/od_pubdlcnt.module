@@ -235,6 +235,10 @@ function od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revisio
 }
 
 function od_pubdlcnt_field_extra_fields() {
+  foreach (node_type_get_types() as $bundle) {
+
+  }
+
   return array();
   $extra['node']['dataset'] = array(
     'display' => array(
