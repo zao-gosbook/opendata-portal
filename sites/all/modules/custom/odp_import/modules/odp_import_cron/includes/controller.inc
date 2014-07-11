@@ -61,11 +61,11 @@ function odp_import_cron_queue_import_organization($nid) {
 function odp_import_cron_sites() {
   $items = array();
 
-  $items['1234'] = array(
+  $items['181'] = array(
     'name' => 'Федеральная служба по техническому и экспортному контролю',
     'site' => 'fstec.ru',
   );
-  $items['1237'] = array(
+  $items['247'] = array(
     'name' => 'Федеральная служба по экологическому, технологическому и атомному надзору',
     'site' => 'www.gosnadzor.ru',
   );
