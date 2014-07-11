@@ -3,26 +3,26 @@
 /**
  * Define module root directory.
  */
-define('OD_IMPORT', dirname(__FILE__));
+define('ODP_IMPORT', dirname(__FILE__));
 
 /**
  * Load constants.
  */
-require_once OD_IMPORT . '/includes/constants.inc';
+require_once ODP_IMPORT . '/includes/constants.inc';
 
 /**
  * Include API files.
  */
-require_once OD_IMPORT . '/includes/controller.inc';
+require_once ODP_IMPORT . '/includes/controller.inc';
 
 /**
  * Implements hook_action_info().
  */
-function od_import_action_info() {
+function odp_import_action_info() {
   // Init output variable.
   $items = array();
 
-  $items['od_import_import_opendata_action'] = array(
+  $items['odp_import_import_opendata_action'] = array(
     'type' => 'node',
     'label' => 'Загрузка открытых данных с сайта организации',
     'configurable' => FALSE,
@@ -36,21 +36,17 @@ function od_import_action_info() {
 /**
  * Action callback. Import opendata from organizations.
  */
-function od_import_import_opendata_action($entities) {
-  // Include helper opendata parser functions.
-  require_once OD_IMPORT . '/' . 'includes/helper/opendata_parser.inc';
-
+function odp_import_import_opendata_action($entities) {
   if (empty($entities)) {
     return;
   }
 
   $operations = array();
-  $operations[] = array('_od_import_organization_opendata', array($entities));
+  $operations[] = array('_odp_import_organizations_opendata', array($entities));
 
   $batch = array(
     'title' => t('Import meta'),
     'operations' => $operations,
-    'file' => drupal_get_path('module', 'od_import') . '/includes/helper/opendata_parser.inc',
   );
   batch_set($batch);
   batch_process();
@@ -59,11 +55,11 @@ function od_import_import_opendata_action($entities) {
 /**
  * Implements hook_views_api().
  */
-function od_import_views_api() {
+function odp_import_views_api() {
   // Define views api version.
   $views_api = array(
     'api' => 3,
-    'path' => OD_IMPORT . '/includes/views',
+    'path' => ODP_IMPORT . '/includes/views',
   );
 
   return $views_api;
@@ -72,11 +68,11 @@ function od_import_views_api() {
 /**
  * Implements hook_views_default_views().
  */
-function od_import_views_default_views() {
+function odp_import_views_default_views() {
   // Init output variable.
   $items = array();
 
-  $path = OD_IMPORT . '/includes/views/custom_views';
+  $path = ODP_IMPORT . '/includes/views/custom_views';
 
   foreach (array_keys(file_scan_directory($path, '/\.inc$/')) as $file_path) {
     require $file_path;

@@ -179,7 +179,7 @@ Private|Приватные',
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_organizations' => array(
+    'action::odp_import_organizations' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
