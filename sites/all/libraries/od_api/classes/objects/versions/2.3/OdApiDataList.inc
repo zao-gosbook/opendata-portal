@@ -68,7 +68,7 @@ class OdApiDataList23 extends OdApiDataListDefault {
         continue;
       }
 
-      $content[] = array(
+      $content[$version] = array(
         'version' => (string) $version,
       );
     }
@@ -120,7 +120,7 @@ class OdApiDataList23 extends OdApiDataListDefault {
   protected function _getResult() {
     $result = $this->content;
 
-    usort($result['data'], function($a, $b) {
+    uasort($result['data'], function($a, $b) {
       if ($a['version'] == $b['version']) {
         return 0;
       }
