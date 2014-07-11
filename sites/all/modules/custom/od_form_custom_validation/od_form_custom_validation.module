@@ -42,3 +42,4 @@ function od_form_custom_validation_ajax_callback() {
   $commands[] = ajax_command_html('#ajax-forms-messages', theme('status_messages'));
   return array('#type' => 'ajax', '#commands' => $commands);
 }
+
