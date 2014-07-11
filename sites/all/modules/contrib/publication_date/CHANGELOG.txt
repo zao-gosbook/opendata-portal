@@ -1,0 +1,18 @@
+
+Publication Date 7.x-2.0, 2014-06-07
+------------------------------------------
+#2157049 by balsama, markie, jstoller: Add permission to modify Published On date.
+#2157043 by balsama: Move "Published on" field from Author vertical tab to
+  Options vertical tab.
+#2094395 by jstoller: Implement hook_publication_date_alter(), so other modules
+  can alter the publication date.
+#2094375 by jstoller: Remember original publication date when node is
+  unpublished.
+#2088895 by jstoller: Honor custom publication date on node creation.
+#969318 by dgtlmoon, tobyontour, wickwood, sime, markie, math0ne: UI to edit the
+  publication date on the node edit screen.
+Minor code cleanup.
+
+Publication Date 7.x-1.0, 2012-04-15
+--------------------------------------
+Initial release

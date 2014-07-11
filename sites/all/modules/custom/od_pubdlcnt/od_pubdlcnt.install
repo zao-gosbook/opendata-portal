@@ -63,21 +63,27 @@ function od_pubdlcnt_schema() {
   $schema['od_pubdlcnt'] = array(
     'description' => 'TODO: пожалуйста, опишите эту таблицу!',
     'fields' => array(
-      'fid' => array(
-        'description' => 'file ID (unique number)',
-        'type' => 'int',
+      'id' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
-      'nid' => array(
+      'entity_id' => array(
         'description' => 'node ID of which the file exists',
         'type' => 'int',
-        'not null' => FALSE,
+        'not null' => TRUE,
+      ),
+      'entity_type' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
       ),
       'utime' => array(
         'description' => 'dowload date in unix timestamp',
         'type' => 'int',
-        'not null' => TRUE,
+        'not null' => FALSE,
       ),
       'count' => array(
         'description' => 'total download count',
@@ -85,8 +91,22 @@ function od_pubdlcnt_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'revision_id' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'context' => array(
+        'description' => 'TODO: пожалуйста, опишите это поле!',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
     ),
-    'primary key' => array('fid'),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'nid' => array('entity_type', 'entity_id', 'revision_id', 'context')
+    ),
   );
 
   $schema['od_pubdlcnt_history'] = array(
@@ -121,3 +141,23 @@ function od_pubdlcnt_schema() {
   return $schema;
 }
 
+/**
+ * Recreates table `od_pubdlcnt`
+ */
+function od_pubdlcnt_update_7001() {
+  $transaction = db_transaction();
+  try {
+    $table = 'od_pubdlcnt';
+    db_drop_table($table);
+    $schema = drupal_get_schema($table, TRUE);
+    db_create_table($table, $schema);
+
+    // Commit it RIGHT NOW! Please.
+    unset($transaction);
+    $transaction = null;
+  }
+  catch (Exception $e) {
+    $transaction->rollback();
+    throw $e;
+  }
+}
