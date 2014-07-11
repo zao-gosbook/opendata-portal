@@ -229,6 +229,7 @@ function od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revisio
 
     $contexts[] = $context;
     return $context;
+  }
 
   return FALSE;
 }
