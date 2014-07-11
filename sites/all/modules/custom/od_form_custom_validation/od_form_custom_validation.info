@@ -1,0 +1,3 @@
+name = od_form_custom_validation
+description = form custom validation for clientside validation
+core = 7.x

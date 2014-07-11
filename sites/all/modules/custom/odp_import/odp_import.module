@@ -1,0 +1,86 @@
+<?php
+
+/**
+ * Define module root directory.
+ */
+define('ODP_IMPORT', dirname(__FILE__));
+
+/**
+ * Load constants.
+ */
+require_once ODP_IMPORT . '/includes/constants.inc';
+
+/**
+ * Include API files.
+ */
+require_once ODP_IMPORT . '/includes/controller.inc';
+
+/**
+ * Implements hook_action_info().
+ */
+function odp_import_action_info() {
+  // Init output variable.
+  $items = array();
+
+  $items['odp_import_import_opendata_action'] = array(
+    'type' => 'node',
+    'label' => 'Загрузка открытых данных с сайта организации',
+    'configurable' => FALSE,
+    'aggregate' => TRUE,
+    'triggers' => array('any'),
+  );
+
+  return $items;
+}
+
+/**
+ * Action callback. Import opendata from organizations.
+ */
+function odp_import_import_opendata_action($entities) {
+  if (empty($entities)) {
+    return;
+  }
+
+  $operations = array();
+  $operations[] = array('_odp_import_organizations_opendata', array($entities));
+
+  $batch = array(
+    'title' => t('Import meta'),
+    'operations' => $operations,
+  );
+  batch_set($batch);
+  batch_process();
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function odp_import_views_api() {
+  // Define views api version.
+  $views_api = array(
+    'api' => 3,
+    'path' => ODP_IMPORT . '/includes/views',
+  );
+
+  return $views_api;
+}
+
+/**
+ * Implements hook_views_default_views().
+ */
+function odp_import_views_default_views() {
+  // Init output variable.
+  $items = array();
+
+  $path = ODP_IMPORT . '/includes/views/custom_views';
+
+  foreach (array_keys(file_scan_directory($path, '/\.inc$/')) as $file_path) {
+    require $file_path;
+
+    if (isset($view)) {
+      $items[$view->name] = $view;
+    }
+  }
+
+  return $items;
+}

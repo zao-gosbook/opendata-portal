@@ -1484,7 +1484,7 @@ function views_menus_and_rules_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_import_organizations_opendata' => array(
+    'action::odp_import_import_organizations_opendata' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -3012,7 +3012,7 @@ return l($row->nid, \'dataset\');';
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_import_organizations_opendata' => array(
+    'action::odp_import_import_organizations_opendata' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -7211,7 +7211,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_organizations' => array(
+    'action::odp_import_organizations' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -7422,7 +7422,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_organizations' => array(
+    'action::odp_import_organizations' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -8736,7 +8736,7 @@ print format_plural($view->total_rows, \'1 document\', \'@count documents\');
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_import_organizations_opendata' => array(
+    'action::odp_import_import_organizations_opendata' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -10427,7 +10427,7 @@ if (!isset($GLOBALS[\'user\']->roles[6]) && !user_is_anonymous()) {
       'override_label' => 0,
       'label' => '',
     ),
-    'action::od_import_import_organizations_opendata' => array(
+    'action::odp_import_import_organizations_opendata' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,

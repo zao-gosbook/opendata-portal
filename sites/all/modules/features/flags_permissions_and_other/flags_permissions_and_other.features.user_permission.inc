@@ -2436,9 +2436,9 @@ function flags_permissions_and_other_user_default_permissions() {
     'module' => 'actions_permissions',
   );
 
-  // Exported permission: 'execute od_import_import_opendata_action'.
-  $permissions['execute od_import_import_opendata_action'] = array(
-    'name' => 'execute od_import_import_opendata_action',
+  // Exported permission: 'execute odp_import_import_opendata_action'.
+  $permissions['execute odp_import_import_opendata_action'] = array(
+    'name' => 'execute odp_import_import_opendata_action',
     'roles' => array(
       'administrator' => 'administrator',
       'moderator' => 'moderator',
