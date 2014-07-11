@@ -14,6 +14,7 @@ function opendata_query_user_default_permissions() {
   $permissions['access rules link answered_opendata_query'] = array(
     'name' => 'access rules link answered_opendata_query',
     'roles' => array(
+      'analyst' => 'analyst',
       'moderator' => 'moderator',
     ),
     'module' => 'rules_link',
@@ -23,6 +24,7 @@ function opendata_query_user_default_permissions() {
   $permissions['access rules link approve_opendata_query'] = array(
     'name' => 'access rules link approve_opendata_query',
     'roles' => array(
+      'analyst' => 'analyst',
       'moderator' => 'moderator',
     ),
     'module' => 'rules_link',
@@ -32,6 +34,7 @@ function opendata_query_user_default_permissions() {
   $permissions['access rules link reject_opendata_query'] = array(
     'name' => 'access rules link reject_opendata_query',
     'roles' => array(
+      'analyst' => 'analyst',
       'moderator' => 'moderator',
     ),
     'module' => 'rules_link',
@@ -41,6 +44,7 @@ function opendata_query_user_default_permissions() {
   $permissions['access rules link send_to_ministry_opendata_query'] = array(
     'name' => 'access rules link send_to_ministry_opendata_query',
     'roles' => array(
+      'analyst' => 'analyst',
       'moderator' => 'moderator',
     ),
     'module' => 'rules_link',

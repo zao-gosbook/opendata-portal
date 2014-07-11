@@ -67,11 +67,12 @@ function opendata_query_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'discussion' => 'На рассмотрении',
-        'registred' => 'Отправлено в министерство',
-        'approved' => 'Одобрено',
+        'discussion' => 'Поступил',
+        'registred' => 'Отправлено в госорган',
+        'approved' => 'Одобрено модератором',
         'rejected' => 'Отклонено',
-        'answered' => 'Ответ по запросу представлен',
+        'answered' => 'Ответ получен',
+        'produced' => 'Набор представлен',
       ),
       'allowed_values_function' => '',
       'entity_translation_sync' => FALSE,
