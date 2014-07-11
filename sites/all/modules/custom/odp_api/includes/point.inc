@@ -91,7 +91,7 @@ function odp_api_point_api_dataset($args, $params = array()) {
     case 'publisher':
       $content = odp_api_point_api_dataset_publisher($args);
       break;
-    case 'data':
+    case 'version':
       $content = odp_api_point_api_dataset_version($args);
       break;
     case NULL:
