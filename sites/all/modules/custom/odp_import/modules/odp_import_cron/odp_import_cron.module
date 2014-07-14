@@ -59,10 +59,12 @@ function odp_import_cron_cron() {
   $configure = variable_get('odp-import-cron-configure', array());
   $last_import = variable_get('odp-import-cron-last-import', array());
 
-  foreach ($configure as $nid => $period) {
+  foreach ($configure as $nid => $site_period) {
+    if ($site_period == 0) {
+      continue;
+    }
     $current_time = time();
     $site_last_configured = isset($last_import[$nid]) ? $last_import[$nid] : 0;
-    $site_period = $configure[$nid];
     if ($current_time - $site_last_configured > $site_period) {
       odp_import_cron_import_site($nid);
       $last_import[$nid] = $current_time;
