@@ -30,13 +30,17 @@ function od_recline_formatter_field_formatter_view($entity_type, $entity, $field
   $element = array();
   switch ($display['type']) {
     case 'recline_link_formatter':
-      list($entity_id, $revision_id, $bundle) = entity_extract_ids($entity_type, $entity);
-      $context = od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id, "{$bundle}:{$field['field_name']}", array(
-        'selector' => '.download[data-stat-id="%STAT_ID%"] a',
-      ));
+      list($entity_id, $revision_id, ) = entity_extract_ids($entity_type, $entity);
+      if ($dataset_wrapper = od_dataset_get_wrapper_by_resource($entity_id, $revision_id)) {
+        $dataset_revision_id = $dataset_wrapper->{$dataset_wrapper->entityKey('revision')}->value();
+        $bundle = $dataset_wrapper->getBundle();
+        $context = od_pubdlcnt_api_attacher_context_add($dataset_wrapper->type(), $dataset_wrapper->getIdentifier(), $dataset_revision_id, "{$bundle}:{$field['field_name']}", array(
+          'selector' => '.download[data-stat-id="%STAT_ID%"] a',
+        ));
+      }
 
       foreach ($items as $delta => $item) {
-        $item['od_pubdlcnt_context'] = &$context; // Inject context
+        $item['od_pubdlcnt_context'] = isset($context) ? $context : NULL; // Inject context
         $element[$delta] = array(
           '#theme' => 'recline_link_formatter',
           '#item' => $item,
@@ -94,6 +98,10 @@ function theme_recline_link_formatter($variables) {
   // Get pubdlcnt context while it's available
   $context = $file['od_pubdlcnt_context'];
   $file = l(t('Download'), $url, $options);
+
+  if (!isset($context)) {
+    $context = array('stat_id' => -1);
+  }
 
   return '<div class="download" data-stat-id="'. $context['stat_id'] .'">' . $file . '</div><span class="data-explorer"></span>';
 }
