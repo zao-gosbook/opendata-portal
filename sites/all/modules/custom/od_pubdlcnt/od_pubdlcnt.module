@@ -284,7 +284,8 @@ function od_pubdlcnt_entity_download_count($entity_type, $entity_id, $revision_i
  * Implement hook_node_view().
  */        
 function od_pubdlcnt_node_view($node, $view_mode) {
-  $count = od_pubdlcnt_entity_download_count('node', $node->nid, $node->vid, "{$node->type}:%");
+  //@fixme: Give user ability to configure context string and if vid should be passed or not
+  $count = od_pubdlcnt_entity_download_count('node', $node->nid, NULL, "{$node->type}:%");
   $node->content['od_publdlcnt_count'] = array(
      '#prefix' => '<div class="od-common-pubdlcnt-count-wrapper">',
      '#suffix' => '</div>',
