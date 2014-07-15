@@ -54,6 +54,9 @@ function od_common_module__recline_link_formatter_multivolume(&$element, $entity
           '#theme' => 'od_common_recline_link_formatter',
           '#item' => $item,
           '#options' => $options,
+          '#link_attributes' => array(
+            'dlcnt:data-stat-id' => $context['stat_id'],
+          ),
           '#title' => t('Download in %encoding encoding', array('%encoding' => $target_encoding)),
         ),
 //            'item_suffix' => array(
@@ -61,7 +64,6 @@ function od_common_module__recline_link_formatter_multivolume(&$element, $entity
 //            ),
         '#attributes' => array(
           'class' => array("encoding-{$target_encoding}"),
-          'dlcnt:data-stat-id' => $context['stat_id'],
         ),
       );
     }
