@@ -203,7 +203,6 @@ function od_pubdlcnt_preprocess_html(&$vars) {
   $contexts = drupal_static('od_pubdlcnt_api_attacher_context_add', array());
   $env = drupal_get_path('module', 'od_pubdlcnt');
   if (!empty($contexts)) {
-    drupal_add_js($env. '/js/attacher.js');
     drupal_add_js(array(
       'od_pubdlcnt' => array(
         'attacherjs' => array(
@@ -212,6 +211,8 @@ function od_pubdlcnt_preprocess_html(&$vars) {
         ),
       ),
     ), 'setting');
+
+    drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME));
   }
 }
 
