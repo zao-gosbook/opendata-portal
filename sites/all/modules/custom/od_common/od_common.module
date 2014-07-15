@@ -518,7 +518,7 @@ function theme_od_common_recline_link_formatter($variables) {
   // http://microformats.org/wiki/file-format-examples
   $options = $variables['options'];
   $options['attributes'] = !empty($options['attributes']) ? $options['attributes'] : array();
-  $options['attributes'] += $variables['link_attributes'];
+  $options['attributes'] += isset($variables['link_attributes']) ? $variables['link_attributes'] : array();
   $options['attributes']['type'] = $file['filemime'] . '; length=' . $file['filesize'];
 
   // Use the description as the link text if available.

@@ -9,7 +9,7 @@ function od_common_module__recline_link_formatter_multivolume(&$element, $entity
   $entity_id = $dataset_wrapper->nid->value();
   $revision_id = $dataset_wrapper->vid->value();
   $bundle = $dataset_wrapper->getBundle();
-  $context = od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id, "{$bundle}:{$field['field_name']}", array(
+  $context = od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id, "{$bundle}:all", array(
     'selector' => '.multi-download-link-wrapper[data-stat-id="%STAT_ID%"] .dropdown-links .download a',
   ));
 
