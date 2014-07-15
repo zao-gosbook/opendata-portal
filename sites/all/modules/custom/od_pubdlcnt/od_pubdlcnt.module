@@ -146,6 +146,10 @@ function od_pubdlcnt_load_stat_object($conditions = array(), $one_item = TRUE) {
     'revision_id' => TRUE,
   );
 
+  if (isset($conditions['id'])) {
+    $conditions = array('id' => $conditions['id']);
+  }
+
   if (!($object = entity_load('od_pubdlcnt', FALSE, $conditions))) {
     $object = (object) entity_create('od_pubdlcnt', $conditions);
     if (!entity_save('od_pubdlcnt', $object)) {
@@ -190,6 +194,12 @@ function od_pubdlcnt_download_count_update_page_callback_ajax() {
         'status' => $status,
         'count' => od_pubdlcnt_download_count($stat_id),
       ),
+    );
+
+    $renderable = od_pubdlcnt_render_download_count(array('id' => $stat_id));
+    $commands[] = ajax_command_replace(
+      '.od-common-pubdlcnt-count-wrapper[dlcnt\\:data-search-stat-id="'.($stat_id).'"]',
+      render($renderable)
     );
   }
 
@@ -301,14 +311,24 @@ function od_pubdlcnt_entity_download_count($entity_type, $entity_id, $revision_i
  */        
 function od_pubdlcnt_node_view($node, $view_mode) {
   //@fixme: Give user ability to configure context string and if vid should be passed or not
-  $count = od_pubdlcnt_entity_download_count('node', $node->nid, NULL, "{$node->type}:%");
-  $node->content['od_publdlcnt_count'] = array(
-     '#prefix' => '<div class="od-common-pubdlcnt-count-wrapper">',
-     '#suffix' => '</div>',
-     'file' => array(
-     '#markup' => "<span class=\"value\">{$count}</span>"
-     ),
-  );
+  $node->content['od_publdlcnt_count'] = od_pubdlcnt_render_download_count(array(
+    'entity_type' => 'node',
+    'entity_id' => $node->nid,
+    'context' => "{$node->type}:all",
+  ));
 
   return $node;
-}            
+}
+
+function od_pubdlcnt_render_download_count($conditions = array()) {
+  $obj = od_pubdlcnt_load_stat_object($conditions);
+  $rendered = array(
+    '#prefix' => '<div class="od-common-pubdlcnt-count-wrapper" dlcnt:data-search-stat-id="'.($obj->id).'">',
+    '#suffix' => '</div>',
+    'file' => array(
+      '#markup' => "<span class=\"value\">{$obj->count}</span>"
+    ),
+  );
+
+  return $rendered;
+}
