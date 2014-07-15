@@ -212,8 +212,10 @@ function od_pubdlcnt_preprocess_html(&$vars) {
       ),
     ), 'setting');
 
-    drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME));
+    //drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME));
   }
+
+  drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME));
 }
 
 function od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id = NULL, $context = NULL, $options = array()) {
