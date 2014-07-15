@@ -68,9 +68,7 @@ class OdApiDataList23 extends OdApiDataListDefault {
         continue;
       }
 
-      $content[$version] = array(
-        'version' => (string) $version,
-      );
+      $content[$version] = array();
     }
 
     $this->content = !empty($content) ? array('data' => $content) : NULL;
@@ -95,9 +93,11 @@ class OdApiDataList23 extends OdApiDataListDefault {
       $match = preg_match('/^.*data-([0-9-T]+)-structure-[0-9-T]+\.[a-z]*$/u', OdApiHelper::trim($result['8']['2']), $matches);
       if ($match && isset($matches['1'])) {
         $version = $matches['1'];
-        $content[$version] = array(
-          'version' => $version,
-        );
+        $timestamp = strtotime($version);
+        $version = $timestamp !== FALSE ? $timestamp : $version;
+        if (is_numeric($version)) {
+          $content[$version] = array();
+        }
       }
     }
 
@@ -107,9 +107,11 @@ class OdApiDataList23 extends OdApiDataListDefault {
         $match = preg_match('/^.*data-([0-9-T]+)-structure-[0-9-T]+\.[a-z]*$/u', OdApiHelper::trim($previous_version), $matches);
         if ($match && isset($matches['1'])) {
           $version = $matches['1'];
-          $content[$version] = array(
-            'version' => $version,
-          );
+          $timestamp = strtotime($version);
+          $version = $timestamp !== FALSE ? $timestamp : $version;
+          if (is_numeric($version)) {
+            $content[$version] = array();
+          }
         }
       }
     }
@@ -120,22 +122,18 @@ class OdApiDataList23 extends OdApiDataListDefault {
   protected function _getResult() {
     $result = $this->content;
 
-    uasort($result['data'], function($a, $b) {
-      if ($a['version'] == $b['version']) {
+    uksort($result['data'], function($a, $b) {
+      if ($a == $b) {
         return 0;
       }
-      return ($a['version'] < $b['version']) ? 1 : -1;
+      return ($a < $b) ? 1 : -1;
     });
 
-    foreach($result['data'] as &$data) {
-      $version = $data['version'];
-      $data_api = $this->getApi(array($this::OBJECT_TYPE_IS_DATA => $version));
-
-      $version = $data['version'];
+    foreach($result['data'] as $version => &$data) {
+      $data_api = $this->getApi(array($this::OBJECT_TYPE_IS_DATA => (string) $version));
 
       $data = array(
         '#api' => $data_api,
-        'version' => $version,
       );
     }
 
