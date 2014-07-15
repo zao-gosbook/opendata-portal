@@ -97,11 +97,12 @@ function theme_recline_link_formatter($variables) {
 
   // Get pubdlcnt context while it's available
   $context = $file['od_pubdlcnt_context'];
-  $file = l(t('Download'), $url, $options);
-
   if (!isset($context)) {
     $context = array('stat_id' => -1);
   }
 
-  return '<div class="download" data-stat-id="'. $context['stat_id'] .'">' . $file . '</div><span class="data-explorer"></span>';
+  $options['attributes']['dlcnt:data-stat-id'] = $context['stat_id'];
+  $file = l(t('Download'), $url, $options);
+
+  return '<div class="download">' . $file . '</div><span class="data-explorer"></span>';
 }

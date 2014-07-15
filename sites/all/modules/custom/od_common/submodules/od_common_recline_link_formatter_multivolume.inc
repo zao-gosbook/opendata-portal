@@ -13,11 +13,13 @@ function od_common_module__recline_link_formatter_multivolume(&$element, $entity
     'selector' => '.multi-download-link-wrapper[data-stat-id="%STAT_ID%"] .dropdown-links .download a',
   ));
 
+  $context = $context ? $context : array('stat_id' => -1);
+
   foreach ($items as $delta => $item) {
     // Change download callback to od_dataset's callback to support encodings
     $download_uri = (string) od_dataset_download_path($dataset_wrapper);
     $element[$delta]['links_container'] = array(
-      '#prefix' => '<div class="multi-download-link-wrapper" data-stat-id="'.$context['stat_id'].'">',
+      '#prefix' => '<div class="multi-download-link-wrapper">',
       '#suffix' => '</div>',
       'main_link' => array(
         '#markup' => '<div class="main-download-link-wrapper"><a href="#">'. t('Download').'</a></div>'
@@ -59,6 +61,7 @@ function od_common_module__recline_link_formatter_multivolume(&$element, $entity
 //            ),
         '#attributes' => array(
           'class' => array("encoding-{$target_encoding}"),
+          'dlcnt:data-stat-id' => $context['stat_id'],
         ),
       );
     }

@@ -199,23 +199,39 @@ function od_pubdlcnt_download_count_update_page_callback_ajax() {
   );
 }
 
-function od_pubdlcnt_process_html(&$vars) {
-  $contexts = drupal_static('od_pubdlcnt_api_attacher_context_add', array());
-  $env = drupal_get_path('module', 'od_pubdlcnt');
-  if (!empty($contexts)) {
+function od_pubdlcnt_add_js() {
+  static $added = NULL;
+  if ($added === NULL) {
+    $env = drupal_get_path('module', 'od_pubdlcnt');
+    drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME, 'weight' => '500000'));
     drupal_add_js(array(
       'od_pubdlcnt' => array(
         'attacherjs' => array(
-          'contexts' => $contexts,
+          //'contexts' => $contexts,
+          'locked' => array(),
           'callback_url' => OD_PUBDLCNT_CALLBACK_URL,
         ),
       ),
     ), 'setting');
-    drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME, 'weight' => '500000'));
   }
+
+  $added = TRUE;
+//  $contexts = drupal_static('od_pubdlcnt_api_attacher_context_add', array());
+//  if (!empty($contexts)) {
+//    drupal_add_js(array(
+//      'od_pubdlcnt' => array(
+//        'attacherjs' => array(
+//          'contexts' => $contexts,
+//          'callback_url' => OD_PUBDLCNT_CALLBACK_URL,
+//        ),
+//      ),
+//    ), 'setting');
+//    drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME, 'weight' => '500000'));
+//  }
 }
 
 function od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id = NULL, $context = NULL, $options = array()) {
+  od_pubdlcnt_add_js();
   $contexts = &drupal_static(__FUNCTION__, array());
   $conditions = array(
     'entity_type' => $entity_type,
