@@ -794,31 +794,34 @@ function _odp_import_dataset_set_updated(&$dataset_node, $meta, $organization, &
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_UPDATED};
 
-  if (isset($meta['data'][0]['created'])) {
-    // Get created in unix timestamp format.
-    $created = (string) strtotime($meta['data'][0]['created']);
+  if (!empty($meta['data'])) {
+    $data = reset($meta['data']);
+    if (isset($data['created'])) {
+      // Get created in unix timestamp format.
+      $created = (string) strtotime($data['created']);
 
-    if ($created) {
-      // Get the new field value.
-      $new_field_value = array(LANGUAGE_NONE => array(0 => array(
-        'value' => $created,
-        'timezone' => 'Europe/Moscow',
-        'timezone_db' => 'Europe/Moscow',
-        'date_type' => 'datestamp',
-      )));
+      if ($created) {
+        // Get the new field value.
+        $new_field_value = array(LANGUAGE_NONE => array(0 => array(
+          'value' => $created,
+          'timezone' => 'Europe/Moscow',
+          'timezone_db' => 'Europe/Moscow',
+          'date_type' => 'datestamp',
+        )));
 
-      // Update the field if it has changed.
-      if ($field_value !== $new_field_value) {
-        $field_value = $new_field_value;
-        $dataset_updated = TRUE;
+        // Update the field if it has changed.
+        if ($field_value !== $new_field_value) {
+          $field_value = $new_field_value;
+          $dataset_updated = TRUE;
+        }
       }
-    }
-    else {
-      // Set the field default value.
-      $field_value = array();
+      else {
+        // Set the field default value.
+        $field_value = array();
 
-      // Set warning message.
-      $messages[] = 'Некорректно заполнено поле "Дата последнего изменения набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+        // Set warning message.
+        $messages[] = 'Некорректно заполнено поле "Дата последнего изменения набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+      }
     }
   }
   else {
@@ -837,31 +840,34 @@ function _odp_import_dataset_set_valid(&$dataset_node, $meta, $organization, &$m
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_VALID};
 
-  if (isset($meta['data'][0]['valid'])) {
-    // Get created in unix timestamp format.
-    $created = (string) strtotime($meta['data'][0]['valid']);
+  if (!empty($meta['data'])) {
+    $data = reset($meta['data']);
+    if (isset($data['valid'])) {
+      // Get created in unix timestamp format.
+      $valid = (string) strtotime($data['valid']);
 
-    if ($created) {
-      // Get the new field value.
-      $new_field_value = array(LANGUAGE_NONE => array(0 => array(
-        'value' => $created,
-        'timezone' => 'Europe/Moscow',
-        'timezone_db' => 'Europe/Moscow',
-        'date_type' => 'datestamp',
-      )));
+      if ($valid) {
+        // Get the new field value.
+        $new_field_value = array(LANGUAGE_NONE => array(0 => array(
+          'value' => $valid,
+          'timezone' => 'Europe/Moscow',
+          'timezone_db' => 'Europe/Moscow',
+          'date_type' => 'datestamp',
+        )));
 
-      // Update the field if it has changed.
-      if ($field_value !== $new_field_value) {
-        $field_value = $new_field_value;
-        $dataset_updated = TRUE;
+        // Update the field if it has changed.
+        if ($field_value !== $new_field_value) {
+          $field_value = $new_field_value;
+          $dataset_updated = TRUE;
+        }
       }
-    }
-    else {
-      // Set the field default value.
-      $field_value = array();
+      else {
+        // Set the field default value.
+        $field_value = array();
 
-      // Set warning message.
-      $messages[] = 'Некорректно заполнено поле "Дата актуальности набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+        // Set warning message.
+        $messages[] = 'Некорректно заполнено поле "Дата актуальности набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '".';
+      }
     }
   }
   else {
@@ -1014,7 +1020,7 @@ function _odp_import_dataset_set_resource(&$dataset_node, $meta, $organization, 
   if (isset($meta['data'])) {
     // Load resource node.
     if (!empty($field_value)) {
-      $resource_nid = $dataset_node->{ODP_FIELD_DATASET_RESOURCES}['und'][0]['target_id'];
+      $resource_nid = $dataset_node->{ODP_FIELD_DATASET_RESOURCES}[LANGUAGE_NONE][0]['target_id'];
       $resource_node = node_load($resource_nid);
     }
     // Or create if it has not created yet.
@@ -1077,7 +1083,7 @@ function _odp_import_update_resource($resource_node, $meta, $dataset_node, $orga
       continue;
     }
 
-    $created = $revision->{ODP_FIELD_RESOURCE_CREATED}['und'][0]['value'];
+    $created = $revision->{ODP_FIELD_RESOURCE_CREATED}[LANGUAGE_NONE][0]['value'];
     $revisions_created[$created] = $revision->vid;
   }
 
