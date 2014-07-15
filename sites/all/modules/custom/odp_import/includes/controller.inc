@@ -721,6 +721,14 @@ function _odp_import_dataset_set_creator($dataset_node, $meta, $organization, &$
   // Get the current field value.
   $field_value = &$dataset_node->{ODP_FIELD_DATASET_CREATOR};
 
+  // Fake property. It need for compatibility with RDFa property error on http://opendata.gosmonitor.ru/
+  // where "dc:owner" was used instead "dc:creator" improperly.
+  if (!isset($meta['creator']) && isset($meta['owner'])) {
+    $meta['creator'] = $meta['owner'];
+    // Set warning message.
+    $messages[] = 'Некорректно заполнено поле "Владелец набора открытых данных" набора открытых данных "' . $dataset_node->title . '" организации "' . $organization->name . '". Использовано RDFa свойство "dc:owner" вместо "dc:creator".';
+  }
+
   if (isset($meta['creator'])) {
     // Get the new field value.
     $new_field_value = array(LANGUAGE_NONE => array('0' => array(
