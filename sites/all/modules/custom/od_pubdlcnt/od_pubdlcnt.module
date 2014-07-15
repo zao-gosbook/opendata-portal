@@ -199,8 +199,7 @@ function od_pubdlcnt_download_count_update_page_callback_ajax() {
   );
 }
 
-function od_pubdlcnt_preprocess_page(&$vars, $hook) {
-  if ($hook != 'page') return;
+function od_pubdlcnt_process_html(&$vars) {
   $contexts = drupal_static('od_pubdlcnt_api_attacher_context_add', array());
   $env = drupal_get_path('module', 'od_pubdlcnt');
   if (!empty($contexts)) {
