@@ -843,10 +843,18 @@ function entityreference_options_list($field, $instance = NULL, $entity_type = N
   $target_type = $field['settings']['target_type'];
   $entity_info = entity_get_info($target_type);
 
+  $decode_html = ($instance['widget']['type'] === 'options_select');
   $return = array();
   foreach ($options as $bundle => $entity_ids) {
     $bundle_label = check_plain($entity_info['bundles'][$bundle]['label']);
-    $return[$bundle_label] = $entity_ids;
+    if ($decode_html) {
+      foreach ($entity_ids as $id => $entity_label) {
+        $return[$bundle_label][$id] = html_entity_decode($entity_label, ENT_QUOTES);
+      }
+    }
+    else {
+      $return[$bundle_label] = $entity_ids;
+    }
   }
 
   return count($return) == 1 ? reset($return) : $return;
