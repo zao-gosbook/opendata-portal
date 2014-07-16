@@ -192,6 +192,15 @@ function od_common_form_alter(&$form, &$form_state, $form_id) {
     // функция валидации вызывается из файла '/submodules/od_potential_organization_node_form_alter.inc'.
     $form['field_pubreq_created_org']['und']['form']['field_organization_type']['#element_validate'] = array('organization_type_validation');
   }
+
+  if ($form_id == 'taxonomy_form_term') {
+    global $user;
+    if (is_array($user->roles) && !in_array('administrator', $user->roles)) {
+      $form['path']['#access'] = FALSE;
+      $form['description']['#access'] = FALSE;
+      $form['relations']['#access'] = FALSE;
+    }
+  }
 }
 
 /**

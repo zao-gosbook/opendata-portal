@@ -149,4 +149,7 @@ function dkan_preprocess_field(&$vars) {
     }
     $vars['items'][$value_key]['#markup'] = $vars['element']['#object']->field_od_query_data_use_other['und'][0]['value'];
   }
+  if ($vars['element']['#field_name'] == 'field_query_state') {
+    $vars['classes_array'][] = $vars['element']['#items'][0]['value'];
+  }
 }
