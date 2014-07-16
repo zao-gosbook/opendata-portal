@@ -20,10 +20,10 @@ class OdApiDataList30 extends OdApiDataList23 {
         if (!OdApiHelper::validateIso8601($matches[1]) || !OdApiHelper::validateIso8601($matches[2])) {
           continue;
         }
-        $version = $matches['1'];
-        $content[$version] = array(
-          'version' => $version,
-        );
+        $version = strtotime($matches['1']);
+        if (is_numeric($version)) {
+          $content[$version] = array();
+        }
       }
     }
 

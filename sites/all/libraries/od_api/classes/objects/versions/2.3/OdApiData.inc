@@ -8,8 +8,8 @@
 class OdApiData23 extends OdApiDataDefault {
   protected function _validateArg() {
     $data_exists = FALSE;
-    foreach ($this->parent->content['data'] as $data) {
-      if ($data['version'] === $this->arg) {
+    foreach ($this->parent->content['data'] as $version => $data) {
+      if ((string) $version === $this->arg) {
         $data_exists = TRUE;
         break;
       }

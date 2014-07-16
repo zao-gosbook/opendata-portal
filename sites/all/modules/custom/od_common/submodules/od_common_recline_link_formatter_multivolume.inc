@@ -5,16 +5,21 @@
 
 function od_common_module__recline_link_formatter_multivolume(&$element, $entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $dataset_wrapper = od_dataset_get_wrapper_by_resource($entity, $entity->vid);
-  list($entity_id, $revision_id, $bundle) = entity_extract_ids($entity_type, $entity);
-  $context = od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id, "{$bundle}:{$field['field_name']}", array(
+  //list($entity_id, $revision_id, $bundle) = entity_extract_ids($entity_type, $entity);
+  $entity_id = $dataset_wrapper->nid->value();
+  $revision_id = $dataset_wrapper->vid->value();
+  $bundle = $dataset_wrapper->getBundle();
+  $context = od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id, "{$bundle}:all", array(
     'selector' => '.multi-download-link-wrapper[data-stat-id="%STAT_ID%"] .dropdown-links .download a',
   ));
+
+  $context = $context ? $context : array('stat_id' => -1);
 
   foreach ($items as $delta => $item) {
     // Change download callback to od_dataset's callback to support encodings
     $download_uri = (string) od_dataset_download_path($dataset_wrapper);
     $element[$delta]['links_container'] = array(
-      '#prefix' => '<div class="multi-download-link-wrapper" data-stat-id="'.$context['stat_id'].'">',
+      '#prefix' => '<div class="multi-download-link-wrapper">',
       '#suffix' => '</div>',
       'main_link' => array(
         '#markup' => '<div class="main-download-link-wrapper"><a href="#">'. t('Download').'</a></div>'
@@ -49,6 +54,9 @@ function od_common_module__recline_link_formatter_multivolume(&$element, $entity
           '#theme' => 'od_common_recline_link_formatter',
           '#item' => $item,
           '#options' => $options,
+          '#link_attributes' => array(
+            'dlcnt:data-stat-id' => $context['stat_id'],
+          ),
           '#title' => t('Download in %encoding encoding', array('%encoding' => $target_encoding)),
         ),
 //            'item_suffix' => array(

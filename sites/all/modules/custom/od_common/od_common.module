@@ -272,7 +272,12 @@ function od_common_theme() {
   );
 
   $themes['od_common_recline_link_formatter'] = array(
-    'variables' => array('item' => NULL, 'options' => array(), 'title' => NULL),
+    'variables' => array(
+      'item' => NULL,
+      'options' => array(),
+      'title' => NULL,
+      'link_attributes' => array(),
+    ),
   );
   $themes['od_common_privatemsg_list_field__last_updated'] = array(
     'variables' => array(),
@@ -512,6 +517,8 @@ function theme_od_common_recline_link_formatter($variables) {
   // Set options as per anchor format described at
   // http://microformats.org/wiki/file-format-examples
   $options = $variables['options'];
+  $options['attributes'] = !empty($options['attributes']) ? $options['attributes'] : array();
+  $options['attributes'] += isset($variables['link_attributes']) ? $variables['link_attributes'] : array();
   $options['attributes']['type'] = $file['filemime'] . '; length=' . $file['filesize'];
 
   // Use the description as the link text if available.

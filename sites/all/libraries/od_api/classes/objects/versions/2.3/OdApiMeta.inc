@@ -103,6 +103,13 @@ class OdApiMeta23 extends OdApiMetaDefault {
       $content['data'][] = array();
     }
 
+    // Fake property. It need for compatibility with RDFa property error on http://opendata.gosmonitor.ru/
+    // where "dc:owner" was used instead "dc:creator" improperly.
+    $dc_owner = OdApiHelper::namespaceUnwrap('dc:owner');
+    if (isset($result[$dc_owner])) {
+      $content['owner'] = OdApiHelper::trim(reset($result[$dc_owner]));
+    }
+
     $this->content = !empty($content) ? $content : NULL;
   }
 

@@ -138,7 +138,7 @@ function od_pubdlcnt_menu() {
   return $items;
 }
 
-function od_pubdlcnt_load_stat_object($conditions = array()) {
+function od_pubdlcnt_load_stat_object($conditions = array(), $one_item = TRUE) {
   static $check_conditions = array(
     'entity_id' => TRUE,
     'entity_type' => TRUE,
@@ -151,12 +151,14 @@ function od_pubdlcnt_load_stat_object($conditions = array()) {
     if (!entity_save('od_pubdlcnt', $object)) {
       $object = FALSE;
     }
-  }
-  else {
-    $object = reset($object);
+    else {
+      $object = array($object);
+    }
   }
 
-  return $object ? $object : FALSE;
+  return $object
+    ? ($one_item ? reset($object) : $object)
+    : FALSE;
 }
 
 function od_pubdlcnt_update_count($id) {
@@ -197,23 +199,39 @@ function od_pubdlcnt_download_count_update_page_callback_ajax() {
   );
 }
 
-function od_pubdlcnt_preprocess_html(&$vars) {
-  $contexts = drupal_static('od_pubdlcnt_api_attacher_context_add', array());
-  $env = drupal_get_path('module', 'od_pubdlcnt');
-  if (!empty($contexts)) {
-    drupal_add_js($env. '/js/attacher.js');
+function od_pubdlcnt_add_js() {
+  static $added = NULL;
+  if ($added === NULL) {
+    $env = drupal_get_path('module', 'od_pubdlcnt');
+    drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME, 'weight' => '500000'));
     drupal_add_js(array(
       'od_pubdlcnt' => array(
         'attacherjs' => array(
-          'contexts' => $contexts,
+          //'contexts' => $contexts,
+          'locked' => array(),
           'callback_url' => OD_PUBDLCNT_CALLBACK_URL,
         ),
       ),
     ), 'setting');
   }
+
+  $added = TRUE;
+//  $contexts = drupal_static('od_pubdlcnt_api_attacher_context_add', array());
+//  if (!empty($contexts)) {
+//    drupal_add_js(array(
+//      'od_pubdlcnt' => array(
+//        'attacherjs' => array(
+//          'contexts' => $contexts,
+//          'callback_url' => OD_PUBDLCNT_CALLBACK_URL,
+//        ),
+//      ),
+//    ), 'setting');
+//    drupal_add_js($env. '/js/attacher.js', array('type' => 'file', 'group' => JS_THEME, 'weight' => '500000'));
+//  }
 }
 
 function od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revision_id = NULL, $context = NULL, $options = array()) {
+  od_pubdlcnt_add_js();
   $contexts = &drupal_static(__FUNCTION__, array());
   $conditions = array(
     'entity_type' => $entity_type,
@@ -235,31 +253,62 @@ function od_pubdlcnt_api_attacher_context_add($entity_type, $entity_id, $revisio
 }
 
 function od_pubdlcnt_field_extra_fields() {
-  return array();
+  //@fixme: for all types
   $extra['node']['dataset'] = array(
-    'display' => array(
-      'dataset_title' => array(
-        'label' => t('Dataset name'),
-        'description' => t('Shows title of this dataset as a field.'),
+    'display' => array(      
+      'od_publdlcnt_count' => array(
+        'label' => t('Download count'),
+        'description' => t('Show download count.'),
         'weight' => 0,
-      ),
-      'dataset_resource_data_url' => array(
-        'label' => t('Data URL'),
-        'description' => t('Shows resource data URL as a field.'),
-        'weight' => 0,
-      ),
-      'dataset_resource_data_format' => array(
-        'label' => t('Data format'),
-        'description' => t('Shows resource data format as a field.'),
-        'weight' => 0,
-      ),
-      'dataset_resource_structure_url' => array(
-        'label' => t('Structure URL'),
-        'description' => t('Shows resource structure URL as a field.'),
-        'weight' => 0,
-      ),
+      ),      
     ),
   );
 
   return $extra;
 }
+
+/**
+ * @param $entity_type
+ * @param $entity_id
+ * @param null $revision_id
+ * @param null $context_condition
+ * @return mixed
+ * @todo: Static cache
+ */
+function od_pubdlcnt_entity_download_count($entity_type, $entity_id, $revision_id = NULL, $context_condition = NULL) {
+  $query = db_select('od_pubdlcnt', 'd');
+  $query
+    ->addExpression('SUM(d.count)', 'cnt');
+  $query
+    ->condition('d.entity_type', $entity_type)
+    ->condition('d.entity_id', $entity_id);
+
+  if ($revision_id !== NULL) {
+    $query
+      ->condition('d.revision_id', $revision_id);
+  }
+
+  if ($context_condition !== NULL) {
+    $query
+      ->condition('d.context', $context_condition, ' LIKE ');
+  }
+
+  return $query->execute()->fetchField();
+}
+
+/**
+ * Implement hook_node_view().
+ */        
+function od_pubdlcnt_node_view($node, $view_mode) {
+  //@fixme: Give user ability to configure context string and if vid should be passed or not
+  $count = od_pubdlcnt_entity_download_count('node', $node->nid, NULL, "{$node->type}:%");
+  $node->content['od_publdlcnt_count'] = array(
+     '#prefix' => '<div class="od-common-pubdlcnt-count-wrapper">',
+     '#suffix' => '</div>',
+     'file' => array(
+     '#markup' => "<span class=\"value\">{$count}</span>"
+     ),
+  );
+
+  return $node;
+}            

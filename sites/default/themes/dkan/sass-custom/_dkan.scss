@@ -2511,6 +2511,9 @@ td div.label {
       }
       .field-name-resource-format {
         
+        .view {
+          position: static;
+        }
         .views-field-field-format {
           display: inline-block;
           padding: .4em .6em;
@@ -5168,13 +5171,13 @@ table {
     clear: both;
   }
   .views-row {
-    padding-bottom: 28px;
-    margin-bottom: 28px;
-    border-bottom: 1px solid #e5e5e5;
-    overflow: hidden;
-    text-transform: none;
+    border-bottom: 1px solid #E5E5E5;
+    font-size: 1.1em;
     line-height: 22px;
-    font-size: 1.1em;    
+    margin-bottom: 21px;
+    overflow: hidden;
+    padding-bottom: 0;
+    text-transform: none;   
   }
   .views-field-field-od-query-id {
     font-size: 18px;
@@ -5196,17 +5199,23 @@ table {
         text-shadow: 1px 1px 1px rgba(0,0,0, .4);
       }
       &.approved .field-content {
-        color: yellow;
+        color: #AFEEEE;
       }
       &.discussion .field-content {
-        color: orange;
+        color: #C0C0C0;
       }
       &.answered .field-content {
-        color: green;
+        color: #98FB98;
       }
       &.registred .field-content {
-        color: red;
+        color: #4169E1;
       }
+      &.produced .field-content {
+        color: #98FB98;
+      } 
+      &.reject .field-content {
+        color: #FA8072;
+      } 
       * {
         display: inline;
       }
@@ -6111,11 +6120,15 @@ div.fivestar-widget .star {
     padding-left: 10px;
   }
   .field-name-comment-body {
-    padding: 3px 0 0;
+    padding: 3px 0 15px;
     
     p {
       margin: 0;
     }
+  }
+  .rules-link-wrapper{
+    display: inline;
+    padding-left: 7px;
   }
 }
 
@@ -7303,7 +7316,15 @@ div.fivestar-widget .star {
 .forum-post {
   font-size: 15px;
 }
-   
+
+.add-forum {
+  float: right;
+  margin-top: 11px;
+  
+  .form-submit {
+    padding: 1.1em;
+  }
+}   
 .page-forum {
   background: #fff;
   
